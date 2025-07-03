@@ -1,0 +1,23 @@
+{
+  "name": "civboards",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.4",
+  "dependencies": {
+    "@heroui/card": "^2.2.21",
+    "@heroui/image": "^2.2.14",
+    "@heroui/input": "2.4.22",
+    "@heroui/pagination": "^2.2.20",
+    "@heroui/table": "^2.2.21",
+    "@heroui/tabs": "^2.2.19",
+    "@heroui/toast": "^2.0.12",
+    "@react-types/shared": "3.30.0"
+  }
+}
