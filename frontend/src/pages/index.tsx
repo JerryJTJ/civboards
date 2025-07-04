@@ -5,12 +5,12 @@ const titleCards = [
 	{
 		title: "games",
 		path: "/games",
-		imgSrc: "https://i.imgur.com/VGbEbqb.jpeg",
+		imgSrc: "https://i.imgur.com/2UqOEy9.jpeg",
 	},
 	{
 		title: "leaderboard",
 		path: "/leaderboard",
-		imgSrc: "https://i.imgur.com/2UqOEy9.jpeg",
+		imgSrc: "https://i.imgur.com/VGbEbqb.jpeg",
 	},
 ];
 

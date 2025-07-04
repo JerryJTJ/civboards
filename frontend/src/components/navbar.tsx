@@ -26,26 +26,26 @@ import {
 import { Logo, SvgIcon } from "@/components/icons";
 
 export const Navbar = () => {
-	const searchInput = (
-		<Input
-			aria-label="Search"
-			classNames={{
-				inputWrapper: "bg-default-100",
-				input: "text-sm",
-			}}
-			endContent={
-				<Kbd className="hidden lg:inline-block" keys={["command"]}>
-					K
-				</Kbd>
-			}
-			labelPlacement="outside"
-			placeholder="Search..."
-			startContent={
-				<SearchIcon className="flex-shrink-0 text-base pointer-events-none text-default-400" />
-			}
-			type="search"
-		/>
-	);
+	// const searchInput = (
+	// 	<Input
+	// 		aria-label="Search"
+	// 		classNames={{
+	// 			inputWrapper: "bg-default-100",
+	// 			input: "text-sm",
+	// 		}}
+	// 		endContent={
+	// 			<Kbd className="hidden lg:inline-block" keys={["command"]}>
+	// 				K
+	// 			</Kbd>
+	// 		}
+	// 		labelPlacement="outside"
+	// 		placeholder="Search..."
+	// 		startContent={
+	// 			<SearchIcon className="flex-shrink-0 text-base pointer-events-none text-default-400" />
+	// 		}
+	// 		type="search"
+	// 	/>
+	// );
 
 	return (
 		<HeroUINavbar maxWidth="xl" position="sticky">
@@ -92,7 +92,7 @@ export const Navbar = () => {
 					<ThemeSwitch />
 				</NavbarItem>
 				<NavbarItem className="hidden lg:flex">
-					{searchInput}
+					{/* {searchInput} */}
 				</NavbarItem>
 			</NavbarContent>
 
@@ -106,7 +106,7 @@ export const Navbar = () => {
 			</NavbarContent>
 
 			<NavbarMenu>
-				{searchInput}
+				{/* {searchInput} */}
 				<div className="flex flex-col gap-2 mx-4 mt-2">
 					{siteConfig.navMenuItems.map((item, index) => (
 						<NavbarMenuItem key={`${item}-${index}`}>

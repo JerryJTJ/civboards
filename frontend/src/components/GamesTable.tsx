@@ -249,13 +249,13 @@ export default function GamesTable(props: GamesTableProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-400 text-small">
+					<span className="text-default-700 text-small">
 						{headerText}
 					</span>
-					<label className="flex items-center text-default-400 text-small">
+					<label className="flex items-center text-default-700 text-small">
 						Rows per page:
 						<select
-							className="bg-transparent outline-none text-default-400 text-small"
+							className="bg-transparent outline-none text-default-700 text-small"
 							onChange={onRowsPerPageChange}
 						>
 							<option value="5">5</option>

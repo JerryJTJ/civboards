@@ -28,7 +28,8 @@ export default function GamesCard(props: GameCardProps) {
 				isZoomed
 				alt={game.name}
 				className="z-0 object-cover w-full h-full"
-				src="https://i.imgur.com/AxHOzUw.png"
+				// src="https://i.imgur.com/AxHOzUw.png"
+				src="https://i.imgur.com/ReQSfcb.png"
 			/>
 			<CardFooter className="flex-col backdrop-blur-md text-foreground/90 justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden absolute before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 				<b>{game.name}</b>

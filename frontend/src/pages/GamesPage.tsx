@@ -7,99 +7,8 @@ import React from "react";
 import GamesTable from "@/components/GamesTable";
 import { PlusIcon } from "@/components/icons";
 import { Button, ButtonGroup } from "@heroui/button";
-
-const games = [
-	{
-		uuid: "3f8b0a2e-6e1f-4c87-9d0a-1b2345f67890",
-		name: "Island Survival",
-		date: "2024-03-05T12:15:00.000Z",
-		players: ["Mia", "Omar"],
-		map: "Archipelago",
-		winner: "Mia",
-		victory: "domination",
-	},
-	{
-		uuid: "d147f2a1-5904-4fa2-9d1b-7c456e789abc",
-		name: "Four Corners",
-		date: "2023-10-10T20:00:00.000Z",
-		players: ["Homba", "Jim", "Bob", "Satanella"],
-		map: "Pangea",
-		winner: "Bob",
-		victory: "culture",
-	},
-	{
-		uuid: "a329f8d7-12c3-4f58-8e2d-0a123b456def",
-		name: "Lone Wolf",
-		date: "2025-07-21T07:45:00.000Z",
-		players: ["Alex"],
-		map: "Continents",
-		winner: "Alex",
-		victory: "science",
-	},
-	{
-		uuid: "b8246d1f-3f15-4578-9f5e-8c789d123456",
-		name: "The Great Alliance",
-		date: "2024-01-12T18:20:00.000Z",
-		players: ["Emily", "Raj", "Lena", "Zhao", "Isla"],
-		map: "Terra",
-		winner: "Raj",
-		victory: "diplomatic",
-	},
-	{
-		uuid: "c93f1e2b-8d02-4f6a-a0e1-5b67c812345f",
-		name: "Mountain Warfare",
-		date: "2025-02-03T14:00:00.000Z",
-		players: ["Ben", "Tariq", "Morgan"],
-		map: "Highlands",
-		winner: "Morgan",
-		victory: "domination",
-	},
-	{
-		uuid: "e1a0c5d7-45b9-429a-9f2c-3d789f456012",
-		name: "Cultural Renaissance",
-		date: "2023-04-17T22:30:00.000Z",
-		players: ["Jim", "Satanella", "Alex", "Mia", "Zhao", "Lena"],
-		map: "Fractal",
-		winner: "Lena",
-		victory: "culture",
-	},
-	{
-		uuid: "f25d19a3-7398-4b7a-9c4e-6f123a7890bc",
-		name: "Desert Storm",
-		date: "2024-08-25T09:10:00.000Z",
-		players: ["Raj", "Bob"],
-		map: "Desert Planet",
-		winner: "Raj",
-		victory: "score",
-	},
-	{
-		uuid: "0c471eb2-5d8f-4b23-8a7e-2f3456d78901",
-		name: "Frozen Front",
-		date: "2023-12-15T11:45:00.000Z",
-		players: ["Tariq", "Emily", "Ben", "Satanella", "Morgan"],
-		map: "Snowflake",
-		winner: "Emily",
-		victory: "religious",
-	},
-	{
-		uuid: "1a2f3b4c-5d6e-7f81-9a0b-cd123456789e",
-		name: "Ocean Conquest",
-		date: "2025-05-07T16:55:00.000Z",
-		players: ["Isla", "Jim", "Homba", "Alex"],
-		map: "Inland Sea",
-		winner: "Homba",
-		victory: "domination",
-	},
-	{
-		uuid: "9d8e7f6a-5b4c-3210-9a87-cdef12345678",
-		name: "Test Game 1",
-		date: "1995-12-17T03:24:00.000Z",
-		players: ["Homba", "Jim", "Bob", "Satanella"],
-		map: "Pangea",
-		winner: "Jim",
-		victory: "score",
-	},
-];
+import AddGameModal from "@/components/AddGameModal";
+import { games } from "@/constants/mockData";
 
 enum TabView {
 	Cards,
@@ -143,15 +52,10 @@ export default function GamesPage() {
 							Table
 						</Button>
 					</ButtonGroup>
-					<Button
-						className="justify-self-end border-white/20 border-1"
-						endContent={<PlusIcon />}
-					>
-						Add Game
-					</Button>
+					<AddGameModal />
 				</div>
 
-				<div className="flex flex-row justify-self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10  scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-full overflow-y-hidden">
+				<div className="flex flex-row justify-self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-full overflow-y-hidden">
 					{currTab === TabView.Cards ? (
 						<>
 							{" "}

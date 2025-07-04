@@ -49,13 +49,19 @@ function getPodiumScores(entries: Array<{ player: string; wins: number }>) {
 	}
 
 	const sortedScores = [...scores].sort().reverse();
+	const medals = ["🥇", "🥈", "🥉"];
 
-	return sortedScores.splice(0, 3);
+	const podium = new Map<number, string>();
+	for (let i = 0; i < sortedScores.length && i < 3; i++) {
+		podium.set(sortedScores[i], medals[i]);
+	}
+
+	return podium;
 }
 
 export default function LeaderboardTable(props: LeaderboardProps) {
 	const { leaderboardData } = props;
-	const podiumScores = getPodiumScores(leaderboardData);
+	const podium = getPodiumScores(leaderboardData);
 
 	type LeaderboardEntry = (typeof leaderboardData)[0];
 
@@ -119,19 +125,20 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 			switch (columnKey) {
 				case "player":
-					switch (entry.wins) {
-						case podiumScores[0]:
-							return `🥇 ${entry.player}`;
-						case podiumScores[1]:
-							return `🥈 ${entry.player}`;
-						case podiumScores[2]:
-							return `🥉 ${entry.player}`;
-						default:
-							return `${entry.player}`;
-					}
+					const medal = podium.get(entry.wins) ?? "";
+					return (
+						<p className="text-base text-center text-bold">
+							{medal ? `${medal} ` : ""}
+							{entry.player}
+						</p>
+					);
 
 				case "wins":
-					return <p className="text-bold text-small">{entry.wins}</p>;
+					return (
+						<p className="text-base text-center text-bold">
+							{entry.wins}
+						</p>
+					);
 				default:
 					return cellValue;
 			}
@@ -226,13 +233,13 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-400 text-small">
+					<span className="text-default-700 text-small">
 						{headerText}
 					</span>
-					<label className="flex items-center text-default-400 text-small">
+					<label className="flex items-center text-default-700 text-small">
 						Rows per page:
 						<select
-							className="bg-transparent outline-none text-default-400 text-small"
+							className="bg-transparent outline-none text-default-700 text-small"
 							onChange={onRowsPerPageChange}
 						>
 							<option value="10">10</option>
@@ -303,8 +310,10 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 			<TableHeader columns={columns}>
 				{(column) => (
 					<TableColumn
+						className="text-center"
 						key={column.key}
 						allowsSorting={column.sortable}
+						width={"50%"}
 					>
 						{column.name}
 					</TableColumn>
