@@ -23,6 +23,9 @@
     "@heroui/table": "^2.2.21",
     "@heroui/tabs": "^2.2.19",
     "@heroui/toast": "^2.0.12",
-    "@react-types/shared": "3.30.0"
+    "@react-types/shared": "3.30.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0"
   }
 }

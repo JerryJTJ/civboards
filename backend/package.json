@@ -1,0 +1,24 @@
+{
+	"name": "backend",
+	"version": "1.0.0",
+	"description": "",
+	"main": "server.ts",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "npx tsx watch --env-file=config.env api/server.ts"
+	},
+	"keywords": [],
+	"author": "Jerry Ju",
+	"license": "ISC",
+	"packageManager": "pnpm@10.12.4",
+	"devDependencies": {
+		"@types/compression": "^1.8.1",
+		"@types/cors": "^2.8.19",
+		"@types/express": "^5.0.3",
+		"tsx": "^4.20.3"
+	},
+	"dependencies": {
+		"@supabase/supabase-js": "^2.50.3",
+		"express": "^5.1.0"
+	}
+}
