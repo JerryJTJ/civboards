@@ -5,7 +5,8 @@
 	"main": "server.ts",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"dev": "npx tsx watch --env-file=config.env api/server.ts"
+		"dev": "npx tsx watch --inspect --env-file=config.env api/server.ts",
+		"debug": "npx tsx --inspect --env-file=config.env api/server.ts"
 	},
 	"keywords": [],
 	"author": "Jerry Ju",

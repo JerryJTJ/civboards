@@ -1,8 +1,19 @@
 import express from "express";
-import { handleGetCivilizationIdByCode } from "../controllers/civilizationController";
+import * as CivilizationController from "../controllers/civilizationController";
 
 const CivilizationRouter = express.Router();
 
-CivilizationRouter.get("/:code", handleGetCivilizationIdByCode);
+CivilizationRouter.get(
+	"/code/:code",
+	CivilizationController.handleGetCivilizationByCode
+);
+CivilizationRouter.get(
+	"/id/:id",
+	CivilizationController.handleGetCivilizationById
+);
+CivilizationRouter.get(
+	"/all",
+	CivilizationController.handleGetAllCivilizations
+);
 
 export default CivilizationRouter;

@@ -3,11 +3,12 @@ import { AppError } from "../../types/Errors";
 import { ERROR_CODES } from "../../types/errorCodes";
 import { supabase } from "../server";
 
-export async function getCivilizationByCode(code: string) {
+export async function getLeaderByCode(code: string) {
 	const { data, error } = await supabase
-		.from("civilization")
-		.select()
+		.from("leader")
+		.select("id, name")
 		.eq("code", code)
+		.eq("active", true)
 		.maybeSingle();
 
 	if (error)
@@ -27,11 +28,12 @@ export async function getCivilizationByCode(code: string) {
 	return data;
 }
 
-export async function getCivilizationById(id: number) {
+export async function getLeaderById(id: number) {
 	const { data, error } = await supabase
-		.from("civilization")
-		.select()
+		.from("leader")
+		.select("id, name")
 		.eq("id", id)
+		.eq("active", true)
 		.maybeSingle();
 
 	if (error)
@@ -51,10 +53,11 @@ export async function getCivilizationById(id: number) {
 	return data;
 }
 
-export async function getAllCivilizations() {
+export async function getAllLeaders() {
 	const { data, error } = await supabase
-		.from("civilization")
-		.select()
+		.from("leader")
+		.select("id, name, civilization")
+		.eq("active", true)
 		.order("name", { ascending: true });
 
 	if (error)

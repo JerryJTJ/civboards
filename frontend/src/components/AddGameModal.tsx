@@ -294,7 +294,6 @@ export default function AddGameModal() {
 									variant="shadow"
 									color="primary"
 									onPress={() => {
-										console.log(formCivsData);
 										onClose();
 									}}
 								>

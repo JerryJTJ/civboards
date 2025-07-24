@@ -5,6 +5,8 @@ import helmet from "helmet";
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "../interfaces/supabase";
 import CivilizationRouter from "./routes/civilization";
+import LeaderRouter from "./routes/leader";
+import { errorHandler } from "./middlewares/errorHandler";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;
@@ -23,7 +25,6 @@ const app = express();
 
 //Middleware
 app.use(cors());
-app.use(express.json());
 app.use(compression());
 app.use(
 	helmet.contentSecurityPolicy({
@@ -32,25 +33,13 @@ app.use(
 		},
 	})
 );
-
-// app.get("/", async (req, res) => {
-// 	const { data, error } = await supabase
-// 		.from("civilization")
-// 		.select("id")
-// 		.eq("code", "CIVILIZATION_AMERICA")
-// 		.maybeSingle();
-
-// 	res.send(data);
-// });
-
-app.get("/games", async (req, res) => {
-	try {
-		const { data, error } = await supabase.from("game").select();
-		res.send(data);
-	} catch (error) {}
-});
+app.use(express.json());
 
 app.use("/civilization", CivilizationRouter);
+app.use("/leader", LeaderRouter);
+
+//Error handlers (must be last)
+app.use(errorHandler);
 
 app.listen(PORT, () =>
 	console.log(

@@ -1,14 +1,37 @@
-import { getCivilizationIdByCode } from "../repositories/civilizationRepository";
+import { AppError } from "../../types/Errors";
+import { ERROR_CODES } from "../../types/errorCodes";
+import {
+	getAllCivilizations,
+	getCivilizationByCode,
+	getCivilizationById,
+} from "../repositories/civilizationRepository";
 
-export async function fetchCivilizationByIdByCode(code: string) {
+export async function fetchCivilizationByCode(code: string) {
 	if (!code || typeof code !== "string") {
-		throw new Error("Invalid civilization code");
+		throw new AppError(
+			"Invalid Civilization Code",
+			422,
+			ERROR_CODES.VALIDATION
+		);
 	}
 
-	const civId = await getCivilizationIdByCode(code);
-	if (!civId) {
-		throw new Error(`Civilization not found for code: ${code}`);
-	}
+	const civ = await getCivilizationByCode(code);
+	return civ;
+}
 
-	return civId;
+export async function fetchCivilizationById(id: number) {
+	if (!id || isNaN(id)) {
+		throw new AppError(
+			"Invalid Civilization Name",
+			422,
+			ERROR_CODES.VALIDATION
+		);
+	}
+	const civ = await getCivilizationById(id);
+	return civ;
+}
+
+export async function fetchAllCivilizations() {
+	const civs = await getAllCivilizations();
+	return civs;
 }
