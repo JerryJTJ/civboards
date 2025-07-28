@@ -1,0 +1,34 @@
+import { Player } from "../../interfaces/game.interface";
+import { TablesInsert } from "../../interfaces/supabase";
+import { throwValidationError, throwDatabaseError } from "../../types/Errors";
+import { doesGameIdExist } from "../repositories/game.repository";
+import { insertGamePlayers } from "../repositories/gamePlayer.repository";
+
+export async function createGamePlayers(
+	gameId: number,
+	players: Array<Player>
+) {
+	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+
+	players.forEach((player) => {
+		if (!player.leaderId || !player.civilizationId || !player.name)
+			throwValidationError("Invalid Player Data");
+	});
+
+	try {
+		// We want to keep JSON in camelCase and only use snake_case for DB operations
+		const gamePlayers = players.map((player) => {
+			return {
+				game_id: gameId,
+				name: player.name,
+				leader_id: player.leaderId,
+				civilization_id: player.civilizationId,
+				is_human: player.isHuman,
+			};
+		}) as Array<TablesInsert<"game_player">>;
+		insertGamePlayers(gamePlayers);
+	} catch (error) {
+		throwDatabaseError("Failed to create players");
+	}
+}

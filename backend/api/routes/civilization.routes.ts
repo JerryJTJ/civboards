@@ -1,5 +1,5 @@
 import express from "express";
-import * as CivilizationController from "../controllers/civilizationController";
+import * as CivilizationController from "../controllers/civilization.controller";
 
 const CivilizationRouter = express.Router();
 

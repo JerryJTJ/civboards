@@ -2,7 +2,7 @@ import {
 	fetchLeaderFromCode,
 	fetchLeaderById,
 	fetchAllLeaders,
-} from "../services/leaderService";
+} from "../services/leader.service";
 
 export async function handleGetLeaderByCode(req, res, next) {
 	const { code } = req.params;

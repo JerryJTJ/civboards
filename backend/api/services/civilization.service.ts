@@ -1,18 +1,14 @@
-import { AppError } from "../../types/Errors";
+import { AppError, throwValidationError } from "../../types/Errors";
 import { ERROR_CODES } from "../../types/errorCodes";
 import {
 	getAllCivilizations,
 	getCivilizationByCode,
 	getCivilizationById,
-} from "../repositories/civilizationRepository";
+} from "../repositories/civilization.repository";
 
 export async function fetchCivilizationByCode(code: string) {
 	if (!code || typeof code !== "string") {
-		throw new AppError(
-			"Invalid Civilization Code",
-			422,
-			ERROR_CODES.VALIDATION
-		);
+		throwValidationError("Invalid Civilization code");
 	}
 
 	const civ = await getCivilizationByCode(code);
@@ -21,11 +17,7 @@ export async function fetchCivilizationByCode(code: string) {
 
 export async function fetchCivilizationById(id: number) {
 	if (!id || isNaN(id)) {
-		throw new AppError(
-			"Invalid Civilization Name",
-			422,
-			ERROR_CODES.VALIDATION
-		);
+		throwValidationError("Invalid Civilization Id");
 	}
 	const civ = await getCivilizationById(id);
 	return civ;

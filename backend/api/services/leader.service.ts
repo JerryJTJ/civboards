@@ -1,15 +1,14 @@
-import { AppError } from "../../types/Errors";
+import { AppError, throwValidationError } from "../../types/Errors";
 import { ERROR_CODES } from "../../types/errorCodes";
 import {
 	getAllLeaders,
 	getLeaderByCode,
 	getLeaderById,
-} from "../repositories/leaderRespository";
+} from "../repositories/leader.repository";
 
 export async function fetchLeaderFromCode(code: string) {
 	if (!code || typeof code !== "string") {
-		let e = new Error();
-		throw new AppError("Invalid Leader Code", 422, ERROR_CODES.VALIDATION);
+		throwValidationError("Invalid Civilization Code");
 	}
 
 	const leader = await getLeaderByCode(code);
@@ -18,7 +17,7 @@ export async function fetchLeaderFromCode(code: string) {
 
 export async function fetchLeaderById(id: number) {
 	if (!id || isNaN(id)) {
-		throw new AppError("Invalid Leader Id", 422, ERROR_CODES.VALIDATION);
+		throwValidationError("Invalid Leader Id");
 	}
 	const leader = await getLeaderById(id);
 	return leader;

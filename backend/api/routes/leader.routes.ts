@@ -1,5 +1,5 @@
 import express from "express";
-import * as LeaderController from "../controllers/leaderController";
+import * as LeaderController from "../controllers/leader.controller";
 
 const LeaderRouter = express.Router();
 LeaderRouter.get("/code/:code", LeaderController.handleGetLeaderByCode);

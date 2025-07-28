@@ -1,5 +1,9 @@
 import { Database } from "../../interfaces/supabase";
-import { AppError } from "../../types/Errors";
+import {
+	AppError,
+	throwDatabaseError,
+	throwNotFoundError,
+} from "../../types/Errors";
 import { ERROR_CODES } from "../../types/errorCodes";
 import { supabase } from "../server";
 
@@ -10,19 +14,8 @@ export async function getCivilizationByCode(code: string) {
 		.eq("code", code)
 		.maybeSingle();
 
-	if (error)
-		throw new AppError(
-			error.message,
-			400,
-			ERROR_CODES.DATABASE.INVALID_QUERY
-		);
-
-	if (!data)
-		throw new AppError(
-			"Resource not found",
-			404,
-			ERROR_CODES.DATABASE.NOT_FOUND
-		);
+	if (error) throwDatabaseError(error);
+	if (!data) throwNotFoundError();
 
 	return data;
 }
@@ -34,19 +27,8 @@ export async function getCivilizationById(id: number) {
 		.eq("id", id)
 		.maybeSingle();
 
-	if (error)
-		throw new AppError(
-			error.message,
-			400,
-			ERROR_CODES.DATABASE.INVALID_QUERY
-		);
-
-	if (!data)
-		throw new AppError(
-			"Resource not found",
-			404,
-			ERROR_CODES.DATABASE.NOT_FOUND
-		);
+	if (error) throwDatabaseError(error);
+	if (!data) throwNotFoundError();
 
 	return data;
 }
@@ -57,19 +39,8 @@ export async function getAllCivilizations() {
 		.select()
 		.order("name", { ascending: true });
 
-	if (error)
-		throw new AppError(
-			error.message,
-			400,
-			ERROR_CODES.DATABASE.INVALID_QUERY
-		);
-
-	if (!data)
-		throw new AppError(
-			"Resource not found",
-			404,
-			ERROR_CODES.DATABASE.NOT_FOUND
-		);
+	if (error) throwDatabaseError(error);
+	if (!data) throwNotFoundError();
 
 	return data;
 }
