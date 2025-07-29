@@ -39,12 +39,16 @@ app.use(
 );
 app.use(express.json());
 
+// Routes
 app.use("/civilization", CivilizationRouter);
 app.use("/leader", LeaderRouter);
 app.use("/expansion", ExpansionRouter);
 app.use("/victory", VictoryRouter);
 app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
+app.get("/ping", (req, res, next) => {
+	res.status(200).send("Ping!");
+});
 
 //Error handlers (must be last)
 app.use(errorHandler);

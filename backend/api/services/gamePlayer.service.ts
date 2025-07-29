@@ -1,6 +1,10 @@
 import { Player } from "../../interfaces/game.interface";
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError, throwDatabaseError } from "../../types/Errors";
+import {
+	throwValidationError,
+	throwDatabaseError,
+	AppError,
+} from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	getGamePlayersByGameId,
@@ -11,7 +15,7 @@ export async function createGamePlayers(
 	gameId: number,
 	players: Array<Player>
 ) {
-	if (!gameId) throwValidationError("Invalid Game Id");
+	if (players.length === 0) throwValidationError("No players to add");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	players.forEach((player) => {
@@ -19,24 +23,20 @@ export async function createGamePlayers(
 			throwValidationError("Invalid Player Data");
 	});
 
-	try {
-		// We want to keep JSON in camelCase and only use snake_case for DB operations
-		const gamePlayers = players.map((player) => {
-			return {
-				game_id: gameId,
-				name: player.name,
-				leader_id: player.leaderId,
-				civilization_id: player.civilizationId,
-				is_human: player.isHuman,
-			};
-		}) as Array<TablesInsert<"game_player">>;
-		insertGamePlayers(gamePlayers);
-	} catch (error) {
-		throwDatabaseError("Failed to create players");
-	}
+	// We want to keep JSON in camelCase and only use snake_case for DB operations
+	const gamePlayers = players.map((player) => {
+		return {
+			game_id: gameId,
+			name: player.name,
+			leader_id: player.leaderId,
+			civilization_id: player.civilizationId,
+			is_human: player.isHuman,
+		};
+	}) as Array<TablesInsert<"game_player">>;
+	insertGamePlayers(gamePlayers);
 }
 
-export async function fetchGamePlayersByGameId(gameId: number, next) {
+export async function fetchGamePlayersByGameId(gameId: number) {
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
@@ -53,6 +53,6 @@ export async function fetchGamePlayersByGameId(gameId: number, next) {
 		});
 		return gamePlayersSanitized;
 	} catch (error) {
-		next(error);
+		throw new AppError(error?.message, error.status, error?.details);
 	}
 }

@@ -1,4 +1,3 @@
-import { ERROR_CODES } from "../../types/errorCodes";
 import {
 	fetchAllCivilizations,
 	fetchCivilizationByCode,

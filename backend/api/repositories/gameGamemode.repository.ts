@@ -10,7 +10,7 @@ export async function insertGamemodes(
 		.insert(gamemodes)
 		.select();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to insert game gamemode", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -22,8 +22,9 @@ export async function getGameGamemodesByGameId(gameId: number) {
 		.select("gamemode_id")
 		.eq("game_id", gameId);
 
-	if (error) throwDatabaseError(error);
-	if (!data) throwNotFoundError();
+	if (error)
+		throwDatabaseError("Failed to get game gamemodes by game id", error);
+	if (!data) throwNotFoundError("Gamemode not found");
 
 	return data;
 }

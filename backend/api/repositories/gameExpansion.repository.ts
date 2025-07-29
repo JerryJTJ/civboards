@@ -10,7 +10,7 @@ export async function insertExpansions(
 		.insert(expansions)
 		.select();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to insert game expansion", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -22,7 +22,8 @@ export async function getGameExpansionsByGameId(gameId: number) {
 		.select()
 		.eq("game_id", gameId);
 
-	if (error) throwDatabaseError(error);
+	if (error)
+		throwDatabaseError("Failed to get game expansions by game id", error);
 	if (!data) throwNotFoundError();
 
 	return data;

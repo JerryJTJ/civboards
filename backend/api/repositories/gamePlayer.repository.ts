@@ -1,3 +1,4 @@
+import { PostgrestError } from "@supabase/supabase-js";
 import { TablesInsert } from "../../interfaces/supabase";
 import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
@@ -10,7 +11,7 @@ export async function insertGamePlayers(
 		.insert(players)
 		.select();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to insert game players", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -22,7 +23,8 @@ export async function getGamePlayersByGameId(gameId: number) {
 		.select()
 		.eq("game_id", gameId);
 
-	if (error) throwDatabaseError(error);
+	if (error)
+		throwDatabaseError("Failed to get game players by game id", error);
 	if (!data) throwNotFoundError();
 
 	return data;

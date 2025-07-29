@@ -1,5 +1,5 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError, throwDatabaseError } from "../../types/Errors";
+import { throwValidationError, AppError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	getGameGamemodesByGameId,
@@ -13,14 +13,10 @@ export async function createGameGamemodes(
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
-	try {
-		const gameGamemodes = gamemodes.map((gamemode) => {
-			return { game_id: gameId, gamemode_id: gamemode };
-		}) as Array<TablesInsert<"game_gamemode">>;
-		insertGamemodes(gameGamemodes);
-	} catch (error) {
-		throwDatabaseError("Failed to create gamemodes");
-	}
+	const gameGamemodes = gamemodes.map((gamemode) => {
+		return { game_id: gameId, gamemode_id: gamemode };
+	}) as Array<TablesInsert<"game_gamemode">>;
+	insertGamemodes(gameGamemodes);
 }
 
 export async function fetchGameGamemodesIdsByGameId(gameId: number) {
@@ -34,6 +30,6 @@ export async function fetchGameGamemodesIdsByGameId(gameId: number) {
 		});
 		return gameGamemodesIds;
 	} catch (error) {
-		throwDatabaseError("Failed to fetch gamemodes");
+		throw new AppError(error?.message, error.status, error?.details);
 	}
 }

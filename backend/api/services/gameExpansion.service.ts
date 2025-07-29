@@ -1,5 +1,5 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError, throwDatabaseError } from "../../types/Errors";
+import { throwValidationError, AppError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	getGameExpansionsByGameId,
@@ -13,14 +13,10 @@ export async function createGameExpansions(
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
-	try {
-		const gameExpansions = expansions.map((expansion) => {
-			return { game_id: gameId, expansion_id: expansion };
-		}) as Array<TablesInsert<"game_expansion">>;
-		insertExpansions(gameExpansions);
-	} catch (error) {
-		throwDatabaseError("Failed to create expansions");
-	}
+	const gameExpansions = expansions.map((expansion) => {
+		return { game_id: gameId, expansion_id: expansion };
+	}) as Array<TablesInsert<"game_expansion">>;
+	insertExpansions(gameExpansions);
 }
 
 export async function fetchGameExpansionsIdsByGameId(gameId: number) {
@@ -34,6 +30,6 @@ export async function fetchGameExpansionsIdsByGameId(gameId: number) {
 		);
 		return gameExpansionsIds;
 	} catch (error) {
-		throwDatabaseError("Failed to fetch expansions");
+		throw new AppError(error?.message, error.status, error?.details);
 	}
 }

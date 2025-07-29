@@ -15,7 +15,7 @@ export async function getLeaderByCode(code: string) {
 		.eq("active", true)
 		.maybeSingle();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to get leader by code", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -29,7 +29,7 @@ export async function getLeaderById(id: number) {
 		.eq("active", true)
 		.maybeSingle();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to get leader by id", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -42,7 +42,7 @@ export async function getAllLeaders() {
 		.eq("active", true)
 		.order("name", { ascending: true });
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to get all leaders", error);
 	if (!data) throwNotFoundError();
 
 	return data;

@@ -14,7 +14,7 @@ import {
 	createGamePlayers,
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
-import { AppError } from "../../types/Errors";
+import { AppError, throwValidationError } from "../../types/Errors";
 
 export async function handleCreateGame(
 	req: Request<{}, {}, InsertGame>,
@@ -22,6 +22,12 @@ export async function handleCreateGame(
 	next
 ) {
 	const { gameState, players, expansions, gamemodes } = req.body;
+
+	if (!gameState) throwValidationError("No game details provided");
+	if (players === undefined) throwValidationError("No players provided");
+	if (expansions === undefined)
+		throwValidationError("No expansions provided");
+	if (gamemodes === undefined) throwValidationError("No gamemodes provided");
 
 	try {
 		const createdGame = await createGame(
@@ -59,9 +65,9 @@ export async function handleGetGameById(req: Request, res: Response, next) {
 
 	try {
 		const gameInfo = await fetchGameById(gameId);
-		const gameGamemodesIds = await fetchGameGamemodesIdsByGameId(gameId);
+		const gamePlayers = await fetchGamePlayersByGameId(gameId);
 		const gameExpansionsIds = await fetchGameExpansionsIdsByGameId(gameId);
-		const gamePlayers = await fetchGamePlayersByGameId(gameId, next);
+		const gameGamemodesIds = await fetchGameGamemodesIdsByGameId(gameId);
 
 		return res.status(200).json({
 			gameState: gameInfo,

@@ -1,14 +1,14 @@
 import { throwValidationError } from "../../types/Errors";
 import {
 	getAllGamemodes,
-	getGamemodeFromId,
+	getGamemodeById,
 } from "../repositories/gamemode.respository";
 
 export async function fetchGamemodeById(id: number) {
 	if (!id || isNaN(id)) {
 		throwValidationError("Invalid Victory Id");
 	}
-	const gamemode = await getGamemodeFromId(id);
+	const gamemode = await getGamemodeById(id);
 	return gamemode;
 }
 

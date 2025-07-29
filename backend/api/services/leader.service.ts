@@ -1,5 +1,4 @@
-import { AppError, throwValidationError } from "../../types/Errors";
-import { ERROR_CODES } from "../../types/errorCodes";
+import { throwValidationError } from "../../types/Errors";
 import {
 	getAllLeaders,
 	getLeaderByCode,

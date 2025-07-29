@@ -18,7 +18,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 		})
 		.select();
 
-	if (error) throwDatabaseError(error);
+	if (error) throwDatabaseError("Failed to insert game", error);
 	if (!data) throwNotFoundError();
 
 	return data;
@@ -26,7 +26,6 @@ export async function insertGame(game: TablesInsert<"game">) {
 
 export async function doesGameIdExist(id: number) {
 	const { data, error } = await supabase.from("game").select().eq("id", id);
-
 	if (data?.length) return true;
 	return false;
 }
@@ -38,7 +37,7 @@ export async function getGameById(id: number) {
 		.eq("id", id)
 		.single();
 
-	if (error || !data) throwDatabaseError(error);
+	if (error || !data) throwDatabaseError("Failed to get game", error);
 
 	return data;
 }
@@ -46,7 +45,7 @@ export async function getGameById(id: number) {
 export async function getAllGames() {
 	const { data, error } = await supabase.from("game").select();
 
-	if (error || !data?.length) throwDatabaseError(error);
+	if (error || !data) throwDatabaseError("Failed to get all games", error);
 
 	return data;
 }
