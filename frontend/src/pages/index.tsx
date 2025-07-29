@@ -21,7 +21,7 @@ export default function IndexPage() {
 				<>
 					{" "}
 					{titleCards.map((titleCard) => (
-						<TitleCard {...titleCard} />
+						<TitleCard key={titleCard.title} {...titleCard} />
 					))}
 				</>
 			</section>
