@@ -2,7 +2,10 @@ import { Player } from "../../interfaces/game.interface";
 import { TablesInsert } from "../../interfaces/supabase";
 import { throwValidationError, throwDatabaseError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
-import { insertGamePlayers } from "../repositories/gamePlayer.repository";
+import {
+	getGamePlayersByGameId,
+	insertGamePlayers,
+} from "../repositories/gamePlayer.repository";
 
 export async function createGamePlayers(
 	gameId: number,
@@ -30,5 +33,26 @@ export async function createGamePlayers(
 		insertGamePlayers(gamePlayers);
 	} catch (error) {
 		throwDatabaseError("Failed to create players");
+	}
+}
+
+export async function fetchGamePlayersByGameId(gameId: number, next) {
+	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+
+	try {
+		const gamePlayers = await getGamePlayersByGameId(gameId);
+		const gamePlayersSanitized = gamePlayers?.map((gamePlayer) => {
+			return {
+				id: gamePlayer.id,
+				leaderId: gamePlayer.leader_id,
+				civilizationId: gamePlayer.civilization_id,
+				name: gamePlayer.name,
+				isHuman: gamePlayer.is_human,
+			};
+		});
+		return gamePlayersSanitized;
+	} catch (error) {
+		next(error);
 	}
 }

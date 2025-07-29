@@ -23,7 +23,7 @@ export async function createGameGamemodes(
 	}
 }
 
-export async function fetchGameGamemodesByGameId(gameId: number) {
+export async function fetchGameGamemodesIdsByGameId(gameId: number) {
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 

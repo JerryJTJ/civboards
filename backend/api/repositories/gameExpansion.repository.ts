@@ -15,3 +15,15 @@ export async function insertExpansions(
 
 	return data;
 }
+
+export async function getGameExpansionsByGameId(gameId: number) {
+	const { data, error } = await supabase
+		.from("game_expansion")
+		.select()
+		.eq("game_id", gameId);
+
+	if (error) throwDatabaseError(error);
+	if (!data) throwNotFoundError();
+
+	return data;
+}

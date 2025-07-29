@@ -19,9 +19,9 @@ export function throwValidationError(message: string) {
 	throw new AppError(message, 422, ERROR_CODES.VALIDATION);
 }
 
-export function throwNotFoundError() {
+export function throwNotFoundError(message?: string) {
 	throw new AppError(
-		"Resource not found",
+		message || "Resource not found",
 		404,
 		ERROR_CODES.DATABASE.NOT_FOUND
 	);

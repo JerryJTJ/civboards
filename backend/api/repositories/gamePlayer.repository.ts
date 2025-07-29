@@ -15,3 +15,15 @@ export async function insertGamePlayers(
 
 	return data;
 }
+
+export async function getGamePlayersByGameId(gameId: number) {
+	const { data, error } = await supabase
+		.from("game_player")
+		.select()
+		.eq("game_id", gameId);
+
+	if (error) throwDatabaseError(error);
+	if (!data) throwNotFoundError();
+
+	return data;
+}

@@ -4,10 +4,17 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { InsertGame } from "../../interfaces/game.interface";
 import {
 	createGameGamemodes,
-	fetchGameGamemodesByGameId,
+	fetchGameGamemodesIdsByGameId,
 } from "../services/gameGamemode.service";
-import { createGameExpansions } from "../services/gameExpansions.service";
-import { createGamePlayers } from "../services/gamePlayer.service";
+import {
+	createGameExpansions,
+	fetchGameExpansionsIdsByGameId,
+} from "../services/gameExpansion.service";
+import {
+	createGamePlayers,
+	fetchGamePlayersByGameId,
+} from "../services/gamePlayer.service";
+import { AppError } from "../../types/Errors";
 
 export async function handleCreateGame(
 	req: Request<{}, {}, InsertGame>,
@@ -51,14 +58,22 @@ export async function handleGetGameById(req: Request, res: Response, next) {
 	const gameId = Number(id);
 
 	try {
-		const game = await fetchGameById(gameId);
-		const game_gamemodes = await fetchGameGamemodesByGameId(gameId);
+		const gameInfo = await fetchGameById(gameId);
+		const gameGamemodesIds = await fetchGameGamemodesIdsByGameId(gameId);
+		const gameExpansionsIds = await fetchGameExpansionsIdsByGameId(gameId);
+		const gamePlayers = await fetchGamePlayersByGameId(gameId, next);
 
-		return res
-			.status(200)
-			.json({ gameState: game, gamemodes: game_gamemodes });
-	} catch (error) {
-		res.status(404).end();
-		next(error);
+		return res.status(200).json({
+			gameState: gameInfo,
+			gamePlayers: gamePlayers,
+			gamemodes: gameGamemodesIds,
+			expansions: gameExpansionsIds,
+		});
+	} catch (error: any) {
+		res.status(404).json({
+			status: error.status,
+			details: error.details,
+			message: error.message,
+		});
 	}
 }

@@ -1,6 +1,10 @@
 import { Player } from "../../interfaces/game.interface";
 import { Database, TablesInsert } from "../../interfaces/supabase";
-import { throwDatabaseError, throwValidationError } from "../../types/Errors";
+import {
+	throwDatabaseError,
+	throwNotFoundError,
+	throwValidationError,
+} from "../../types/Errors";
 import { insertExpansions } from "../repositories/gameExpansion.repository";
 import { insertGamemodes } from "../repositories/gameGamemode.repository";
 import { insertGamePlayers } from "../repositories/gamePlayer.repository";
@@ -42,7 +46,7 @@ export async function createGame(
 
 export async function fetchGameById(id: number) {
 	if (!id) throwValidationError("Invalid Game Id");
-	if (!doesGameIdExist(id)) throwValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
 	try {
 		const game = getGameById(id);
