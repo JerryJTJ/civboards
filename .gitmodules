@@ -1,0 +1,3 @@
+[submodule "backend/submodules/civ6-save-parser"]
+	path = backend/submodules/civ6-save-parser
+	url = git@github.com:JerryJTJ/civ6-save-parser.git

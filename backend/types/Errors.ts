@@ -39,8 +39,12 @@ export function throwDatabaseError(message: string, error: PostgrestError) {
 	);
 }
 
-export function throwValidationError(message: string) {
-	throw new AppError(message, 422, ERROR_CODES.VALIDATION);
+export function throwValidationError(message?: string) {
+	throw new AppError(
+		message || "Validation Error",
+		422,
+		ERROR_CODES.VALIDATION
+	);
 }
 
 export function throwNotFoundError(message?: string) {
@@ -48,5 +52,13 @@ export function throwNotFoundError(message?: string) {
 		message || "Resource not found",
 		404,
 		ERROR_CODES.DATABASE.NOT_FOUND
+	);
+}
+
+export function throwParseError(message?: string) {
+	throw new AppError(
+		message || "Failed to parse file",
+		400,
+		ERROR_CODES.PARSE.FAILED
 	);
 }
