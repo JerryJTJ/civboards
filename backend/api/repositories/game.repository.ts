@@ -1,4 +1,4 @@
-import { Database, Tables, TablesInsert } from "../../interfaces/supabase";
+import { TablesInsert } from "../../interfaces/supabase";
 import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
@@ -25,7 +25,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 }
 
 export async function doesGameIdExist(id: number) {
-	const { data, error } = await supabase.from("game").select().eq("id", id);
+	const { data } = await supabase.from("game").select().eq("id", id);
 	if (data?.length) return true;
 	return false;
 }

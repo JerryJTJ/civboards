@@ -1,6 +1,6 @@
 import { createGame, fetchGameById } from "../services/game.service";
-import { Request, Response } from "express";
-import { TablesInsert } from "../../interfaces/supabase";
+import { NextFunction, Request, Response } from "express";
+
 import { InsertGame } from "../../interfaces/game.interface";
 import {
 	createGameGamemodes,
@@ -14,12 +14,12 @@ import {
 	createGamePlayers,
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
-import { AppError, throwValidationError } from "../../types/Errors";
+import { throwValidationError } from "../../types/Errors";
 
 export async function handleCreateGame(
 	req: Request<{}, {}, InsertGame>,
 	res: Response,
-	next
+	next: NextFunction
 ) {
 	const { gameState, players, expansions, gamemodes } = req.body;
 
@@ -59,7 +59,11 @@ export async function handleCreateGame(
 	}
 }
 
-export async function handleGetGameById(req: Request, res: Response, next) {
+export async function handleGetGameById(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const { id } = req.params;
 	const gameId = Number(id);
 
@@ -75,11 +79,7 @@ export async function handleGetGameById(req: Request, res: Response, next) {
 			gamemodes: gameGamemodesIds,
 			expansions: gameExpansionsIds,
 		});
-	} catch (error: any) {
-		res.status(404).json({
-			status: error.status,
-			details: error.details,
-			message: error.message,
-		});
+	} catch (error) {
+		next(error);
 	}
 }

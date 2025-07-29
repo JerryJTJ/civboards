@@ -11,6 +11,7 @@ import { errorHandler } from "./middlewares/errorHandler";
 import VictoryRouter from "./routes/victory.routes";
 import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
+import { Response } from "express";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;
@@ -46,7 +47,7 @@ app.use("/expansion", ExpansionRouter);
 app.use("/victory", VictoryRouter);
 app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
-app.get("/ping", (req, res, next) => {
+app.get("/ping", (res: Response) => {
 	res.status(200).send("Ping!");
 });
 

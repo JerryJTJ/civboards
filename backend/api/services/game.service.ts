@@ -1,14 +1,6 @@
-import { Player } from "../../interfaces/game.interface";
-import { Database, TablesInsert } from "../../interfaces/supabase";
-import {
-	AppError,
-	throwDatabaseError,
-	throwNotFoundError,
-	throwValidationError,
-} from "../../types/Errors";
-import { insertExpansions } from "../repositories/gameExpansion.repository";
-import { insertGamemodes } from "../repositories/gameGamemode.repository";
-import { insertGamePlayers } from "../repositories/gamePlayer.repository";
+import { TablesInsert } from "../../interfaces/supabase";
+import { throwNotFoundError, throwValidationError } from "../../types/Errors";
+
 import {
 	doesGameIdExist,
 	getGameById,

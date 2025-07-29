@@ -1,6 +1,7 @@
 import { AppError } from "../../types/Errors";
+import { Response, Request } from "express";
 
-export const errorHandler = (err: AppError, req, res, next) => {
+export const errorHandler = (err: AppError, req: Request, res: Response) => {
 	console.error("Error:", err);
 
 	if (process.env.NODE_ENV === "development") {

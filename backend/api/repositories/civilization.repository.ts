@@ -1,10 +1,4 @@
-import { Database } from "../../interfaces/supabase";
-import {
-	AppError,
-	throwDatabaseError,
-	throwNotFoundError,
-} from "../../types/Errors";
-import { ERROR_CODES } from "../../types/errorCodes";
+import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function getCivilizationByCode(code: string) {

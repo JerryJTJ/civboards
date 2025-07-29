@@ -1,4 +1,3 @@
-import { PostgrestError } from "@supabase/supabase-js";
 import { TablesInsert } from "../../interfaces/supabase";
 import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
 import { supabase } from "../server";

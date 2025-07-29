@@ -1,10 +1,6 @@
 import { Player } from "../../interfaces/game.interface";
 import { TablesInsert } from "../../interfaces/supabase";
-import {
-	throwValidationError,
-	throwDatabaseError,
-	AppError,
-} from "../../types/Errors";
+import { throwValidationError, AppError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	getGamePlayersByGameId,
