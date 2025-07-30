@@ -21,10 +21,10 @@ ParseRouter.post(
 		}
 		try {
 			const parsed = parse(req.file?.buffer, {
-				clean: true,
+				api: true,
 			});
 			res.status(200).json(parsed);
-		} catch (error) {
+		} catch (error: any) {
 			return throwParseError(error?.message);
 		}
 	}
