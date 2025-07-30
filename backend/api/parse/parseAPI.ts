@@ -11,7 +11,11 @@ const upload = multer({ storage: storage });
 ParseRouter.post(
 	"/upload",
 	upload.single("savefile"),
-	(req: express.Request, res: express.Response, next) => {
+	(
+		req: express.Request,
+		res: express.Response,
+		next: express.NextFunction
+	) => {
 		if (!req.file) {
 			return throwValidationError("No file provided");
 		}
