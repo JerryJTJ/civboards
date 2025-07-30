@@ -1,4 +1,5 @@
 interface Gamestate {
+	name: string;
 	map: string;
 	mapSize: string;
 	speed: string;

@@ -82,6 +82,7 @@ export type Database = {
 					is_finished: boolean | null;
 					map: string | null;
 					map_size: string | null;
+					name: string | null;
 					speed: string | null;
 					turns: number | null;
 					victory_id: number | null;
@@ -95,6 +96,7 @@ export type Database = {
 					is_finished?: boolean | null;
 					map?: string | null;
 					map_size?: string | null;
+					name?: string | null;
 					speed?: string | null;
 					turns?: number | null;
 					victory_id?: number | null;
@@ -108,6 +110,7 @@ export type Database = {
 					is_finished?: boolean | null;
 					map?: string | null;
 					map_size?: string | null;
+					name?: string | null;
 					speed?: string | null;
 					turns?: number | null;
 					victory_id?: number | null;

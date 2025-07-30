@@ -6,6 +6,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 	const { data, error } = await supabase
 		.from("game")
 		.insert({
+			name: game.name,
 			map: game.map,
 			map_size: game.map_size,
 			speed: game.speed,

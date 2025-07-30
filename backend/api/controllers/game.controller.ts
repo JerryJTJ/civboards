@@ -21,6 +21,8 @@ export async function handleCreateGame(
 	res: Response,
 	next: NextFunction
 ) {
+	if (!req.body) throwValidationError("No request body recieved");
+
 	const { gameState, players, expansions, gamemodes } = req.body;
 
 	if (!gameState) throwValidationError("No game details provided");
@@ -31,6 +33,7 @@ export async function handleCreateGame(
 
 	try {
 		const createdGame = await createGame(
+			gameState.name,
 			gameState.map,
 			gameState.mapSize,
 			gameState.speed,

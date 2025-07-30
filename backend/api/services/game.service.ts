@@ -8,6 +8,7 @@ import {
 } from "../repositories/game.repository";
 
 export async function createGame(
+	name: string,
 	map: string,
 	mapSize: string,
 	speed: string,
@@ -19,6 +20,7 @@ export async function createGame(
 	victoryId: number
 ) {
 	const game = {
+		name: name,
 		map: map,
 		map_size: mapSize,
 		speed: speed,
