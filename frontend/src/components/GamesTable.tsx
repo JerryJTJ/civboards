@@ -43,7 +43,7 @@ export const columns = [
 	{ name: "NAME", key: "name", sortable: true },
 	{ name: "DATE", key: "date", sortable: true },
 	{ name: "MAP", key: "map", sortable: true },
-	{ name: "PLAYERS", key: "players", sortable: true },
+	{ name: "PLAYERS", key: "players", sortable: false },
 	{ name: "WINNER", key: "winner", sortable: true },
 	{ name: "ACTIONS", key: "actions" },
 ];
@@ -253,7 +253,7 @@ export default function GamesTable(props: GamesTableProps) {
 						{headerText}
 					</span>
 					<label className="flex items-center text-default-700 text-small">
-						Rows per page:
+						Rows per page:&nbsp;
 						<select
 							className="bg-transparent outline-none text-default-700 text-small"
 							onChange={onRowsPerPageChange}

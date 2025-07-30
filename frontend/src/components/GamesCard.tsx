@@ -16,7 +16,7 @@ export default function GamesCard(props: GameCardProps) {
 	const { game } = props;
 	return (
 		<Card
-			className="flex items-center justify-center object-none min-w-[200px] h-[70vh] col-span-12 sm:col-span-7 2xl:min-w-[10vw] border-white/20 border-1"
+			className="flex items-center justify-center object-none min-w-[150px] md:min-w-[200px] sm:h-[70vh] col-span-12 sm:col-span-7 2xl:min-w-[10vw] border-white/20 border-1"
 			isFooterBlurred
 			key={game.uuid}
 			isPressable

@@ -237,7 +237,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 						{headerText}
 					</span>
 					<label className="flex items-center text-default-700 text-small">
-						Rows per page:
+						Rows per page:&nbsp;
 						<select
 							className="bg-transparent outline-none text-default-700 text-small"
 							onChange={onRowsPerPageChange}
@@ -313,7 +313,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 						className="text-center"
 						key={column.key}
 						allowsSorting={column.sortable}
-						width={"50%"}
+						width="50%"
 					>
 						{column.name}
 					</TableColumn>

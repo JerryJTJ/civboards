@@ -21,7 +21,7 @@ export default function LeaderboardPage() {
 
 	return (
 		<DefaultLayout>
-			<section className="flex flex-col items-center justify-center w-full gap-4 py-4 2xl:py-8 md:max-w-[50vw] xl:max-w-[33vw]">
+			<section className="flex flex-col items-center justify-center w-full gap-4 py-4 2xl:py-8 md:w-[40vw]">
 				<LeaderboardTable leaderboardData={leaderboardData} />
 			</section>
 		</DefaultLayout>

@@ -1,11 +1,7 @@
-import { Card, CardBody, CardFooter } from "@heroui/card";
-import { Image } from "@heroui/image";
 import DefaultLayout from "@/layouts/default";
 import GamesCard from "@/components/GamesCard";
-import { Tabs, Tab } from "@heroui/tabs";
 import React from "react";
 import GamesTable from "@/components/GamesTable";
-import { PlusIcon } from "@/components/icons";
 import { Button, ButtonGroup } from "@heroui/button";
 import AddGameModal from "@/components/AddGameModal";
 import { games } from "@/constants/mockData";
@@ -55,7 +51,7 @@ export default function GamesPage() {
 					<AddGameModal />
 				</div>
 
-				<div className="flex flex-row justify-self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-full overflow-y-hidden">
+				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
 					{currTab === TabView.Cards ? (
 						<>
 							{" "}
