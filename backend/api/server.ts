@@ -12,11 +12,7 @@ import VictoryRouter from "./routes/victory.routes";
 import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
 import { Request, Response } from "express";
-import multer from "multer";
-import { parse } from "../submodules/civ6-save-parser/parse";
-import { readFileSync } from "node:fs";
 import { ParseRouter } from "./parse/parseAPI";
-import { throwParseError, throwValidationError } from "../types/Errors";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;

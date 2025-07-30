@@ -1,7 +1,5 @@
 import { createGame, fetchGameById } from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
-
-import { InsertGame } from "../../interfaces/game.interface";
 import {
 	createGameGamemodes,
 	fetchGameGamemodesIdsByGameId,
@@ -15,21 +13,21 @@ import {
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
+import { InsertGameSchema } from "../../interfaces/game.schema";
 
 export async function handleCreateGame(
-	req: Request<{}, {}, InsertGame>,
+	req: Request,
 	res: Response,
 	next: NextFunction
 ) {
 	if (!req.body) throwValidationError("No request body recieved");
 
-	const { gameState, players, expansions, gamemodes } = req.body;
-
-	if (!gameState) throwValidationError("No game details provided");
-	if (players === undefined) throwValidationError("No players provided");
-	if (expansions === undefined)
-		throwValidationError("No expansions provided");
-	if (gamemodes === undefined) throwValidationError("No gamemodes provided");
+	const result = InsertGameSchema.safeParse(req.body);
+	if (!result.success) {
+		throwValidationError("Fields were either incorrect or missing");
+		return; //This is just so TS complier doesn't think data may be undefined
+	}
+	const { gameState, players, expansions, gamemodes } = result.data;
 
 	try {
 		const createdGame = await createGame(
