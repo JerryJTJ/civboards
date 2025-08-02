@@ -2,17 +2,16 @@ import express from "express";
 import cors from "cors";
 import compression from "compression";
 import helmet from "helmet";
+import { errorHandler } from "./middlewares/errorHandler";
 import { createClient } from "@supabase/supabase-js";
 import { Database } from "../interfaces/supabase";
 import CivilizationRouter from "./routes/civilization.routes";
 import LeaderRouter from "./routes/leader.routes";
 import ExpansionRouter from "./routes/expansion.routes";
-import { errorHandler } from "./middlewares/errorHandler";
 import VictoryRouter from "./routes/victory.routes";
 import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
-import { Request, Response } from "express";
-import { ParseRouter } from "./parse/parseAPI";
+import ParseRouter from "./parse/parseAPI";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;
@@ -49,7 +48,7 @@ app.use("/victory", VictoryRouter);
 app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
 app.use("/parse", ParseRouter);
-app.get("/ping", (req: Request, res: Response) => {
+app.get("/ping", (req: express.Request, res: express.Response) => {
 	res.status(200).send("Ping!");
 });
 

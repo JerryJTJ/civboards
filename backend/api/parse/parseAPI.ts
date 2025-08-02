@@ -3,7 +3,7 @@ import multer from "multer";
 import { parse } from "../../submodules/civ6-save-parser/parse";
 import { throwParseError, throwValidationError } from "../../types/Errors";
 
-export const ParseRouter = express.Router();
+const ParseRouter = express.Router();
 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -29,3 +29,5 @@ ParseRouter.post(
 		}
 	}
 );
+
+export default ParseRouter;
