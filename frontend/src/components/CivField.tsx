@@ -2,7 +2,7 @@ import React, { Key } from "react";
 import { Select, SelectItem } from "@heroui/select";
 import { Checkbox } from "@heroui/checkbox";
 import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
+import { Link } from "@heroui/link";
 import { Civ } from "./AddGameModal";
 
 export const civilizations = [
@@ -29,43 +29,20 @@ export default function CivField(props: CivFieldProps) {
 	//just have civs live on one thing, and get from there
 
 	return (
-		<div className="flex flex-col gap-2">
-			<div className="flex flex-row gap-2 ">
-				<Select
-					items={civilizations}
-					label="Civilization"
-					required={true}
-					variant="bordered"
-					onChange={(e) =>
-						onChange({ civilizationName: e.target.value }, civ.key)
-					}
-				>
-					{(civilization) => (
-						<SelectItem>{civilization.label}</SelectItem>
-					)}
-				</Select>
-				<div className="flex flex-col content-center gap-2">
-					{" "}
-					<Checkbox
-						size="sm"
-						isSelected={civ.isHuman}
-						onValueChange={() =>
-							onChange({ isHuman: !civ.isHuman }, civ.key)
-						}
-					>
-						Human
-					</Checkbox>
-					<span
-						className="text-sm text-red-400 cursor-pointer"
-						onClick={() => onDelete(civ.key)}
-					>
-						Remove
-					</span>
-					{/* <Button radius="full" size="sm">
-						X
-					</Button> */}
-				</div>
-			</div>
+		<div className="flex flex-row gap-2 ">
+			<Select
+				items={civilizations}
+				label="Civilization"
+				required={true}
+				variant="bordered"
+				onChange={(e) =>
+					onChange({ civilizationName: e.target.value }, civ.key)
+				}
+			>
+				{(civilization) => (
+					<SelectItem>{civilization.label}</SelectItem>
+				)}
+			</Select>
 			{civ.isHuman && (
 				<Input
 					variant="bordered"
@@ -77,6 +54,35 @@ export default function CivField(props: CivFieldProps) {
 					}
 				/>
 			)}
+			<div className="flex flex-col content-center gap-2">
+				{" "}
+				<Checkbox
+					size="sm"
+					isSelected={civ.isHuman}
+					onValueChange={() =>
+						onChange({ isHuman: !civ.isHuman }, civ.key)
+					}
+				>
+					Human
+				</Checkbox>
+				<Link
+					size="sm"
+					color="danger"
+					isBlock
+					onPress={() => onDelete(civ.key)}
+				>
+					Remove
+				</Link>
+				{/* <span
+					className="text-sm text-red-400 cursor-pointer"
+					onClick={() => onDelete(civ.key)}
+				>
+					Remove
+				</span> */}
+				{/* <Button radius="full" size="sm">
+						X
+					</Button> */}
+			</div>
 		</div>
 	);
 }

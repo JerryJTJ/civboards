@@ -42,19 +42,6 @@ interface GameData {
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	// const [modalSize, setModalSize] = React.useState<
-	// 	| "5xl"
-	// 	| "xs"
-	// 	| "sm"
-	// 	| "md"
-	// 	| "lg"
-	// 	| "xl"
-	// 	| "2xl"
-	// 	| "3xl"
-	// 	| "4xl"
-	// 	| "full"
-	// 	| undefined
-	// >("5xl");
 
 	const [formCivsData, setFormCivsData] = React.useState<Array<Civ>>([
 		{

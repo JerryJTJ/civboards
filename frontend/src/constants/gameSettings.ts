@@ -65,3 +65,13 @@ export const VICTORY_TYPES = [
 	{ key: "diplomatic", label: "Diplomatic", id: 5 },
 	{ key: "score", label: "Score", id: 6 },
 ];
+
+export const GAMEMODES = [
+	{ id: 1, label: "Apocalypse" },
+	{ id: 2, label: "Secret Societies" },
+	{ id: 3, label: "Tech and Civic Shuffle" },
+	{ id: 4, label: "Dramatic Ages" },
+	{ id: 5, label: "Heroes & Legends" },
+	{ id: 6, label: "Monopolies and Corporations" },
+	{ id: 7, label: "Barbarian Clans" },
+];

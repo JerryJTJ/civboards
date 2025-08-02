@@ -1,9 +1,15 @@
-import { VICTORY_TYPES, GAME_SPEED, MAP_SIZE } from "@/constants/gameSettings";
+import {
+	VICTORY_TYPES,
+	GAME_SPEED,
+	MAP_SIZE,
+	GAMEMODES,
+} from "@/constants/gameSettings";
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem } from "@heroui/select";
 import { Civ } from "../AddGameModal";
 import { useState } from "react";
+import { Chip } from "@heroui/chip";
 
 interface GameOptionsFormProps {
 	formCivsData: Array<Civ>;
@@ -134,6 +140,42 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				isRequired
 			/>
+			<Select
+				classNames={{
+					base: "max-w-xs",
+					trigger: "min-h-12 py-2",
+				}}
+				isMultiline={true}
+				items={GAMEMODES}
+				label="Assigned to"
+				labelPlacement="outside"
+				placeholder="Select a user"
+				renderValue={(gamemodes) => {
+					return (
+						<div className="flex flex-wrap gap-2">
+							{gamemodes.map((gamemode) => (
+								<Chip key={gamemode.data?.label}>
+									{gamemode.data?.label}
+								</Chip>
+							))}
+						</div>
+					);
+				}}
+				selectionMode="multiple"
+				variant="bordered"
+			>
+				{(gamemode) => (
+					<SelectItem key={gamemode.id} textValue={gamemode.label}>
+						<div className="flex items-center gap-2">
+							<div className="flex flex-col">
+								<span className="text-small">
+									{gamemode.label}
+								</span>
+							</div>
+						</div>
+					</SelectItem>
+				)}
+			</Select>
 		</>
 	);
 }
