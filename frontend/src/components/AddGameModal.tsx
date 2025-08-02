@@ -6,60 +6,15 @@ import {
 	ModalFooter,
 	useDisclosure,
 } from "@heroui/modal";
-import { Select, SelectSection, SelectItem } from "@heroui/select";
-import { Checkbox } from "@heroui/checkbox";
+import { Select, SelectItem } from "@heroui/select";
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { Link } from "@heroui/link";
 import { NumberInput } from "@heroui/number-input";
 import { PlusIcon } from "./icons";
 import React, { Key } from "react";
 import CivField from "./CivField";
 import { GAME_SPEED, MAP_SIZE, VICTORY_TYPES } from "@/constants/gameSettings";
-
-export const MailIcon = (props: any) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height="1em"
-			role="presentation"
-			viewBox="0 0 24 24"
-			width="1em"
-			{...props}
-		>
-			<path
-				d="M17 3.5H7C4 3.5 2 5 2 8.5V15.5C2 19 4 20.5 7 20.5H17C20 20.5 22 19 22 15.5V8.5C22 5 20 3.5 17 3.5ZM17.47 9.59L14.34 12.09C13.68 12.62 12.84 12.88 12 12.88C11.16 12.88 10.31 12.62 9.66 12.09L6.53 9.59C6.21 9.33 6.16 8.85 6.41 8.53C6.67 8.21 7.14 8.15 7.46 8.41L10.59 10.91C11.35 11.52 12.64 11.52 13.4 10.91L16.53 8.41C16.85 8.15 17.33 8.2 17.58 8.53C17.84 8.85 17.79 9.33 17.47 9.59Z"
-				fill="currentColor"
-			/>
-		</svg>
-	);
-};
-
-export const LockIcon = (props: any) => {
-	return (
-		<svg
-			aria-hidden="true"
-			fill="none"
-			focusable="false"
-			height="1em"
-			role="presentation"
-			viewBox="0 0 24 24"
-			width="1em"
-			{...props}
-		>
-			<path
-				d="M12.0011 17.3498C12.9013 17.3498 13.6311 16.6201 13.6311 15.7198C13.6311 14.8196 12.9013 14.0898 12.0011 14.0898C11.1009 14.0898 10.3711 14.8196 10.3711 15.7198C10.3711 16.6201 11.1009 17.3498 12.0011 17.3498Z"
-				fill="currentColor"
-			/>
-			<path
-				d="M18.28 9.53V8.28C18.28 5.58 17.63 2 12 2C6.37 2 5.72 5.58 5.72 8.28V9.53C2.92 9.88 2 11.3 2 14.79V16.65C2 20.75 3.25 22 7.35 22H16.65C20.75 22 22 20.75 22 16.65V14.79C22 11.3 21.08 9.88 18.28 9.53ZM12 18.74C10.33 18.74 8.98 17.38 8.98 15.72C8.98 14.05 10.34 12.7 12 12.7C13.66 12.7 15.02 14.06 15.02 15.72C15.02 17.39 13.67 18.74 12 18.74ZM7.35 9.44C7.27 9.44 7.2 9.44 7.12 9.44V8.28C7.12 5.35 7.95 3.4 12 3.4C16.05 3.4 16.88 5.35 16.88 8.28V9.45C16.8 9.45 16.73 9.45 16.65 9.45H7.35V9.44Z"
-				fill="currentColor"
-			/>
-		</svg>
-	);
-};
+import GameOptionsForm from "./forms/GameOptionsForm";
 
 export const animals = [
 	{ key: "cat", label: "Cat" },
@@ -74,28 +29,32 @@ export interface Civ {
 }
 
 interface GameData {
-	turn: number;
-	dlcs: Array<string>;
+	name: string;
 	speed: string;
 	mapName: string;
 	mapSize: string;
+	turns: number;
+	winner: string;
+	victory: string;
+	dlcs: Array<string>;
+	expansions: Array<string>;
 }
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [modalSize, setModalSize] = React.useState<
-		| "5xl"
-		| "xs"
-		| "sm"
-		| "md"
-		| "lg"
-		| "xl"
-		| "2xl"
-		| "3xl"
-		| "4xl"
-		| "full"
-		| undefined
-	>("5xl");
+	// const [modalSize, setModalSize] = React.useState<
+	// 	| "5xl"
+	// 	| "xs"
+	// 	| "sm"
+	// 	| "md"
+	// 	| "lg"
+	// 	| "xl"
+	// 	| "2xl"
+	// 	| "3xl"
+	// 	| "4xl"
+	// 	| "full"
+	// 	| undefined
+	// >("5xl");
 
 	const [formCivsData, setFormCivsData] = React.useState<Array<Civ>>([
 		{
@@ -112,11 +71,15 @@ export default function AddGameModal() {
 		},
 	]);
 	const [formGameData, setFormGameData] = React.useState<GameData>({
-		turn: 0,
-		dlcs: new Array<string>(),
+		name: "",
 		speed: "",
 		mapName: "",
 		mapSize: "",
+		turns: 0,
+		winner: "",
+		victory: "",
+		dlcs: new Array<string>(),
+		expansions: new Array<string>(),
 	});
 
 	const onCivChange = (updatedCiv: Partial<Civ>, updatedCivKey: Key) => {
@@ -157,27 +120,17 @@ export default function AddGameModal() {
 				Add Game
 			</Button>
 			<Modal
+				className="max-h-screen"
 				isOpen={isOpen}
 				placement="top-center"
 				onOpenChange={onOpenChange}
 				size="5xl"
 			>
-				<ModalContent>
+				<ModalContent className="max-h-screen overflow-y-auto">
 					{(onClose) => (
 						<>
-							<ModalHeader className="flex flex-row gap-2">
+							<ModalHeader className="flex flex-rowgap-2">
 								Add Game
-								{/* <Button
-									onPress={() => {
-										setModalSize(
-											modalSize === "full"
-												? "5xl"
-												: "full"
-										);
-									}}
-								>
-									Full Screen
-								</Button> */}
 							</ModalHeader>
 							<ModalBody>
 								<Button
@@ -220,65 +173,9 @@ export default function AddGameModal() {
 										<p className="self-center pb-2 font-bold">
 											Game Options
 										</p>
-										<Select
-											variant="bordered"
-											label="Winner"
-											items={formCivsData}
-										>
-											{(formCivsData) =>
-												formCivsData.playerName ? (
-													<SelectItem>
-														{
-															formCivsData.playerName
-														}
-													</SelectItem>
-												) : null
-											}
-										</Select>
-										<Select
-											variant="bordered"
-											label="Victory Type"
-											items={VICTORY_TYPES}
-										>
-											{(victory) => (
-												<SelectItem>
-													{victory.label}
-												</SelectItem>
-											)}
-										</Select>
-										<NumberInput
-											isWheelDisabled
-											variant="bordered"
-											label="Game Turns"
-											datatype="number"
-											validate={(value) => {
-												if (value <= 0)
-													return "Cannot have negative turns.";
-											}}
+										<GameOptionsForm
+											formCivsData={formCivsData}
 										/>
-										<Select
-											variant="bordered"
-											label="Game Speed"
-											items={GAME_SPEED}
-										>
-											{(speed) => (
-												<SelectItem>
-													{speed.label}
-												</SelectItem>
-											)}
-										</Select>
-										<Input variant="bordered" label="Map" />
-										<Select
-											variant="bordered"
-											label="Map Size"
-											items={MAP_SIZE}
-										>
-											{(size) => (
-												<SelectItem>
-													{size.label}
-												</SelectItem>
-											)}
-										</Select>
 									</div>
 								</div>
 							</ModalBody>
