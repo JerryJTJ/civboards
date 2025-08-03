@@ -1,9 +1,8 @@
-import React, { Key } from "react";
 import { Select, SelectItem } from "@heroui/select";
 import { Checkbox } from "@heroui/checkbox";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
-import { Civ } from "./AddGameModal";
+import { Civ } from "@/interfaces/game.interface";
 
 export const civilizations = [
 	{ key: "rome", label: "Rome (Julius Caesar)" },
@@ -20,12 +19,12 @@ export const civilizations = [
 
 interface CivFieldProps {
 	civ: Civ;
-	onChange: (updatedCiv: Partial<Civ>, updatedCivKey: Key) => void;
-	onDelete: (key: Key) => void;
+	changeDispatch: (civ: Partial<Civ>) => void;
+	deleteDispatch: (civ: Civ) => void;
 }
 
 export default function CivField(props: CivFieldProps) {
-	const { civ, onChange, onDelete } = props;
+	const { civ, changeDispatch, deleteDispatch } = props;
 	//just have civs live on one thing, and get from there
 
 	return (
@@ -36,7 +35,10 @@ export default function CivField(props: CivFieldProps) {
 				required={true}
 				variant="bordered"
 				onChange={(e) =>
-					onChange({ civilizationName: e.target.value }, civ.id)
+					changeDispatch({
+						civilizationName: e.target.value,
+						key: civ.key,
+					})
 				}
 			>
 				{(civilization) => (
@@ -50,38 +52,39 @@ export default function CivField(props: CivFieldProps) {
 					value={civ.playerName}
 					required={true}
 					onChange={(e) =>
-						onChange({ playerName: e.target.value }, civ.id)
+						changeDispatch({
+							playerName: e.target.value,
+							key: civ.key,
+						})
 					}
 				/>
 			)}
-			<div className="flex flex-col content-center gap-2">
-				{" "}
-				<Checkbox
+			<div className="flex flex-col content-center">
+				<Link
 					size="sm"
-					isSelected={civ.isHuman}
-					onValueChange={() =>
-						onChange({ isHuman: !civ.isHuman }, civ.id)
-					}
+					className="justify-center"
+					color="foreground"
+					isBlock
+					onPress={() => {
+						changeDispatch({
+							playerName: civ.isHuman ? "" : civ.playerName,
+							isHuman: !civ.isHuman,
+							key: civ.key,
+						});
+					}}
 				>
-					Human
-				</Checkbox>
+					{civ.isHuman ? "Human" : "AI"}
+				</Link>
 				<Link
 					size="sm"
 					color="danger"
 					isBlock
-					onPress={() => onDelete(civ.id)}
+					onPress={() => {
+						deleteDispatch(civ);
+					}}
 				>
 					Remove
 				</Link>
-				{/* <span
-					className="text-sm text-red-400 cursor-pointer"
-					onClick={() => onDelete(civ.key)}
-				>
-					Remove
-				</span> */}
-				{/* <Button radius="full" size="sm">
-						X
-					</Button> */}
 			</div>
 		</div>
 	);

@@ -185,11 +185,7 @@ export const SearchIcon = (props: IconSvgProps) => (
 	</svg>
 );
 
-export const SvgIcon: React.FC<IconSvgProps> = ({
-	size = 48,
-	height,
-	...props
-}) => (
+export const SvgIcon: React.FC<IconSvgProps> = ({ size = 48, height }) => (
 	<svg
 		xmlns="http://www.w3.org/2000/svg"
 		fill="none"

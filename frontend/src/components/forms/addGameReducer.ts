@@ -1,66 +1,60 @@
 import { MAP_SIZE } from "@/constants/gameSettings";
-import { Civ } from "./AddGameModal";
+import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
-	id: crypto.randomUUID(),
+	key: crypto.randomUUID(),
 	playerName: "",
 	civilizationName: "",
-	isHuman: isHuman || true,
+	isHuman: isHuman === undefined ? true : isHuman,
 });
 
-interface AddFormDispatch {
-	field: string;
-	option?: string;
-	type: string;
-	payload?: {
-		value?: any;
-		id?: string;
-		isHuman?: boolean;
+export type GameOptionsAction = {
+	[Option in keyof GameOptions]: {
+		field: "options";
+		option: Option;
+		payload: GameOptions[Option];
 	};
-}
+}[keyof GameOptions];
 
-interface GameOptions {
-	name: string;
-	speed: string;
-	map: string;
-	mapSize: string;
-	turns: number | undefined;
-	winner: string;
-	victory: string;
-	isFinished: boolean;
-	players: Array<Civ>;
-}
+export type GamePlayerAction =
+	| { field: "player"; type: "add"; payload: boolean }
+	| { field: "player"; type: "delete"; payload: Civ }
+	| { field: "player"; type: "change"; payload: Partial<Civ> };
 
-function addGameReducer(form: GameOptions, action: AddFormDispatch) {
-	const mapSize = MAP_SIZE.find((mapSize) => mapSize.size === form.mapSize);
+export type AddFormAction = GameOptionsAction | GamePlayerAction;
+
+function addGameReducer(form: GameOptions, action: AddFormAction) {
 	switch (action.field) {
 		case "player":
 			switch (action.type) {
 				case "add":
-					if (form.players.length === mapSize?.players.max)
+					const currMapSize = MAP_SIZE.find(
+						(mapSize) => mapSize.key === form.mapSize
+					);
+					if (form.players.length === currMapSize?.players.max)
 						return form;
+
 					return {
 						...form,
 						players: [
 							...form.players,
-							generateNewPlayer(action.payload?.isHuman),
+							generateNewPlayer(action.payload),
 						],
 					};
 				case "delete":
-					if (form.players.length === 2) return form;
+					if (form.players.length <= 2) return form;
 					return {
 						...form,
-						players: form.players.filter((player) => {
-							player.id !== action.payload?.id;
-						}),
+						players: form.players.filter(
+							(player) => player.key !== action.payload.key
+						),
 					};
-					break;
 				case "change":
 					return {
 						...form,
 						players: form.players.map((player) => {
-							return player.id === action.payload?.id
-								? { ...player, ...action.payload?.value }
+							return player.key === action.payload.key
+								? { ...player, ...action.payload }
 								: player;
 						}),
 					};
@@ -74,33 +68,33 @@ function addGameReducer(form: GameOptions, action: AddFormDispatch) {
 				case "name":
 					return {
 						...form,
-						name: action.payload?.value,
+						name: action.payload,
 					};
 				case "winner":
 					return {
 						...form,
-						winner: action.payload?.value,
+						winner: action.payload,
 					};
 				case "victory":
 					return {
 						...form,
-						victory: action.payload?.value,
+						victory: action.payload,
 					};
 
 				case "speed":
 					return {
 						...form,
-						speed: action.payload?.value,
+						speed: action.payload,
 					};
 				case "map":
 					return {
 						...form,
-						map: action.payload?.value,
+						map: action.payload,
 					};
 				case "mapSize":
-					const mapSize = MAP_SIZE.find((size) => {
-						size.size === action.payload?.value;
-					});
+					const mapSize = MAP_SIZE.find(
+						(size) => size.key === action.payload
+					);
 					const players = form.players;
 
 					//auto-resize civs
@@ -119,24 +113,29 @@ function addGameReducer(form: GameOptions, action: AddFormDispatch) {
 					return {
 						...form,
 						players: players,
-						mapSize: mapSize,
+						mapSize: mapSize?.key || action.payload,
 					};
 				case "turns":
 					return {
 						...form,
-						turns: action.payload?.value,
+						turns: action.payload,
 					};
 				case "expansions":
 					return {
 						...form,
-						expansions: action.payload?.value,
+						expansions: action.payload,
 					};
 				case "gamemodes":
 					return {
 						...form,
-						gamemodes: action.payload?.value,
+						gamemodes: action.payload,
 					};
 				default:
 			}
+			break;
 	}
+	//fallback case
+	return form;
 }
+
+export default addGameReducer;

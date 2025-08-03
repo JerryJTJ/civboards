@@ -1,4 +1,4 @@
-import { GameOptions } from "@/components/forms/AddGameModal";
+import { GameOptions } from "@/interfaces/game.interface";
 
 export const MAP_SIZE = [
 	{
@@ -83,28 +83,28 @@ export const EXPANSIONS = [
 	{ id: 2, label: "Gathering Storm" },
 ];
 
-export const DEFAULT_GAME_OPTIONS: GameOptions = {
+export const DEFAULT_ADD_FORM: GameOptions = {
 	name: "",
 	speed: "",
-	mapName: "",
+	map: "",
 	mapSize: "",
 	turns: 0,
 	winner: "",
 	victory: "",
-	dlcs: new Array<string>(),
-	expansions: new Array<string>(),
-	// players: [
-	// 	{
-	// 		key: crypto.randomUUID(),
-	// 		playerName: "",
-	// 		civilizationName: "",
-	// 		isHuman: true,
-	// 	},
-	// 	{
-	// 		key: crypto.randomUUID(),
-	// 		playerName: "",
-	// 		civilizationName: "",
-	// 		isHuman: true,
-	// 	},
-	// ],
+	expansions: new Set<number>(),
+	gamemodes: new Set<number>(),
+	players: [
+		{
+			key: crypto.randomUUID(),
+			playerName: "",
+			civilizationName: "",
+			isHuman: true,
+		},
+		{
+			key: crypto.randomUUID(),
+			playerName: "",
+			civilizationName: "",
+			isHuman: true,
+		},
+	],
 };

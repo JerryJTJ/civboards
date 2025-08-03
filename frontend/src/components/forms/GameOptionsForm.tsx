@@ -8,41 +8,17 @@ import {
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem } from "@heroui/select";
-import { Civ } from "./AddGameModal";
-import { useState } from "react";
 import { Chip } from "@heroui/chip";
+import { GameOptions } from "@/interfaces/game.interface";
+import { SharedSelection } from "@heroui/system";
 
 interface GameOptionsFormProps {
-	formCivsData: Array<Civ>;
+	form: GameOptions;
+	dispatch: (option: string, value: string | number | Set<number>) => void;
 }
-
-interface GameOptions {
-	name: string;
-	speed: string;
-	map: string;
-	mapSize: string;
-	turns: number | undefined;
-	winner: string;
-	victory: string;
-	isFinished: boolean;
-}
-
-const defaultGameOptions: GameOptions = {
-	name: "",
-	speed: "",
-	map: "",
-	mapSize: "",
-	turns: undefined,
-	winner: "",
-	victory: "",
-	isFinished: true,
-};
 
 function GameOptionsForm(props: GameOptionsFormProps) {
-	const { formCivsData } = props;
-
-	const [gameOptionsData, setGameOptionsData] =
-		useState<GameOptions>(defaultGameOptions);
+	const { form, dispatch } = props;
 
 	return (
 		<>
@@ -50,42 +26,33 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				label="Game Name"
 				variant="bordered"
 				maxLength={20}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						name: e.target.value,
-					});
-				}}
+				value={form.name}
+				onValueChange={(val: string) => dispatch("name", val)}
 				isRequired
 			/>
 			<Select
 				label="Winner"
 				variant="bordered"
-				items={formCivsData}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						winner: e.target.value,
-					});
-				}}
+				items={form.players}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+					dispatch("winner", e.target.value)
+				}
 				isRequired
 			>
-				{(formCivsData) =>
-					formCivsData.playerName ? (
-						<SelectItem>{formCivsData.playerName}</SelectItem>
+				{(civ) =>
+					civ.playerName ? (
+						<SelectItem>{civ.playerName}</SelectItem>
 					) : null
 				}
 			</Select>
 			<Select
 				label="Victory Type"
 				variant="bordered"
+				value={form.victory}
 				items={VICTORY_TYPES}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						victory: e.target.value,
-					});
-				}}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+					dispatch("winner", e.target.value)
+				}
 				isRequired
 			>
 				{(victory) => <SelectItem>{victory.label}</SelectItem>}
@@ -93,13 +60,11 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			<Select
 				label="Game Speed"
 				variant="bordered"
+				value={form.speed}
 				items={GAME_SPEED}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						speed: e.target.value,
-					});
-				}}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+					dispatch("speed", e.target.value)
+				}
 				isRequired
 			>
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
@@ -107,25 +72,20 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			<Input
 				label="Map"
 				variant="bordered"
+				value={form.map}
 				maxLength={20}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						map: e.target.value,
-					});
-				}}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+					dispatch("map", e.target.value)
+				}
 				isRequired
 			/>
 			<Select
 				label="Map Size"
 				variant="bordered"
 				items={MAP_SIZE}
-				onChange={(e) => {
-					setGameOptionsData({
-						...gameOptionsData,
-						mapSize: e.target.value,
-					});
-				}}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+					dispatch("mapSize", e.target.value)
+				}
 				isRequired
 			>
 				{(size) => <SelectItem>{size.size}</SelectItem>}
@@ -137,9 +97,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				minValue={0}
 				maxValue={500}
 				datatype="number"
-				onValueChange={(e: number) => {
-					setGameOptionsData({ ...gameOptionsData, turns: e });
-				}}
+				onValueChange={(val: number) => dispatch("turns", val)}
 				isRequired
 			/>
 			<Select
@@ -164,6 +122,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectionMode="multiple"
 				variant="bordered"
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+					dispatch(
+						"expansions",
+						new Set(e.target.value.split(",").map(Number))
+					);
+				}}
 			>
 				{(expansion) => (
 					<SelectItem key={expansion.id} textValue={expansion.label}>
@@ -193,6 +157,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectionMode="multiple"
 				variant="bordered"
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+					dispatch(
+						"gamemodes",
+						new Set(e.target.value.split(",").map(Number))
+					);
+				}}
 			>
 				{(gamemode) => (
 					<SelectItem key={gamemode.id} textValue={gamemode.label}>

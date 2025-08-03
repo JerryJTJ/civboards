@@ -8,119 +8,43 @@ import {
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
 import { PlusIcon } from "../icons";
-import React, { Key } from "react";
+import { Reducer, useReducer } from "react";
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
-
-export const animals = [
-	{ key: "cat", label: "Cat" },
-	{ key: "dog", label: "Dog" },
-];
-
-export interface Civ {
-	id: Key;
-	playerName: string;
-	civilizationName: string;
-	isHuman: boolean;
-}
-
-export interface GameOptions {
-	name: string;
-	speed: string;
-	mapName: string;
-	mapSize: string;
-	turns: number;
-	winner: string;
-	victory: string;
-	dlcs: Array<string>;
-	expansions: Array<string>;
-	// players: Array<Civ>;
-}
+import addGameReducer, {
+	AddFormAction,
+	GameOptionsAction,
+} from "./addGameReducer";
+import { DEFAULT_ADD_FORM } from "@/constants/gameSettings";
+import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const [form, dispatch] = useReducer<Reducer<GameOptions, AddFormAction>>(
+		addGameReducer,
+		DEFAULT_ADD_FORM
+	);
 
-	const [formCivsData, setFormCivsData] = React.useState<Array<Civ>>([
-		{
-			id: crypto.randomUUID(),
-			playerName: "",
-			civilizationName: "",
-			isHuman: true,
-		},
-		{
-			id: crypto.randomUUID(),
-			playerName: "",
-			civilizationName: "",
-			isHuman: true,
-		},
-	]);
-	const [formGameData, setFormGameData] = React.useState<GameOptions>({
-		name: "",
-		speed: "",
-		mapName: "",
-		mapSize: "",
-		turns: 0,
-		winner: "",
-		victory: "",
-		dlcs: new Array<string>(),
-		expansions: new Array<string>(),
-	});
+	const gameOptionsDispatch = (
+		option: string,
+		value: string | number | Set<number>
+	) =>
+		dispatch({
+			field: "options",
+			option: option,
+			payload: value,
+		} as GameOptionsAction);
 
-	const onCivChange = (updatedCiv: Partial<Civ>, updatedCivKey: Key) => {
-		setFormCivsData((prev: Array<Civ>) => {
-			return prev.map((civ: Civ) =>
-				civ.id === updatedCivKey ? { ...civ, ...updatedCiv } : civ
-			);
+	const addCivDispatch = (isHuman: boolean) =>
+		dispatch({
+			field: "player",
+			type: "add",
+			payload: isHuman,
 		});
-	};
-
-	const onCivAdd = (human: boolean) => {
-		setFormCivsData((prev: Array<Civ>) => [
-			...prev,
-			{
-				id: crypto.randomUUID(),
-				playerName: "",
-				civilizationName: "",
-				isHuman: human,
-			},
-		]);
-	};
-
-	const onCivDelete = (id: Key) => {
-		setFormCivsData((prev: Array<Civ>) => {
-			return prev.filter((civ: Civ) => civ.id !== id);
-		});
-	};
-
-	// const onCivChange = (updatedCiv: Partial<Civ>, updatedCivKey: Key) => {
-	// 	setFormGameData((prev: GameOptions) => {
-	// 		return {
-	// 			...prev,
-	// 			players: prev.players.map((civ: Civ) =>
-	// 				civ.key === updatedCivKey ? { ...civ, ...updatedCiv } : civ
-	// 			),
-	// 		};
-	// 	});
-	// };
-
-	// const onCivAdd = (isHuman: boolean) => {
-	// 	setFormGameData((prev: GameOptions) => ({
-	// 		...prev,
-	// 		players: [
-	// 			...prev.players,
-	// 			{
-	// 				key: crypto.randomUUID(),
-	// 				playerName: "",
-	// 				civilizationName: "",
-	// 				isHuman: isHuman,
-	// 			},
-	// 		],
-	// 	}));
-	// };
-
-	// const onCivDelete = (key: Key) => {
-	// 	setFormGameData((prev: GameOptions) => {return ({...prev, players: prev.players.filter((civ: Civ) => civ.key !== key)})})
-	// }
+	const deleteCivDispatch = (civ: Civ) =>
+		dispatch({ field: "player", type: "delete", payload: civ });
+	const changeCivDispatch = (civ: Partial<Civ>) =>
+		dispatch({ field: "player", type: "change", payload: civ });
 
 	return (
 		<>
@@ -161,23 +85,31 @@ export default function AddGameModal() {
 											Civilizations
 										</span>
 										<div className="flex flex-col justify-start max-h-full gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
-											{formCivsData.map((civ: Civ) => (
+											{form.players.map((civ: Civ) => (
 												<CivField
-													key={civ.id}
+													key={civ.key}
 													civ={civ}
-													onChange={onCivChange}
-													onDelete={onCivDelete}
+													changeDispatch={
+														changeCivDispatch
+													}
+													deleteDispatch={
+														deleteCivDispatch
+													}
 												/>
 											))}
 										</div>
 										<div className="flex flex-row gap-2 pt-4">
 											<Button
-												onPress={() => onCivAdd(true)}
+												onPress={() =>
+													addCivDispatch(true)
+												}
 											>
 												Add Human
 											</Button>
 											<Button
-												onPress={() => onCivAdd(false)}
+												onPress={() =>
+													addCivDispatch(false)
+												}
 											>
 												Add AI
 											</Button>
@@ -188,7 +120,8 @@ export default function AddGameModal() {
 											Game Options
 										</p>
 										<GameOptionsForm
-											formCivsData={formCivsData}
+											form={form}
+											dispatch={gameOptionsDispatch}
 										/>
 									</div>
 								</div>
@@ -205,7 +138,8 @@ export default function AddGameModal() {
 									variant="shadow"
 									color="primary"
 									onPress={() => {
-										onClose();
+										console.log(form);
+										// onClose();
 									}}
 								>
 									Add
