@@ -3,7 +3,7 @@ import GamesCard from "@/components/GamesCard";
 import React from "react";
 import GamesTable from "@/components/GamesTable";
 import { Button, ButtonGroup } from "@heroui/button";
-import AddGameModal from "@/components/AddGameModal";
+import AddGameModal from "@/components/forms/AddGameModal";
 import { games } from "@/constants/mockData";
 
 enum TabView {

@@ -36,7 +36,7 @@ export default function CivField(props: CivFieldProps) {
 				required={true}
 				variant="bordered"
 				onChange={(e) =>
-					onChange({ civilizationName: e.target.value }, civ.key)
+					onChange({ civilizationName: e.target.value }, civ.id)
 				}
 			>
 				{(civilization) => (
@@ -50,7 +50,7 @@ export default function CivField(props: CivFieldProps) {
 					value={civ.playerName}
 					required={true}
 					onChange={(e) =>
-						onChange({ playerName: e.target.value }, civ.key)
+						onChange({ playerName: e.target.value }, civ.id)
 					}
 				/>
 			)}
@@ -60,7 +60,7 @@ export default function CivField(props: CivFieldProps) {
 					size="sm"
 					isSelected={civ.isHuman}
 					onValueChange={() =>
-						onChange({ isHuman: !civ.isHuman }, civ.key)
+						onChange({ isHuman: !civ.isHuman }, civ.id)
 					}
 				>
 					Human
@@ -69,7 +69,7 @@ export default function CivField(props: CivFieldProps) {
 					size="sm"
 					color="danger"
 					isBlock
-					onPress={() => onDelete(civ.key)}
+					onPress={() => onDelete(civ.id)}
 				>
 					Remove
 				</Link>

@@ -3,11 +3,12 @@ import {
 	GAME_SPEED,
 	MAP_SIZE,
 	GAMEMODES,
+	EXPANSIONS,
 } from "@/constants/gameSettings";
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem } from "@heroui/select";
-import { Civ } from "../AddGameModal";
+import { Civ } from "./AddGameModal";
 import { useState } from "react";
 import { Chip } from "@heroui/chip";
 
@@ -134,6 +135,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				variant="bordered"
 				isWheelDisabled
 				minValue={0}
+				maxValue={500}
 				datatype="number"
 				onValueChange={(e: number) => {
 					setGameOptionsData({ ...gameOptionsData, turns: e });
@@ -146,10 +148,38 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					trigger: "min-h-12 py-2",
 				}}
 				isMultiline={true}
+				items={EXPANSIONS}
+				label="Expansions"
+				labelPlacement="inside"
+				renderValue={(expansions) => {
+					return (
+						<div className="flex flex-wrap gap-2">
+							{expansions.map((expansion) => (
+								<Chip key={expansion.data?.label}>
+									{expansion.data?.label}
+								</Chip>
+							))}
+						</div>
+					);
+				}}
+				selectionMode="multiple"
+				variant="bordered"
+			>
+				{(expansion) => (
+					<SelectItem key={expansion.id} textValue={expansion.label}>
+						<span className="text-small">{expansion.label}</span>
+					</SelectItem>
+				)}
+			</Select>
+			<Select
+				classNames={{
+					base: "max-w-xs",
+					trigger: "min-h-12 py-2",
+				}}
+				isMultiline={true}
 				items={GAMEMODES}
-				label="Assigned to"
-				labelPlacement="outside"
-				placeholder="Select a user"
+				label="Gamemodes"
+				labelPlacement="inside"
 				renderValue={(gamemodes) => {
 					return (
 						<div className="flex flex-wrap gap-2">
@@ -166,13 +196,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			>
 				{(gamemode) => (
 					<SelectItem key={gamemode.id} textValue={gamemode.label}>
-						<div className="flex items-center gap-2">
-							<div className="flex flex-col">
-								<span className="text-small">
-									{gamemode.label}
-								</span>
-							</div>
-						</div>
+						<span className="text-small">{gamemode.label}</span>
 					</SelectItem>
 				)}
 			</Select>

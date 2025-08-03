@@ -1,3 +1,5 @@
+import { GameOptions } from "@/components/forms/AddGameModal";
+
 export const MAP_SIZE = [
 	{
 		key: "duel",
@@ -75,3 +77,34 @@ export const GAMEMODES = [
 	{ id: 6, label: "Monopolies and Corporations" },
 	{ id: 7, label: "Barbarian Clans" },
 ];
+
+export const EXPANSIONS = [
+	{ id: 1, label: "Rise and Fall" },
+	{ id: 2, label: "Gathering Storm" },
+];
+
+export const DEFAULT_GAME_OPTIONS: GameOptions = {
+	name: "",
+	speed: "",
+	mapName: "",
+	mapSize: "",
+	turns: 0,
+	winner: "",
+	victory: "",
+	dlcs: new Array<string>(),
+	expansions: new Array<string>(),
+	// players: [
+	// 	{
+	// 		key: crypto.randomUUID(),
+	// 		playerName: "",
+	// 		civilizationName: "",
+	// 		isHuman: true,
+	// 	},
+	// 	{
+	// 		key: crypto.randomUUID(),
+	// 		playerName: "",
+	// 		civilizationName: "",
+	// 		isHuman: true,
+	// 	},
+	// ],
+};

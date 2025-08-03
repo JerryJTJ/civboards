@@ -6,15 +6,11 @@ import {
 	ModalFooter,
 	useDisclosure,
 } from "@heroui/modal";
-import { Select, SelectItem } from "@heroui/select";
 import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { NumberInput } from "@heroui/number-input";
-import { PlusIcon } from "./icons";
+import { PlusIcon } from "../icons";
 import React, { Key } from "react";
 import CivField from "./CivField";
-import { GAME_SPEED, MAP_SIZE, VICTORY_TYPES } from "@/constants/gameSettings";
-import GameOptionsForm from "./forms/GameOptionsForm";
+import GameOptionsForm from "./GameOptionsForm";
 
 export const animals = [
 	{ key: "cat", label: "Cat" },
@@ -22,13 +18,13 @@ export const animals = [
 ];
 
 export interface Civ {
-	key: Key;
+	id: Key;
 	playerName: string;
 	civilizationName: string;
 	isHuman: boolean;
 }
 
-interface GameData {
+export interface GameOptions {
 	name: string;
 	speed: string;
 	mapName: string;
@@ -38,6 +34,7 @@ interface GameData {
 	victory: string;
 	dlcs: Array<string>;
 	expansions: Array<string>;
+	// players: Array<Civ>;
 }
 
 export default function AddGameModal() {
@@ -45,19 +42,19 @@ export default function AddGameModal() {
 
 	const [formCivsData, setFormCivsData] = React.useState<Array<Civ>>([
 		{
-			key: crypto.randomUUID(),
+			id: crypto.randomUUID(),
 			playerName: "",
 			civilizationName: "",
 			isHuman: true,
 		},
 		{
-			key: crypto.randomUUID(),
+			id: crypto.randomUUID(),
 			playerName: "",
 			civilizationName: "",
 			isHuman: true,
 		},
 	]);
-	const [formGameData, setFormGameData] = React.useState<GameData>({
+	const [formGameData, setFormGameData] = React.useState<GameOptions>({
 		name: "",
 		speed: "",
 		mapName: "",
@@ -72,7 +69,7 @@ export default function AddGameModal() {
 	const onCivChange = (updatedCiv: Partial<Civ>, updatedCivKey: Key) => {
 		setFormCivsData((prev: Array<Civ>) => {
 			return prev.map((civ: Civ) =>
-				civ.key === updatedCivKey ? { ...civ, ...updatedCiv } : civ
+				civ.id === updatedCivKey ? { ...civ, ...updatedCiv } : civ
 			);
 		});
 	};
@@ -81,7 +78,7 @@ export default function AddGameModal() {
 		setFormCivsData((prev: Array<Civ>) => [
 			...prev,
 			{
-				key: crypto.randomUUID(),
+				id: crypto.randomUUID(),
 				playerName: "",
 				civilizationName: "",
 				isHuman: human,
@@ -89,11 +86,41 @@ export default function AddGameModal() {
 		]);
 	};
 
-	const onCivDelete = (key: Key) => {
+	const onCivDelete = (id: Key) => {
 		setFormCivsData((prev: Array<Civ>) => {
-			return prev.filter((civ: Civ) => civ.key !== key);
+			return prev.filter((civ: Civ) => civ.id !== id);
 		});
 	};
+
+	// const onCivChange = (updatedCiv: Partial<Civ>, updatedCivKey: Key) => {
+	// 	setFormGameData((prev: GameOptions) => {
+	// 		return {
+	// 			...prev,
+	// 			players: prev.players.map((civ: Civ) =>
+	// 				civ.key === updatedCivKey ? { ...civ, ...updatedCiv } : civ
+	// 			),
+	// 		};
+	// 	});
+	// };
+
+	// const onCivAdd = (isHuman: boolean) => {
+	// 	setFormGameData((prev: GameOptions) => ({
+	// 		...prev,
+	// 		players: [
+	// 			...prev.players,
+	// 			{
+	// 				key: crypto.randomUUID(),
+	// 				playerName: "",
+	// 				civilizationName: "",
+	// 				isHuman: isHuman,
+	// 			},
+	// 		],
+	// 	}));
+	// };
+
+	// const onCivDelete = (key: Key) => {
+	// 	setFormGameData((prev: GameOptions) => {return ({...prev, players: prev.players.filter((civ: Civ) => civ.key !== key)})})
+	// }
 
 	return (
 		<>
@@ -136,7 +163,7 @@ export default function AddGameModal() {
 										<div className="flex flex-col justify-start max-h-full gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
 											{formCivsData.map((civ: Civ) => (
 												<CivField
-													key={civ.key}
+													key={civ.id}
 													civ={civ}
 													onChange={onCivChange}
 													onDelete={onCivDelete}
