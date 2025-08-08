@@ -10,12 +10,14 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@civboards/schemas": "workspace:*",
 		"@heroui/button": "2.2.22",
 		"@heroui/card": "^2.2.23",
 		"@heroui/checkbox": "^2.3.24",
 		"@heroui/chip": "^2.2.20",
 		"@heroui/code": "2.2.16",
 		"@heroui/dropdown": "2.3.22",
+		"@heroui/form": "^2.1.24",
 		"@heroui/image": "^2.2.15",
 		"@heroui/input": "2.4.22",
 		"@heroui/kbd": "2.2.17",
@@ -39,8 +41,7 @@
 		"react-dom": "18.3.1",
 		"react-router-dom": "6.23.0",
 		"tailwind-variants": "0.3.0",
-		"tailwindcss": "3.4.16",
-		"@civboards/schemas": "workspace:*"
+		"tailwindcss": "3.4.16"
 	},
 	"devDependencies": {
 		"@types/node": "20.5.7",
