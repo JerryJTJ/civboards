@@ -3,8 +3,13 @@ import {
 	fetchCivilizationByCode,
 	fetchCivilizationById,
 } from "../services/civilization.service";
+import { Request, Response, NextFunction } from "express";
 
-export async function handleGetCivilizationByCode(req, res, next) {
+export async function handleGetCivilizationByCode(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const { code } = req.params;
 
 	try {
@@ -15,18 +20,26 @@ export async function handleGetCivilizationByCode(req, res, next) {
 	}
 }
 
-export async function handleGetCivilizationById(req, res, next) {
+export async function handleGetCivilizationById(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const { id } = req.params;
 
 	try {
-		const civ = await fetchCivilizationById(id);
+		const civ = await fetchCivilizationById(Number(id));
 		return res.status(200).json(civ);
 	} catch (error) {
 		next(error);
 	}
 }
 
-export async function handleGetAllCivilizations(req, res, next) {
+export async function handleGetAllCivilizations(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	try {
 		const civs = await fetchAllCivilizations();
 		return res.status(200).json(civs);

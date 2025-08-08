@@ -13,7 +13,7 @@ import {
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
-import { InsertGameSchema } from "../../interfaces/game.schema";
+import { InsertGameSchema } from "@civboards/schemas";
 
 export async function handleCreateGame(
 	req: Request,

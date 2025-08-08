@@ -3,8 +3,13 @@ import {
 	fetchLeaderById,
 	fetchAllLeaders,
 } from "../services/leader.service";
+import { Request, Response, NextFunction } from "express";
 
-export async function handleGetLeaderByCode(req, res, next) {
+export async function handleGetLeaderByCode(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const { code } = req.params;
 
 	try {
@@ -15,18 +20,26 @@ export async function handleGetLeaderByCode(req, res, next) {
 	}
 }
 
-export async function handleGetLeaderById(req, res, next) {
+export async function handleGetLeaderById(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	const { id } = req.params;
 
 	try {
-		const leader = await fetchLeaderById(id);
+		const leader = await fetchLeaderById(Number(id));
 		return res.status(200).json(leader);
 	} catch (error) {
 		next(error);
 	}
 }
 
-export async function handleGetAllLeaders(req, res, next) {
+export async function handleGetAllLeaders(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
 	try {
 		const leaders = await fetchAllLeaders();
 		return res.status(200).json(leaders);

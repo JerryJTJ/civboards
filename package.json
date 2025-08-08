@@ -1,8 +1,8 @@
 {
 	"name": "civboards",
 	"version": "1.0.0",
-	"description": "",
-	"main": "index.js",
+	"description": "A Civ 6 game tracker",
+	"private": true,
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
@@ -11,7 +11,11 @@
 	"license": "ISC",
 	"packageManager": "pnpm@10.12.4",
 	"devDependencies": {
+		"@eslint/compat": "1.2.8",
+		"@eslint/eslintrc": "3.3.1",
 		"@eslint/js": "9.25.1",
+		"@typescript-eslint/eslint-plugin": "8.31.1",
+		"@typescript-eslint/parser": "8.31.1",
 		"eslint": "9.25.1",
 		"eslint-config-prettier": "9.1.0",
 		"eslint-plugin-import": "2.31.0",
@@ -21,10 +25,6 @@
 		"eslint-plugin-react": "7.37.5",
 		"eslint-plugin-react-hooks": "5.2.0",
 		"eslint-plugin-unused-imports": "4.1.4",
-		"@typescript-eslint/eslint-plugin": "8.31.1",
-		"@typescript-eslint/parser": "8.31.1",
-		"@eslint/compat": "1.2.8",
-		"@eslint/eslintrc": "3.3.1",
 		"tsx": "^4.20.3",
 		"typescript": "5.6.3",
 		"typescript-eslint": "^8.38.0"

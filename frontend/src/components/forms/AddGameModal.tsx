@@ -46,6 +46,11 @@ export default function AddGameModal() {
 	const changeCivDispatch = (civ: Partial<Civ>) =>
 		dispatch({ field: "player", type: "change", payload: civ });
 
+	// const validateForm = (): boolean => {
+	// 	for(const property of form)
+	// 	return true;
+	// };
+
 	return (
 		<>
 			<Button

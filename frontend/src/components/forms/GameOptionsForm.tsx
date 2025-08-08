@@ -10,7 +10,6 @@ import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem } from "@heroui/select";
 import { Chip } from "@heroui/chip";
 import { GameOptions } from "@/interfaces/game.interface";
-import { SharedSelection } from "@heroui/system";
 
 interface GameOptionsFormProps {
 	form: GameOptions;

@@ -1,5 +1,4 @@
 import { Select, SelectItem } from "@heroui/select";
-import { Checkbox } from "@heroui/checkbox";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { Civ } from "@/interfaces/game.interface";

@@ -62,6 +62,9 @@ importers:
 
   backend:
     dependencies:
+      '@civboards/schemas':
+        specifier: workspace:*
+        version: link:../packages/schemas
       '@supabase/supabase-js':
         specifier: ^2.50.3
         version: 2.53.0
@@ -80,9 +83,6 @@ importers:
       multer:
         specifier: ^2.0.2
         version: 2.0.2
-      zod:
-        specifier: ^4.0.13
-        version: 4.0.14
     devDependencies:
       '@types/compression':
         specifier: ^1.8.1
@@ -102,6 +102,9 @@ importers:
 
   frontend:
     dependencies:
+      '@civboards/schemas':
+        specifier: workspace:*
+        version: link:../packages/schemas
       '@heroui/button':
         specifier: 2.2.22
         version: 2.2.22(@heroui/system@2.4.18(@heroui/theme@2.4.17(tailwindcss@3.4.16))(framer-motion@11.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@heroui/theme@2.4.17(tailwindcss@3.4.16))(framer-motion@11.15.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -226,6 +229,12 @@ importers:
       vite-tsconfig-paths:
         specifier: 4.3.2
         version: 4.3.2(typescript@5.6.3)(vite@5.2.0(@types/node@20.5.7))
+
+  packages/schemas:
+    dependencies:
+      zod:
+        specifier: ^4.0.15
+        version: 4.0.15
 
 packages:
 
@@ -3819,8 +3828,8 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  zod@4.0.14:
-    resolution: {integrity: sha512-nGFJTnJN6cM2v9kXL+SOBq3AtjQby3Mv5ySGFof5UGRHrRioSJ5iG680cYNjE/yWk671nROcpPj4hAS8nyLhSw==}
+  zod@4.0.15:
+    resolution: {integrity: sha512-2IVHb9h4Mt6+UXkyMs0XbfICUh1eUrlJJAOupBHUhLRnKkruawyDddYRCs0Eizt900ntIMk9/4RksYl+FgSpcQ==}
 
 snapshots:
 
@@ -8267,4 +8276,4 @@ snapshots:
 
   yocto-queue@0.1.0: {}
 
-  zod@4.0.14: {}
+  zod@4.0.15: {}

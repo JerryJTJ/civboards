@@ -27,6 +27,6 @@
 		"express": "^5.1.0",
 		"helmet": "^8.1.0",
 		"multer": "^2.0.2",
-		"zod": "^4.0.13"
+		"@civboards/schemas": "workspace:*"
 	}
 }
