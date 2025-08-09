@@ -6,6 +6,7 @@ import {
 	getGameById,
 	insertGame,
 } from "../repositories/game.repository";
+import { fetchLeaderById } from "./leader.service";
 
 export async function createGame(
 	name: string,
@@ -15,10 +16,11 @@ export async function createGame(
 	turns: number,
 	winnerPlayer: string,
 	winnerLeaderId: number,
-	winnerCivilizationId: number,
 	isFinished: boolean,
 	victoryId: number
 ) {
+	const winnerCivilizationId = (await fetchLeaderById(winnerLeaderId))
+		?.civilization;
 	const game = {
 		name: name,
 		map: map,

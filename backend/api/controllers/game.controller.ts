@@ -38,7 +38,6 @@ export async function handleCreateGame(
 			gameState.turns,
 			gameState.winnerPlayer,
 			gameState.winnerLeaderId,
-			gameState.winnerCivilizationId,
 			gameState.isFinished,
 			gameState.victoryId
 		);

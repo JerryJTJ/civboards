@@ -9,7 +9,6 @@ export const GameStateSchema = z.object({
 	turns: z.coerce.number().int(),
 	winnerPlayer: z.string(),
 	winnerLeaderId: z.coerce.number().int(),
-	winnerCivilizationId: z.coerce.number().int(),
 	isFinished: z.boolean(),
 	victoryId: z.coerce.number().int().gte(1).lte(6),
 });
@@ -24,6 +23,6 @@ export const PlayerSchema = z.object({
 export const InsertGameSchema = z.object({
 	gameState: GameStateSchema,
 	players: z.array(PlayerSchema).min(2).max(20),
-	expansions: z.array(z.int().gte(1).lte(2)).max(2),
-	gamemodes: z.array(z.int().gte(1).lte(7)).max(7),
+	expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
+	gamemodes: z.array(z.int().gte(1).lte(7)).max(7).optional(),
 });
