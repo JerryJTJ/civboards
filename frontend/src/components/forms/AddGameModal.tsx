@@ -6,6 +6,8 @@ import {
 	ModalFooter,
 	useDisclosure,
 } from "@heroui/modal";
+import { addToast } from "@heroui/toast";
+import { Form } from "@heroui/form";
 import { Button } from "@heroui/button";
 import { PlusIcon } from "../icons";
 import { Reducer, useReducer } from "react";
@@ -17,6 +19,7 @@ import addGameReducer, {
 } from "./addGameReducer";
 import { DEFAULT_ADD_FORM } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
+import { InsertGameSchema, treeifyError } from "@civboards/schemas";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -24,6 +27,8 @@ export default function AddGameModal() {
 		addGameReducer,
 		DEFAULT_ADD_FORM
 	);
+
+	// Dispatches
 
 	const gameOptionsDispatch = (
 		option: string,
@@ -46,10 +51,68 @@ export default function AddGameModal() {
 	const changeCivDispatch = (civ: Partial<Civ>) =>
 		dispatch({ field: "player", type: "change", payload: civ });
 
-	// const validateForm = (): boolean => {
-	// 	for(const property of form)
-	// 	return true;
-	// };
+	// Submit & Validation
+
+	function validateRequest(form: GameOptions) {
+		// Unique player names & >= 2 humans
+		const names = new Set<string>();
+		let humans: number = 0;
+		form.players.forEach((player) => {
+			if (player.isHuman) {
+				names.add(player.name);
+				humans++;
+			}
+		});
+		if (humans < 2)
+			return { errors: true, message: "Need 2 or more human players" };
+		if (names.size !== humans)
+			return {
+				errors: true,
+				message: "Can't have duplicate player names",
+			};
+
+		const winner = form.players.find(
+			(player) => player.key === form.winner
+		);
+		if (!winner) return { errors: true, message: "Can't find winner" };
+
+		const result = InsertGameSchema.safeParse({
+			name: form.name,
+			map: form.map,
+			mapSize: form.mapSize,
+			speed: form.speed,
+			turns: form.turns,
+			winnerPlayer: winner.name,
+			winnerLeaderId: winner.leaderId,
+			victoryId: form.victoryId,
+			players: form.players,
+			expansions: Array.from(form.expansions),
+			gamemodes: Array.from(form.gamemodes),
+		});
+		if (!result.success)
+			return {
+				errors: treeifyError(result.error),
+				message: "Failed to pass schema",
+			};
+
+		return { result: result };
+	}
+
+	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		const validate = validateRequest(form);
+		if (validate.errors)
+			addToast({
+				title: "Error",
+				color: "warning",
+				description: validate.message,
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+		else {
+			console.log("Success");
+		}
+	};
 
 	return (
 		<>
@@ -69,90 +132,96 @@ export default function AddGameModal() {
 				onOpenChange={onOpenChange}
 				size="5xl"
 			>
-				<ModalContent className="max-h-screen overflow-y-auto">
-					{(onClose) => (
-						<>
-							<ModalHeader className="flex flex-rowgap-2">
-								Add Game
-							</ModalHeader>
-							<ModalBody>
-								<Button
-									className="self-center max-w-1/2"
-									color="primary"
-									variant="shadow"
-								>
-									Upload Save File
-								</Button>
-								<div className="flex flex-row justify-evenly">
-									<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
-										{" "}
-										<span className="self-center pb-2 font-bold">
-											Civilizations
-										</span>
-										<div className="flex flex-col justify-start max-h-full gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
-											{form.players.map((civ: Civ) => (
-												<CivField
-													key={civ.key}
-													civ={civ}
-													changeDispatch={
-														changeCivDispatch
+				<Form onSubmit={onSubmit}>
+					{" "}
+					<ModalContent className="max-h-screen overflow-y-auto">
+						{(onClose) => (
+							<>
+								<ModalHeader className="flex flex-rowgap-2">
+									Add Game
+								</ModalHeader>
+								<ModalBody>
+									<Button
+										className="self-center max-w-1/2"
+										color="primary"
+										variant="shadow"
+										onPress={() =>
+											console.log(form.players)
+										}
+									>
+										Upload Save File
+									</Button>
+									<div className="flex flex-row justify-evenly">
+										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
+											{" "}
+											<span className="self-center pb-2 font-bold">
+												Players
+											</span>
+											<div className="flex flex-col justify-start max-h-full gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
+												{form.players.map(
+													(civ: Civ) => (
+														<CivField
+															key={civ.key}
+															civ={civ}
+															changeDispatch={
+																changeCivDispatch
+															}
+															deleteDispatch={
+																deleteCivDispatch
+															}
+														/>
+													)
+												)}
+											</div>
+											<div className="flex flex-row gap-2 pt-4">
+												<Button
+													onPress={() =>
+														addCivDispatch(true)
 													}
-													deleteDispatch={
-														deleteCivDispatch
+												>
+													Add Human
+												</Button>
+												<Button
+													onPress={() =>
+														addCivDispatch(false)
 													}
-												/>
-											))}
+												>
+													Add AI
+												</Button>
+											</div>
 										</div>
-										<div className="flex flex-row gap-2 pt-4">
-											<Button
-												onPress={() =>
-													addCivDispatch(true)
-												}
-											>
-												Add Human
-											</Button>
-											<Button
-												onPress={() =>
-													addCivDispatch(false)
-												}
-											>
-												Add AI
-											</Button>
+										<div className="flex flex-col gap-2">
+											<p className="self-center pb-2 font-bold">
+												Game Options
+											</p>
+											<GameOptionsForm
+												form={form}
+												dispatch={gameOptionsDispatch}
+											/>
 										</div>
 									</div>
-									<div className="flex flex-col gap-2">
-										<p className="self-center pb-2 font-bold">
-											Game Options
-										</p>
-										<GameOptionsForm
-											form={form}
-											dispatch={gameOptionsDispatch}
-										/>
-									</div>
-								</div>
-							</ModalBody>
-							<ModalFooter>
-								<Button
-									color="danger"
-									variant="shadow"
-									onPress={onClose}
-								>
-									Close
-								</Button>
-								<Button
-									variant="shadow"
-									color="primary"
-									onPress={() => {
-										console.log(form);
-										// onClose();
-									}}
-								>
-									Add
-								</Button>
-							</ModalFooter>
-						</>
-					)}
-				</ModalContent>
+								</ModalBody>
+								<ModalFooter>
+									<Button
+										color="danger"
+										variant="shadow"
+										onPress={onClose}
+									>
+										Close
+									</Button>
+									<Button
+										type="submit"
+										variant="shadow"
+										color="primary"
+										onPress={() => {}}
+									>
+										Add
+									</Button>
+								</ModalFooter>
+							</>
+						)}
+					</ModalContent>
+				</Form>
 			</Modal>
 		</>
 	);

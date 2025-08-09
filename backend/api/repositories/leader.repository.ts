@@ -18,7 +18,7 @@ export async function getLeaderByCode(code: string) {
 export async function getLeaderById(id: number) {
 	const { data, error } = await supabase
 		.from("leader")
-		.select("id, name, civilization")
+		.select("id, name, civilization_id")
 		.eq("id", id)
 		.eq("active", true)
 		.maybeSingle();

@@ -2,19 +2,7 @@ import { Select, SelectItem } from "@heroui/select";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { Civ } from "@/interfaces/game.interface";
-
-export const civilizations = [
-	{ key: "rome", label: "Rome (Julius Caesar)" },
-	{ key: "egypt", label: "Egypt (Cleopatra)" },
-	{ key: "japan", label: "Japan (Tokugawa)" },
-	{ key: "germany", label: "Germany (Frederick Barbarossa)" },
-	{ key: "france", label: "France (Catherine de Medici)" },
-	{ key: "greece", label: "Greece (Pericles)" },
-	{ key: "china", label: "China (Qin Shi Huang)" },
-	{ key: "america", label: "America (Teddy Roosevelt)" },
-	{ key: "mongolia", label: "Mongolia (Genghis Khan)" },
-	{ key: "england", label: "England (Victoria)" },
-];
+import { LEADERS } from "@/constants/civilizations";
 
 interface CivFieldProps {
 	civ: Civ;
@@ -29,30 +17,28 @@ export default function CivField(props: CivFieldProps) {
 	return (
 		<div className="flex flex-row gap-2 ">
 			<Select
-				items={civilizations}
-				label="Civilization"
-				required={true}
+				items={LEADERS}
+				label="Leader"
+				isRequired
 				variant="bordered"
 				onChange={(e) =>
 					changeDispatch({
-						civilizationName: e.target.value,
+						leaderId: Number(e.target.value),
 						key: civ.key,
 					})
 				}
 			>
-				{(civilization) => (
-					<SelectItem>{civilization.label}</SelectItem>
-				)}
+				{(leader) => <SelectItem>{leader.name}</SelectItem>}
 			</Select>
 			{civ.isHuman && (
 				<Input
 					variant="bordered"
 					label="Player Name"
-					value={civ.playerName}
+					value={civ.name}
 					required={true}
 					onChange={(e) =>
 						changeDispatch({
-							playerName: e.target.value,
+							name: e.target.value,
 							key: civ.key,
 						})
 					}
@@ -66,7 +52,7 @@ export default function CivField(props: CivFieldProps) {
 					isBlock
 					onPress={() => {
 						changeDispatch({
-							playerName: civ.isHuman ? "" : civ.playerName,
+							name: civ.isHuman ? "" : civ.name,
 							isHuman: !civ.isHuman,
 							key: civ.key,
 						});

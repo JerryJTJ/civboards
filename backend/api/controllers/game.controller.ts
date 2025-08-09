@@ -27,19 +27,30 @@ export async function handleCreateGame(
 		throwValidationError("Fields were either incorrect or missing");
 		return; //This is just so TS complier doesn't think data may be undefined
 	}
-	const { gameState, players, expansions, gamemodes } = result.data;
+	const {
+		name,
+		map,
+		mapSize,
+		speed,
+		turns,
+		winnerPlayer,
+		winnerLeaderId,
+		victoryId,
+		players,
+		expansions,
+		gamemodes,
+	} = result.data;
 
 	try {
 		const createdGame = await createGame(
-			gameState.name,
-			gameState.map,
-			gameState.mapSize,
-			gameState.speed,
-			gameState.turns,
-			gameState.winnerPlayer,
-			gameState.winnerLeaderId,
-			gameState.isFinished,
-			gameState.victoryId
+			name,
+			map,
+			mapSize,
+			speed,
+			turns,
+			winnerPlayer,
+			winnerLeaderId,
+			victoryId
 		);
 
 		if (createdGame !== null && createdGame !== undefined) {
@@ -47,8 +58,8 @@ export async function handleCreateGame(
 
 			// TODO: If any of these fails, we want to rollback
 			await createGamePlayers(gameId, players);
-			await createGameExpansions(gameId, expansions);
-			await createGameGamemodes(gameId, gamemodes);
+			await createGameExpansions(gameId, expansions!);
+			await createGameGamemodes(gameId, gamemodes!);
 
 			return res.status(200).end();
 		} else {

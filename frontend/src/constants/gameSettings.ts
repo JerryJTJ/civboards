@@ -60,12 +60,12 @@ export const GAME_SPEED = [
 ];
 
 export const VICTORY_TYPES = [
-	{ key: "science", label: "Science", id: 1 },
-	{ key: "culture", label: "Culture", id: 2 },
-	{ key: "domination", label: "Domination", id: 3 },
-	{ key: "religion", label: "Religion", id: 4 },
-	{ key: "diplomatic", label: "Diplomatic", id: 5 },
-	{ key: "score", label: "Score", id: 6 },
+	{ key: 1, label: "Science", id: 1 },
+	{ key: 2, label: "Culture", id: 2 },
+	{ key: 3, label: "Domination", id: 3 },
+	{ key: 4, label: "Religion", id: 4 },
+	{ key: 5, label: "Diplomatic", id: 5 },
+	{ key: 6, label: "Score", id: 6 },
 ];
 
 export const GAMEMODES = [
@@ -90,20 +90,20 @@ export const DEFAULT_ADD_FORM: GameOptions = {
 	mapSize: "",
 	turns: 0,
 	winner: "",
-	victory: "",
+	victoryId: undefined,
 	expansions: new Set<number>(),
 	gamemodes: new Set<number>(),
 	players: [
 		{
 			key: crypto.randomUUID(),
-			playerName: "",
-			civilizationName: "",
+			name: "",
+			leaderId: undefined,
 			isHuman: true,
 		},
 		{
 			key: crypto.randomUUID(),
-			playerName: "",
-			civilizationName: "",
+			name: "",
+			leaderId: undefined,
 			isHuman: true,
 		},
 	],

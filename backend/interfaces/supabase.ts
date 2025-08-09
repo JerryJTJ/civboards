@@ -323,29 +323,29 @@ export type Database = {
 			leader: {
 				Row: {
 					active: boolean | null;
-					civilization: number | null;
+					civilization_id: number | null;
 					code: string;
 					id: number;
 					name: string;
 				};
 				Insert: {
 					active?: boolean | null;
-					civilization?: number | null;
+					civilization_id?: number | null;
 					code?: string;
 					id?: number;
 					name?: string;
 				};
 				Update: {
 					active?: boolean | null;
-					civilization?: number | null;
+					civilization_id?: number | null;
 					code?: string;
 					id?: number;
 					name?: string;
 				};
 				Relationships: [
 					{
-						foreignKeyName: "leader_civilization_fkey";
-						columns: ["civilization"];
+						foreignKeyName: "leader_civilization_id_fkey";
+						columns: ["civilization_id"];
 						isOneToOne: false;
 						referencedRelation: "civilization";
 						referencedColumns: ["id"];

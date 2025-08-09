@@ -39,18 +39,16 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				isRequired
 			>
 				{(civ) =>
-					civ.playerName ? (
-						<SelectItem>{civ.playerName}</SelectItem>
-					) : null
+					civ.name ? <SelectItem>{civ.name}</SelectItem> : null
 				}
 			</Select>
 			<Select
 				label="Victory Type"
 				variant="bordered"
-				value={form.victory}
+				value={form.victoryId}
 				items={VICTORY_TYPES}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-					dispatch("winner", e.target.value)
+					dispatch("victoryId", e.target.value)
 				}
 				isRequired
 			>

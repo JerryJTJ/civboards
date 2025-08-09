@@ -3,8 +3,8 @@ import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
 	key: crypto.randomUUID(),
-	playerName: "",
-	civilizationName: "",
+	name: "",
+	leaderId: undefined,
 	isHuman: isHuman === undefined ? true : isHuman,
 });
 
@@ -75,10 +75,10 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 						...form,
 						winner: action.payload,
 					};
-				case "victory":
+				case "victoryId":
 					return {
 						...form,
-						victory: action.payload,
+						victoryId: action.payload,
 					};
 
 				case "speed":

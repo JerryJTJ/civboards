@@ -16,11 +16,10 @@ export async function createGame(
 	turns: number,
 	winnerPlayer: string,
 	winnerLeaderId: number,
-	isFinished: boolean,
 	victoryId: number
 ) {
 	const winnerCivilizationId = (await fetchLeaderById(winnerLeaderId))
-		?.civilization;
+		?.civilization_id;
 	const game = {
 		name: name,
 		map: map,
@@ -30,7 +29,6 @@ export async function createGame(
 		winner_player: winnerPlayer,
 		winner_leader_id: winnerLeaderId,
 		winner_civilization_id: winnerCivilizationId,
-		is_finished: isFinished,
 		victory_id: victoryId,
 	} as TablesInsert<"game">;
 	const insertedGame = await insertGame(game);

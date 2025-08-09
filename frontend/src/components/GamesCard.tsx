@@ -1,4 +1,4 @@
-import { Card, CardFooter, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 
 interface GameCardProps {

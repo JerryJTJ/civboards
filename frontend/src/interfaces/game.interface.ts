@@ -2,8 +2,8 @@ import { Key } from "react";
 
 export interface Civ {
 	key: Key;
-	playerName: string;
-	civilizationName: string;
+	name: string;
+	leaderId: number | undefined;
 	isHuman: boolean;
 }
 
@@ -14,7 +14,7 @@ export interface GameOptions {
 	mapSize: string;
 	turns: number;
 	winner: string;
-	victory: string;
+	victoryId: number | undefined;
 	expansions: Set<number>;
 	gamemodes: Set<number>;
 	players: Array<Civ>;
