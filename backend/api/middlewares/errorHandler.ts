@@ -7,7 +7,7 @@ export const errorHandler = (
 	res: Response,
 	next: NextFunction
 ) => {
-	console.error("Error:", err);
+	console.log("Error:", err);
 
 	if (process.env.NODE_ENV === "development") {
 		res.status(err.status).json({

@@ -1,4 +1,4 @@
-import { MAP_SIZE } from "@/constants/gameSettings";
+import { DEFAULT_ADD_FORM, MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
@@ -21,7 +21,12 @@ export type GamePlayerAction =
 	| { field: "player"; type: "delete"; payload: Civ }
 	| { field: "player"; type: "change"; payload: Partial<Civ> };
 
-export type AddFormAction = GameOptionsAction | GamePlayerAction;
+export type ResetFormAction = { field: "reset" };
+
+export type AddFormAction =
+	| GameOptionsAction
+	| GamePlayerAction
+	| ResetFormAction;
 
 function addGameReducer(form: GameOptions, action: AddFormAction) {
 	switch (action.field) {
@@ -133,6 +138,8 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 				default:
 			}
 			break;
+		case "reset":
+			return DEFAULT_ADD_FORM;
 	}
 	//fallback case
 	return form;

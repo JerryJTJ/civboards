@@ -61,7 +61,8 @@ export async function handleCreateGame(
 			await createGameExpansions(gameId, expansions!);
 			await createGameGamemodes(gameId, gamemodes!);
 
-			return res.status(200).end();
+			res.status(200).end();
+			return;
 		} else {
 			throw new Error("Failed to create game");
 		}
@@ -84,12 +85,13 @@ export async function handleGetGameById(
 		const gameExpansionsIds = await fetchGameExpansionsIdsByGameId(gameId);
 		const gameGamemodesIds = await fetchGameGamemodesIdsByGameId(gameId);
 
-		return res.status(200).json({
+		res.status(200).json({
 			gameState: gameInfo,
 			gamePlayers: gamePlayers,
 			gamemodes: gameGamemodesIds,
 			expansions: gameExpansionsIds,
 		});
+		return;
 	} catch (error) {
 		next(error);
 	}

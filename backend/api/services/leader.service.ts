@@ -1,6 +1,7 @@
 import { throwValidationError } from "../../types/Errors";
 import {
 	getAllLeaders,
+	getCivilizationIdByLeaderId,
 	getLeaderByCode,
 	getLeaderById,
 } from "../repositories/leader.repository";
@@ -20,6 +21,14 @@ export async function fetchLeaderById(id: number) {
 	}
 	const leader = await getLeaderById(id);
 	return leader;
+}
+
+export async function fetchCivilizationIdByLeaderId(id: number) {
+	if (!id || isNaN(id)) {
+		throwValidationError("Invalid Leader Id");
+	}
+	const civId = await getCivilizationIdByLeaderId(id);
+	return civId;
 }
 
 export async function fetchAllLeaders() {

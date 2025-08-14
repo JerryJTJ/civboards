@@ -29,6 +29,21 @@ export async function getLeaderById(id: number) {
 	return data;
 }
 
+export async function getCivilizationIdByLeaderId(id: number) {
+	const { data, error } = await supabase
+		.from("leader")
+		.select("civilization_id")
+		.eq("id", id)
+		.eq("active", true)
+		.maybeSingle();
+
+	if (error)
+		throwDatabaseError("Failed to get civilization by leader", error);
+	if (!data) throwNotFoundError();
+
+	return data;
+}
+
 export async function getAllLeaders() {
 	const { data, error } = await supabase
 		.from("leader")

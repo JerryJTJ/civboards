@@ -80,6 +80,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				label="Map Size"
 				variant="bordered"
 				items={MAP_SIZE}
+				selectedKeys={new Set([form.mapSize])}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 					dispatch("mapSize", e.target.value)
 				}

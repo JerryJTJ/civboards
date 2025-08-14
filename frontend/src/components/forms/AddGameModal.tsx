@@ -1,3 +1,4 @@
+import * as z from "zod";
 import {
 	Modal,
 	ModalContent,
@@ -19,7 +20,8 @@ import addGameReducer, {
 } from "./addGameReducer";
 import { DEFAULT_ADD_FORM } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
-import { InsertGameSchema, treeifyError } from "@civboards/schemas";
+import { InsertGameSchema } from "@civboards/schemas";
+import { insertGame } from "@/api/games";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -28,8 +30,13 @@ export default function AddGameModal() {
 		DEFAULT_ADD_FORM
 	);
 
-	// Dispatches
+	// Modal open/close
+	const onModalClose = () => {
+		dispatch({ field: "reset" });
+		onOpenChange();
+	};
 
+	// Dispatches
 	const gameOptionsDispatch = (
 		option: string,
 		value: string | number | Set<number>
@@ -51,9 +58,15 @@ export default function AddGameModal() {
 	const changeCivDispatch = (civ: Partial<Civ>) =>
 		dispatch({ field: "player", type: "change", payload: civ });
 
-	// Submit & Validation
+	//Validation
+	type ValidateResult =
+		| { errors: true; message: string }
+		| {
+				errors: false;
+				result: z.ZodSafeParseSuccess<z.infer<typeof InsertGameSchema>>;
+		  };
 
-	function validateRequest(form: GameOptions) {
+	function validateRequest(form: GameOptions): ValidateResult {
 		// Unique player names & >= 2 humans
 		const names = new Set<string>();
 		let humans: number = 0;
@@ -91,17 +104,19 @@ export default function AddGameModal() {
 		});
 		if (!result.success)
 			return {
-				errors: treeifyError(result.error),
+				errors: true,
 				message: "Failed to pass schema",
 			};
 
-		return { result: result };
+		return { errors: false, result: result };
 	}
 
-	const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	// Submitting
+	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const validate = validateRequest(form);
-		if (validate.errors)
+
+		if (validate.errors) {
 			addToast({
 				title: "Error",
 				color: "warning",
@@ -109,8 +124,27 @@ export default function AddGameModal() {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-		else {
-			console.log("Success");
+			return;
+		}
+
+		const response = await insertGame(validate.result.data);
+		if (response) {
+			addToast({
+				title: "Success",
+				color: "success",
+				description: "Added game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+			onModalClose();
+		} else {
+			addToast({
+				title: "Failure",
+				color: "danger",
+				description: "Failed to add game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
 		}
 	};
 
@@ -135,7 +169,7 @@ export default function AddGameModal() {
 				<Form onSubmit={onSubmit}>
 					{" "}
 					<ModalContent className="max-h-screen overflow-y-auto">
-						{(onClose) => (
+						{(onModalClose) => (
 							<>
 								<ModalHeader className="flex flex-rowgap-2">
 									Add Game
@@ -205,7 +239,7 @@ export default function AddGameModal() {
 									<Button
 										color="danger"
 										variant="shadow"
-										onPress={onClose}
+										onPress={onModalClose}
 									>
 										Close
 									</Button>

@@ -6,8 +6,5 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"build": "tsc"
-	},
-	"dependencies": {
-		"zod": "^4.0.15"
 	}
 }

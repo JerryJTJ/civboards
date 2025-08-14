@@ -11,6 +11,7 @@ export async function insertGamePlayers(
 		.select();
 
 	if (error) throwDatabaseError("Failed to insert game players", error);
+
 	if (!data) throwNotFoundError();
 
 	return data;
