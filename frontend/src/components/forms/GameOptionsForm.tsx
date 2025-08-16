@@ -57,7 +57,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			<Select
 				label="Game Speed"
 				variant="bordered"
-				value={form.speed}
+				selectedKeys={new Set([form.speed])}
 				items={GAME_SPEED}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 					dispatch("speed", e.target.value)
@@ -91,6 +91,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			<NumberInput
 				label="Game Turns"
 				variant="bordered"
+				value={form.turns}
 				isWheelDisabled
 				minValue={0}
 				maxValue={500}
@@ -120,6 +121,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectionMode="multiple"
 				variant="bordered"
+				selectedKeys={[form.expansions].join(",")}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					dispatch(
 						"expansions",
@@ -155,6 +157,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectionMode="multiple"
 				variant="bordered"
+				selectedKeys={[form.gamemodes].join(",")}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					dispatch(
 						"gamemodes",

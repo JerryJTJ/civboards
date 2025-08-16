@@ -21,6 +21,9 @@ export default function CivField(props: CivFieldProps) {
 				label="Leader"
 				isRequired
 				variant="bordered"
+				selectedKeys={
+					civ.leaderId ? new Set([civ.leaderId]) : undefined
+				}
 				onChange={(e) =>
 					changeDispatch({
 						leaderId: Number(e.target.value),

@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError, AppError } from "../../types/Errors";
+import { throwValidationError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	getGamePlayersByGameId,
@@ -17,7 +17,7 @@ export async function createGamePlayers(
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	players.forEach((player) => {
-		if (!player.leaderId || !player.leaderId || !player.name)
+		if (!player.leaderId || !player.leaderId)
 			throwValidationError("Invalid Player Data");
 	});
 
@@ -28,7 +28,7 @@ export async function createGamePlayers(
 				?.civilization_id;
 			return {
 				game_id: gameId,
-				name: player.name,
+				name: player.isHuman ? player.name : undefined,
 				leader_id: player.leaderId,
 				civilization_id: civId,
 				is_human: player.isHuman,

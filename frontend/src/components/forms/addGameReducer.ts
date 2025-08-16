@@ -21,12 +21,14 @@ export type GamePlayerAction =
 	| { field: "player"; type: "delete"; payload: Civ }
 	| { field: "player"; type: "change"; payload: Partial<Civ> };
 
-export type ResetFormAction = { field: "reset" };
+export type ChangeFormAction =
+	| { field: "reset" }
+	| { field: "parse"; payload: Partial<GameOptions> };
 
 export type AddFormAction =
 	| GameOptionsAction
 	| GamePlayerAction
-	| ResetFormAction;
+	| ChangeFormAction;
 
 function addGameReducer(form: GameOptions, action: AddFormAction) {
 	switch (action.field) {
@@ -138,6 +140,16 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 				default:
 			}
 			break;
+		case "parse":
+			const players = action.payload.players?.map((player) => ({
+				...player,
+				key: crypto.randomUUID(),
+			}));
+			return {
+				...DEFAULT_ADD_FORM,
+				...action.payload,
+				players: players,
+			} as GameOptions;
 		case "reset":
 			return DEFAULT_ADD_FORM;
 	}

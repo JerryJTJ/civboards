@@ -22,6 +22,7 @@ import { DEFAULT_ADD_FORM } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 import { InsertGameSchema } from "@civboards/schemas";
 import { insertGame } from "@/api/games";
+import UploadFileInput from "../UploadFileInput";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -57,6 +58,8 @@ export default function AddGameModal() {
 		dispatch({ field: "player", type: "delete", payload: civ });
 	const changeCivDispatch = (civ: Partial<Civ>) =>
 		dispatch({ field: "player", type: "change", payload: civ });
+	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
+		dispatch({ field: "parse", payload: parsed });
 
 	//Validation
 	type ValidateResult =
@@ -139,7 +142,7 @@ export default function AddGameModal() {
 			onModalClose();
 		} else {
 			addToast({
-				title: "Failure",
+				title: "Error",
 				color: "danger",
 				description: "Failed to add game",
 				timeout: 3000,
@@ -175,16 +178,9 @@ export default function AddGameModal() {
 									Add Game
 								</ModalHeader>
 								<ModalBody>
-									<Button
-										className="self-center max-w-1/2"
-										color="primary"
-										variant="shadow"
-										onPress={() =>
-											console.log(form.players)
-										}
-									>
-										Upload Save File
-									</Button>
+									<UploadFileInput
+										dispatch={parseSaveDispatch}
+									/>
 									<div className="flex flex-row justify-evenly">
 										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
 											{" "}
@@ -247,7 +243,6 @@ export default function AddGameModal() {
 										type="submit"
 										variant="shadow"
 										color="primary"
-										onPress={() => {}}
 									>
 										Add
 									</Button>

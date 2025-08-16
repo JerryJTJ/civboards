@@ -1,11 +1,18 @@
 import * as z from "zod";
 
 // The coerces are used for the req.body objects
-export const PlayerSchema = z.object({
-	leaderId: z.coerce.number(),
-	name: z.string(),
-	isHuman: z.boolean(),
-});
+export const PlayerSchema = z
+	.object({
+		leaderId: z.coerce.number(),
+		name: z.string(),
+		isHuman: z.literal(true),
+	})
+	.or(
+		z.object({
+			leaderId: z.coerce.number(),
+			isHuman: z.literal(false),
+		})
+	);
 
 export const InsertGameSchema = z.object({
 	name: z.string(),
@@ -19,4 +26,13 @@ export const InsertGameSchema = z.object({
 	players: z.array(PlayerSchema).min(2).max(20),
 	expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
 	gamemodes: z.array(z.int().gte(1).lte(7)).max(7).optional(),
+});
+
+export const ParseSaveSchema = z.object({
+	speed: z.string(),
+	turns: z.int(),
+	map: z.string(),
+	mapSize: z.string(),
+	players: z.array(PlayerSchema).min(2).max(20),
+	expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
 });

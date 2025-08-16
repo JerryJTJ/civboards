@@ -4,7 +4,7 @@ import { supabase } from "../server";
 export async function getLeaderByCode(code: string) {
 	const { data, error } = await supabase
 		.from("leader")
-		.select("id, name, civilization")
+		.select("id, name, civilization_id")
 		.eq("code", code)
 		.eq("active", true)
 		.maybeSingle();
