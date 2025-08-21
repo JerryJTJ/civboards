@@ -18,11 +18,11 @@ import addGameReducer, {
 	AddFormAction,
 	GameOptionsAction,
 } from "./addGameReducer";
-import { DEFAULT_ADD_FORM } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 import { InsertGameSchema } from "@civboards/schemas";
 import { insertGame } from "@/api/games";
 import UploadFileInput from "../UploadFileInput";
+import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -32,7 +32,7 @@ export default function AddGameModal() {
 	);
 
 	// Modal open/close
-	const onModalClose = () => {
+	const onModalChange = () => {
 		dispatch({ field: "reset" });
 		onOpenChange();
 	};
@@ -139,7 +139,7 @@ export default function AddGameModal() {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-			onModalClose();
+			onModalChange();
 		} else {
 			addToast({
 				title: "Error",
@@ -166,13 +166,13 @@ export default function AddGameModal() {
 				className="max-h-screen"
 				isOpen={isOpen}
 				placement="top-center"
-				onOpenChange={onOpenChange}
+				onOpenChange={onModalChange}
 				size="5xl"
 			>
 				<Form onSubmit={onSubmit}>
 					{" "}
 					<ModalContent className="max-h-screen overflow-y-auto">
-						{(onModalClose) => (
+						{() => (
 							<>
 								<ModalHeader className="flex flex-rowgap-2">
 									Add Game
@@ -235,7 +235,7 @@ export default function AddGameModal() {
 									<Button
 										color="danger"
 										variant="shadow"
-										onPress={onModalClose}
+										onPress={onModalChange}
 									>
 										Close
 									</Button>

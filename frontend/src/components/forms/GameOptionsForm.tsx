@@ -4,10 +4,12 @@ import {
 	MAP_SIZE,
 	GAMEMODES,
 	EXPANSIONS,
+	Expansion,
+	Gamemode,
 } from "@/constants/gameSettings";
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
-import { Select, SelectItem } from "@heroui/select";
+import { Select, SelectItem, SelectedItems } from "@heroui/select";
 import { Chip } from "@heroui/chip";
 import { GameOptions } from "@/interfaces/game.interface";
 
@@ -106,26 +108,24 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				isMultiline={true}
 				items={EXPANSIONS}
-				label="Expansions"
-				labelPlacement="inside"
-				renderValue={(expansions) => {
-					return (
-						<div className="flex flex-wrap gap-2">
-							{expansions.map((expansion) => (
-								<Chip key={expansion.data?.label}>
-									{expansion.data?.label}
-								</Chip>
-							))}
-						</div>
-					);
-				}}
 				selectionMode="multiple"
 				variant="bordered"
-				selectedKeys={[form.expansions].join(",")}
+				selectedKeys={[...form.expansions].map(String)}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					dispatch(
 						"expansions",
 						new Set(e.target.value.split(",").map(Number))
+					);
+				}}
+				label="Expansions"
+				labelPlacement="inside"
+				renderValue={(items: SelectedItems<Expansion>) => {
+					return (
+						<div className="flex flex-wrap gap-2">
+							{items.map((item) => (
+								<Chip key={item.key}>{item.data?.label}</Chip>
+							))}
+						</div>
 					);
 				}}
 			>
@@ -144,20 +144,18 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				items={GAMEMODES}
 				label="Gamemodes"
 				labelPlacement="inside"
-				renderValue={(gamemodes) => {
+				selectionMode="multiple"
+				variant="bordered"
+				selectedKeys={[...form.gamemodes].map(String)}
+				renderValue={(items: SelectedItems<Gamemode>) => {
 					return (
 						<div className="flex flex-wrap gap-2">
-							{gamemodes.map((gamemode) => (
-								<Chip key={gamemode.data?.label}>
-									{gamemode.data?.label}
-								</Chip>
+							{items.map((item) => (
+								<Chip key={item.key}>{item.data?.label}</Chip>
 							))}
 						</div>
 					);
 				}}
-				selectionMode="multiple"
-				variant="bordered"
-				selectedKeys={[form.gamemodes].join(",")}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					dispatch(
 						"gamemodes",
