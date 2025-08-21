@@ -1,4 +1,5 @@
-import { DEFAULT_ADD_FORM, MAP_SIZE } from "@/constants/gameSettings";
+import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
+import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
@@ -50,6 +51,7 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 					};
 				case "delete":
 					if (form.players.length <= 2) return form;
+
 					return {
 						...form,
 						players: form.players.filter(
@@ -145,11 +147,14 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 				...player,
 				key: crypto.randomUUID(),
 			}));
-			return {
+
+			const parsed = {
 				...DEFAULT_ADD_FORM,
 				...action.payload,
 				players: players,
 			} as GameOptions;
+
+			return parsed;
 		case "reset":
 			return DEFAULT_ADD_FORM;
 	}

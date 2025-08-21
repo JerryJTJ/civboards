@@ -47,7 +47,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			<Select
 				label="Victory Type"
 				variant="bordered"
-				value={form.victoryId}
+				selectedKeys={new Set([String(form.victoryId)])}
 				items={VICTORY_TYPES}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 					dispatch("victoryId", e.target.value)

@@ -11,7 +11,7 @@ import { addToast } from "@heroui/toast";
 import { Form } from "@heroui/form";
 import { Button } from "@heroui/button";
 import { PlusIcon } from "../icons";
-import { Reducer, useReducer } from "react";
+import { useReducer } from "react";
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
 import addGameReducer, {
@@ -26,7 +26,7 @@ import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
-	const [form, dispatch] = useReducer<Reducer<GameOptions, AddFormAction>>(
+	const [form, dispatch] = useReducer<GameOptions, [action: AddFormAction]>(
 		addGameReducer,
 		DEFAULT_ADD_FORM
 	);
@@ -181,6 +181,16 @@ export default function AddGameModal() {
 									<UploadFileInput
 										dispatch={parseSaveDispatch}
 									/>
+									<Button
+										onPress={() => {
+											gameOptionsDispatch(
+												"victoryId",
+												50
+											);
+										}}
+									>
+										Hello
+									</Button>
 									<div className="flex flex-row justify-evenly">
 										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
 											{" "}
