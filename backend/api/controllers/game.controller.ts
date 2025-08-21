@@ -1,4 +1,8 @@
-import { createGame, fetchGameById } from "../services/game.service";
+import {
+	createGame,
+	fetchAllGames,
+	fetchGameById,
+} from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
 import {
 	createGameGamemodes,
@@ -13,7 +17,8 @@ import {
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
-import { InsertGameSchema } from "@civboards/schemas";
+import { InsertGameSchema, DisplayGameSchema } from "@civboards/schemas";
+import * as z from "zod";
 
 export async function handleCreateGame(
 	req: Request,
@@ -57,12 +62,13 @@ export async function handleCreateGame(
 			const gameId = createdGame[0].id;
 
 			// TODO: If any of these fails, we want to rollback
-			await createGamePlayers(gameId, players);
-			await createGameExpansions(gameId, expansions!);
-			await createGameGamemodes(gameId, gamemodes!);
+			await Promise.all([
+				createGamePlayers(gameId, players),
+				createGameExpansions(gameId, expansions!),
+				createGameGamemodes(gameId, gamemodes!),
+			]);
 
-			res.status(200).end();
-			return;
+			return res.status(200).end();
 		} else {
 			throw new Error("Failed to create game");
 		}
@@ -80,10 +86,13 @@ export async function handleGetGameById(
 	const gameId = Number(id);
 
 	try {
-		const gameInfo = await fetchGameById(gameId);
-		const gamePlayers = await fetchGamePlayersByGameId(gameId);
-		const gameExpansionsIds = await fetchGameExpansionsIdsByGameId(gameId);
-		const gameGamemodesIds = await fetchGameGamemodesIdsByGameId(gameId);
+		const [gameInfo, gamePlayers, gameExpansionsIds, gameGamemodesIds] =
+			await Promise.all([
+				fetchGameById(gameId),
+				fetchGamePlayersByGameId(gameId),
+				fetchGameExpansionsIdsByGameId(gameId),
+				fetchGameGamemodesIdsByGameId(gameId),
+			]);
 
 		res.status(200).json({
 			gameState: gameInfo,
@@ -95,4 +104,54 @@ export async function handleGetGameById(
 	} catch (error) {
 		next(error);
 	}
+}
+
+export async function handleGetAllGames(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const games = await fetchAllGames();
+
+	if (games) {
+		const fullGames = await Promise.all(
+			games.map(async (game) => {
+				const gameId = game.id;
+
+				try {
+					const [players, gamemodes, expansions] = await Promise.all([
+						fetchGamePlayersByGameId(gameId),
+						fetchGameGamemodesIdsByGameId(gameId),
+						fetchGameExpansionsIdsByGameId(gameId),
+					]);
+
+					return {
+						id: game.id,
+						createdAt: game.created_at,
+						isFinished: game.is_finished,
+						map: game.map,
+						mapSize: game.map_size,
+						name: game.name,
+						speed: game.speed,
+						turns: game.turns,
+						victoryId: game.victory_id,
+						winnerCivilizationId: game.winner_civilization_id,
+						winnerLeaderId: game.winner_leader_id,
+						winnerPlayer: game.winner_player,
+						players: players,
+						gamemodes: gamemodes,
+						expansions: expansions,
+					};
+				} catch (error) {
+					next(error);
+				}
+			})
+		);
+
+		const validate = DisplayGameSchema.safeParse(fullGames);
+		if (validate.success) return res.status(200).json(validate.data);
+		return res.status(400).json({ error: z.treeifyError(validate.error) });
+	}
+
+	return res.status(400);
 }

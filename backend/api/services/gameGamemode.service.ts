@@ -10,7 +10,7 @@ export async function createGameGamemodes(
 	gameId: number,
 	gamemodes: Array<number>
 ) {
-	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	const gameGamemodes = gamemodes.map((gamemode) => {

@@ -28,6 +28,16 @@ export const InsertGameSchema = z.object({
 	gamemodes: z.array(z.int().gte(1).lte(7)).max(7).optional(),
 });
 
+export const DisplayGameSchema = z.array(
+	z.object({
+		...InsertGameSchema.shape,
+		id: z.number(),
+		createdAt: z.string(),
+		isFinished: z.any().optional(),
+		winnerCivilizationId: z.number().optional(),
+	})
+);
+
 export const ParseSaveSchema = z.object({
 	speed: z.string(),
 	turns: z.int(),

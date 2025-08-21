@@ -10,7 +10,7 @@ export async function createGameExpansions(
 	gameId: number,
 	expansions: Array<number>
 ) {
-	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	const gameExpansions = expansions.map((expansion) => {
@@ -20,7 +20,7 @@ export async function createGameExpansions(
 }
 
 export async function fetchGameExpansionsIdsByGameId(gameId: number) {
-	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	try {

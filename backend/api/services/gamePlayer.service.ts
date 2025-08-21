@@ -39,7 +39,7 @@ export async function createGamePlayers(
 }
 
 export async function fetchGamePlayersByGameId(gameId: number) {
-	if (!gameId) throwValidationError("Invalid Game Id");
+	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
 	const gamePlayers = await getGamePlayersByGameId(gameId);

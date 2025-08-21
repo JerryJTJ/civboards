@@ -3,6 +3,7 @@ import { throwNotFoundError, throwValidationError } from "../../types/Errors";
 
 import {
 	doesGameIdExist,
+	getAllGames,
 	getGameById,
 	insertGame,
 } from "../repositories/game.repository";
@@ -41,4 +42,8 @@ export async function fetchGameById(id: number) {
 
 	const game = getGameById(id);
 	return game;
+}
+
+export async function fetchAllGames() {
+	return getAllGames();
 }
