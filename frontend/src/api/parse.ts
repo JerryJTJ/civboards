@@ -12,7 +12,6 @@ export async function parseSaveFile(
 			data: bodyData,
 		});
 		if (response.status === 200) {
-			console.log(response);
 			return {
 				success: true,
 				data: {
