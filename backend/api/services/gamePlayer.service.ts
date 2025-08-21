@@ -4,6 +4,7 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { throwValidationError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
+	deleteGamePlayersByGameId,
 	getGamePlayersByGameId,
 	insertGamePlayers,
 } from "../repositories/gamePlayer.repository";
@@ -54,4 +55,8 @@ export async function fetchGamePlayersByGameId(gameId: number) {
 	});
 
 	return gamePlayersSanitized;
+}
+
+export async function removeGamePlayerByGameId(gameId: number) {
+	await deleteGamePlayersByGameId(gameId);
 }

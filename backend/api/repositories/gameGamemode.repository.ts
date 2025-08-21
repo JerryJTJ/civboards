@@ -28,3 +28,13 @@ export async function getGameGamemodesByGameId(gameId: number) {
 
 	return data;
 }
+
+export async function deleteGameGamemodesById(gameId: number) {
+	const response = await supabase
+		.from("game_gamemode")
+		.delete()
+		.in("game_id", [gameId]);
+
+	if (response.error)
+		throwDatabaseError("Failed delete game gamemodes", response.error);
+}

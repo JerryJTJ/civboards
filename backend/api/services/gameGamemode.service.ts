@@ -2,6 +2,7 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { throwValidationError, AppError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
+	deleteGameGamemodesById,
 	getGameGamemodesByGameId,
 	insertGamemodes,
 } from "../repositories/gameGamemode.repository";
@@ -23,13 +24,14 @@ export async function fetchGameGamemodesIdsByGameId(gameId: number) {
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
-	try {
-		const gameGamemodes = await getGameGamemodesByGameId(gameId);
-		const gameGamemodesIds = gameGamemodes?.map((gameGamemode) => {
-			return gameGamemode.gamemode_id;
-		});
-		return gameGamemodesIds;
-	} catch (error) {
-		throw new AppError(error?.message, error.status, error?.details);
-	}
+	const gameGamemodes = await getGameGamemodesByGameId(gameId);
+	const gameGamemodesIds = gameGamemodes?.map((gameGamemode) => {
+		return gameGamemode.gamemode_id;
+	});
+
+	return gameGamemodesIds;
+}
+
+export async function removeGameGamemodesByGameId(gameId: number) {
+	await deleteGameGamemodesById(gameId);
 }

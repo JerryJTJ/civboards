@@ -2,19 +2,23 @@ import {
 	createGame,
 	fetchAllGames,
 	fetchGameById,
+	removeGameById,
 } from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
 import {
 	createGameGamemodes,
 	fetchGameGamemodesIdsByGameId,
+	removeGameGamemodesByGameId,
 } from "../services/gameGamemode.service";
 import {
 	createGameExpansions,
 	fetchGameExpansionsIdsByGameId,
+	removeGameExpansionByGameId,
 } from "../services/gameExpansion.service";
 import {
 	createGamePlayers,
 	fetchGamePlayersByGameId,
+	removeGamePlayerByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
 import { InsertGameSchema, DisplayGameSchema } from "@civboards/schemas";
@@ -61,12 +65,16 @@ export async function handleCreateGame(
 		if (createdGame !== null && createdGame !== undefined) {
 			const gameId = createdGame[0].id;
 
-			// TODO: If any of these fails, we want to rollback
-			await Promise.all([
-				createGamePlayers(gameId, players),
-				createGameExpansions(gameId, expansions!),
-				createGameGamemodes(gameId, gamemodes!),
-			]);
+			try {
+				await Promise.all([
+					createGamePlayers(gameId, players),
+					createGameExpansions(gameId, expansions!),
+					createGameGamemodes(gameId, gamemodes!),
+				]);
+			} catch (error) {
+				await removeGameById(gameId);
+				next(error);
+			}
 
 			return res.status(200).end();
 		} else {

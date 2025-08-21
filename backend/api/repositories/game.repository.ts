@@ -43,6 +43,13 @@ export async function getGameById(id: number) {
 	return data;
 }
 
+export async function deleteGameById(id: number) {
+	const response = await supabase.from("game").delete().eq("id", id);
+
+	if (response.error)
+		throwDatabaseError("Failed to delete game", response.error);
+}
+
 export async function getAllGames() {
 	const { data, error } = await supabase.from("game").select();
 

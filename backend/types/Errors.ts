@@ -28,14 +28,17 @@ export class AppError extends Error {
 	}
 }
 
-export function throwDatabaseError(message: string, error: PostgrestError) {
+export function throwDatabaseError(
+	message: string,
+	error: PostgrestError | undefined
+) {
 	throw new AppError(
 		message,
 		400,
 		ERROR_CODES.DATABASE.INVALID_QUERY,
-		error.details,
-		error.message,
-		error.code
+		error?.details,
+		error?.message,
+		error?.code
 	);
 }
 

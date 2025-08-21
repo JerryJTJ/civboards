@@ -2,6 +2,7 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { throwValidationError, AppError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
+	deleteGameExpansionsByGameId,
 	getGameExpansionsByGameId,
 	insertExpansions,
 } from "../repositories/gameExpansion.repository";
@@ -32,4 +33,8 @@ export async function fetchGameExpansionsIdsByGameId(gameId: number) {
 	} catch (error) {
 		throw new AppError(error?.message, error.status, error?.details);
 	}
+}
+
+export async function removeGameExpansionByGameId(gameId: number) {
+	await deleteGameExpansionsByGameId(gameId);
 }

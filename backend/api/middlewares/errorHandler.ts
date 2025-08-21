@@ -9,8 +9,10 @@ export const errorHandler = (
 ) => {
 	console.log("Error:", err);
 
+	const status = err.status || 500;
+
 	if (process.env.NODE_ENV === "development") {
-		res.status(err.status).json({
+		res.status(status).json({
 			message: err.message,
 			stack: err.stack,
 			code: err.code,
@@ -19,7 +21,7 @@ export const errorHandler = (
 			databaseDetails: err.databaseDetails || "",
 		});
 	} else {
-		res.status(err.status).json({
+		res.status(status).json({
 			message: err.message || "Internal Server Error",
 			code: err.code,
 		});

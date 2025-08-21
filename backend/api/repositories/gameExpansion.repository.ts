@@ -28,3 +28,13 @@ export async function getGameExpansionsByGameId(gameId: number) {
 
 	return data;
 }
+
+export async function deleteGameExpansionsByGameId(gameId: number) {
+	const response = await supabase
+		.from("game_expansion")
+		.delete()
+		.in("game_id", [gameId]);
+
+	if (response.error)
+		throwDatabaseError("Failed delete game expansions", response.error);
+}

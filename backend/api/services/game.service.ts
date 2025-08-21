@@ -2,11 +2,15 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { throwNotFoundError, throwValidationError } from "../../types/Errors";
 
 import {
+	deleteGameById,
 	doesGameIdExist,
 	getAllGames,
 	getGameById,
 	insertGame,
 } from "../repositories/game.repository";
+import { removeGameExpansionByGameId } from "./gameExpansion.service";
+import { removeGameGamemodesByGameId } from "./gameGamemode.service";
+import { removeGamePlayerByGameId } from "./gamePlayer.service";
 import { fetchLeaderById } from "./leader.service";
 
 export async function createGame(
@@ -40,10 +44,22 @@ export async function fetchGameById(id: number) {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
-	const game = getGameById(id);
+	const game = await getGameById(id);
 	return game;
 }
 
+export async function removeGameById(id: number) {
+	if (!id) throwValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
+
+	await Promise.all([
+		deleteGameById(id),
+		removeGamePlayerByGameId(id),
+		removeGameExpansionByGameId(id),
+		removeGameGamemodesByGameId(id),
+	]);
+}
+
 export async function fetchAllGames() {
-	return getAllGames();
+	return await getAllGames();
 }

@@ -29,3 +29,13 @@ export async function getGamePlayersByGameId(gameId: number) {
 
 	return data;
 }
+
+export async function deleteGamePlayersByGameId(gameId: number) {
+	const response = await supabase
+		.from("game_player")
+		.delete()
+		.in("game_id", [gameId]);
+
+	if (response.error)
+		throwDatabaseError("Failed delete game players", response.error);
+}
