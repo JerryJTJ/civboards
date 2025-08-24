@@ -15,8 +15,9 @@ export default function CivField(props: CivFieldProps) {
 	//just have civs live on one thing, and get from there
 
 	return (
-		<div className="flex flex-row gap-2 ">
+		<div className="flex flex-row gap-2">
 			<Select
+				// className="max-w-1/2"
 				items={LEADERS}
 				label="Leader"
 				isRequired
@@ -35,6 +36,7 @@ export default function CivField(props: CivFieldProps) {
 			</Select>
 			{civ.isHuman && (
 				<Input
+					className="w-3/5"
 					variant="bordered"
 					label="Player Name"
 					value={civ.name}

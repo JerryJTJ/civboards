@@ -64,8 +64,7 @@ async function sanitizeSaveFile(
 
 	const players = await Promise.all(
 		parsed.players.map(async (player) => {
-			const leaderId = (await fetchLeaderFromCode(player.leader))
-				?.civilization_id;
+			const leaderId = (await fetchLeaderFromCode(player.leader))?.id;
 			return {
 				leaderId: leaderId,
 				isHuman: player.isHuman,

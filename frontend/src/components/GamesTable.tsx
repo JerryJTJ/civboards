@@ -19,16 +19,11 @@ import {
 import type { SVGProps } from "react";
 import { SortDescriptor } from "@react-types/shared";
 import { SearchIcon, VerticalDotsIcon } from "./icons";
+import { DisplayGameSchemaArray } from "@civboards/schemas";
+import z from "zod";
 
 interface GamesTableProps {
-	games: Array<{
-		uuid: string;
-		name: string;
-		date: string;
-		map: string;
-		players: Array<string>;
-		winner: string;
-	}>;
+	games: z.infer<typeof DisplayGameSchemaArray>;
 }
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
@@ -72,13 +67,15 @@ export default function GamesTable(props: GamesTableProps) {
 					cmp = a.name.localeCompare(b.name);
 					break;
 				case "date":
-					cmp = a.date > b.date ? 1 : a.date === b.date ? 0 : -1;
+					const aDate = new Date(a.createdAt);
+					const bDate = new Date(b.createdAt);
+					cmp = aDate > bDate ? 1 : aDate === bDate ? 0 : -1;
 					break;
 				case "map":
 					cmp = a.map.localeCompare(b.map);
 					break;
 				case "winner":
-					cmp = a.winner.localeCompare(b.winner);
+					cmp = a.winnerPlayer.localeCompare(b.winnerPlayer);
 					break;
 				default:
 					break;
@@ -100,10 +97,13 @@ export default function GamesTable(props: GamesTableProps) {
 					game.map
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
-					game.winner
+					game.winnerPlayer
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
-					game.date.toLowerCase().includes(filterValue.toLowerCase())
+					new Date(game.createdAt)
+						.toLocaleDateString()
+						.toLowerCase()
+						.includes(filterValue.toLowerCase())
 			);
 		}
 
@@ -128,17 +128,22 @@ export default function GamesTable(props: GamesTableProps) {
 			case "date":
 				return (
 					<p className="text-bold text-small">
-						{new Date(game.date).toLocaleDateString()}
+						{new Date(game.createdAt).toLocaleDateString()}
 					</p>
 				);
 			case "map":
 				return <p className="text-bold text-small">{game.map}</p>;
 			case "players":
+				let humans = new Array<string>();
+				game.players.forEach((player) => {
+					if (player.isHuman) humans.push(player.name);
+				});
 				return (
-					<p className="text-bold text-small">
-						{" "}
-						{game.players.join(", ")}
-					</p>
+					<p className="text-bold text-small"> {humans.join(", ")}</p>
+				);
+			case "winner":
+				return (
+					<p className="text-bold text-small">{game.winnerPlayer}</p>
 				);
 			case "actions":
 				return (
@@ -151,7 +156,7 @@ export default function GamesTable(props: GamesTableProps) {
 							</DropdownTrigger>
 							<DropdownMenu>
 								<DropdownItem key="view">View</DropdownItem>
-								<DropdownItem key="edit">Edit</DropdownItem>
+								{/* <DropdownItem key="edit">Edit</DropdownItem> */}
 								<DropdownItem key="delete">Delete</DropdownItem>
 							</DropdownMenu>
 						</Dropdown>
@@ -335,7 +340,7 @@ export default function GamesTable(props: GamesTableProps) {
 			</TableHeader>
 			<TableBody emptyContent={"No users found"} items={items}>
 				{(item) => (
-					<TableRow key={item.uuid}>
+					<TableRow key={item.id}>
 						{(columnKey) => (
 							<TableCell>{renderCell(item, columnKey)}</TableCell>
 						)}

@@ -21,7 +21,11 @@ import {
 	removeGamePlayerByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
-import { InsertGameSchema, DisplayGameSchema } from "@civboards/schemas";
+import {
+	InsertGameSchema,
+	DisplayGameSchema,
+	DisplayGameSchemaArray,
+} from "@civboards/schemas";
 import * as z from "zod";
 
 export async function handleCreateGame(
@@ -94,21 +98,33 @@ export async function handleGetGameById(
 	const gameId = Number(id);
 
 	try {
-		const [gameInfo, gamePlayers, gameExpansionsIds, gameGamemodesIds] =
-			await Promise.all([
-				fetchGameById(gameId),
-				fetchGamePlayersByGameId(gameId),
-				fetchGameExpansionsIdsByGameId(gameId),
-				fetchGameGamemodesIdsByGameId(gameId),
-			]);
+		const [game, players, expansions, gamemodes] = await Promise.all([
+			fetchGameById(gameId),
+			fetchGamePlayersByGameId(gameId),
+			fetchGameExpansionsIdsByGameId(gameId),
+			fetchGameGamemodesIdsByGameId(gameId),
+		]);
 
-		res.status(200).json({
-			gameState: gameInfo,
-			gamePlayers: gamePlayers,
-			gamemodes: gameGamemodesIds,
-			expansions: gameExpansionsIds,
-		});
-		return;
+		if (game) {
+			return res.status(200).json({
+				id: game.id,
+				createdAt: game.created_at,
+				isFinished: game.is_finished,
+				map: game.map,
+				mapSize: game.map_size,
+				name: game.name,
+				speed: game.speed,
+				turns: game.turns,
+				victoryId: game.victory_id,
+				winnerCivilizationId: game.winner_civilization_id,
+				winnerLeaderId: game.winner_leader_id,
+				winnerPlayer: game.winner_player,
+				players: players,
+				gamemodes: gamemodes,
+				expansions: expansions,
+			});
+		}
+		return res.status(404);
 	} catch (error) {
 		next(error);
 	}
@@ -156,9 +172,9 @@ export async function handleGetAllGames(
 			})
 		);
 
-		const validate = DisplayGameSchema.safeParse(fullGames);
+		const validate = DisplayGameSchemaArray.safeParse(fullGames);
 		if (validate.success) return res.status(200).json(validate.data);
-		return res.status(400).json({ error: z.treeifyError(validate.error) });
+		return res.status(400).json(z.treeifyError(validate.error));
 	}
 
 	return res.status(400);

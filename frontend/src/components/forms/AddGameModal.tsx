@@ -181,16 +181,6 @@ export default function AddGameModal() {
 									<UploadFileInput
 										dispatch={parseSaveDispatch}
 									/>
-									<Button
-										onPress={() => {
-											gameOptionsDispatch(
-												"victoryId",
-												50
-											);
-										}}
-									>
-										Hello
-									</Button>
 									<div className="flex flex-row justify-evenly">
 										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
 											{" "}

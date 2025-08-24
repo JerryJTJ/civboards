@@ -3,16 +3,20 @@ import GamesCard from "@/components/GamesCard";
 import React from "react";
 import GamesTable from "@/components/GamesTable";
 import { Button, ButtonGroup } from "@heroui/button";
+import { Spinner } from "@heroui/spinner";
 import AddGameModal from "@/components/forms/AddGameModal";
-import { games } from "@/constants/mockData";
+import { useQuery } from "@tanstack/react-query";
+import { getAllGames } from "@/api/games";
 
-enum TabView {
-	Cards,
-	Table,
-}
+type TabView = "cards" | "table";
 
 export default function GamesPage() {
-	const [currTab, setCurrTab] = React.useState<TabView>(TabView.Cards);
+	const [currTab, setCurrTab] = React.useState<TabView>("cards");
+
+	const { data, isPending } = useQuery({
+		queryKey: ["games"],
+		queryFn: getAllGames,
+	});
 
 	return (
 		<DefaultLayout>
@@ -23,13 +27,9 @@ export default function GamesPage() {
 							className="border-white/20 border-1"
 							variant="shadow"
 							onPress={() => {
-								setCurrTab(TabView.Cards);
+								setCurrTab("cards");
 							}}
-							color={
-								currTab === TabView.Cards
-									? "primary"
-									: "default"
-							}
+							color={currTab === "cards" ? "primary" : "default"}
 						>
 							Cards
 						</Button>
@@ -37,38 +37,43 @@ export default function GamesPage() {
 							className=" border-white/20 border-1"
 							variant="shadow"
 							onPress={() => {
-								setCurrTab(TabView.Table);
+								setCurrTab("table");
 							}}
-							color={
-								currTab === TabView.Table
-									? "primary"
-									: "default"
-							}
+							color={currTab === "table" ? "primary" : "default"}
 						>
 							Table
 						</Button>
 					</ButtonGroup>
 					<AddGameModal />
 				</div>
-
+				{/* Janky way to keep formatting nice */}
+				{isPending && (
+					<div className="self-center py-10">
+						<Spinner />
+					</div>
+				)}
 				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
-					{currTab === TabView.Cards ? (
+					{!isPending && (
 						<>
 							{" "}
-							{games.map((game) => (
-								<GamesCard
-									key={`${game.uuid}-card`}
-									game={game}
-								/>
-							))}
+							{currTab === "cards" ? (
+								<>
+									{" "}
+									{data?.map((game) => (
+										<GamesCard
+											key={`${game.id}-card`}
+											game={game}
+										/>
+									))}
+								</>
+							) : null}
+							{currTab === "table" ? (
+								<>
+									<GamesTable games={data!} />
+								</>
+							) : null}
 						</>
-					) : null}
-					{currTab === TabView.Table ? (
-						<>
-							{" "}
-							<GamesTable games={games} />
-						</>
-					) : null}
+					)}
 				</div>
 			</div>
 		</DefaultLayout>
