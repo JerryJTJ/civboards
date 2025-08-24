@@ -23,11 +23,7 @@ import {
 	removeGamePlayerByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
-import {
-	InsertGameSchema,
-	DisplayGameSchema,
-	DisplayGameSchemaArray,
-} from "@civboards/schemas";
+import { InsertGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import * as z from "zod";
 
 export async function handleCreateGame(
@@ -43,6 +39,7 @@ export async function handleCreateGame(
 		return; //This is just so TS complier doesn't think data may be undefined
 	}
 	const {
+		finished,
 		name,
 		map,
 		mapSize,
@@ -58,6 +55,7 @@ export async function handleCreateGame(
 
 	try {
 		const createdGame = await createGame(
+			finished,
 			name,
 			map,
 			mapSize,
@@ -110,15 +108,15 @@ export async function handleGetGameById(
 		if (game) {
 			return res.status(200).json({
 				id: game.id,
+				finished: game.finished,
 				createdAt: game.created_at,
-				isFinished: game.is_finished,
 				map: game.map,
 				mapSize: game.map_size,
 				name: game.name,
 				speed: game.speed,
 				turns: game.turns,
-				victoryId: game.victory_id,
-				winnerCivilizationId: game.winner_civilization_id,
+				victoryId: game.victory_id || undefined,
+				winnerCivilizationId: game.winner_civilization_id || undefined,
 				winnerLeaderId: game.winner_leader_id,
 				winnerPlayer: game.winner_player,
 				players: players,
@@ -153,15 +151,16 @@ export async function handleGetAllGames(
 
 					return {
 						id: game.id,
+						finished: game.finished,
 						createdAt: game.created_at,
-						isFinished: game.is_finished,
 						map: game.map,
 						mapSize: game.map_size,
 						name: game.name,
 						speed: game.speed,
 						turns: game.turns,
-						victoryId: game.victory_id,
-						winnerCivilizationId: game.winner_civilization_id,
+						victoryId: game.victory_id || undefined,
+						winnerCivilizationId:
+							game.winner_civilization_id || undefined,
 						winnerLeaderId: game.winner_leader_id,
 						winnerPlayer: game.winner_player,
 						players: players,

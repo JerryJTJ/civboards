@@ -12,10 +12,14 @@ import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem, SelectedItems } from "@heroui/select";
 import { Chip } from "@heroui/chip";
 import { GameOptions } from "@/interfaces/game.interface";
+import { Checkbox } from "@heroui/checkbox";
 
 interface GameOptionsFormProps {
 	form: GameOptions;
-	dispatch: (option: string, value: string | number | Set<number>) => void;
+	dispatch: (
+		option: string,
+		value: string | number | Set<number> | boolean
+	) => void;
 }
 
 function GameOptionsForm(props: GameOptionsFormProps) {
@@ -23,6 +27,14 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 
 	return (
 		<>
+			<Checkbox
+				isSelected={form.finished}
+				onValueChange={() => {
+					dispatch("finished", !form.finished);
+				}}
+			>
+				Finished
+			</Checkbox>
 			<Input
 				label="Game Name"
 				variant="bordered"
@@ -31,31 +43,39 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				onValueChange={(val: string) => dispatch("name", val)}
 				isRequired
 			/>
-			<Select
-				label="Winner"
-				variant="bordered"
-				items={form.players}
-				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-					dispatch("winner", e.target.value)
-				}
-				isRequired
-			>
-				{(civ) =>
-					civ.name ? <SelectItem>{civ.name}</SelectItem> : null
-				}
-			</Select>
-			<Select
-				label="Victory Type"
-				variant="bordered"
-				selectedKeys={new Set([String(form.victoryId)])}
-				items={VICTORY_TYPES}
-				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-					dispatch("victoryId", e.target.value)
-				}
-				isRequired
-			>
-				{(victory) => <SelectItem>{victory.label}</SelectItem>}
-			</Select>
+			{form.finished && (
+				<>
+					{" "}
+					<Select
+						label="Winner"
+						variant="bordered"
+						items={form.players}
+						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+							dispatch("winner", e.target.value)
+						}
+						isRequired
+					>
+						{(civ) =>
+							civ.name ? (
+								<SelectItem>{civ.name}</SelectItem>
+							) : null
+						}
+					</Select>
+					<Select
+						label="Victory Type"
+						variant="bordered"
+						selectedKeys={new Set([String(form.victoryId)])}
+						items={VICTORY_TYPES}
+						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+							dispatch("victoryId", e.target.value)
+						}
+						isRequired
+					>
+						{(victory) => <SelectItem>{victory.label}</SelectItem>}
+					</Select>
+				</>
+			)}
+
 			<Select
 				label="Game Speed"
 				variant="bordered"

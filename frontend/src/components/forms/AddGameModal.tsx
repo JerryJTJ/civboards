@@ -58,7 +58,7 @@ export default function AddGameModal(props: AddGameModalProps) {
 	// Dispatches
 	const gameOptionsDispatch = (
 		option: string,
-		value: string | number | Set<number>
+		value: string | number | Set<number> | boolean
 	) =>
 		dispatch({
 			field: "options",
@@ -134,16 +134,18 @@ export default function AddGameModal(props: AddGameModalProps) {
 		const winner = form.players.find(
 			(player) => player.key === form.winner
 		);
-		if (!winner) return { errors: true, message: "Can't find winner" };
+		if (!winner && form.finished)
+			return { errors: true, message: "Can't find winner" };
 
 		const result = InsertGameSchema.safeParse({
+			finished: form.finished,
 			name: form.name,
 			map: form.map,
 			mapSize: form.mapSize,
 			speed: form.speed,
 			turns: form.turns,
-			winnerPlayer: winner.name,
-			winnerLeaderId: winner.leaderId,
+			winnerPlayer: winner?.name,
+			winnerLeaderId: winner?.leaderId,
 			victoryId: form.victoryId,
 			players: form.players,
 			expansions: Array.from(form.expansions),

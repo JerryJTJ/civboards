@@ -74,6 +74,11 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 			break;
 		case "options":
 			switch (action.option) {
+				case "finished":
+					return {
+						...form,
+						finished: action.payload,
+					};
 				case "name":
 					return {
 						...form,
@@ -89,7 +94,6 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 						...form,
 						victoryId: action.payload,
 					};
-
 				case "speed":
 					return {
 						...form,

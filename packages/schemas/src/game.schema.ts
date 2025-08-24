@@ -14,19 +14,32 @@ export const PlayerSchema = z
 		})
 	);
 
-export const InsertGameSchema = z.object({
-	name: z.string(),
-	map: z.string(),
-	mapSize: z.string(),
-	speed: z.string(),
-	turns: z.coerce.number().int(),
-	winnerPlayer: z.string(),
-	winnerLeaderId: z.coerce.number().int(),
-	victoryId: z.coerce.number().int().gte(1).lte(6),
-	players: z.array(PlayerSchema).min(2).max(20),
-	expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
-	gamemodes: z.array(z.int().gte(1).lte(7)).max(8).optional(),
-});
+export const InsertGameSchema = z
+	.object({
+		finished: z.boolean(),
+		name: z.string(),
+		map: z.string(),
+		mapSize: z.string(),
+		speed: z.string(),
+		turns: z.coerce.number().int(),
+		winnerPlayer: z.string().optional(),
+		winnerLeaderId: z.coerce.number().int().optional(),
+		victoryId: z.coerce.number().int().gte(1).lte(6).optional(),
+		players: z.array(PlayerSchema).min(2).max(20),
+		expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
+		gamemodes: z.array(z.int().gte(1).lte(8)).max(8).optional(),
+	})
+	.refine((input) => {
+		if (
+			input.finished &&
+			(input.winnerPlayer === undefined ||
+				input.winnerLeaderId === undefined ||
+				input.victoryId === undefined)
+		) {
+			return false;
+		}
+		return true;
+	});
 
 export const DisplayGameSchema = z.object({
 	...InsertGameSchema.shape,

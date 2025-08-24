@@ -6,6 +6,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 	const { data, error } = await supabase
 		.from("game")
 		.insert({
+			finished: game.finished,
 			name: game.name,
 			map: game.map,
 			map_size: game.map_size,
@@ -14,7 +15,6 @@ export async function insertGame(game: TablesInsert<"game">) {
 			winner_player: game.winner_player,
 			winner_leader_id: game.winner_leader_id,
 			winner_civilization_id: game.winner_civilization_id,
-			is_finished: game.is_finished,
 			victory_id: game.victory_id,
 			active: true,
 		})
@@ -78,7 +78,11 @@ export async function getAllGames() {
 }
 
 export async function getAllGameWinners() {
-	const { data, error } = await supabase.from("game").select("winner_player");
+	const { data, error } = await supabase
+		.from("game")
+		.select("winner_player")
+		.eq("active", true)
+		.eq("finished", true);
 
 	if (error || !data) throwDatabaseError("Failed to get winners", error);
 

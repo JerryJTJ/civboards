@@ -79,8 +79,8 @@ export type Database = {
         Row: {
           active: boolean
           created_at: string
+          finished: boolean
           id: number
-          is_finished: boolean | null
           map: string | null
           map_size: string | null
           name: string | null
@@ -94,8 +94,8 @@ export type Database = {
         Insert: {
           active?: boolean
           created_at?: string
+          finished?: boolean
           id?: number
-          is_finished?: boolean | null
           map?: string | null
           map_size?: string | null
           name?: string | null
@@ -109,8 +109,8 @@ export type Database = {
         Update: {
           active?: boolean
           created_at?: string
+          finished?: boolean
           id?: number
-          is_finished?: boolean | null
           map?: string | null
           map_size?: string | null
           name?: string | null

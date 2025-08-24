@@ -1,6 +1,7 @@
 import { GameOptions } from "@/interfaces/game.interface";
 
 export const DEFAULT_ADD_FORM: GameOptions = {
+	finished: true,
 	name: "",
 	speed: "",
 	map: "",

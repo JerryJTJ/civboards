@@ -16,18 +16,23 @@ import { removeGamePlayerByGameId } from "./gamePlayer.service";
 import { fetchLeaderById } from "./leader.service";
 
 export async function createGame(
+	finished: boolean,
 	name: string,
 	map: string,
 	mapSize: string,
 	speed: string,
 	turns: number,
-	winnerPlayer: string,
-	winnerLeaderId: number,
-	victoryId: number
+	winnerPlayer?: string,
+	winnerLeaderId?: number,
+	victoryId?: number
 ) {
-	const winnerCivilizationId = (await fetchLeaderById(winnerLeaderId))
-		?.civilization_id;
+	let winnerCivilizationId;
+	if (finished && winnerLeaderId)
+		winnerCivilizationId = (await fetchLeaderById(winnerLeaderId))
+			?.civilization_id;
+
 	const game = {
+		finished: finished,
 		name: name,
 		map: map,
 		map_size: mapSize,
@@ -35,10 +40,12 @@ export async function createGame(
 		turns: turns,
 		winner_player: winnerPlayer,
 		winner_leader_id: winnerLeaderId,
-		winner_civilization_id: winnerCivilizationId,
-		victory_id: victoryId,
+		winner_civilization_id: winnerCivilizationId || undefined,
+		victory_id: victoryId || undefined,
 	} as TablesInsert<"game">;
+
 	const insertedGame = await insertGame(game);
+
 	return insertedGame;
 }
 
