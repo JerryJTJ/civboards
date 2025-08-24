@@ -44,7 +44,7 @@ export default function GamesPage() {
 							Table
 						</Button>
 					</ButtonGroup>
-					<AddGameModal />
+					<AddGameModal refetch={refetch} />
 				</div>
 				{/* Janky way to keep formatting nice */}
 				{isPending && (

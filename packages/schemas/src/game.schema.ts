@@ -25,7 +25,7 @@ export const InsertGameSchema = z.object({
 	victoryId: z.coerce.number().int().gte(1).lte(6),
 	players: z.array(PlayerSchema).min(2).max(20),
 	expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
-	gamemodes: z.array(z.int().gte(1).lte(7)).max(7).optional(),
+	gamemodes: z.array(z.int().gte(1).lte(7)).max(8).optional(),
 });
 
 export const DisplayGameSchema = z.object({

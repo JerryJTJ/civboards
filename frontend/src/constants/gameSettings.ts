@@ -99,6 +99,7 @@ export const GAMEMODES: Gamemode[] = [
 	{ id: 5, label: "Heroes & Legends" },
 	{ id: 6, label: "Monopolies and Corporations" },
 	{ id: 7, label: "Barbarian Clans" },
+	{ id: 8, label: "Zombie Defense" },
 ];
 
 export interface Expansion {

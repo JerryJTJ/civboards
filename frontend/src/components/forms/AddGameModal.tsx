@@ -19,12 +19,30 @@ import addGameReducer, {
 	GameOptionsAction,
 } from "./addGameReducer";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
-import { InsertGameSchema } from "@civboards/schemas";
+import { DisplayGameSchemaArray, InsertGameSchema } from "@civboards/schemas";
 import { insertGame } from "@/api/games";
 import UploadFileInput from "../UploadFileInput";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
+import {
+	QueryObserverResult,
+	RefetchOptions,
+	useMutation,
+} from "@tanstack/react-query";
 
-export default function AddGameModal() {
+interface AddGameModalProps {
+	refetch: (
+		options?: RefetchOptions | undefined
+	) => Promise<
+		QueryObserverResult<
+			z.infer<typeof DisplayGameSchemaArray> | undefined,
+			Error
+		>
+	>;
+}
+
+export default function AddGameModal(props: AddGameModalProps) {
+	const { refetch } = props;
+
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [form, dispatch] = useReducer<GameOptions, [action: AddFormAction]>(
 		addGameReducer,
@@ -60,6 +78,32 @@ export default function AddGameModal() {
 		dispatch({ field: "player", type: "change", payload: civ });
 	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
 		dispatch({ field: "parse", payload: parsed });
+
+	// API
+	const mutation = useMutation({
+		mutationFn: insertGame,
+		onError: () => {
+			addToast({
+				title: "Error",
+				color: "danger",
+				description: "Failed to add game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+			refetch();
+		},
+		onSuccess: () => {
+			addToast({
+				title: "Success",
+				color: "success",
+				description: "Added game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+			refetch();
+			onModalChange();
+		},
+	});
 
 	//Validation
 	type ValidateResult =
@@ -116,6 +160,7 @@ export default function AddGameModal() {
 
 	// Submitting
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		console.log(form);
 		e.preventDefault();
 		const validate = validateRequest(form);
 
@@ -130,25 +175,7 @@ export default function AddGameModal() {
 			return;
 		}
 
-		const response = await insertGame(validate.result.data);
-		if (response) {
-			addToast({
-				title: "Success",
-				color: "success",
-				description: "Added game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-			onModalChange();
-		} else {
-			addToast({
-				title: "Error",
-				color: "danger",
-				description: "Failed to add game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-		}
+		await mutation.mutateAsync(validate.result.data);
 	};
 
 	return (
