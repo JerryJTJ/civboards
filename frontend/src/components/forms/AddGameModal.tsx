@@ -49,13 +49,8 @@ export default function AddGameModal(props: AddGameModalProps) {
 		DEFAULT_ADD_FORM
 	);
 
-	// Modal open/close
-	const onModalChange = () => {
-		dispatch({ field: "reset" });
-		onOpenChange();
-	};
-
 	// Dispatches
+	const resetFormDispatch = () => dispatch({ field: "reset" });
 	const gameOptionsDispatch = (
 		option: string,
 		value: string | number | Set<number> | boolean
@@ -78,6 +73,12 @@ export default function AddGameModal(props: AddGameModalProps) {
 		dispatch({ field: "player", type: "change", payload: civ });
 	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
 		dispatch({ field: "parse", payload: parsed });
+
+	// Modal open/close
+	const onModalChange = () => {
+		resetFormDispatch();
+		onOpenChange();
+	};
 
 	// API
 	const mutation = useMutation({
@@ -209,6 +210,7 @@ export default function AddGameModal(props: AddGameModalProps) {
 								<ModalBody>
 									<UploadFileInput
 										dispatch={parseSaveDispatch}
+										reset={resetFormDispatch}
 									/>
 									<div className="flex flex-row justify-evenly">
 										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
