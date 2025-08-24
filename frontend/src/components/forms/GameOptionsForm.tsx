@@ -33,7 +33,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					dispatch("finished", !form.finished);
 				}}
 			>
-				Finished
+				<p className="font-normal text-small text-foreground-500">
+					Game Finished
+				</p>
 			</Checkbox>
 			<Input
 				label="Game Name"

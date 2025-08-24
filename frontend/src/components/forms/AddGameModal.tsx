@@ -204,7 +204,7 @@ export default function AddGameModal(props: AddGameModalProps) {
 					<ModalContent className="max-h-screen overflow-y-auto">
 						{() => (
 							<>
-								<ModalHeader className="flex flex-rowgap-2">
+								<ModalHeader className="flex flex-row gap-2">
 									Add Game
 								</ModalHeader>
 								<ModalBody>
