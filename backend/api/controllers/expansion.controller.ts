@@ -36,6 +36,7 @@ export async function handleGetExpansionById(
 }
 
 export async function handleGetAllExpansions(
+	_req: Request,
 	res: Response,
 	next: NextFunction
 ) {

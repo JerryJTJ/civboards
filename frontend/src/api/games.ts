@@ -62,3 +62,18 @@ export async function getAllGameWinners(): Promise<
 		console.log(error);
 	}
 }
+
+export async function deleteGameById(id: number): Promise<boolean> {
+	try {
+		const response = await instance({
+			url: `game/id/${id}`,
+			method: "delete",
+		});
+		if (response.status === 204) return true;
+	} catch (error) {
+		console.log(error);
+		return false;
+	}
+
+	return false;
+}

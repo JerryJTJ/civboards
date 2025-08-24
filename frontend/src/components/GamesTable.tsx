@@ -19,8 +19,11 @@ import {
 import type { SVGProps } from "react";
 import { SortDescriptor } from "@react-types/shared";
 import { SearchIcon, VerticalDotsIcon } from "./icons";
-import { DisplayGameSchemaArray } from "@civboards/schemas";
+import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import z from "zod";
+import { useMutation } from "@tanstack/react-query";
+import { deleteGameById } from "@/api/games";
+import { addToast } from "@heroui/toast";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -45,7 +48,13 @@ export const columns = [
 
 export default function GamesTable(props: GamesTableProps) {
 	const { games } = props;
-	type Game = (typeof games)[0];
+
+	// API
+	const mutation = useMutation({
+		mutationFn: deleteGameById,
+	});
+
+	type Game = z.infer<typeof DisplayGameSchema>;
 
 	const [filterValue, setFilterValue] = React.useState("");
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -154,10 +163,35 @@ export default function GamesTable(props: GamesTableProps) {
 									<VerticalDotsIcon className="text-default-300" />
 								</Button>
 							</DropdownTrigger>
-							<DropdownMenu>
+							<DropdownMenu selectionMode="single">
 								<DropdownItem key="view">View</DropdownItem>
-								{/* <DropdownItem key="edit">Edit</DropdownItem> */}
-								<DropdownItem key="delete">Delete</DropdownItem>
+								<DropdownItem
+									key="delete"
+									onPress={async () => {
+										mutation.mutate(game.id);
+										if (mutation.isError) {
+											addToast({
+												title: "Error",
+												color: "warning",
+												description:
+													"Failed to delete game",
+												timeout: 3000,
+												shouldShowTimeoutProgress: true,
+											});
+										} else if (mutation.isSuccess) {
+											addToast({
+												title: "Success",
+												color: "default",
+												description:
+													"Successfully deleted game",
+												timeout: 3000,
+												shouldShowTimeoutProgress: true,
+											});
+										}
+									}}
+								>
+									Delete
+								</DropdownItem>
 							</DropdownMenu>
 						</Dropdown>
 					</div>

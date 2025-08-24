@@ -48,6 +48,17 @@ export async function getGameById(id: number) {
 export async function deleteGameById(id: number) {
 	const response = await supabase
 		.from("game")
+		.delete()
+		.eq("id", id)
+		.eq("active", true);
+
+	if (response.error)
+		throwDatabaseError("Failed to delete game", response.error);
+}
+
+export async function softDeleteGameById(id: number): Promise<void> {
+	const response = await supabase
+		.from("game")
 		.update({ active: false })
 		.eq("id", id);
 

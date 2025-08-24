@@ -8,6 +8,7 @@ import {
 	getAllGames,
 	getGameById,
 	insertGame,
+	softDeleteGameById,
 } from "../repositories/game.repository";
 import { removeGameExpansionByGameId } from "./gameExpansion.service";
 import { removeGameGamemodesByGameId } from "./gameGamemode.service";
@@ -49,7 +50,7 @@ export async function fetchGameById(id: number) {
 	return game;
 }
 
-export async function removeGameById(id: number) {
+export async function removeGameById(id: number): Promise<void> {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
@@ -59,6 +60,13 @@ export async function removeGameById(id: number) {
 		removeGameExpansionByGameId(id),
 		removeGameGamemodesByGameId(id),
 	]);
+}
+
+export async function softRemoveGameById(id: number): Promise<void> {
+	if (!id) throwValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
+
+	await softDeleteGameById(id);
 }
 
 export async function fetchAllGames() {

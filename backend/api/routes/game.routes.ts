@@ -6,5 +6,6 @@ GameRouter.post("/add", GameController.handleCreateGame);
 GameRouter.get("/id/:id", GameController.handleGetGameById);
 GameRouter.get("/all", GameController.handleGetAllGames);
 GameRouter.get("/winners", GameController.handleGetAllGameWinners);
+GameRouter.delete("/id/:id", GameController.handleSoftDeleteGame);
 
 export default GameRouter;

@@ -4,6 +4,7 @@ import {
 	fetchAllGames,
 	fetchGameById,
 	removeGameById,
+	softRemoveGameById,
 } from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
 import {
@@ -125,7 +126,7 @@ export async function handleGetGameById(
 				expansions: expansions,
 			});
 		}
-		return res.status(404);
+		return res.status(404).end();
 	} catch (error) {
 		next(error);
 	}
@@ -178,7 +179,7 @@ export async function handleGetAllGames(
 		return res.status(400).json(z.treeifyError(validate.error));
 	}
 
-	return res.status(400);
+	return res.status(400).end();
 }
 
 export async function handleGetAllGameWinners(
@@ -195,6 +196,21 @@ export async function handleGetAllGameWinners(
 		}
 
 		return res.status(200).json(winnerJson);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function handleSoftDeleteGame(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const { id } = req.params;
+
+	try {
+		await softRemoveGameById(Number(id));
+		return res.status(202).end();
 	} catch (error) {
 		next(error);
 	}
