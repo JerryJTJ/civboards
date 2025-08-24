@@ -21,12 +21,24 @@ import { SortDescriptor } from "@react-types/shared";
 import { SearchIcon, VerticalDotsIcon } from "./icons";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import z from "zod";
-import { useMutation } from "@tanstack/react-query";
+import {
+	QueryObserverResult,
+	RefetchOptions,
+	useMutation,
+} from "@tanstack/react-query";
 import { deleteGameById } from "@/api/games";
 import { addToast } from "@heroui/toast";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
+	refetch: (
+		options?: RefetchOptions | undefined
+	) => Promise<
+		QueryObserverResult<
+			z.infer<typeof DisplayGameSchemaArray> | undefined,
+			Error
+		>
+	>;
 }
 
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
@@ -47,11 +59,32 @@ export const columns = [
 ];
 
 export default function GamesTable(props: GamesTableProps) {
-	const { games } = props;
+	const { games, refetch } = props;
 
 	// API
 	const mutation = useMutation({
 		mutationFn: deleteGameById,
+		onError: () => {
+			addToast({
+				title: "Error",
+				color: "warning",
+				description: "Failed to delete game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+		},
+		onSuccess: () => {
+			addToast({
+				title: "Success",
+				color: "success",
+				description: "Successfully deleted game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+		},
+		onSettled: () => {
+			refetch();
+		},
 	});
 
 	type Game = z.infer<typeof DisplayGameSchema>;
@@ -168,26 +201,7 @@ export default function GamesTable(props: GamesTableProps) {
 								<DropdownItem
 									key="delete"
 									onPress={async () => {
-										mutation.mutate(game.id);
-										if (mutation.isError) {
-											addToast({
-												title: "Error",
-												color: "warning",
-												description:
-													"Failed to delete game",
-												timeout: 3000,
-												shouldShowTimeoutProgress: true,
-											});
-										} else if (mutation.isSuccess) {
-											addToast({
-												title: "Success",
-												color: "default",
-												description:
-													"Successfully deleted game",
-												timeout: 3000,
-												shouldShowTimeoutProgress: true,
-											});
-										}
+										await mutation.mutateAsync(game.id);
 									}}
 								>
 									Delete
@@ -240,7 +254,7 @@ export default function GamesTable(props: GamesTableProps) {
 		const suffix = filteredItems.length === 1 ? "" : "s";
 
 		return `${prefix} ${filteredItems.length} game${suffix}`;
-	}, [filterValue]);
+	}, [filterValue, games]);
 
 	const topContent = React.useMemo(() => {
 		return (

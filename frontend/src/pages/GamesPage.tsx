@@ -13,7 +13,7 @@ type TabView = "cards" | "table";
 export default function GamesPage() {
 	const [currTab, setCurrTab] = React.useState<TabView>("cards");
 
-	const { data, isPending } = useQuery({
+	const { data, isPending, refetch } = useQuery({
 		queryKey: ["games"],
 		queryFn: getAllGames,
 	});
@@ -69,7 +69,10 @@ export default function GamesPage() {
 							) : null}
 							{currTab === "table" ? (
 								<>
-									<GamesTable games={data!} />
+									<GamesTable
+										games={data!}
+										refetch={refetch}
+									/>
 								</>
 							) : null}
 						</>
