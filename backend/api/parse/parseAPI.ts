@@ -58,7 +58,9 @@ async function sanitizeSaveFile(
 	const gameState = {
 		speed: parsed.speed.replace("GAMESPEED_", "").toLowerCase(),
 		turns: parsed.turns,
-		map: toTitleCase(parsed.map.replace("MAPSIZE_", "")),
+		map: toTitleCase(
+			parsed.map.replace(/^\{[^}]+\}Maps\/|(\.Civ6Map|\.lua)$/g, "")
+		),
 		mapSize: parsed.mapSize.replace("MAPSIZE_", "").toLowerCase(),
 	};
 
