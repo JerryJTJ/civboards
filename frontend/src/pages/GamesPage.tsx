@@ -24,7 +24,7 @@ export default function GamesPage() {
 				<div className="grid grid-cols-2 pb-4 lg:pb-0">
 					<ButtonGroup className="justify-self-start ">
 						<Button
-							className="border-white/20 border-1"
+							className="border-white/20 border"
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("cards");
@@ -34,7 +34,7 @@ export default function GamesPage() {
 							Cards
 						</Button>
 						<Button
-							className=" border-white/20 border-1"
+							className=" border-white/20 border"
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("table");

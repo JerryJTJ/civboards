@@ -184,7 +184,7 @@ export default function AddGameModal(props: AddGameModalProps) {
 	return (
 		<>
 			<Button
-				className="justify-self-end border-white/20 border-1"
+				className="border justify-self-end border-white/20"
 				variant="shadow"
 				color="primary"
 				endContent={<PlusIcon />}

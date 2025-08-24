@@ -35,7 +35,7 @@ export const Navbar = () => {
 	// 		labelPlacement="outside"
 	// 		placeholder="Search..."
 	// 		startContent={
-	// 			<SearchIcon className="flex-shrink-0 text-base pointer-events-none text-default-400" />
+	// 			<SearchIcon className="shrink-0 text-base pointer-events-none text-default-400" />
 	// 		}
 	// 		type="search"
 	// 	/>
