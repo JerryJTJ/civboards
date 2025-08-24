@@ -162,7 +162,6 @@ export default function AddGameModal(props: AddGameModalProps) {
 
 	// Submitting
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		console.log(form);
 		e.preventDefault();
 		const validate = validateRequest(form);
 
