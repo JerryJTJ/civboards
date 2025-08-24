@@ -17,6 +17,7 @@ import { fetchLeaderById } from "./leader.service";
 
 export async function createGame(
 	finished: boolean,
+	date: string | undefined,
 	name: string,
 	map: string,
 	mapSize: string,
@@ -33,6 +34,7 @@ export async function createGame(
 
 	const game = {
 		finished: finished,
+		date: date,
 		name: name,
 		map: map,
 		map_size: mapSize,

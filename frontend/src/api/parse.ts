@@ -17,6 +17,7 @@ export async function parseSaveFile(
 				data: {
 					...response.data,
 					name: save.name.replace(".Civ6Save", ""),
+					date: save.lastModified,
 				},
 			};
 		}

@@ -40,6 +40,7 @@ export async function handleCreateGame(
 	}
 	const {
 		finished,
+		date,
 		name,
 		map,
 		mapSize,
@@ -56,6 +57,7 @@ export async function handleCreateGame(
 	try {
 		const createdGame = await createGame(
 			finished,
+			date,
 			name,
 			map,
 			mapSize,
@@ -108,8 +110,8 @@ export async function handleGetGameById(
 		if (game) {
 			return res.status(200).json({
 				id: game.id,
+				date: game.date,
 				finished: game.finished,
-				createdAt: game.created_at,
 				map: game.map,
 				mapSize: game.map_size,
 				name: game.name,
@@ -151,8 +153,8 @@ export async function handleGetAllGames(
 
 					return {
 						id: game.id,
+						date: game.date,
 						finished: game.finished,
-						createdAt: game.created_at,
 						map: game.map,
 						mapSize: game.map_size,
 						name: game.name,

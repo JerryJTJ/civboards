@@ -32,7 +32,7 @@ export default function GamesCard(props: GameCardProps) {
 			/>
 			<CardFooter className="flex-col backdrop-blur-md text-foreground/90 justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden absolute before:rounded-xl rounded-large w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
 				<b>{game.name}</b>
-				<em>{new Date(game.createdAt).toLocaleDateString()}</em>
+				<em>{new Date(game.date).toLocaleDateString()}</em>
 				<em>{game.map}</em>
 				{humans.join(", ")}
 			</CardFooter>

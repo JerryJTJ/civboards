@@ -18,6 +18,7 @@ export const InsertGameSchema = z
 	.object({
 		finished: z.boolean(),
 		name: z.string(),
+		date: z.string().optional(),
 		map: z.string(),
 		mapSize: z.string(),
 		speed: z.string(),
@@ -44,7 +45,7 @@ export const InsertGameSchema = z
 export const DisplayGameSchema = z.object({
 	...InsertGameSchema.shape,
 	id: z.number(),
-	createdAt: z.string(),
+	date: z.string(),
 	isFinished: z.any().optional(),
 	winnerCivilizationId: z.number().optional(),
 });

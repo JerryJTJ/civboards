@@ -109,15 +109,17 @@ export default function GamesTable(props: GamesTableProps) {
 					cmp = a.name.localeCompare(b.name);
 					break;
 				case "date":
-					const aDate = new Date(a.createdAt);
-					const bDate = new Date(b.createdAt);
+					const aDate = new Date(a.date);
+					const bDate = new Date(b.date);
 					cmp = aDate > bDate ? 1 : aDate === bDate ? 0 : -1;
 					break;
 				case "map":
 					cmp = a.map.localeCompare(b.map);
 					break;
 				case "winner":
-					cmp = a.winnerPlayer.localeCompare(b.winnerPlayer);
+					cmp = (a.winnerPlayer || "").localeCompare(
+						b.winnerPlayer || ""
+					);
 					break;
 				default:
 					break;
@@ -139,10 +141,10 @@ export default function GamesTable(props: GamesTableProps) {
 					game.map
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
-					game.winnerPlayer
+					(game.winnerPlayer || "")
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
-					new Date(game.createdAt)
+					new Date(game.date)
 						.toLocaleDateString()
 						.toLowerCase()
 						.includes(filterValue.toLowerCase())
@@ -170,7 +172,7 @@ export default function GamesTable(props: GamesTableProps) {
 			case "date":
 				return (
 					<p className="text-bold text-small">
-						{new Date(game.createdAt).toLocaleDateString()}
+						{new Date(game.date).toLocaleDateString()}
 					</p>
 				);
 			case "map":

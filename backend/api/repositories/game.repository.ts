@@ -7,6 +7,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 		.from("game")
 		.insert({
 			finished: game.finished,
+			date: game.date,
 			name: game.name,
 			map: game.map,
 			map_size: game.map_size,
@@ -45,6 +46,17 @@ export async function getGameById(id: number) {
 	return data;
 }
 
+export async function getAllGames() {
+	const { data, error } = await supabase
+		.from("game")
+		.select()
+		.eq("active", true);
+
+	if (error || !data) throwDatabaseError("Failed to get all games", error);
+
+	return data;
+}
+
 export async function deleteGameById(id: number) {
 	const response = await supabase
 		.from("game")
@@ -64,17 +76,6 @@ export async function softDeleteGameById(id: number): Promise<void> {
 
 	if (response.error)
 		throwDatabaseError("Failed to delete game", response.error);
-}
-
-export async function getAllGames() {
-	const { data, error } = await supabase
-		.from("game")
-		.select()
-		.eq("active", true);
-
-	if (error || !data) throwDatabaseError("Failed to get all games", error);
-
-	return data;
 }
 
 export async function getAllGameWinners() {

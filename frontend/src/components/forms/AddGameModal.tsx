@@ -139,6 +139,7 @@ export default function AddGameModal(props: AddGameModalProps) {
 
 		const result = InsertGameSchema.safeParse({
 			finished: form.finished,
+			date: form.date ? new Date(form.date).toISOString() : undefined,
 			name: form.name,
 			map: form.map,
 			mapSize: form.mapSize,

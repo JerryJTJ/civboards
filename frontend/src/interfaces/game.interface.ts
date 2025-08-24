@@ -9,6 +9,7 @@ export interface Civ {
 
 export interface GameOptions {
 	name: string;
+	date: number | undefined;
 	finished: boolean;
 	speed: string;
 	map: string;

@@ -1,12 +1,5 @@
 export const LEADERS = [
 	{
-		id: 1,
-		name: "Teddy Roosevelt",
-		code: "Replaced with Persona pack.",
-		active: false,
-		civilization_id: 1,
-	},
-	{
 		id: 2,
 		name: "Teddy Roosevelt (Bull Moose)",
 		code: "LEADER_T_ROOSEVELT",
