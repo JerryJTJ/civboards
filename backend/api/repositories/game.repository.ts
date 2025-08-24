@@ -16,6 +16,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 			winner_civilization_id: game.winner_civilization_id,
 			is_finished: game.is_finished,
 			victory_id: game.victory_id,
+			active: true,
 		})
 		.select();
 
@@ -36,6 +37,7 @@ export async function getGameById(id: number) {
 		.from("game")
 		.select()
 		.eq("id", id)
+		.eq("active", true)
 		.single();
 
 	if (error || !data) throwDatabaseError("Failed to get game", error);
@@ -44,14 +46,20 @@ export async function getGameById(id: number) {
 }
 
 export async function deleteGameById(id: number) {
-	const response = await supabase.from("game").delete().eq("id", id);
+	const response = await supabase
+		.from("game")
+		.update({ active: false })
+		.eq("id", id);
 
 	if (response.error)
 		throwDatabaseError("Failed to delete game", response.error);
 }
 
 export async function getAllGames() {
-	const { data, error } = await supabase.from("game").select();
+	const { data, error } = await supabase
+		.from("game")
+		.select()
+		.eq("active", true);
 
 	if (error || !data) throwDatabaseError("Failed to get all games", error);
 
