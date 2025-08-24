@@ -1,28 +1,24 @@
+import { getAllGameWinners } from "@/api/games";
 import LeaderboardTable from "@/components/LeaderboardTable";
-import { games } from "@/constants/mockData";
+import { Spinner } from "@heroui/spinner";
 import DefaultLayout from "@/layouts/default";
+import { useQuery } from "@tanstack/react-query";
 
 export default function LeaderboardPage() {
 	//Find players & wins
-	const players = new Map<string, number>();
-
-	for (const game of games) {
-		for (const player of game.players) {
-			if (!players.has(player)) players.set(player, 0);
-		}
-
-		players.set(game.winner, (players.get(game.winner) ?? 0) + 1);
-	}
-
-	const leaderboardData = Array.from(players, ([player, wins]) => ({
-		player: player,
-		wins: wins,
-	}));
+	const { data, isPending } = useQuery({
+		queryKey: ["winners_players"],
+		queryFn: getAllGameWinners,
+	});
 
 	return (
 		<DefaultLayout>
 			<section className="flex flex-col items-center justify-center w-full gap-4 py-4 2xl:py-8 md:w-[40vw]">
-				<LeaderboardTable leaderboardData={leaderboardData} />
+				{isPending ? (
+					<Spinner />
+				) : (
+					<LeaderboardTable leaderboardData={data!} />
+				)}
 			</section>
 		</DefaultLayout>
 	);

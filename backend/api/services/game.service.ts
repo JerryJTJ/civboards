@@ -4,6 +4,7 @@ import { throwNotFoundError, throwValidationError } from "../../types/Errors";
 import {
 	deleteGameById,
 	doesGameIdExist,
+	getAllGameWinners,
 	getAllGames,
 	getGameById,
 	insertGame,
@@ -62,4 +63,23 @@ export async function removeGameById(id: number) {
 
 export async function fetchAllGames() {
 	return await getAllGames();
+}
+
+export async function fetchAllGameWinners() {
+	const gameWinners = await getAllGameWinners();
+
+	const winners = new Map<string, number>();
+
+	gameWinners?.forEach((winner) => {
+		if (typeof winner.winner_player === "string") {
+			winners.set(
+				winner.winner_player,
+				winners.has(winner.winner_player)
+					? winners.get(winner.winner_player)! + 1
+					: 1
+			);
+		}
+	});
+
+	return winners;
 }

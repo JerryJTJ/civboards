@@ -1,5 +1,6 @@
 import {
 	createGame,
+	fetchAllGameWinners,
 	fetchAllGames,
 	fetchGameById,
 	removeGameById,
@@ -178,4 +179,23 @@ export async function handleGetAllGames(
 	}
 
 	return res.status(400);
+}
+
+export async function handleGetAllGameWinners(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const winners = await fetchAllGameWinners();
+		const winnerJson = new Array<{ player: string; wins: number }>();
+
+		for (const [player, wins] of winners) {
+			winnerJson.push({ player: player, wins: wins });
+		}
+
+		return res.status(200).json(winnerJson);
+	} catch (error) {
+		next(error);
+	}
 }

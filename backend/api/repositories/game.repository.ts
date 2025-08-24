@@ -57,3 +57,11 @@ export async function getAllGames() {
 
 	return data;
 }
+
+export async function getAllGameWinners() {
+	const { data, error } = await supabase.from("game").select("winner_player");
+
+	if (error || !data) throwDatabaseError("Failed to get winners", error);
+
+	return data;
+}

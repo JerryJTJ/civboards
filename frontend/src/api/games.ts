@@ -48,3 +48,17 @@ export async function getGameByGameId(id: number) {
 		return false;
 	}
 }
+
+export async function getAllGameWinners(): Promise<
+	Array<{ player: string; wins: number }> | undefined
+> {
+	try {
+		const response = await instance({
+			url: "/game/winners",
+			method: "get",
+		});
+		if (response.status === 200) return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+}
