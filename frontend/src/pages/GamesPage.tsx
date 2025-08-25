@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, ButtonGroup } from "@heroui/button";
-import { Spinner } from "@heroui/spinner";
 import { useQuery } from "@tanstack/react-query";
 
 import DefaultLayout from "@/layouts/default";
@@ -8,6 +7,7 @@ import GamesCard from "@/components/GamesCard";
 import GamesTable from "@/components/GamesTable";
 import AddGameModal from "@/components/forms/AddGameModal";
 import { getAllGames } from "@/api/games";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 type TabView = "cards" | "table";
 
@@ -47,19 +47,13 @@ export default function GamesPage() {
 					</ButtonGroup>
 					<AddGameModal />
 				</div>
-				{/* Janky way to keep formatting nice */}
-				{isPending && (
-					<div className="self-center py-10">
-						<Spinner />
-					</div>
-				)}
+				{/* Janky formatting to keep buttons positioned while loading */}
+				{isPending && <LoadingSpinner height={20} />}
 				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
 					{!isPending && (
 						<>
-							{" "}
 							{currTab === "cards" ? (
 								<>
-									{" "}
 									{data?.map((game) => (
 										<GamesCard
 											key={`${game.id}-card`}

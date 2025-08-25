@@ -1,4 +1,3 @@
-import { Spinner } from "@heroui/spinner";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { ButtonGroup, Button } from "@heroui/button";
@@ -11,6 +10,7 @@ import {
 } from "@/api/leaderboards";
 import DefaultLayout from "@/layouts/default";
 import LeaderboardTable from "@/components/LeaderboardTable";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 function sanitizeForLeaderboard(type: LeaderboardView, data: Array<any>) {
 	switch (type) {
@@ -44,6 +44,8 @@ export type LeaderboardView = "player" | "leader" | "civilization" | "victory";
 export default function LeaderboardPage() {
 	const [tab, setTab] = useState<LeaderboardView>("victory");
 
+	const loadingSpinner = <LoadingSpinner height={20} />;
+
 	//API
 	const [players, leaders, civilizations, victories] = useQueries({
 		queries: [
@@ -74,7 +76,7 @@ export default function LeaderboardPage() {
 		switch (tab) {
 			case "player":
 				return players.isPending ? (
-					<Spinner />
+					loadingSpinner
 				) : (
 					<LeaderboardTable
 						leaderboardData={
@@ -85,7 +87,7 @@ export default function LeaderboardPage() {
 				);
 			case "leader":
 				return leaders.isPending ? (
-					<Spinner />
+					loadingSpinner
 				) : (
 					<LeaderboardTable
 						leaderboardData={
@@ -96,7 +98,7 @@ export default function LeaderboardPage() {
 				);
 			case "civilization":
 				return civilizations.isPending ? (
-					<Spinner />
+					loadingSpinner
 				) : (
 					<LeaderboardTable
 						leaderboardData={
@@ -107,7 +109,7 @@ export default function LeaderboardPage() {
 				);
 			case "victory":
 				return victories.isPending ? (
-					<Spinner />
+					loadingSpinner
 				) : (
 					<LeaderboardTable
 						leaderboardData={

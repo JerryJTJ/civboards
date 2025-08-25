@@ -32,7 +32,7 @@ export const Navbar = () => {
 	// 		labelPlacement="outside"
 	// 		placeholder="Search..."
 	// 		startContent={
-	// 			<SearchIcon className="shrink-0 text-base pointer-events-none text-default-400" />
+	// 			<SearchIcon className="text-base pointer-events-none shrink-0 text-default-400" />
 	// 		}
 	// 		type="search"
 	// 	/>
@@ -102,15 +102,16 @@ export const Navbar = () => {
 					{siteConfig.navMenuItems.map((item, index) => (
 						<NavbarMenuItem key={`${item}-${index}`}>
 							<Link
-								color={
-									index === 2
-										? "primary"
-										: index ===
-											  siteConfig.navMenuItems.length - 1
-											? "danger"
-											: "foreground"
-								}
-								href="#"
+								color="foreground"
+								// color={
+								// 	index === 2
+								// 		? "primary"
+								// 		: index ===
+								// 			  siteConfig.navMenuItems.length - 1
+								// 			? "danger"
+								// 			: "foreground"
+								// }
+								href={item.href}
 								size="lg"
 							>
 								{item.label}
