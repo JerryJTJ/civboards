@@ -42,6 +42,7 @@ export default function CivField(props: CivFieldProps) {
 			</Autocomplete>
 			{civ.isHuman && (
 				<Input
+					isRequired
 					className="w-3/5"
 					variant="bordered"
 					label="Player Name"
