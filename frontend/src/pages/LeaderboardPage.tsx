@@ -1,15 +1,16 @@
-import LeaderboardTable from "@/components/LeaderboardTable";
 import { Spinner } from "@heroui/spinner";
-import DefaultLayout from "@/layouts/default";
 import { useQueries } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
+import { ButtonGroup, Button } from "@heroui/button";
+
 import {
 	getAllGameVictoryIds,
 	getAllGameWinnerCivilizationIds,
 	getAllGameWinnerLeaderIds,
 	getAllGameWinners,
 } from "@/api/leaderboards";
-import { ButtonGroup, Button } from "@heroui/button";
+import DefaultLayout from "@/layouts/default";
+import LeaderboardTable from "@/components/LeaderboardTable";
 
 function sanitizeForLeaderboard(type: LeaderboardView, data: Array<any>) {
 	switch (type) {
@@ -73,55 +74,59 @@ export default function LeaderboardPage() {
 		switch (tab) {
 			case "player":
 				return players.isPending ? (
-					<Spinner></Spinner>
+					<Spinner />
 				) : (
 					<LeaderboardTable
-						view={tab}
 						leaderboardData={
 							sanitizeForLeaderboard(tab, players.data!)!
 						}
+						view={tab}
 					/>
 				);
 			case "leader":
 				return leaders.isPending ? (
-					<Spinner></Spinner>
+					<Spinner />
 				) : (
 					<LeaderboardTable
-						view={tab}
 						leaderboardData={
 							sanitizeForLeaderboard(tab, leaders.data!)!
 						}
+						view={tab}
 					/>
 				);
 			case "civilization":
 				return civilizations.isPending ? (
-					<Spinner></Spinner>
+					<Spinner />
 				) : (
 					<LeaderboardTable
-						view={tab}
 						leaderboardData={
 							sanitizeForLeaderboard(tab, civilizations.data!)!
 						}
+						view={tab}
 					/>
 				);
 			case "victory":
 				return victories.isPending ? (
-					<Spinner></Spinner>
+					<Spinner />
 				) : (
 					<LeaderboardTable
-						view={tab}
 						leaderboardData={
 							sanitizeForLeaderboard(tab, victories.data!)!
 						}
+						view={tab}
 					/>
 				);
 		}
 	}, [
 		tab,
 		players.isPending,
+		players.data,
 		leaders.isPending,
+		leaders.data,
 		civilizations.isPending,
+		civilizations.data,
 		victories.isPending,
+		victories.data,
 	]);
 
 	return (
@@ -130,41 +135,41 @@ export default function LeaderboardPage() {
 				<ButtonGroup className="justify-self-start ">
 					<Button
 						className="border border-white/20"
+						color={tab === "player" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
 							setTab("player");
 						}}
-						color={tab === "player" ? "primary" : "default"}
 					>
 						Players
 					</Button>
 					<Button
 						className="border border-white/20"
+						color={tab === "leader" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
 							setTab("leader");
 						}}
-						color={tab === "leader" ? "primary" : "default"}
 					>
 						Leaders
 					</Button>
 					<Button
 						className="border border-white/20"
+						color={tab === "civilization" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
 							setTab("civilization");
 						}}
-						color={tab === "civilization" ? "primary" : "default"}
 					>
 						Civilizations
 					</Button>
 					<Button
 						className="border border-white/20"
+						color={tab === "victory" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
 							setTab("victory");
 						}}
-						color={tab === "victory" ? "primary" : "default"}
 					>
 						Victories
 					</Button>

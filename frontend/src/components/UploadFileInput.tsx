@@ -1,8 +1,9 @@
-import { parseSaveFile } from "@/api/parse";
-import { GameOptions } from "@/interfaces/game.interface";
 import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
+
+import { GameOptions } from "@/interfaces/game.interface";
+import { parseSaveFile } from "@/api/parse";
 
 interface UploadFileInputProps {
 	dispatch: (parsed: Partial<GameOptions>) => void;
@@ -30,14 +31,14 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 
 	return (
 		<Input
+			isClearable
+			accept=".Civ6Save"
 			className="self-center max-w-[400px]"
 			isDisabled={mutation.isPending}
-			isClearable
-			size="md"
-			type="file"
-			accept=".Civ6Save"
 			label="Upload Save File"
 			labelPlacement="inside"
+			size="md"
+			type="file"
 			onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
 				if (e.target.files) {
 					await mutation.mutateAsync(e.target.files[0]);

@@ -1,11 +1,10 @@
-import { Select, SelectItem } from "@heroui/select";
 import {
 	Autocomplete,
-	AutocompleteSection,
 	AutocompleteItem,
 } from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
+
 import { Civ } from "@/interfaces/game.interface";
 import { LEADERS, Leader } from "@/constants/civilizations";
 
@@ -25,8 +24,8 @@ export default function CivField(props: CivFieldProps) {
 				isRequired
 				defaultItems={LEADERS}
 				label="Leader"
-				variant="bordered"
 				selectedKey={civ.leaderId?.toString() || undefined}
+				variant="bordered"
 				onSelectionChange={(e) =>
 					changeDispatch({
 						leaderId: Number(e),
@@ -44,10 +43,10 @@ export default function CivField(props: CivFieldProps) {
 				<Input
 					isRequired
 					className="w-3/5"
-					variant="bordered"
 					label="Player Name"
-					value={civ.name}
 					required={true}
+					value={civ.name}
+					variant="bordered"
 					onChange={(e) =>
 						changeDispatch({
 							name: e.target.value,
@@ -58,10 +57,10 @@ export default function CivField(props: CivFieldProps) {
 			)}
 			<div className="flex flex-col content-center">
 				<Link
-					size="sm"
+					isBlock
 					className="justify-center"
 					color="foreground"
-					isBlock
+					size="sm"
 					onPress={() => {
 						changeDispatch({
 							name: civ.isHuman ? "" : civ.name,
@@ -73,9 +72,9 @@ export default function CivField(props: CivFieldProps) {
 					{civ.isHuman ? "Human" : "AI"}
 				</Link>
 				<Link
-					size="sm"
-					color="danger"
 					isBlock
+					color="danger"
+					size="sm"
 					onPress={() => {
 						deleteDispatch(civ);
 					}}

@@ -1,11 +1,12 @@
-import DefaultLayout from "@/layouts/default";
-import GamesCard from "@/components/GamesCard";
 import React from "react";
-import GamesTable from "@/components/GamesTable";
 import { Button, ButtonGroup } from "@heroui/button";
 import { Spinner } from "@heroui/spinner";
-import AddGameModal from "@/components/forms/AddGameModal";
 import { useQuery } from "@tanstack/react-query";
+
+import DefaultLayout from "@/layouts/default";
+import GamesCard from "@/components/GamesCard";
+import GamesTable from "@/components/GamesTable";
+import AddGameModal from "@/components/forms/AddGameModal";
 import { getAllGames } from "@/api/games";
 
 type TabView = "cards" | "table";
@@ -25,21 +26,21 @@ export default function GamesPage() {
 					<ButtonGroup className="justify-self-start ">
 						<Button
 							className="border border-white/20"
+							color={currTab === "cards" ? "primary" : "default"}
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("cards");
 							}}
-							color={currTab === "cards" ? "primary" : "default"}
 						>
 							Cards
 						</Button>
 						<Button
 							className="border border-white/20"
+							color={currTab === "table" ? "primary" : "default"}
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("table");
 							}}
-							color={currTab === "table" ? "primary" : "default"}
 						>
 							Table
 						</Button>

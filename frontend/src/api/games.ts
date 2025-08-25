@@ -1,5 +1,6 @@
 import { DisplayGameSchemaArray, InsertGameSchema } from "@civboards/schemas";
 import * as z from "zod";
+
 import { instance } from "./axiosInstance";
 
 export async function insertGame(
@@ -20,6 +21,7 @@ export async function getAllGames(): Promise<
 		url: "/game/all",
 		method: "get",
 	});
+
 	if (response.status === 200) {
 		return response.data;
 	}
@@ -30,6 +32,7 @@ export async function getGameByGameId(id: number) {
 		url: `/game/id/${id}`,
 		method: "get",
 	});
+
 	if (response.status === 200) return response.data;
 }
 

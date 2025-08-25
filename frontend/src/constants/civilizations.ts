@@ -1,4 +1,3 @@
-import { Key } from "@react-types/shared";
 
 export interface Leader {
 	id: number;

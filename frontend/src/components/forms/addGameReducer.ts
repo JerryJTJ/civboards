@@ -39,6 +39,7 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 					const currMapSize = MAP_SIZE.find(
 						(mapSize) => mapSize.key === form.mapSize
 					);
+
 					if (form.players.length === currMapSize?.players.max)
 						return form;
 
@@ -160,6 +161,7 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 		case "reset":
 			return DEFAULT_ADD_FORM;
 	}
+
 	//fallback case
 	return form;
 }

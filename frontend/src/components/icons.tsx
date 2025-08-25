@@ -187,46 +187,46 @@ export const SearchIcon = (props: IconSvgProps) => (
 
 export const SvgIcon: React.FC<IconSvgProps> = ({ size = 48, height }) => (
 	<svg
-		xmlns="http://www.w3.org/2000/svg"
 		fill="none"
 		height={size || height}
 		viewBox="0 0 32 32"
 		width={size || height}
+		xmlns="http://www.w3.org/2000/svg"
 	>
 		<defs>
 			<radialGradient
-				id="a"
 				cx="441.76"
 				cy="574.37"
-				r="45.3"
 				gradientTransform="matrix(1.8772 -.00822 .00262 .59677 -389.01 237.05)"
 				gradientUnits="userSpaceOnUse"
+				id="a"
+				r="45.3"
 			>
-				<stop offset="0" stopColor="#b34b1f"></stop>
-				<stop offset="1" stopColor="#993f0c"></stop>
+				<stop offset="0" stopColor="#b34b1f" />
+				<stop offset="1" stopColor="#993f0c" />
 			</radialGradient>
 		</defs>
 		<text
-			xmlSpace="preserve"
 			fill="#682b12"
-			stroke="#4a6d0c"
-			strokeWidth="0"
 			fontFamily="Georgia, serif"
 			fontSize="74.667"
+			stroke="#4a6d0c"
+			strokeWidth="0"
 			transform="translate(-115.36 -157.97)scale(.29844)"
+			xmlSpace="preserve"
 		>
 			<tspan x="391.617" y="604.708">
 				CB
 			</tspan>
 		</text>
 		<text
-			xmlSpace="preserve"
 			fill="url(#a)"
-			stroke="#7e3808"
-			strokeWidth="0"
 			fontFamily="Georgia, serif"
 			fontSize="74.667"
+			stroke="#7e3808"
+			strokeWidth="0"
 			transform="translate(-115.96 -157.38)scale(.29844)"
+			xmlSpace="preserve"
 		>
 			<tspan x="391.617" y="604.708">
 				CB

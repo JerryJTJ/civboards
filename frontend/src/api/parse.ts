@@ -4,6 +4,7 @@ export async function parseSaveFile(
 	save: File
 ): Promise<{ success: boolean; data?: any; name?: string }> {
 	const bodyData = new FormData();
+
 	bodyData.append("savefile", save);
 	try {
 		const response = await instance({
@@ -11,6 +12,7 @@ export async function parseSaveFile(
 			method: "post",
 			data: bodyData,
 		});
+
 		if (response.status === 200) {
 			return {
 				success: true,
@@ -24,8 +26,10 @@ export async function parseSaveFile(
 	} catch (error) {
 		return {
 			success: false,
+			data: error,
 		};
 	}
+
 	return {
 		success: false,
 	};

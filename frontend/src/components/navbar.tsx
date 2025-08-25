@@ -1,7 +1,4 @@
-import { Button } from "@heroui/button";
-import { Kbd } from "@heroui/kbd";
 import { Link } from "@heroui/link";
-import { Input } from "@heroui/input";
 import {
 	Navbar as HeroUINavbar,
 	NavbarBrand,
@@ -17,7 +14,7 @@ import clsx from "clsx";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
-import { Logo, SvgIcon } from "@/components/icons";
+import { SvgIcon } from "@/components/icons";
 
 export const Navbar = () => {
 	// const searchInput = (

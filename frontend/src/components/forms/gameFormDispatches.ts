@@ -1,6 +1,8 @@
-import { MAP_SIZE } from "@/constants/gameSettings";
-import { AddFormAction, GameOptionsAction } from "./addGameReducer";
 import { addToast } from "@heroui/toast";
+
+import { AddFormAction, GameOptionsAction } from "./addGameReducer";
+
+import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 // Dispatches
@@ -24,6 +26,7 @@ export function getFormDispatches(
 		const currMapSize = MAP_SIZE.find(
 			(mapSize) => mapSize.key === form.mapSize
 		);
+
 		if (form.players.length === currMapSize?.players.max) {
 			addToast({
 				title: "Error",
@@ -32,6 +35,7 @@ export function getFormDispatches(
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
+
 			return;
 		}
 
@@ -51,6 +55,7 @@ export function getFormDispatches(
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
+
 			return;
 		}
 		dispatch({ field: "player", type: "delete", payload: civ });

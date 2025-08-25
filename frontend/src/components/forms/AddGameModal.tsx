@@ -10,18 +10,22 @@ import {
 import { addToast } from "@heroui/toast";
 import { Form } from "@heroui/form";
 import { Button } from "@heroui/button";
-import { PlusIcon } from "../icons";
 import { useReducer } from "react";
+import { InsertGameSchema } from "@civboards/schemas";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+import { PlusIcon } from "../icons";
+import UploadFileInput from "../UploadFileInput";
+
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
 import addGameReducer, { AddFormAction } from "./addGameReducer";
-import { Civ, GameOptions } from "@/interfaces/game.interface";
-import { InsertGameSchema } from "@civboards/schemas";
-import { insertGame } from "@/api/games";
-import UploadFileInput from "../UploadFileInput";
-import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getFormDispatches } from "./gameFormDispatches";
+
+import { Civ, GameOptions } from "@/interfaces/game.interface";
+import { insertGame } from "@/api/games";
+import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
+
 
 export default function AddGameModal() {
 	const queryClient = useQueryClient();
@@ -80,6 +84,7 @@ export default function AddGameModal() {
 		// Unique player names & >= 2 humans
 		const names = new Set<string>();
 		let humans: number = 0;
+
 		form.players.forEach((player) => {
 			if (player.isHuman) {
 				names.add(player.name);
@@ -97,6 +102,7 @@ export default function AddGameModal() {
 		const winner = form.players.find(
 			(player) => player.key === form.winner
 		);
+
 		if (!winner && form.finished)
 			return { errors: true, message: "Can't find winner" };
 
@@ -115,6 +121,7 @@ export default function AddGameModal() {
 			expansions: Array.from(form.expansions),
 			gamemodes: Array.from(form.gamemodes),
 		});
+
 		if (!result.success)
 			return {
 				errors: true,
@@ -137,6 +144,7 @@ export default function AddGameModal() {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
+
 			return;
 		}
 
@@ -147,9 +155,9 @@ export default function AddGameModal() {
 		<>
 			<Button
 				className="border justify-self-end border-white/20"
-				variant="shadow"
 				color="primary"
 				endContent={<PlusIcon />}
+				variant="shadow"
 				onPress={onOpen}
 			>
 				Add Game
@@ -158,8 +166,8 @@ export default function AddGameModal() {
 				className="max-h-screen"
 				isOpen={isOpen}
 				placement="top-center"
-				onOpenChange={onModalChange}
 				size="5xl"
+				onOpenChange={onModalChange}
 			>
 				<Form onSubmit={onSubmit}>
 					{" "}
@@ -185,10 +193,10 @@ export default function AddGameModal() {
 													(civ: Civ) => (
 														<CivField
 															key={civ.key}
-															civ={civ}
 															changeDispatch={
 																dispatches.changeCivDispatch
 															}
+															civ={civ}
 															deleteDispatch={
 																dispatches.deleteCivDispatch
 															}
@@ -222,10 +230,10 @@ export default function AddGameModal() {
 												Game Options
 											</p>
 											<GameOptionsForm
-												form={form}
 												dispatch={
 													dispatches.gameOptionsDispatch
 												}
+												form={form}
 											/>
 										</div>
 									</div>
@@ -239,9 +247,9 @@ export default function AddGameModal() {
 										Close
 									</Button>
 									<Button
+										color="primary"
 										type="submit"
 										variant="shadow"
-										color="primary"
 									>
 										Add
 									</Button>

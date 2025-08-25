@@ -7,6 +7,7 @@ export async function getAllGameWinners(): Promise<
 		url: "/game/winners/players",
 		method: "get",
 	});
+
 	if (response.status === 200) return response.data;
 }
 
@@ -17,6 +18,7 @@ export async function getAllGameWinnerLeaderIds(): Promise<
 		url: "/game/winners/leaders",
 		method: "get",
 	});
+
 	if (response.status === 200) return response.data;
 }
 
@@ -28,6 +30,7 @@ export async function getAllGameWinnerCivilizationIds(): Promise<
 		url: "/game/winners/civilizations",
 		method: "get",
 	});
+
 	if (response.status === 200) return response.data;
 }
 
@@ -38,5 +41,6 @@ export async function getAllGameVictoryIds(): Promise<
 		url: "/game/winners/victories",
 		method: "get",
 	});
+
 	if (response.status === 200) return response.data;
 }

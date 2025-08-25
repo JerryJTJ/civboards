@@ -1,3 +1,5 @@
+import type { SVGProps } from "react";
+
 import React from "react";
 import {
 	Table,
@@ -16,9 +18,7 @@ import {
 	DropdownMenu,
 	DropdownItem,
 } from "@heroui/dropdown";
-import type { SVGProps } from "react";
 import { SortDescriptor } from "@react-types/shared";
-import { SearchIcon, VerticalDotsIcon } from "./icons";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import z from "zod";
 import {
@@ -26,8 +26,11 @@ import {
 	RefetchOptions,
 	useMutation,
 } from "@tanstack/react-query";
-import { deleteGameById } from "@/api/games";
 import { addToast } from "@heroui/toast";
+
+import { SearchIcon, VerticalDotsIcon } from "./icons";
+
+import { deleteGameById } from "@/api/games";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -111,6 +114,7 @@ export default function GamesTable(props: GamesTableProps) {
 				case "date":
 					const aDate = new Date(a.date);
 					const bDate = new Date(b.date);
+
 					cmp = aDate > bDate ? 1 : aDate === bDate ? 0 : -1;
 					break;
 				case "map":
@@ -152,7 +156,7 @@ export default function GamesTable(props: GamesTableProps) {
 		}
 
 		return filteredGames;
-	}, [sortedItems, filterValue]);
+	}, [sortedItems, filterValue, hasSearchFilter]);
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -163,59 +167,73 @@ export default function GamesTable(props: GamesTableProps) {
 		return filteredItems.slice(start, end);
 	}, [page, filteredItems, rowsPerPage]);
 
-	const renderCell = React.useCallback((game: Game, columnKey: React.Key) => {
-		const cellValue = game[columnKey as keyof Game];
+	const renderCell = React.useCallback(
+		(game: Game, columnKey: React.Key) => {
+			const cellValue = game[columnKey as keyof Game];
 
-		switch (columnKey) {
-			case "name":
-				return <p className="text-bold text-small">{game.name}</p>;
-			case "date":
-				return (
-					<p className="text-bold text-small">
-						{new Date(game.date).toLocaleDateString()}
-					</p>
-				);
-			case "map":
-				return <p className="text-bold text-small">{game.map}</p>;
-			case "players":
-				let humans = new Array<string>();
-				game.players.forEach((player) => {
-					if (player.isHuman) humans.push(player.name);
-				});
-				return (
-					<p className="text-bold text-small"> {humans.join(", ")}</p>
-				);
-			case "winner":
-				return (
-					<p className="text-bold text-small">{game.winnerPlayer}</p>
-				);
-			case "actions":
-				return (
-					<div className="relative flex items-center justify-end gap-2">
-						<Dropdown>
-							<DropdownTrigger>
-								<Button isIconOnly size="sm" variant="light">
-									<VerticalDotsIcon className="text-default-300" />
-								</Button>
-							</DropdownTrigger>
-							<DropdownMenu selectionMode="single">
-								<DropdownItem key="view">View</DropdownItem>
-								<DropdownItem
-									key="delete"
-									onPress={async () => {
-										await mutation.mutateAsync(game.id);
-									}}
-								>
-									Delete
-								</DropdownItem>
-							</DropdownMenu>
-						</Dropdown>
-					</div>
-				);
-			default:
-				return cellValue;
-		}
-	}, []);
+			switch (columnKey) {
+				case "name":
+					return <p className="text-bold text-small">{game.name}</p>;
+				case "date":
+					return (
+						<p className="text-bold text-small">
+							{new Date(game.date).toLocaleDateString()}
+						</p>
+					);
+				case "map":
+					return <p className="text-bold text-small">{game.map}</p>;
+				case "players":
+					let humans = new Array<string>();
+
+					game.players.forEach((player) => {
+						if (player.isHuman) humans.push(player.name);
+					});
+
+					return (
+						<p className="text-bold text-small">
+							{" "}
+							{humans.join(", ")}
+						</p>
+					);
+				case "winner":
+					return (
+						<p className="text-bold text-small">
+							{game.winnerPlayer}
+						</p>
+					);
+				case "actions":
+					return (
+						<div className="relative flex items-center justify-end gap-2">
+							<Dropdown>
+								<DropdownTrigger>
+									<Button
+										isIconOnly
+										size="sm"
+										variant="light"
+									>
+										<VerticalDotsIcon className="text-default-300" />
+									</Button>
+								</DropdownTrigger>
+								<DropdownMenu selectionMode="single">
+									<DropdownItem key="view">View</DropdownItem>
+									<DropdownItem
+										key="delete"
+										onPress={async () => {
+											await mutation.mutateAsync(game.id);
+										}}
+									>
+										Delete
+									</DropdownItem>
+								</DropdownMenu>
+							</Dropdown>
+						</div>
+					);
+				default:
+					return cellValue;
+			}
+		},
+		[mutation]
+	);
 
 	const onNextPage = React.useCallback(() => {
 		if (page < pages) {
@@ -256,7 +274,7 @@ export default function GamesTable(props: GamesTableProps) {
 		const suffix = filteredItems.length === 1 ? "" : "s";
 
 		return `${prefix} ${filteredItems.length} game${suffix}`;
-	}, [filterValue, games]);
+	}, [filterValue, filteredItems.length]);
 
 	const topContent = React.useMemo(() => {
 		return (
@@ -321,13 +339,7 @@ export default function GamesTable(props: GamesTableProps) {
 				</div>
 			</div>
 		);
-	}, [
-		filterValue,
-		onSearchChange,
-		onRowsPerPageChange,
-		games.length,
-		hasSearchFilter,
-	]);
+	}, [filterValue, onSearchChange, onRowsPerPageChange, headerText, onClear]);
 
 	const bottomContent = React.useMemo(() => {
 		return (
@@ -361,7 +373,7 @@ export default function GamesTable(props: GamesTableProps) {
 				</div>
 			</div>
 		);
-	}, [items.length, page, pages, hasSearchFilter]);
+	}, [page, pages, onNextPage, onPreviousPage]);
 
 	return (
 		<Table
