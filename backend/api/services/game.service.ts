@@ -13,10 +13,12 @@ import {
 	insertGame,
 	softDeleteGameById,
 } from "../repositories/game.repository";
+import { fetchCivilizationById } from "./civilization.service";
 import { removeGameExpansionByGameId } from "./gameExpansion.service";
 import { removeGameGamemodesByGameId } from "./gameGamemode.service";
 import { removeGamePlayerByGameId } from "./gamePlayer.service";
 import { fetchLeaderById } from "./leader.service";
+import { fetchVictoryById } from "./victory.service";
 
 export async function createGame(
 	finished: boolean,
@@ -109,6 +111,7 @@ export async function fetchAllGameWinnerLeaderIds() {
 
 	const leaders = new Map<number, number>();
 
+	// Find the count
 	gameWinners?.forEach((leader) => {
 		if (typeof leader.winner_leader_id === "number") {
 			leaders.set(
@@ -120,7 +123,24 @@ export async function fetchAllGameWinnerLeaderIds() {
 		}
 	});
 
-	return leaders;
+	// Add names
+	const leadersArr: Array<{
+		leaderId: number;
+		leaderName: string;
+		wins: number;
+	}> = await Promise.all(
+		Array.from(leaders).map(async ([leaderId, wins]) => {
+			const name = (await fetchLeaderById(leaderId))?.name || "";
+
+			return {
+				leaderId: leaderId,
+				leaderName: name,
+				wins: wins,
+			};
+		})
+	);
+
+	return leadersArr;
 }
 
 export async function fetchAllGameWinnerCivilizationIds() {
@@ -128,6 +148,7 @@ export async function fetchAllGameWinnerCivilizationIds() {
 
 	const civs = new Map<number, number>();
 
+	// Find count
 	gameWinners?.forEach((civ) => {
 		if (typeof civ.winner_civilization_id === "number") {
 			civs.set(
@@ -139,7 +160,25 @@ export async function fetchAllGameWinnerCivilizationIds() {
 		}
 	});
 
-	return civs;
+	// Add names
+	const civsArr: Array<{
+		civilizationId: number;
+		civilizationName: string;
+		wins: number;
+	}> = await Promise.all(
+		Array.from(civs).map(async ([civilizationId, wins]) => {
+			const name =
+				(await fetchCivilizationById(civilizationId))?.name || "";
+
+			return {
+				civilizationId: civilizationId,
+				civilizationName: name,
+				wins: wins,
+			};
+		})
+	);
+
+	return civsArr;
 }
 
 export async function fetchAllGameVictoryIds() {
@@ -147,6 +186,7 @@ export async function fetchAllGameVictoryIds() {
 
 	const victories = new Map<number, number>();
 
+	// Get count
 	wins?.forEach((victory) => {
 		if (typeof victory.victory_id === "number") {
 			victories.set(
@@ -158,5 +198,22 @@ export async function fetchAllGameVictoryIds() {
 		}
 	});
 
-	return victories;
+	// Add names
+	const victoriesArr: Array<{
+		victoryId: number;
+		victoryType: string;
+		wins: number;
+	}> = await Promise.all(
+		Array.from(victories).map(async ([victoryId, wins]) => {
+			const name = (await fetchVictoryById(victoryId))?.type || "";
+
+			return {
+				victoryId: victoryId,
+				victoryType: name,
+				wins: wins,
+			};
+		})
+	);
+
+	return victoriesArr;
 }

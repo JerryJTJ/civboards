@@ -13,17 +13,14 @@ import { NextFunction, Request, Response } from "express";
 import {
 	createGameGamemodes,
 	fetchGameGamemodesIdsByGameId,
-	removeGameGamemodesByGameId,
 } from "../services/gameGamemode.service";
 import {
 	createGameExpansions,
 	fetchGameExpansionsIdsByGameId,
-	removeGameExpansionByGameId,
 } from "../services/gameExpansion.service";
 import {
 	createGamePlayers,
 	fetchGamePlayersByGameId,
-	removeGamePlayerByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
 import { InsertGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
@@ -212,13 +209,8 @@ export async function handleGetAllGameWinnerLeaderIds(
 ) {
 	try {
 		const leaders = await fetchAllGameWinnerLeaderIds();
-		const leadersJson = new Array<{ leaderId: number; wins: number }>();
 
-		for (const [leaderId, wins] of leaders) {
-			leadersJson.push({ leaderId: leaderId, wins: wins });
-		}
-
-		return res.status(200).json(leadersJson);
+		return res.status(200).json(leaders);
 	} catch (error) {
 		next(error);
 	}
@@ -231,13 +223,8 @@ export async function handleGetAllGameWinnerCivilizationIds(
 ) {
 	try {
 		const civs = await fetchAllGameWinnerCivilizationIds();
-		const civsJson = new Array<{ civilizationId: number; wins: number }>();
 
-		for (const [civilizationId, wins] of civs) {
-			civsJson.push({ civilizationId: civilizationId, wins: wins });
-		}
-
-		return res.status(200).json(civsJson);
+		return res.status(200).json(civs);
 	} catch (error) {
 		next(error);
 	}
@@ -250,13 +237,7 @@ export async function handleGetAllGameVictoryIds(
 ) {
 	try {
 		const victories = await fetchAllGameVictoryIds();
-		const victoriesJson = new Array<{ victoryId: number; wins: number }>();
-
-		for (const [victoryId, wins] of victories) {
-			victoriesJson.push({ victoryId: victoryId, wins: wins });
-		}
-
-		return res.status(200).json(victoriesJson);
+		return res.status(200).json(victories);
 	} catch (error) {
 		next(error);
 	}
