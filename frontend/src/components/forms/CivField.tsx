@@ -1,8 +1,13 @@
 import { Select, SelectItem } from "@heroui/select";
+import {
+	Autocomplete,
+	AutocompleteSection,
+	AutocompleteItem,
+} from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 import { Civ } from "@/interfaces/game.interface";
-import { LEADERS } from "@/constants/civilizations";
+import { LEADERS, Leader } from "@/constants/civilizations";
 
 interface CivFieldProps {
 	civ: Civ;
@@ -16,24 +21,25 @@ export default function CivField(props: CivFieldProps) {
 
 	return (
 		<div className="flex flex-row gap-2">
-			<Select
-				// className="max-w-1/2"
-				items={LEADERS}
-				label="Leader"
+			<Autocomplete
 				isRequired
+				defaultItems={LEADERS}
+				label="Leader"
 				variant="bordered"
-				selectedKeys={
-					civ.leaderId ? new Set([civ.leaderId]) : undefined
-				}
-				onChange={(e) =>
+				selectedKey={civ.leaderId?.toString() || undefined}
+				onSelectionChange={(e) =>
 					changeDispatch({
-						leaderId: Number(e.target.value),
+						leaderId: Number(e),
 						key: civ.key,
 					})
 				}
 			>
-				{(leader) => <SelectItem>{leader.name}</SelectItem>}
-			</Select>
+				{(leader: Leader) => (
+					<AutocompleteItem key={leader.id.toString()}>
+						{leader.name}
+					</AutocompleteItem>
+				)}
+			</Autocomplete>
 			{civ.isHuman && (
 				<Input
 					className="w-3/5"

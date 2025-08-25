@@ -50,8 +50,6 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 						],
 					};
 				case "delete":
-					if (form.players.length <= 2) return form;
-
 					return {
 						...form,
 						players: form.players.filter(

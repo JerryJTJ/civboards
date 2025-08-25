@@ -1,0 +1,72 @@
+import { MAP_SIZE } from "@/constants/gameSettings";
+import { AddFormAction, GameOptionsAction } from "./addGameReducer";
+import { addToast } from "@heroui/toast";
+import { Civ, GameOptions } from "@/interfaces/game.interface";
+
+// Dispatches
+export function getFormDispatches(
+	dispatch: React.ActionDispatch<[action: AddFormAction]>,
+	form: GameOptions
+) {
+	const resetFormDispatch: () => void = () => dispatch({ field: "reset" });
+
+	const gameOptionsDispatch = (
+		option: string,
+		value: string | number | Set<number> | boolean
+	) =>
+		dispatch({
+			field: "options",
+			option: option,
+			payload: value,
+		} as GameOptionsAction);
+
+	const addCivDispatch = (isHuman: boolean) => {
+		const currMapSize = MAP_SIZE.find(
+			(mapSize) => mapSize.key === form.mapSize
+		);
+		if (form.players.length === currMapSize?.players.max) {
+			addToast({
+				title: "Error",
+				color: "warning",
+				description: `${currMapSize.size} maps have a maximum of ${currMapSize.players.max} players`,
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+			return;
+		}
+
+		dispatch({
+			field: "player",
+			type: "add",
+			payload: isHuman,
+		});
+	};
+
+	const deleteCivDispatch = (civ: Civ) => {
+		if (form.players.length <= 2) {
+			addToast({
+				title: "Error",
+				color: "warning",
+				description: "Must have at least 2 players",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+			return;
+		}
+		dispatch({ field: "player", type: "delete", payload: civ });
+	};
+
+	const changeCivDispatch = (civ: Partial<Civ>) =>
+		dispatch({ field: "player", type: "change", payload: civ });
+	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
+		dispatch({ field: "parse", payload: parsed });
+
+	return {
+		resetFormDispatch,
+		gameOptionsDispatch,
+		addCivDispatch,
+		deleteCivDispatch,
+		changeCivDispatch,
+		parseSaveDispatch,
+	};
+}

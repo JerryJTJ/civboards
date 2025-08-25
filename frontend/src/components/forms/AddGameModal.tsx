@@ -28,6 +28,8 @@ import {
 	RefetchOptions,
 	useMutation,
 } from "@tanstack/react-query";
+import { MAP_SIZE } from "@/constants/gameSettings";
+import { getFormDispatches } from "./gameFormDispatches";
 
 interface AddGameModalProps {
 	refetch: (
@@ -50,33 +52,11 @@ export default function AddGameModal(props: AddGameModalProps) {
 	);
 
 	// Dispatches
-	const resetFormDispatch = () => dispatch({ field: "reset" });
-	const gameOptionsDispatch = (
-		option: string,
-		value: string | number | Set<number> | boolean
-	) =>
-		dispatch({
-			field: "options",
-			option: option,
-			payload: value,
-		} as GameOptionsAction);
-
-	const addCivDispatch = (isHuman: boolean) =>
-		dispatch({
-			field: "player",
-			type: "add",
-			payload: isHuman,
-		});
-	const deleteCivDispatch = (civ: Civ) =>
-		dispatch({ field: "player", type: "delete", payload: civ });
-	const changeCivDispatch = (civ: Partial<Civ>) =>
-		dispatch({ field: "player", type: "change", payload: civ });
-	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
-		dispatch({ field: "parse", payload: parsed });
+	const dispatches = getFormDispatches(dispatch, form);
 
 	// Modal open/close
 	const onModalChange = () => {
-		resetFormDispatch();
+		dispatches.resetFormDispatch();
 		onOpenChange();
 	};
 
@@ -209,8 +189,8 @@ export default function AddGameModal(props: AddGameModalProps) {
 								</ModalHeader>
 								<ModalBody>
 									<UploadFileInput
-										dispatch={parseSaveDispatch}
-										reset={resetFormDispatch}
+										dispatch={dispatches.parseSaveDispatch}
+										reset={dispatches.resetFormDispatch}
 									/>
 									<div className="flex flex-row justify-evenly">
 										<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
@@ -218,17 +198,17 @@ export default function AddGameModal(props: AddGameModalProps) {
 											<span className="self-center pb-2 font-bold">
 												Players
 											</span>
-											<div className="flex flex-col justify-start max-h-full gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
+											<div className="flex flex-col justify-start gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
 												{form.players.map(
 													(civ: Civ) => (
 														<CivField
 															key={civ.key}
 															civ={civ}
 															changeDispatch={
-																changeCivDispatch
+																dispatches.changeCivDispatch
 															}
 															deleteDispatch={
-																deleteCivDispatch
+																dispatches.deleteCivDispatch
 															}
 														/>
 													)
@@ -237,14 +217,18 @@ export default function AddGameModal(props: AddGameModalProps) {
 											<div className="flex flex-row gap-2 pt-4">
 												<Button
 													onPress={() =>
-														addCivDispatch(true)
+														dispatches.addCivDispatch(
+															true
+														)
 													}
 												>
 													Add Human
 												</Button>
 												<Button
 													onPress={() =>
-														addCivDispatch(false)
+														dispatches.addCivDispatch(
+															false
+														)
 													}
 												>
 													Add AI
@@ -257,7 +241,9 @@ export default function AddGameModal(props: AddGameModalProps) {
 											</p>
 											<GameOptionsForm
 												form={form}
-												dispatch={gameOptionsDispatch}
+												dispatch={
+													dispatches.gameOptionsDispatch
+												}
 											/>
 										</div>
 									</div>

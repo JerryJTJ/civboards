@@ -1,4 +1,14 @@
-export const LEADERS = [
+import { Key } from "@react-types/shared";
+
+export interface Leader {
+	id: number;
+	name: string;
+	code: string;
+	active: boolean;
+	civilization_id: number;
+}
+
+export const LEADERS: Array<Leader> = [
 	{
 		id: 2,
 		name: "Teddy Roosevelt (Bull Moose)",
