@@ -111,14 +111,16 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 
 					//auto-resize civs
 					if (mapSize) {
-						if (form.players.length < mapSize?.players?.default) {
+						if (form.players.length < mapSize.players.default) {
 							//resize up to default
 							while (players.length < mapSize.players.default) {
 								players.push(generateNewPlayer(true));
 							}
-						} else if (form.players.length > mapSize.players.max) {
-							//resize down to max
-							players.splice(mapSize.players.max);
+						} else if (
+							form.players.length > mapSize.players.default
+						) {
+							//resize down to default
+							players.splice(mapSize.players.default);
 						}
 					}
 

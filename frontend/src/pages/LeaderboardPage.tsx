@@ -42,7 +42,7 @@ function sanitizeForLeaderboard(type: LeaderboardView, data: Array<any>) {
 export type LeaderboardView = "player" | "leader" | "civilization" | "victory";
 
 export default function LeaderboardPage() {
-	const [tab, setTab] = useState<LeaderboardView>("victory");
+	const [tab, setTab] = useState<LeaderboardView>("player");
 
 	const loadingSpinner = <LoadingSpinner height={20} />;
 
