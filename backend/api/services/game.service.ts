@@ -4,6 +4,9 @@ import { throwNotFoundError, throwValidationError } from "../../types/Errors";
 import {
 	deleteGameById,
 	doesGameIdExist,
+	getAllGameVictoryIds,
+	getAllGameWinnerCivilizationIds,
+	getAllGameWinnerLeaderIds,
 	getAllGameWinners,
 	getAllGames,
 	getGameById,
@@ -99,4 +102,61 @@ export async function fetchAllGameWinners() {
 	});
 
 	return winners;
+}
+
+export async function fetchAllGameWinnerLeaderIds() {
+	const gameWinners = await getAllGameWinnerLeaderIds();
+
+	const leaders = new Map<number, number>();
+
+	gameWinners?.forEach((leader) => {
+		if (typeof leader.winner_leader_id === "number") {
+			leaders.set(
+				leader.winner_leader_id,
+				leaders.has(leader.winner_leader_id)
+					? leaders.get(leader.winner_leader_id)! + 1
+					: 1
+			);
+		}
+	});
+
+	return leaders;
+}
+
+export async function fetchAllGameWinnerCivilizationIds() {
+	const gameWinners = await getAllGameWinnerCivilizationIds();
+
+	const civs = new Map<number, number>();
+
+	gameWinners?.forEach((civ) => {
+		if (typeof civ.winner_civilization_id === "number") {
+			civs.set(
+				civ.winner_civilization_id,
+				civs.has(civ.winner_civilization_id)
+					? civs.get(civ.winner_civilization_id)! + 1
+					: 1
+			);
+		}
+	});
+
+	return civs;
+}
+
+export async function fetchAllGameVictoryIds() {
+	const wins = await getAllGameVictoryIds();
+
+	const victories = new Map<number, number>();
+
+	wins?.forEach((victory) => {
+		if (typeof victory.victory_id === "number") {
+			victories.set(
+				victory.victory_id,
+				victories.has(victory.victory_id)
+					? victories.get(victory.victory_id)! + 1
+					: 1
+			);
+		}
+	});
+
+	return victories;
 }

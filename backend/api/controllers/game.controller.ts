@@ -1,5 +1,8 @@
 import {
 	createGame,
+	fetchAllGameVictoryIds,
+	fetchAllGameWinnerCivilizationIds,
+	fetchAllGameWinnerLeaderIds,
 	fetchAllGameWinners,
 	fetchAllGames,
 	fetchGameById,
@@ -197,6 +200,63 @@ export async function handleGetAllGameWinners(
 		}
 
 		return res.status(200).json(winnerJson);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function handleGetAllGameWinnerLeaderIds(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const leaders = await fetchAllGameWinnerLeaderIds();
+		const leadersJson = new Array<{ leaderId: number; wins: number }>();
+
+		for (const [leaderId, wins] of leaders) {
+			leadersJson.push({ leaderId: leaderId, wins: wins });
+		}
+
+		return res.status(200).json(leadersJson);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function handleGetAllGameWinnerCivilizationIds(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const civs = await fetchAllGameWinnerCivilizationIds();
+		const civsJson = new Array<{ civilizationId: number; wins: number }>();
+
+		for (const [civilizationId, wins] of civs) {
+			civsJson.push({ civilizationId: civilizationId, wins: wins });
+		}
+
+		return res.status(200).json(civsJson);
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function handleGetAllGameVictoryIds(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const victories = await fetchAllGameVictoryIds();
+		const victoriesJson = new Array<{ victoryId: number; wins: number }>();
+
+		for (const [victoryId, wins] of victories) {
+			victoriesJson.push({ victoryId: victoryId, wins: wins });
+		}
+
+		return res.status(200).json(victoriesJson);
 	} catch (error) {
 		next(error);
 	}

@@ -89,3 +89,42 @@ export async function getAllGameWinners() {
 
 	return data;
 }
+
+export async function getAllGameWinnerLeaderIds() {
+	const { data, error } = await supabase
+		.from("game")
+		.select("winner_leader_id")
+		.eq("active", true)
+		.eq("finished", true);
+
+	if (error || !data)
+		throwDatabaseError("Failed to get game winner leaders", error);
+
+	return data;
+}
+
+export async function getAllGameWinnerCivilizationIds() {
+	const { data, error } = await supabase
+		.from("game")
+		.select("winner_civilization_id")
+		.eq("active", true)
+		.eq("finished", true);
+
+	if (error || !data)
+		throwDatabaseError("Failed to get game winner civiliations", error);
+
+	return data;
+}
+
+export async function getAllGameVictoryIds() {
+	const { data, error } = await supabase
+		.from("game")
+		.select("victory_id")
+		.eq("active", true)
+		.eq("finished", true);
+
+	if (error || !data)
+		throwDatabaseError("Failed to get game victories", error);
+
+	return data;
+}
