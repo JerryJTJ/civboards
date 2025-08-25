@@ -24,7 +24,7 @@ export default function GamesPage() {
 				<div className="grid grid-cols-2 pb-4 lg:pb-0">
 					<ButtonGroup className="justify-self-start ">
 						<Button
-							className="border-white/20 border"
+							className="border border-white/20"
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("cards");
@@ -34,7 +34,7 @@ export default function GamesPage() {
 							Cards
 						</Button>
 						<Button
-							className=" border-white/20 border"
+							className="border border-white/20"
 							variant="shadow"
 							onPress={() => {
 								setCurrTab("table");
@@ -44,7 +44,7 @@ export default function GamesPage() {
 							Table
 						</Button>
 					</ButtonGroup>
-					<AddGameModal refetch={refetch} />
+					<AddGameModal />
 				</div>
 				{/* Janky way to keep formatting nice */}
 				{isPending && (
@@ -52,7 +52,7 @@ export default function GamesPage() {
 						<Spinner />
 					</div>
 				)}
-				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
+				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
 					{!isPending && (
 						<>
 							{" "}

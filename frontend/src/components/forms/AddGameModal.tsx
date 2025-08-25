@@ -14,36 +14,17 @@ import { PlusIcon } from "../icons";
 import { useReducer } from "react";
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
-import addGameReducer, {
-	AddFormAction,
-	GameOptionsAction,
-} from "./addGameReducer";
+import addGameReducer, { AddFormAction } from "./addGameReducer";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
-import { DisplayGameSchemaArray, InsertGameSchema } from "@civboards/schemas";
+import { InsertGameSchema } from "@civboards/schemas";
 import { insertGame } from "@/api/games";
 import UploadFileInput from "../UploadFileInput";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
-import {
-	QueryObserverResult,
-	RefetchOptions,
-	useMutation,
-} from "@tanstack/react-query";
-import { MAP_SIZE } from "@/constants/gameSettings";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getFormDispatches } from "./gameFormDispatches";
 
-interface AddGameModalProps {
-	refetch: (
-		options?: RefetchOptions | undefined
-	) => Promise<
-		QueryObserverResult<
-			z.infer<typeof DisplayGameSchemaArray> | undefined,
-			Error
-		>
-	>;
-}
-
-export default function AddGameModal(props: AddGameModalProps) {
-	const { refetch } = props;
+export default function AddGameModal() {
+	const queryClient = useQueryClient();
 
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 	const [form, dispatch] = useReducer<GameOptions, [action: AddFormAction]>(
@@ -71,7 +52,6 @@ export default function AddGameModal(props: AddGameModalProps) {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-			refetch();
 		},
 		onSuccess: () => {
 			addToast({
@@ -81,8 +61,10 @@ export default function AddGameModal(props: AddGameModalProps) {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-			refetch();
 			onModalChange();
+		},
+		onSettled: () => {
+			queryClient.invalidateQueries();
 		},
 	});
 

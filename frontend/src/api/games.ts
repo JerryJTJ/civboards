@@ -33,16 +33,6 @@ export async function getGameByGameId(id: number) {
 	if (response.status === 200) return response.data;
 }
 
-export async function getAllGameWinners(): Promise<
-	Array<{ player: string; wins: number }> | undefined
-> {
-	const response = await instance({
-		url: "/game/winners/players",
-		method: "get",
-	});
-	if (response.status === 200) return response.data;
-}
-
 export async function deleteGameById(id: number): Promise<void> {
 	await instance({
 		url: `game/id/${id}`,

@@ -1,10 +1,4 @@
 import { Button } from "@heroui/button";
-import {
-	Dropdown,
-	DropdownTrigger,
-	DropdownMenu,
-	DropdownItem,
-} from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 import {
 	Table,
@@ -13,17 +7,32 @@ import {
 	TableColumn,
 	TableRow,
 	TableCell,
-	getKeyValue,
 	SortDescriptor,
 } from "@heroui/table";
 import { Pagination } from "@heroui/pagination";
-import React from "react";
-import { VerticalDotsIcon, SearchIcon } from "./icons";
+import React, { useMemo } from "react";
+import { SearchIcon } from "./icons";
+import { LeaderboardView } from "@/pages/LeaderboardPage";
 
-const columns = [
+const columns: Array<{ key: string; name: string; sortable: boolean }> = [
 	{
 		key: "player",
 		name: "PLAYER",
+		sortable: true,
+	},
+	{
+		key: "leader",
+		name: "LEADER",
+		sortable: true,
+	},
+	{
+		key: "civilization",
+		name: "CIVILIZATION",
+		sortable: true,
+	},
+	{
+		key: "victory",
+		name: "VICTORY",
 		sortable: true,
 	},
 	{
@@ -33,14 +42,14 @@ const columns = [
 	},
 ];
 
+type LeaderboardEntry = { label: string; wins: number };
+
 interface LeaderboardProps {
-	leaderboardData: Array<{
-		player: string;
-		wins: number;
-	}>;
+	view: LeaderboardView;
+	leaderboardData: Array<LeaderboardEntry>;
 }
 
-function getPodiumScores(entries: Array<{ player: string; wins: number }>) {
+function getPodiumScores(entries: Array<{ label: string; wins: number }>) {
 	//Function used to find the scores necessary for podium placement
 	const scores = new Set<number>();
 
@@ -60,10 +69,11 @@ function getPodiumScores(entries: Array<{ player: string; wins: number }>) {
 }
 
 export default function LeaderboardTable(props: LeaderboardProps) {
-	const { leaderboardData } = props;
-	const podium = getPodiumScores(leaderboardData);
+	const { view, leaderboardData } = props;
 
-	type LeaderboardEntry = (typeof leaderboardData)[0];
+	const podium = useMemo(() => {
+		return getPodiumScores(leaderboardData);
+	}, [view, leaderboardData]);
 
 	const [filterValue, setFilterValue] = React.useState("");
 	const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -76,6 +86,10 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 	const hasSearchFilter = Boolean(filterValue);
 
+	const headerColumns = columns.filter(
+		(column) => column.key === view || column.key === "wins"
+	);
+
 	//Filter -> Sort -> Paginate
 	const sortedItems = React.useMemo(() => {
 		return [...leaderboardData].sort(
@@ -84,7 +98,10 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 				switch (sortDescriptor.column) {
 					case "player":
-						cmp = a.player.localeCompare(b.player);
+					case "leader":
+					case "civilization":
+					case "victory":
+						cmp = a.label.localeCompare(b.label);
 						break;
 					case "wins":
 						cmp = a.wins > b.wins ? 1 : a.wins === b.wins ? 0 : -1;
@@ -103,7 +120,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 		if (hasSearchFilter) {
 			filtered = filtered.filter((entry) =>
-				entry.player.toLowerCase().includes(filterValue.toLowerCase())
+				entry.label.toLowerCase().includes(filterValue.toLowerCase())
 			);
 		}
 
@@ -125,14 +142,16 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 			switch (columnKey) {
 				case "player":
+				case "leader":
+				case "civilization":
+				case "victory":
 					const medal = podium.get(entry.wins) ?? "";
 					return (
 						<p className="text-base text-center text-bold">
 							{medal ? `${medal} ` : ""}
-							{entry.player}
+							{entry.label}
 						</p>
 					);
-
 				case "wins":
 					return (
 						<p className="text-base text-center text-bold">
@@ -143,7 +162,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					return cellValue;
 			}
 		},
-		[]
+		[podium]
 	);
 
 	const onNextPage = React.useCallback(() => {
@@ -182,9 +201,9 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 	const headerText = React.useMemo(() => {
 		const prefix = filterValue ? "Filtered" : "Total";
-		const suffix = filteredItems.length === 1 ? "" : "s";
+		const suffix = filteredItems.length === 1 ? "entry" : "entries";
 
-		return `${prefix} ${filteredItems.length} player${suffix}`;
+		return `${prefix} ${filteredItems.length} ${suffix}`;
 	}, [filterValue]);
 
 	const topContent = React.useMemo(() => {
@@ -307,7 +326,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 			topContentPlacement="outside"
 			onSortChange={setSortDescriptor}
 		>
-			<TableHeader columns={columns}>
+			<TableHeader columns={headerColumns}>
 				{(column) => (
 					<TableColumn
 						className="text-center"
@@ -321,7 +340,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 			</TableHeader>
 			<TableBody emptyContent={"No users found"} items={items}>
 				{(item) => (
-					<TableRow key={item.player}>
+					<TableRow key={item.label}>
 						{(columnKey) => (
 							<TableCell>{renderCell(item, columnKey)}</TableCell>
 						)}
