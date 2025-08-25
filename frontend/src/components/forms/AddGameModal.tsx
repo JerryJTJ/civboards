@@ -26,7 +26,6 @@ import { Civ, GameOptions } from "@/interfaces/game.interface";
 import { insertGame } from "@/api/games";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 
-
 export default function AddGameModal() {
 	const queryClient = useQueryClient();
 
@@ -171,7 +170,7 @@ export default function AddGameModal() {
 			>
 				<Form onSubmit={onSubmit}>
 					{" "}
-					<ModalContent className="max-h-screen overflow-y-auto">
+					<ModalContent className="overflow-y-auto">
 						{() => (
 							<>
 								<ModalHeader className="flex flex-row gap-2">
