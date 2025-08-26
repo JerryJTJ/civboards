@@ -4,20 +4,17 @@ import { Link } from "@heroui/link";
 
 import { Civ } from "@/interfaces/game.interface";
 import { LEADERS, Leader } from "@/constants/civilizations";
-import { Image } from "@heroui/image";
-import { useState } from "react";
 
 interface CivFieldProps {
+	enabled: boolean;
 	civ: Civ;
 	changeDispatch: (civ: Partial<Civ>) => void;
 	deleteDispatch: (civ: Civ) => void;
 }
 
 export default function CivField(props: CivFieldProps) {
-	const { civ, changeDispatch, deleteDispatch } = props;
+	const { enabled, civ, changeDispatch, deleteDispatch } = props;
 	//just have civs live on one thing, and get from there
-
-	const [leaderId, setLeaderId] = useState<number>();
 
 	return (
 		<div className="flex flex-row items-center gap-1">
@@ -30,8 +27,9 @@ export default function CivField(props: CivFieldProps) {
 				src={LEADERS.find((leader) => leader.id === leaderId)?.image}
 			/> */}
 			<Autocomplete
-				isRequired
 				defaultItems={LEADERS}
+				isDisabled={!enabled}
+				isRequired={enabled}
 				label="Leader"
 				selectedKey={civ.leaderId?.toString() || undefined}
 				variant="bordered"
@@ -40,7 +38,6 @@ export default function CivField(props: CivFieldProps) {
 						leaderId: Number(e),
 						key: civ.key,
 					});
-					setLeaderId(Number(e));
 				}}
 			>
 				{(leader: Leader) => (
@@ -51,8 +48,9 @@ export default function CivField(props: CivFieldProps) {
 			</Autocomplete>
 			{civ.isHuman && (
 				<Input
-					isRequired
 					className="w-3/5"
+					isDisabled={!enabled}
+					isRequired={enabled}
 					label="Player Name"
 					required={true}
 					value={civ.name}
@@ -70,6 +68,7 @@ export default function CivField(props: CivFieldProps) {
 					isBlock
 					className="justify-center"
 					color="foreground"
+					isDisabled={!enabled}
 					size="sm"
 					onPress={() => {
 						changeDispatch({
@@ -81,16 +80,18 @@ export default function CivField(props: CivFieldProps) {
 				>
 					{civ.isHuman ? "Human" : "AI"}
 				</Link>
-				<Link
-					isBlock
-					color="danger"
-					size="sm"
-					onPress={() => {
-						deleteDispatch(civ);
-					}}
-				>
-					Remove
-				</Link>
+				{enabled && (
+					<Link
+						isBlock
+						color="danger"
+						size="sm"
+						onPress={() => {
+							deleteDispatch(civ);
+						}}
+					>
+						Remove
+					</Link>
+				)}
 			</div>
 		</div>
 	);

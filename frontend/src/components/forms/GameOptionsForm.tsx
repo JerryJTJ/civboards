@@ -16,6 +16,7 @@ import {
 } from "@/constants/gameSettings";
 
 interface GameOptionsFormProps {
+	enabled: boolean;
 	form: GameOptions;
 	dispatch: (
 		option: string,
@@ -24,11 +25,12 @@ interface GameOptionsFormProps {
 }
 
 function GameOptionsForm(props: GameOptionsFormProps) {
-	const { form, dispatch } = props;
+	const { enabled, form, dispatch } = props;
 
 	return (
 		<>
 			<Checkbox
+				isDisabled={!enabled}
 				isSelected={form.finished}
 				onValueChange={() => {
 					dispatch("finished", !form.finished);
@@ -39,7 +41,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				</p>
 			</Checkbox>
 			<Input
-				isRequired
+				isDisabled={!enabled}
+				isRequired={enabled}
 				label="Game Name"
 				maxLength={20}
 				value={form.name}
@@ -50,7 +53,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				<>
 					{" "}
 					<Select
-						isRequired
+						isDisabled={!enabled}
+						isRequired={enabled}
 						items={form.players}
 						label="Winner"
 						variant="bordered"
@@ -65,7 +69,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						}
 					</Select>
 					<Select
-						isRequired
+						isDisabled={!enabled}
+						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
 						selectedKeys={new Set([String(form.victoryId)])}
@@ -80,7 +85,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			)}
 
 			<Select
-				isRequired
+				isDisabled={!enabled}
+				isRequired={enabled}
 				items={GAME_SPEED}
 				label="Game Speed"
 				selectedKeys={new Set([form.speed])}
@@ -92,7 +98,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
 			</Select>
 			<Input
-				isRequired
+				isDisabled={!enabled}
+				isRequired={enabled}
 				label="Map"
 				maxLength={20}
 				value={form.map}
@@ -102,7 +109,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}
 			/>
 			<Select
-				isRequired
+				isDisabled={!enabled}
+				isRequired={enabled}
 				items={MAP_SIZE}
 				label="Map Size"
 				selectedKeys={new Set([form.mapSize])}
@@ -114,9 +122,10 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(size) => <SelectItem>{size.size}</SelectItem>}
 			</Select>
 			<NumberInput
-				isRequired
 				isWheelDisabled
 				datatype="number"
+				isDisabled={!enabled}
+				isRequired={enabled}
 				label="Game Turns"
 				maxValue={500}
 				minValue={0}
@@ -129,6 +138,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
+				isDisabled={!enabled}
 				isMultiline={true}
 				items={EXPANSIONS}
 				label="Expansions"
@@ -163,6 +173,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
+				isDisabled={!enabled}
 				isMultiline={true}
 				items={GAMEMODES}
 				label="Gamemodes"

@@ -5,11 +5,23 @@ import { AddFormAction, GameOptionsAction } from "./addGameReducer";
 import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 
+export interface FormDispatches {
+	resetFormDispatch: () => void;
+	gameOptionsDispatch: (
+		option: string,
+		value: string | number | Set<number> | boolean
+	) => void;
+	addCivDispatch: (isHuman: boolean) => void;
+	deleteCivDispatch: (civ: Civ) => void;
+	changeCivDispatch: (civ: Partial<Civ>) => void;
+	parseSaveDispatch: (parsed: Partial<GameOptions>) => void;
+}
+
 // Dispatches
 export function getFormDispatches(
 	dispatch: React.ActionDispatch<[action: AddFormAction]>,
 	form: GameOptions
-) {
+): FormDispatches {
 	const resetFormDispatch: () => void = () => dispatch({ field: "reset" });
 
 	const gameOptionsDispatch = (

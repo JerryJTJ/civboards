@@ -27,7 +27,7 @@ export async function getAllGames(): Promise<
 	}
 }
 
-export async function getGameByGameId(id: number) {
+export async function getGameByGameId(id: string) {
 	const response = await instance({
 		url: `/game/id/${id}`,
 		method: "get",
@@ -36,7 +36,7 @@ export async function getGameByGameId(id: number) {
 	if (response.status === 200) return response.data;
 }
 
-export async function deleteGameById(id: number): Promise<void> {
+export async function deleteGameById(id: string): Promise<void> {
 	await instance({
 		url: `game/id/${id}`,
 		method: "delete",

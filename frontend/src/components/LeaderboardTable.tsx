@@ -336,7 +336,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					</TableColumn>
 				)}
 			</TableHeader>
-			<TableBody emptyContent={"No users found"} items={items}>
+			<TableBody emptyContent={"No finished games found"} items={items}>
 				{(item) => (
 					<TableRow key={item.label}>
 						{(columnKey) => (

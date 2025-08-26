@@ -44,7 +44,7 @@ export const InsertGameSchema = z
 
 export const DisplayGameSchema = z.object({
 	...InsertGameSchema.shape,
-	id: z.number(),
+	id: z.uuid(),
 	date: z.string(),
 	isFinished: z.any().optional(),
 	winnerCivilizationId: z.number().optional(),

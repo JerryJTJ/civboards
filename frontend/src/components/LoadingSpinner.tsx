@@ -6,5 +6,6 @@ interface LoadingSpinnerProps {
 
 export default function LoadingSpinner(props: LoadingSpinnerProps) {
 	const { height } = props;
+
 	return <Spinner className={`pt-[${height}vh]`} />;
 }

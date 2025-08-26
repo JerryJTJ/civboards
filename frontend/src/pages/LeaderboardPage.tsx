@@ -44,8 +44,6 @@ export type LeaderboardView = "player" | "leader" | "civilization" | "victory";
 export default function LeaderboardPage() {
 	const [tab, setTab] = useState<LeaderboardView>("player");
 
-	const loadingSpinner = <LoadingSpinner height={20} />;
-
 	//API
 	const [players, leaders, civilizations, victories] = useQueries({
 		queries: [
@@ -73,6 +71,8 @@ export default function LeaderboardPage() {
 	});
 
 	const table = useMemo(() => {
+		const loadingSpinner = <LoadingSpinner height={20} />;
+
 		switch (tab) {
 			case "player":
 				return players.isPending ? (

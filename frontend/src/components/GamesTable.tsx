@@ -400,7 +400,7 @@ export default function GamesTable(props: GamesTableProps) {
 					</TableColumn>
 				)}
 			</TableHeader>
-			<TableBody emptyContent={"No users found"} items={items}>
+			<TableBody emptyContent={"No games found"} items={items}>
 				{(item) => (
 					<TableRow key={item.id}>
 						{(columnKey) => (
