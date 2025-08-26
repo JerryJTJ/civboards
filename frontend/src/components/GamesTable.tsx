@@ -232,8 +232,10 @@ export default function GamesTable(props: GamesTableProps) {
 									>
 										View
 									</DropdownItem>
+									<DropdownItem key="edit">Edit</DropdownItem>
 									<DropdownItem
 										key="delete"
+										color="danger"
 										onPress={async () => {
 											await mutation.mutateAsync(game.id);
 										}}

@@ -58,6 +58,7 @@ export default function GamesPage() {
 										<GamesCard
 											key={`${game.id}-card`}
 											game={game}
+											refetch={refetch}
 										/>
 									))}
 								</>
