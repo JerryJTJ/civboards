@@ -16,7 +16,7 @@ export async function insertGamemodes(
 	return data;
 }
 
-export async function getGameGamemodesByGameId(gameId: number) {
+export async function getGameGamemodesByGameId(gameId: string) {
 	const { data, error } = await supabase
 		.from("game_gamemode")
 		.select("gamemode_id")
@@ -29,7 +29,7 @@ export async function getGameGamemodesByGameId(gameId: number) {
 	return data;
 }
 
-export async function deleteGameGamemodesById(gameId: number) {
+export async function deleteGameGamemodesById(gameId: string) {
 	const response = await supabase
 		.from("game_gamemode")
 		.delete()

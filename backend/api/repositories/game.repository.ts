@@ -27,13 +27,13 @@ export async function insertGame(game: TablesInsert<"game">) {
 	return data;
 }
 
-export async function doesGameIdExist(id: number) {
+export async function doesGameIdExist(id: string) {
 	const { data } = await supabase.from("game").select().eq("id", id);
 	if (data?.length) return true;
 	return false;
 }
 
-export async function getGameById(id: number) {
+export async function getGameById(id: string) {
 	const { data, error } = await supabase
 		.from("game")
 		.select()
@@ -57,7 +57,7 @@ export async function getAllGames() {
 	return data;
 }
 
-export async function deleteGameById(id: number) {
+export async function deleteGameById(id: string) {
 	const response = await supabase
 		.from("game")
 		.delete()
@@ -68,7 +68,7 @@ export async function deleteGameById(id: number) {
 		throwDatabaseError("Failed to delete game", response.error);
 }
 
-export async function softDeleteGameById(id: number): Promise<void> {
+export async function softDeleteGameById(id: string): Promise<void> {
 	const response = await supabase
 		.from("game")
 		.update({ active: false })

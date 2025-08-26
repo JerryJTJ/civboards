@@ -11,7 +11,7 @@ import ExpansionRouter from "./routes/expansion.routes";
 import VictoryRouter from "./routes/victory.routes";
 import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
-import ParseRouter from "./parse/parseAPI";
+import ParseRouter from "./parse/parse.api";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;

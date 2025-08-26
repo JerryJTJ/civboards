@@ -8,7 +8,7 @@ import {
 } from "../repositories/gameExpansion.repository";
 
 export async function createGameExpansions(
-	gameId: number,
+	gameId: string,
 	expansions: Array<number>
 ) {
 	if (!gameId) throwValidationError("No Game Id Provided");
@@ -20,21 +20,17 @@ export async function createGameExpansions(
 	insertExpansions(gameExpansions);
 }
 
-export async function fetchGameExpansionsIdsByGameId(gameId: number) {
+export async function fetchGameExpansionsIdsByGameId(gameId: string) {
 	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
-	try {
-		const gameExpansions = await getGameExpansionsByGameId(gameId);
-		const gameExpansionsIds = gameExpansions?.map(
-			(gameExpansions) => gameExpansions.expansion_id
-		);
-		return gameExpansionsIds;
-	} catch (error) {
-		throw new AppError(error?.message, error.status, error?.details);
-	}
+	const gameExpansions = await getGameExpansionsByGameId(gameId);
+	const gameExpansionsIds = gameExpansions?.map(
+		(gameExpansions) => gameExpansions.expansion_id
+	);
+	return gameExpansionsIds;
 }
 
-export async function removeGameExpansionByGameId(gameId: number) {
+export async function removeGameExpansionByGameId(gameId: string) {
 	await deleteGameExpansionsByGameId(gameId);
 }

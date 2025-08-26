@@ -1,18 +1,25 @@
 import * as z from "zod";
 
 // The coerces are used for the req.body objects
-export const PlayerSchema = z
-	.object({
-		leaderId: z.coerce.number(),
-		name: z.string(),
-		isHuman: z.literal(true),
-	})
-	.or(
-		z.object({
-			leaderId: z.coerce.number(),
-			isHuman: z.literal(false),
-		})
-	);
+export const PlayerSchema = z.object({
+	leaderId: z.coerce.number(),
+	name: z.string().default(""),
+	isHuman: z.boolean(),
+});
+
+// const CivAiSchema = z.object({
+// 	leaderId: z.coerce.number(),
+// 	isHuman: z.literal(false),
+// });
+
+// export const PlayerSchema = CivPlayerSchema.or(CivAiSchema);
+
+export const DisplayPlayerSchema = z.object({
+	id: z.uuid(),
+	leaderId: z.coerce.number(),
+	name: z.string().default(""),
+	isHuman: z.boolean(),
+});
 
 export const InsertGameSchema = z
 	.object({
@@ -47,6 +54,7 @@ export const DisplayGameSchema = z.object({
 	id: z.uuid(),
 	date: z.string(),
 	isFinished: z.any().optional(),
+	players: z.array(DisplayPlayerSchema),
 	winnerCivilizationId: z.number().optional(),
 });
 

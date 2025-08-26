@@ -1,9 +1,9 @@
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
-
+("");
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
-	key: crypto.randomUUID(),
+	id: crypto.randomUUID(),
 	name: "",
 	leaderId: undefined,
 	isHuman: isHuman === undefined ? true : isHuman,
@@ -54,14 +54,14 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 					return {
 						...form,
 						players: form.players.filter(
-							(player) => player.key !== action.payload.key
+							(player) => player.id !== action.payload.id
 						),
 					};
 				case "change":
 					return {
 						...form,
 						players: form.players.map((player) => {
-							return player.key === action.payload.key
+							return player.id === action.payload.id
 								? { ...player, ...action.payload }
 								: player;
 						}),

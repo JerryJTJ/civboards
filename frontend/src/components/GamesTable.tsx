@@ -1,6 +1,6 @@
 import type { SVGProps } from "react";
 
-import React from "react";
+import React, { useState } from "react";
 import {
 	Table,
 	TableHeader,
@@ -27,10 +27,13 @@ import {
 	useMutation,
 } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
+import { useDisclosure } from "@heroui/modal";
 
 import { SearchIcon, VerticalDotsIcon } from "./icons";
+import GameModal from "./GameModal";
 
 import { deleteGameById } from "@/api/games";
+import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -63,6 +66,11 @@ export const columns = [
 
 export default function GamesTable(props: GamesTableProps) {
 	const { games, refetch } = props;
+
+	// Modal
+	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const [currGame, setCurrGame] =
+		useState<z.infer<typeof DisplayGameSchema>>(DEFAULT_DISPLAY_GAME);
 
 	// API
 	const mutation = useMutation({
@@ -215,7 +223,15 @@ export default function GamesTable(props: GamesTableProps) {
 									</Button>
 								</DropdownTrigger>
 								<DropdownMenu selectionMode="single">
-									<DropdownItem key="view">View</DropdownItem>
+									<DropdownItem
+										key="view"
+										onPress={() => {
+											setCurrGame(game);
+											onOpen();
+										}}
+									>
+										View
+									</DropdownItem>
 									<DropdownItem
 										key="delete"
 										onPress={async () => {
@@ -232,7 +248,7 @@ export default function GamesTable(props: GamesTableProps) {
 					return cellValue;
 			}
 		},
-		[mutation]
+		[mutation, onOpen]
 	);
 
 	const onNextPage = React.useCallback(() => {
@@ -376,39 +392,54 @@ export default function GamesTable(props: GamesTableProps) {
 	}, [page, pages, onNextPage, onPreviousPage]);
 
 	return (
-		<Table
-			isHeaderSticky
-			aria-label="Table of games"
-			bottomContent={bottomContent}
-			bottomContentPlacement="outside"
-			classNames={{
-				wrapper: "max-h-[382px] lg:max-h-[50vh]",
-			}}
-			sortDescriptor={sortDescriptor}
-			topContent={topContent}
-			topContentPlacement="outside"
-			onSortChange={setSortDescriptor}
-		>
-			<TableHeader columns={columns}>
-				{(column) => (
-					<TableColumn
-						key={column.key}
-						align={column.key === "actions" ? "center" : "start"}
-						allowsSorting={column.sortable}
-					>
-						{column.name}
-					</TableColumn>
-				)}
-			</TableHeader>
-			<TableBody emptyContent={"No games found"} items={items}>
-				{(item) => (
-					<TableRow key={item.id}>
-						{(columnKey) => (
-							<TableCell>{renderCell(item, columnKey)}</TableCell>
-						)}
-					</TableRow>
-				)}
-			</TableBody>
-		</Table>
+		<>
+			{" "}
+			<Table
+				isHeaderSticky
+				aria-label="Table of games"
+				bottomContent={bottomContent}
+				bottomContentPlacement="outside"
+				classNames={{
+					wrapper: "max-h-[382px] lg:max-h-[50vh]",
+				}}
+				sortDescriptor={sortDescriptor}
+				topContent={topContent}
+				topContentPlacement="outside"
+				onSortChange={setSortDescriptor}
+			>
+				<TableHeader columns={columns}>
+					{(column) => (
+						<TableColumn
+							key={column.key}
+							align={
+								column.key === "actions" ? "center" : "start"
+							}
+							allowsSorting={column.sortable}
+						>
+							{column.name}
+						</TableColumn>
+					)}
+				</TableHeader>
+				<TableBody emptyContent={"No games found"} items={items}>
+					{(item) => (
+						<TableRow key={item.id}>
+							{(columnKey) => (
+								<TableCell>
+									{renderCell(item, columnKey)}
+								</TableCell>
+							)}
+						</TableRow>
+					)}
+				</TableBody>
+			</Table>
+			{isOpen && (
+				<GameModal
+					game={currGame}
+					isOpen={isOpen}
+					mode="view"
+					onOpenChange={onOpenChange}
+				/>
+			)}
+		</>
 	);
 }

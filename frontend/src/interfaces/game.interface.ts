@@ -1,7 +1,5 @@
-import { Key } from "react";
-
 export interface Civ {
-	key: Key;
+	id: string;
 	name: string;
 	leaderId: number | undefined;
 	isHuman: boolean;

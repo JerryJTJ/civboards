@@ -2,7 +2,6 @@ import { useDisclosure } from "@heroui/modal";
 import { Button } from "@heroui/button";
 
 import { PlusIcon } from "../icons";
-
 import GameModal from "../GameModal";
 
 export default function AddGameModal() {
@@ -23,7 +22,7 @@ export default function AddGameModal() {
 				isOpen={isOpen}
 				mode="add"
 				onOpenChange={onOpenChange}
-			></GameModal>
+			 />
 		</>
 	);
 }

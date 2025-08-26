@@ -56,7 +56,7 @@ export async function createGame(
 	return insertedGame;
 }
 
-export async function fetchGameById(id: number) {
+export async function fetchGameById(id: string) {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
@@ -64,7 +64,7 @@ export async function fetchGameById(id: number) {
 	return game;
 }
 
-export async function removeGameById(id: number): Promise<void> {
+export async function removeGameById(id: string): Promise<void> {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
@@ -76,7 +76,7 @@ export async function removeGameById(id: number): Promise<void> {
 	]);
 }
 
-export async function softRemoveGameById(id: number): Promise<void> {
+export async function softRemoveGameById(id: string): Promise<void> {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 

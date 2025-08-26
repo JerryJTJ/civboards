@@ -36,7 +36,7 @@ export default function CivField(props: CivFieldProps) {
 				onSelectionChange={(e) => {
 					changeDispatch({
 						leaderId: Number(e),
-						key: civ.key,
+						id: civ.id,
 					});
 				}}
 			>
@@ -58,7 +58,7 @@ export default function CivField(props: CivFieldProps) {
 					onChange={(e) =>
 						changeDispatch({
 							name: e.target.value,
-							key: civ.key,
+							id: civ.id,
 						})
 					}
 				/>
@@ -74,7 +74,7 @@ export default function CivField(props: CivFieldProps) {
 						changeDispatch({
 							name: civ.isHuman ? "" : civ.name,
 							isHuman: !civ.isHuman,
-							key: civ.key,
+							id: civ.id,
 						});
 					}}
 				>

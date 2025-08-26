@@ -6,10 +6,10 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@heroui/modal";
-import { InsertGameSchema } from "@civboards/schemas";
+import { DisplayGameSchema, InsertGameSchema } from "@civboards/schemas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
-import { useReducer } from "react";
+import { useMemo, useReducer } from "react";
 import z from "zod";
 
 import UploadFileInput from "./UploadFileInput";
@@ -27,12 +27,10 @@ interface AddModalProps {
 	mode: "add";
 	isOpen: boolean;
 	onOpenChange: () => void;
-	// onSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
-	// mutation: UseMutationResult<void, Error, GameOptions, unknown>;
-	// dispatches: FormDispatches;
 }
 
 interface ViewGameProps {
+	game: z.infer<typeof DisplayGameSchema>;
 	mode: "view";
 	isOpen: boolean;
 	onOpenChange: () => void;
@@ -42,6 +40,28 @@ type GameModalProps = AddModalProps | ViewGameProps;
 
 export default function GameModal(props: GameModalProps) {
 	const { mode, isOpen, onOpenChange } = props;
+
+	// Setting initial data
+	const data = useMemo(() => {
+		switch (mode) {
+			case "add":
+				return DEFAULT_ADD_FORM;
+			case "view":
+				const { game } = props;
+
+				return {
+					...game,
+					winner: "",
+					date: Date.parse(game.date),
+					victoryId: game.victoryId || undefined,
+					expansions: new Set(game.expansions),
+					gamemodes: new Set(game.gamemodes),
+					players: game.players,
+				};
+			default:
+				return DEFAULT_ADD_FORM;
+		}
+	}, [mode, props]);
 
 	// UI
 	const headerText = () => {
@@ -57,7 +77,7 @@ export default function GameModal(props: GameModalProps) {
 
 	const [form, dispatch] = useReducer<GameOptions, [action: AddFormAction]>(
 		addGameReducer,
-		DEFAULT_ADD_FORM
+		data
 	);
 
 	// Dispatches
@@ -125,9 +145,7 @@ export default function GameModal(props: GameModalProps) {
 				message: "Can't have duplicate player names",
 			};
 
-		const winner = form.players.find(
-			(player) => player.key === form.winner
-		);
+		const winner = form.players.find((player) => player.id === form.winner);
 
 		if (!winner && form.finished)
 			return { errors: true, message: "Can't find winner" };
@@ -208,7 +226,7 @@ export default function GameModal(props: GameModalProps) {
 										<div className="flex flex-col justify-start gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
 											{form.players.map((civ: Civ) => (
 												<CivField
-													key={civ.key}
+													key={civ.id}
 													changeDispatch={
 														dispatches.changeCivDispatch
 													}
@@ -220,26 +238,28 @@ export default function GameModal(props: GameModalProps) {
 												/>
 											))}
 										</div>
-										<div className="flex flex-row gap-2 pt-4">
-											<Button
-												onPress={() =>
-													dispatches.addCivDispatch(
-														true
-													)
-												}
-											>
-												Add Human
-											</Button>
-											<Button
-												onPress={() =>
-													dispatches.addCivDispatch(
-														false
-													)
-												}
-											>
-												Add AI
-											</Button>
-										</div>
+										{enabled && (
+											<div className="flex flex-row gap-2 pt-4">
+												<Button
+													onPress={() =>
+														dispatches.addCivDispatch(
+															true
+														)
+													}
+												>
+													Add Human
+												</Button>
+												<Button
+													onPress={() =>
+														dispatches.addCivDispatch(
+															false
+														)
+													}
+												>
+													Add AI
+												</Button>
+											</div>
+										)}
 									</div>
 									<div className="flex flex-col gap-2">
 										<p className="self-center pb-2 font-bold">
@@ -263,13 +283,15 @@ export default function GameModal(props: GameModalProps) {
 								>
 									Close
 								</Button>
-								<Button
-									color="primary"
-									type="submit"
-									variant="shadow"
-								>
-									Add
-								</Button>
+								{enabled && (
+									<Button
+										color="primary"
+										type="submit"
+										variant="shadow"
+									>
+										Add
+									</Button>
+								)}
 							</ModalFooter>
 						</>
 					)}

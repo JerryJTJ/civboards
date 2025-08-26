@@ -17,7 +17,7 @@ export async function insertGamePlayers(
 	return data;
 }
 
-export async function getGamePlayersByGameId(gameId: number) {
+export async function getGamePlayersByGameId(gameId: string) {
 	const { data, error } = await supabase
 		.from("game_player")
 		.select()
@@ -30,7 +30,7 @@ export async function getGamePlayersByGameId(gameId: number) {
 	return data;
 }
 
-export async function deleteGamePlayersByGameId(gameId: number) {
+export async function deleteGamePlayersByGameId(gameId: string) {
 	const response = await supabase
 		.from("game_player")
 		.delete()

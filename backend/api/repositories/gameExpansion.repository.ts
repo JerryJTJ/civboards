@@ -16,7 +16,7 @@ export async function insertExpansions(
 	return data;
 }
 
-export async function getGameExpansionsByGameId(gameId: number) {
+export async function getGameExpansionsByGameId(gameId: string) {
 	const { data, error } = await supabase
 		.from("game_expansion")
 		.select()
@@ -29,7 +29,7 @@ export async function getGameExpansionsByGameId(gameId: number) {
 	return data;
 }
 
-export async function deleteGameExpansionsByGameId(gameId: number) {
+export async function deleteGameExpansionsByGameId(gameId: string) {
 	const response = await supabase
 		.from("game_expansion")
 		.delete()

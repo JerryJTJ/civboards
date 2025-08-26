@@ -8,7 +8,7 @@ import {
 } from "../repositories/gameGamemode.repository";
 
 export async function createGameGamemodes(
-	gameId: number,
+	gameId: string,
 	gamemodes: Array<number>
 ) {
 	if (!gameId) throwValidationError("No Game Id Provided");
@@ -20,7 +20,7 @@ export async function createGameGamemodes(
 	insertGamemodes(gameGamemodes);
 }
 
-export async function fetchGameGamemodesIdsByGameId(gameId: number) {
+export async function fetchGameGamemodesIdsByGameId(gameId: string) {
 	if (!gameId) throwValidationError("Invalid Game Id");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
@@ -32,6 +32,6 @@ export async function fetchGameGamemodesIdsByGameId(gameId: number) {
 	return gameGamemodesIds;
 }
 
-export async function removeGameGamemodesByGameId(gameId: number) {
+export async function removeGameGamemodesByGameId(gameId: string) {
 	await deleteGameGamemodesById(gameId);
 }

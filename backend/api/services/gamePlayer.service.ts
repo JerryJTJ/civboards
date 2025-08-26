@@ -11,7 +11,7 @@ import {
 import { fetchCivilizationIdByLeaderId } from "./leader.service";
 
 export async function createGamePlayers(
-	gameId: number,
+	gameId: string,
 	players: Array<z.infer<typeof PlayerSchema>>
 ) {
 	if (players.length === 0) throwValidationError("No players to add");
@@ -23,23 +23,23 @@ export async function createGamePlayers(
 	});
 
 	// We want to keep JSON in camelCase and only use snake_case for DB operations
-	const gamePlayers = await Promise.all(
+	const gamePlayers = (await Promise.all(
 		players.map(async (player) => {
 			const civId = (await fetchCivilizationIdByLeaderId(player.leaderId))
 				?.civilization_id;
 			return {
 				game_id: gameId,
-				name: player.isHuman ? player.name : undefined,
+				name: player.name,
 				leader_id: player.leaderId,
 				civilization_id: civId,
 				is_human: player.isHuman,
 			};
-		}) as Array<TablesInsert<"game_player">>
-	);
+		})
+	)) as Array<TablesInsert<"game_player">>;
 	await insertGamePlayers(gamePlayers);
 }
 
-export async function fetchGamePlayersByGameId(gameId: number) {
+export async function fetchGamePlayersByGameId(gameId: string) {
 	if (!gameId) throwValidationError("No Game Id Provided");
 	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
 
@@ -57,6 +57,6 @@ export async function fetchGamePlayersByGameId(gameId: number) {
 	return gamePlayersSanitized;
 }
 
-export async function removeGamePlayerByGameId(gameId: number) {
+export async function removeGamePlayerByGameId(gameId: string) {
 	await deleteGamePlayersByGameId(gameId);
 }

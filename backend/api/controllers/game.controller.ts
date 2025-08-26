@@ -97,14 +97,13 @@ export async function handleGetGameById(
 	next: NextFunction
 ) {
 	const { id } = req.params;
-	const gameId = Number(id);
 
 	try {
 		const [game, players, expansions, gamemodes] = await Promise.all([
-			fetchGameById(gameId),
-			fetchGamePlayersByGameId(gameId),
-			fetchGameExpansionsIdsByGameId(gameId),
-			fetchGameGamemodesIdsByGameId(gameId),
+			fetchGameById(id),
+			fetchGamePlayersByGameId(id),
+			fetchGameExpansionsIdsByGameId(id),
+			fetchGameGamemodesIdsByGameId(id),
 		]);
 
 		if (game) {
@@ -251,7 +250,7 @@ export async function handleSoftDeleteGame(
 	const { id } = req.params;
 
 	try {
-		await softRemoveGameById(Number(id));
+		await softRemoveGameById(id);
 		return res.status(202).end();
 	} catch (error) {
 		next(error);
