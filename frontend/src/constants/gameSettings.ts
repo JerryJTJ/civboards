@@ -83,7 +83,7 @@ export const VICTORY_TYPES: Victory[] = [
 	{ key: "3", id: 3, label: "Domination" },
 	{ key: "4", id: 4, label: "Religion" },
 	{ key: "5", id: 5, label: "Diplomatic" },
-	{ key: "6", id: 6, label: "Score" },
+	{ key: "6", id: 6, label: "Score/Time" },
 ];
 
 export interface Gamemode {

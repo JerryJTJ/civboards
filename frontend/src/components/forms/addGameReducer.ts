@@ -150,7 +150,7 @@ function addGameReducer(form: GameOptions, action: AddFormAction) {
 		case "parse":
 			const players = action.payload.players?.map((player) => ({
 				...player,
-				key: crypto.randomUUID(),
+				id: crypto.randomUUID(),
 			}));
 
 			const parsed = {
