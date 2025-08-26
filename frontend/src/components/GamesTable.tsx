@@ -24,15 +24,13 @@ import z from "zod";
 import {
 	QueryObserverResult,
 	RefetchOptions,
-	useMutation,
 } from "@tanstack/react-query";
-import { addToast } from "@heroui/toast";
 import { useDisclosure } from "@heroui/modal";
 
 import { SearchIcon, VerticalDotsIcon } from "./icons";
 import GameModal from "./GameModal";
+import DeleteModal from "./DeleteModal";
 
-import { deleteGameById } from "@/api/games";
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 
 interface GamesTableProps {
@@ -68,35 +66,10 @@ export default function GamesTable(props: GamesTableProps) {
 	const { games, refetch } = props;
 
 	// Modal
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const viewModal = useDisclosure();
+	const deleteModal = useDisclosure();
 	const [currGame, setCurrGame] =
 		useState<z.infer<typeof DisplayGameSchema>>(DEFAULT_DISPLAY_GAME);
-
-	// API
-	const mutation = useMutation({
-		mutationFn: deleteGameById,
-		onError: () => {
-			addToast({
-				title: "Error",
-				color: "warning",
-				description: "Failed to delete game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-		},
-		onSuccess: () => {
-			addToast({
-				title: "Success",
-				color: "success",
-				description: "Successfully deleted game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-		},
-		onSettled: () => {
-			refetch();
-		},
-	});
 
 	type Game = z.infer<typeof DisplayGameSchema>;
 
@@ -227,7 +200,7 @@ export default function GamesTable(props: GamesTableProps) {
 										key="view"
 										onPress={() => {
 											setCurrGame(game);
-											onOpen();
+											viewModal.onOpen();
 										}}
 									>
 										View
@@ -236,8 +209,9 @@ export default function GamesTable(props: GamesTableProps) {
 									<DropdownItem
 										key="delete"
 										color="danger"
-										onPress={async () => {
-											await mutation.mutateAsync(game.id);
+										onPress={() => {
+											setCurrGame(game);
+											deleteModal.onOpen();
 										}}
 									>
 										Delete
@@ -250,7 +224,7 @@ export default function GamesTable(props: GamesTableProps) {
 					return cellValue;
 			}
 		},
-		[mutation, onOpen]
+		[viewModal, deleteModal]
 	);
 
 	const onNextPage = React.useCallback(() => {
@@ -434,12 +408,26 @@ export default function GamesTable(props: GamesTableProps) {
 					)}
 				</TableBody>
 			</Table>
-			{isOpen && (
+			{viewModal.isOpen && (
 				<GameModal
 					game={currGame}
-					isOpen={isOpen}
+					isOpen={viewModal.isOpen}
 					mode="view"
-					onOpenChange={onOpenChange}
+					onOpenChange={viewModal.onOpenChange}
+				/>
+			)}
+			{deleteModal.isOpen && (
+				<DeleteModal
+					body={
+						<p>
+							Are you sure you want to delete{" "}
+							<b>{currGame.name}</b>?
+						</p>
+					}
+					gameId={currGame.id}
+					isOpen={deleteModal.isOpen}
+					refetch={refetch}
+					onOpenChange={deleteModal.onOpenChange}
 				/>
 			)}
 		</>
