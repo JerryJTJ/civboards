@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError } from "../../types/Errors";
+
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	deleteGamePlayersByGameId,
@@ -9,17 +9,18 @@ import {
 	insertGamePlayers,
 } from "../repositories/gamePlayer.repository";
 import { fetchCivilizationIdByLeaderId } from "./leader.service";
+import { ValidationError } from "../../types/Errors";
 
 export async function createGamePlayers(
 	gameId: string,
 	players: Array<z.infer<typeof PlayerSchema>>
 ) {
-	if (players.length === 0) throwValidationError("No players to add");
-	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+	if (players.length === 0) throw new ValidationError("No players to add");
+	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
 
 	players.forEach((player) => {
 		if (!player.leaderId || !player.leaderId)
-			throwValidationError("Invalid Player Data");
+			throw new ValidationError("Invalid Player Data");
 	});
 
 	// We want to keep JSON in camelCase and only use snake_case for DB operations
@@ -40,8 +41,8 @@ export async function createGamePlayers(
 }
 
 export async function fetchGamePlayersByGameId(gameId: string) {
-	if (!gameId) throwValidationError("No Game Id Provided");
-	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+	if (!gameId) throw new ValidationError("No Game Id Provided");
+	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
 
 	const gamePlayers = await getGamePlayersByGameId(gameId);
 	const gamePlayersSanitized = gamePlayers?.map((gamePlayer) => {

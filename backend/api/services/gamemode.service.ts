@@ -1,4 +1,4 @@
-import { throwValidationError } from "../../types/Errors";
+import { ValidationError } from "../../types/Errors";
 import {
 	getAllGamemodes,
 	getGamemodeById,
@@ -6,7 +6,7 @@ import {
 
 export async function fetchGamemodeById(id: number) {
 	if (!id || isNaN(id)) {
-		throwValidationError("Invalid Victory Id");
+		throw new ValidationError("Invalid Victory Id");
 	}
 	const gamemode = await getGamemodeById(id);
 	return gamemode;

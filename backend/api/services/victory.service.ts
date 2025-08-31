@@ -1,4 +1,4 @@
-import { throwValidationError } from "../../types/Errors";
+import { ValidationError } from "../../types/Errors";
 import {
 	getAllVictories,
 	getVictoryFromId,
@@ -6,7 +6,7 @@ import {
 
 export async function fetchVictoryById(id: number) {
 	if (!id || isNaN(id)) {
-		throwValidationError("Invalid Victory Id");
+		throw new ValidationError("Invalid Victory Id");
 	}
 	const victory = await getVictoryFromId(id);
 	return victory;

@@ -1,15 +1,6 @@
-import {
-	PlayerSchema,
-	DisplayGameSchemaArray,
-	UpdateGameSchema,
-	InsertGameSchema,
-} from "@civboards/schemas";
+import { UpdateGameSchema, InsertGameSchema } from "@civboards/schemas";
 import { TablesInsert, TablesUpdate } from "../../interfaces/supabase";
-import {
-	AppError,
-	throwNotFoundError,
-	throwValidationError,
-} from "../../types/Errors";
+import { NotFoundError, ValidationError } from "../../types/Errors";
 
 import {
 	deleteGameById,
@@ -46,18 +37,18 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 
 	if (game.finished) {
 		if (!game.winnerPlayer || !game.winnerLeaderId)
-			throwValidationError("Finished games need a winner");
+			throw new ValidationError("Finished games need a winner");
 		if (!game.victoryId)
-			throwValidationError("Finished games need a victory");
+			throw new ValidationError("Finished games need a victory");
 
 		// Make sure winners match
 		const winner = game.players.find(
 			(player) => player.name === game.winnerPlayer
 		);
-		if (!winner) throwValidationError("Finished games need a winner");
+		if (!winner) throw new ValidationError("Finished games need a winner");
 
 		if (winner!.leaderId !== game.winnerLeaderId)
-			throwValidationError("Finished games need a winner");
+			throw new ValidationError("Finished games need a winner");
 	}
 
 	let winnerCivilizationId;
@@ -100,23 +91,26 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 }
 
 export async function fetchGameById(id: string) {
-	if (!id) throwValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
+	if (!id) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id)))
+		throw new NotFoundError("Invalid Game Id");
 
 	const game = await getGameById(id);
 	return game;
 }
 
 export async function removeGameById(id: string): Promise<void> {
-	if (!id) throwValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
+	if (!id) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id)))
+		throw new NotFoundError("Invalid Game Id");
 
 	await deleteGameById(id);
 }
 
 export async function softRemoveGameById(id: string): Promise<void> {
-	if (!id) throwValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
+	if (!id) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(id)))
+		throw new NotFoundError("Invalid Game Id");
 
 	await softDeleteGameById(id);
 }
@@ -263,24 +257,25 @@ export async function updateGame(
 	const gameId = game.id;
 
 	// Validation
-	if (!gameId) throwValidationError("Invalid Game Id");
-	if (id !== gameId) throwValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(gameId))) throwNotFoundError("Invalid Game Id");
+	if (!gameId) throw new ValidationError("Invalid Game Id");
+	if (id !== gameId) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(gameId)))
+		throw new NotFoundError("Invalid Game Id");
 
 	if (game.finished) {
 		if (!game.winnerPlayer || !game.winnerLeaderId)
-			throwValidationError("Finished games need a winner");
+			throw new ValidationError("Finished games need a winner");
 		if (!game.victoryId)
-			throwValidationError("Finished games need a victory");
+			throw new ValidationError("Finished games need a victory");
 
 		// Make sure winners match
 		const winner = game.players.find(
 			(player) => player.name === game.winnerPlayer
 		);
-		if (!winner) throwValidationError("Finished games need a winner");
+		if (!winner) throw new ValidationError("Finished games need a winner");
 
 		if (winner!.leaderId !== game.winnerLeaderId)
-			throwValidationError("Finished games need a winner");
+			throw new ValidationError("Finished games need a winner");
 	}
 
 	// Update game

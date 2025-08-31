@@ -33,7 +33,7 @@ export default function GamesCard(props: GameCardProps) {
 	const deleteModal = useDisclosure();
 
 	// UI
-	let humans = new Array<string>();
+	const humans = new Array<string>();
 
 	game.players.forEach((player) => {
 		if (player.isHuman) humans.push(player.name);

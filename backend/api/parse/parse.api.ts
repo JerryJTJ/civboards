@@ -3,7 +3,7 @@ import express from "express";
 import multer from "multer";
 import { ParseSaveSchema } from "@civboards/schemas";
 import { parse } from "../../submodules/civ6-save-parser/parse";
-import { throwParseError, throwValidationError } from "../../types/Errors";
+import { ParseError, ValidationError } from "../../types/Errors";
 import { fetchLeaderFromCode } from "../services/leader.service";
 import { fetchExpansionByCode } from "../services/expansion.service";
 
@@ -30,7 +30,7 @@ ParseRouter.post(
 	upload.single("savefile"),
 	async (req: express.Request, res: express.Response) => {
 		if (!req.file) {
-			return throwValidationError("No file provided");
+			throw new ValidationError("No file provided");
 		}
 		try {
 			const parsed = parse(req.file?.buffer, {
@@ -38,8 +38,10 @@ ParseRouter.post(
 			});
 			const sanitized = await sanitizeSaveFile(parsed);
 			res.status(200).json(sanitized);
-		} catch (error: any) {
-			return throwParseError(error?.message);
+		} catch (error: unknown) {
+			if (error instanceof Error)
+				throw new ParseError(error.message || "");
+			throw new ParseError();
 		}
 	}
 );

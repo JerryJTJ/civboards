@@ -1,5 +1,5 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function insertExpansions(
@@ -10,8 +10,9 @@ export async function insertExpansions(
 		.insert(expansions)
 		.select();
 
-	if (error) throwDatabaseError("Failed to insert game expansion", error);
-	if (!data) throwNotFoundError();
+	if (error)
+		throw new DatabaseError("Failed to insert game expansion", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -23,8 +24,11 @@ export async function getGameExpansionsByGameId(gameId: string) {
 		.eq("game_id", gameId);
 
 	if (error)
-		throwDatabaseError("Failed to get game expansions by game id", error);
-	if (!data) throwNotFoundError();
+		throw new DatabaseError(
+			"Failed to get game expansions by game id",
+			error
+		);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -36,5 +40,8 @@ export async function deleteGameExpansionsByGameId(gameId: string) {
 		.in("game_id", [gameId]);
 
 	if (response.error)
-		throwDatabaseError("Failed delete game expansions", response.error);
+		throw new DatabaseError(
+			"Failed delete game expansions",
+			response.error
+		);
 }

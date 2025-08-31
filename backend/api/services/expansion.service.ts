@@ -1,4 +1,4 @@
-import { throwValidationError } from "../../types/Errors";
+import { ValidationError } from "../../types/Errors";
 import {
 	getAllExpansions,
 	getExpansionByCode,
@@ -7,7 +7,7 @@ import {
 
 export async function fetchExpansionByCode(code: string) {
 	if (!code || typeof code !== "string") {
-		throwValidationError("Invalid Expansion code");
+		throw new ValidationError("Invalid Expansion code");
 	}
 
 	const expansion = await getExpansionByCode(code);
@@ -16,7 +16,7 @@ export async function fetchExpansionByCode(code: string) {
 
 export async function fetchExpansionById(id: number) {
 	if (!id || isNaN(id)) {
-		throwValidationError("Invalid Expansion Id");
+		throw new ValidationError("Invalid Expansion Id");
 	}
 
 	const expansion = await getExpansionById(id);

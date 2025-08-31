@@ -1,4 +1,4 @@
-import { throwValidationError } from "../../types/Errors";
+import { ValidationError } from "../../types/Errors";
 import {
 	getAllCivilizations,
 	getCivilizationByCode,
@@ -7,7 +7,7 @@ import {
 
 export async function fetchCivilizationByCode(code: string) {
 	if (!code || typeof code !== "string") {
-		throwValidationError("Invalid Civilization code");
+		throw new ValidationError("Invalid Civilization code");
 	}
 
 	const civ = await getCivilizationByCode(code);
@@ -16,7 +16,7 @@ export async function fetchCivilizationByCode(code: string) {
 
 export async function fetchCivilizationById(id: number) {
 	if (!id || isNaN(id)) {
-		throwValidationError("Invalid Civilization Id");
+		throw new ValidationError("Invalid Civilization Id");
 	}
 	const civ = await getCivilizationById(id);
 	return civ;

@@ -1,5 +1,5 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwValidationError, AppError } from "../../types/Errors";
+import { ValidationError } from "../../types/Errors";
 import { doesGameIdExist } from "../repositories/game.repository";
 import {
 	deleteGameGamemodesById,
@@ -11,8 +11,8 @@ export async function createGameGamemodes(
 	gameId: string,
 	gamemodes: Array<number>
 ) {
-	if (!gameId) throwValidationError("No Game Id Provided");
-	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+	if (!gameId) throw new ValidationError("No Game Id Provided");
+	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
 
 	const gameGamemodes = gamemodes.map((gamemode) => {
 		return { game_id: gameId, gamemode_id: gamemode };
@@ -21,8 +21,8 @@ export async function createGameGamemodes(
 }
 
 export async function fetchGameGamemodesIdsByGameId(gameId: string) {
-	if (!gameId) throwValidationError("Invalid Game Id");
-	if (!doesGameIdExist(gameId)) throwValidationError("Invalid Game Id");
+	if (!gameId) throw new ValidationError("Invalid Game Id");
+	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
 
 	const gameGamemodes = await getGameGamemodesByGameId(gameId);
 	const gameGamemodesIds = gameGamemodes?.map((gameGamemode) => {

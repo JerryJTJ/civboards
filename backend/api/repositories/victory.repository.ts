@@ -1,4 +1,4 @@
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function getVictoryFromId(id: number) {
@@ -8,8 +8,8 @@ export async function getVictoryFromId(id: number) {
 		.eq("id", id)
 		.maybeSingle();
 
-	if (error) throwDatabaseError("Failed to get victory from id", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get victory from id", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -20,8 +20,8 @@ export async function getAllVictories() {
 		.select("id, type")
 		.order("id", { ascending: true });
 
-	if (error) throwDatabaseError("Failed to get all victories", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get all victories", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }

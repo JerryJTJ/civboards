@@ -164,7 +164,7 @@ export default function GamesTable(props: GamesTableProps) {
 				case "map":
 					return <p className="text-bold text-small">{game.map}</p>;
 				case "players":
-					let humans = new Array<string>();
+					const humans = new Array<string>();
 
 					game.players.forEach((player) => {
 						if (player.isHuman) humans.push(player.name);

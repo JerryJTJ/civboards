@@ -1,4 +1,4 @@
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function getLeaderByCode(code: string) {
@@ -9,8 +9,8 @@ export async function getLeaderByCode(code: string) {
 		.eq("active", true)
 		.maybeSingle();
 
-	if (error) throwDatabaseError("Failed to get leader by code", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get leader by code", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -23,8 +23,8 @@ export async function getLeaderById(id: number) {
 		.eq("active", true)
 		.maybeSingle();
 
-	if (error) throwDatabaseError("Failed to get leader by id", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get leader by id", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -38,8 +38,8 @@ export async function getCivilizationIdByLeaderId(id: number) {
 		.maybeSingle();
 
 	if (error)
-		throwDatabaseError("Failed to get civilization by leader", error);
-	if (!data) throwNotFoundError();
+		throw new DatabaseError("Failed to get civilization by leader", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -51,8 +51,8 @@ export async function getAllLeaders() {
 		.eq("active", true)
 		.order("name", { ascending: true });
 
-	if (error) throwDatabaseError("Failed to get all leaders", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get all leaders", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }

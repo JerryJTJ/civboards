@@ -6,24 +6,14 @@ import {
 	fetchAllGameWinners,
 	fetchAllGames,
 	fetchGameById,
-	removeGameById,
 	softRemoveGameById,
 	updateGame,
 } from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
-import {
-	createGameGamemodes,
-	fetchGameGamemodesIdsByGameId,
-} from "../services/gameGamemode.service";
-import {
-	createGameExpansions,
-	fetchGameExpansionsIdsByGameId,
-} from "../services/gameExpansion.service";
-import {
-	createGamePlayers,
-	fetchGamePlayersByGameId,
-} from "../services/gamePlayer.service";
-import { throwValidationError } from "../../types/Errors";
+import { fetchGameGamemodesIdsByGameId } from "../services/gameGamemode.service";
+import { fetchGameExpansionsIdsByGameId } from "../services/gameExpansion.service";
+import { fetchGamePlayersByGameId } from "../services/gamePlayer.service";
+import { ValidationError } from "../../types/Errors";
 import {
 	InsertGameSchema,
 	DisplayGameSchemaArray,
@@ -36,13 +26,11 @@ export async function handleCreateGame(
 	res: Response,
 	next: NextFunction
 ) {
-	if (!req.body) throwValidationError("No request body recieved");
+	if (!req.body) throw new ValidationError("No request body recieved");
 
 	const result = InsertGameSchema.safeParse(req.body);
-	if (!result.success) {
-		throwValidationError("Fields were either incorrect or missing");
-		return; //This is just so TS complier doesn't think data may be undefined
-	}
+	if (!result.success)
+		throw new ValidationError("Fields were either incorrect or missing");
 
 	try {
 		await createGame(result.data);
@@ -223,16 +211,14 @@ export async function handleUpdateGame(
 	res: Response,
 	next: NextFunction
 ) {
-	if (!req.params) throwValidationError("No request id recieved");
-	if (!req.body) throwValidationError("No request body recieved");
+	if (!req.params) throw new ValidationError("No request id recieved");
+	if (!req.body) throw new ValidationError("No request body recieved");
 
 	const { id } = req.params;
 
 	const result = UpdateGameSchema.safeParse(req.body);
-	if (!result.success) {
-		throwValidationError("Fields were either incorrect or missing");
-		return; //This is just so TS complier doesn't think data may be undefined
-	}
+	if (!result.success)
+		throw new ValidationError("Fields were either incorrect or missing");
 
 	try {
 		const update = await updateGame(id, result.data);

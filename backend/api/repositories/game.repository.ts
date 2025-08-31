@@ -1,8 +1,8 @@
 import { Tables, TablesInsert, TablesUpdate } from "../../interfaces/supabase";
 import {
-	throwDatabaseError,
-	throwNotFoundError,
-	throwValidationError,
+	DatabaseError,
+	NotFoundError,
+	ValidationError,
 } from "../../types/Errors";
 import { supabase } from "../server";
 
@@ -27,8 +27,8 @@ export async function insertGame(
 		})
 		.select();
 
-	if (error) throwDatabaseError("Failed to insert game", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to insert game", error);
+	if (!data) throw new NotFoundError();
 
 	return data![0];
 }
@@ -47,7 +47,7 @@ export async function getGameById(id: string) {
 		.eq("active", true)
 		.single();
 
-	if (error || !data) throwDatabaseError("Failed to get game", error);
+	if (error || !data) throw new DatabaseError("Failed to get game", error);
 
 	return data;
 }
@@ -58,7 +58,8 @@ export async function getAllGames() {
 		.select()
 		.eq("active", true);
 
-	if (error || !data) throwDatabaseError("Failed to get all games", error);
+	if (error || !data)
+		throw new DatabaseError("Failed to get all games", error);
 
 	return data;
 }
@@ -71,7 +72,7 @@ export async function deleteGameById(id: string) {
 		.eq("active", true);
 
 	if (response.error)
-		throwDatabaseError("Failed to delete game", response.error);
+		throw new DatabaseError("Failed to delete game", response.error);
 }
 
 export async function softDeleteGameById(id: string): Promise<void> {
@@ -81,7 +82,7 @@ export async function softDeleteGameById(id: string): Promise<void> {
 		.eq("id", id);
 
 	if (response.error)
-		throwDatabaseError("Failed to delete game", response.error);
+		throw new DatabaseError("Failed to delete game", response.error);
 }
 
 export async function getAllGameWinners() {
@@ -91,7 +92,7 @@ export async function getAllGameWinners() {
 		.eq("active", true)
 		.eq("finished", true);
 
-	if (error || !data) throwDatabaseError("Failed to get winners", error);
+	if (error || !data) throw new DatabaseError("Failed to get winners", error);
 
 	return data;
 }
@@ -104,7 +105,7 @@ export async function getAllGameWinnerLeaderIds() {
 		.eq("finished", true);
 
 	if (error || !data)
-		throwDatabaseError("Failed to get game winner leaders", error);
+		throw new DatabaseError("Failed to get game winner leaders", error);
 
 	return data;
 }
@@ -117,7 +118,10 @@ export async function getAllGameWinnerCivilizationIds() {
 		.eq("finished", true);
 
 	if (error || !data)
-		throwDatabaseError("Failed to get game winner civiliations", error);
+		throw new DatabaseError(
+			"Failed to get game winner civiliations",
+			error
+		);
 
 	return data;
 }
@@ -130,7 +134,7 @@ export async function getAllGameVictoryIds() {
 		.eq("finished", true);
 
 	if (error || !data)
-		throwDatabaseError("Failed to get game victories", error);
+		throw new DatabaseError("Failed to get game victories", error);
 
 	return data;
 }
@@ -146,9 +150,12 @@ export async function updateGameById(game: TablesUpdate<"game">) {
 			.select();
 
 		if (error || !data)
-			throwDatabaseError("Failed to update game", error || undefined);
+			throw new DatabaseError(
+				"Failed to update game",
+				error || undefined
+			);
 
 		return data;
 	}
-	throwValidationError("Invalid game id");
+	throw new ValidationError("Invalid game id");
 }

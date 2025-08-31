@@ -1,5 +1,5 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function insertGamePlayers(
@@ -10,9 +10,9 @@ export async function insertGamePlayers(
 		.insert(players)
 		.select();
 
-	if (error) throwDatabaseError("Failed to insert game players", error);
+	if (error) throw new DatabaseError("Failed to insert game players", error);
 
-	if (!data) throwNotFoundError();
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -24,8 +24,8 @@ export async function getGamePlayersByGameId(gameId: string) {
 		.eq("game_id", gameId);
 
 	if (error)
-		throwDatabaseError("Failed to get game players by game id", error);
-	if (!data) throwNotFoundError();
+		throw new DatabaseError("Failed to get game players by game id", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -37,5 +37,5 @@ export async function deleteGamePlayersByGameId(gameId: string) {
 		.in("game_id", [gameId]);
 
 	if (response.error)
-		throwDatabaseError("Failed delete game players", response.error);
+		throw new DatabaseError("Failed delete game players", response.error);
 }

@@ -1,4 +1,4 @@
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function getExpansionByCode(code: string) {
@@ -8,8 +8,9 @@ export async function getExpansionByCode(code: string) {
 		.eq("code", code)
 		.maybeSingle();
 
-	if (error) throwDatabaseError("Failed to get expansion by code", error);
-	if (!data) throwNotFoundError();
+	if (error)
+		throw new DatabaseError("Failed to get expansion by code", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -21,8 +22,8 @@ export async function getExpansionById(id: number) {
 		.eq("id", id)
 		.maybeSingle();
 
-	if (error) throwDatabaseError("Failed to get expansion by id", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get expansion by id", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -33,8 +34,8 @@ export async function getAllExpansions() {
 		.select("id, name")
 		.order("id", { ascending: true });
 
-	if (error) throwDatabaseError("Failed to get all expansions", error);
-	if (!data) throwNotFoundError();
+	if (error) throw new DatabaseError("Failed to get all expansions", error);
+	if (!data) throw new NotFoundError();
 
 	return data;
 }
