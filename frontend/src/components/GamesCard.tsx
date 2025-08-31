@@ -80,7 +80,16 @@ export default function GamesCard(props: GameCardProps) {
 			</Dropdown>
 			{viewModal.isOpen && (
 				<GameModal
-					game={game}
+					dispatch={undefined}
+					form={{
+						...game,
+						winner: "",
+						date: Date.parse(game.date),
+						victoryId: game.victoryId || undefined,
+						expansions: new Set(game.expansions),
+						gamemodes: new Set(game.gamemodes),
+						players: game.players,
+					}}
 					isOpen={viewModal.isOpen}
 					mode="view"
 					onOpenChange={viewModal.onOpenChange}

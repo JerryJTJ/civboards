@@ -6,10 +6,9 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@heroui/modal";
-import { DisplayGameSchema, InsertGameSchema } from "@civboards/schemas";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { InsertGameSchema } from "@civboards/schemas";
+import { UseMutationResult } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
-import { useMemo, useReducer } from "react";
 import z from "zod";
 
 import UploadFileInput from "./UploadFileInput";
@@ -17,51 +16,36 @@ import CivField from "./forms/CivField";
 import GameOptionsForm from "./forms/GameOptionsForm";
 import { getFormDispatches } from "./forms/gameFormDispatches";
 import { isModalFieldEnabled } from "./utils/isModalFieldEnabled";
-import addGameReducer, { AddFormAction } from "./forms/addGameReducer";
+import { FormAction } from "./forms/addGameReducer";
 
-import { insertGame } from "@/api/games";
-import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 interface AddModalProps {
 	mode: "add";
+	form: GameOptions;
+	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onOpenChange: () => void;
+	mutation: UseMutationResult<
+		void,
+		Error,
+		z.infer<typeof InsertGameSchema>,
+		unknown
+	>;
 }
 
 interface ViewGameProps {
-	game: z.infer<typeof DisplayGameSchema>;
+	form: GameOptions;
 	mode: "view";
 	isOpen: boolean;
 	onOpenChange: () => void;
+	dispatch: undefined;
 }
 
 type GameModalProps = AddModalProps | ViewGameProps;
 
 export default function GameModal(props: GameModalProps) {
-	const { mode, isOpen, onOpenChange } = props;
-
-	// Setting initial data
-	const data = useMemo(() => {
-		switch (mode) {
-			case "add":
-				return DEFAULT_ADD_FORM;
-			case "view":
-				const { game } = props;
-
-				return {
-					...game,
-					winner: "",
-					date: Date.parse(game.date),
-					victoryId: game.victoryId || undefined,
-					expansions: new Set(game.expansions),
-					gamemodes: new Set(game.gamemodes),
-					players: game.players,
-				};
-			default:
-				return DEFAULT_ADD_FORM;
-		}
-	}, [mode, props]);
+	const { mode, isOpen, onOpenChange, form, dispatch } = props;
 
 	// UI
 	const headerText = () => {
@@ -75,48 +59,14 @@ export default function GameModal(props: GameModalProps) {
 
 	const enabled = isModalFieldEnabled(mode);
 
-	const [form, dispatch] = useReducer<GameOptions, [action: AddFormAction]>(
-		addGameReducer,
-		data
-	);
-
 	// Dispatches
-	const dispatches = getFormDispatches(dispatch, form);
+	const dispatches = dispatch ? getFormDispatches(dispatch, form) : undefined;
 
 	// Modal open/close
 	const onModalChange = () => {
-		dispatches.resetFormDispatch();
+		dispatches?.resetFormDispatch();
 		onOpenChange();
 	};
-
-	// API
-	const queryClient = useQueryClient();
-
-	const mutation = useMutation({
-		mutationFn: insertGame,
-		onError: () => {
-			addToast({
-				title: "Error",
-				color: "danger",
-				description: "Failed to add game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-		},
-		onSuccess: () => {
-			addToast({
-				title: "Success",
-				color: "success",
-				description: "Added game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-			onModalChange();
-		},
-		onSettled: () => {
-			queryClient.invalidateQueries();
-		},
-	});
 
 	//Validation
 	type ValidateResult =
@@ -177,6 +127,7 @@ export default function GameModal(props: GameModalProps) {
 
 	// Submitting
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		if (mode === "view") return;
 		e.preventDefault();
 		const validate = validateRequest(form);
 
@@ -192,7 +143,7 @@ export default function GameModal(props: GameModalProps) {
 			return;
 		}
 
-		await mutation.mutateAsync(validate.result.data);
+		await props.mutation.mutateAsync(validate.result.data);
 	};
 
 	return (
@@ -211,7 +162,7 @@ export default function GameModal(props: GameModalProps) {
 								{headerText()} Game
 							</ModalHeader>
 							<ModalBody>
-								{mode === "add" && (
+								{mode === "add" && dispatches && (
 									<UploadFileInput
 										dispatch={dispatches.parseSaveDispatch}
 										reset={dispatches.resetFormDispatch}
@@ -228,11 +179,13 @@ export default function GameModal(props: GameModalProps) {
 												<CivField
 													key={civ.id}
 													changeDispatch={
-														dispatches.changeCivDispatch
+														dispatches?.changeCivDispatch ??
+														(() => {})
 													}
 													civ={civ}
 													deleteDispatch={
-														dispatches.deleteCivDispatch
+														dispatches?.deleteCivDispatch ??
+														(() => {})
 													}
 													enabled={enabled}
 												/>
@@ -242,7 +195,7 @@ export default function GameModal(props: GameModalProps) {
 											<div className="flex flex-row gap-2 pt-4">
 												<Button
 													onPress={() =>
-														dispatches.addCivDispatch(
+														dispatches?.addCivDispatch(
 															true
 														)
 													}
@@ -251,7 +204,7 @@ export default function GameModal(props: GameModalProps) {
 												</Button>
 												<Button
 													onPress={() =>
-														dispatches.addCivDispatch(
+														dispatches?.addCivDispatch(
 															false
 														)
 													}
@@ -267,7 +220,8 @@ export default function GameModal(props: GameModalProps) {
 										</p>
 										<GameOptionsForm
 											dispatch={
-												dispatches.gameOptionsDispatch
+												dispatches?.gameOptionsDispatch ??
+												(() => {})
 											}
 											enabled={enabled}
 											form={form}

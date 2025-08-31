@@ -1,6 +1,6 @@
 import { addToast } from "@heroui/toast";
 
-import { AddFormAction, GameOptionsAction } from "./addGameReducer";
+import { FormAction, GameOptionsAction } from "./addGameReducer";
 
 import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameOptions } from "@/interfaces/game.interface";
@@ -19,7 +19,7 @@ export interface FormDispatches {
 
 // Dispatches
 export function getFormDispatches(
-	dispatch: React.ActionDispatch<[action: AddFormAction]>,
+	dispatch: React.ActionDispatch<[action: FormAction]>,
 	form: GameOptions
 ): FormDispatches {
 	const resetFormDispatch: () => void = () => dispatch({ field: "reset" });
@@ -39,11 +39,11 @@ export function getFormDispatches(
 			(mapSize) => mapSize.key === form.mapSize
 		);
 
-		if (form.players.length === currMapSize?.players.max) {
+		if (form.players.length >= currMapSize?.players.max!) {
 			addToast({
 				title: "Error",
 				color: "warning",
-				description: `${currMapSize.size} maps have a maximum of ${currMapSize.players.max} players`,
+				description: `${currMapSize!.size} maps have a maximum of ${currMapSize!.players.max} players`,
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});

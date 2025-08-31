@@ -26,12 +26,12 @@ export type ChangeFormAction =
 	| { field: "reset" }
 	| { field: "parse"; payload: Partial<GameOptions> };
 
-export type AddFormAction =
+export type FormAction =
 	| GameOptionsAction
 	| GamePlayerAction
 	| ChangeFormAction;
 
-function addGameReducer(form: GameOptions, action: AddFormAction) {
+function addGameReducer(form: GameOptions, action: FormAction) {
 	switch (action.field) {
 		case "player":
 			switch (action.type) {
