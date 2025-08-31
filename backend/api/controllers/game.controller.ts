@@ -34,7 +34,7 @@ export async function handleCreateGame(
 
 	try {
 		await createGame(result.data);
-		return res.status(200).end();
+		return res.status(201).end();
 	} catch (error) {
 		next(error);
 	}
@@ -200,7 +200,7 @@ export async function handleSoftDeleteGame(
 
 	try {
 		await softRemoveGameById(id);
-		return res.status(202).end();
+		return res.status(204).end();
 	} catch (error) {
 		next(error);
 	}
