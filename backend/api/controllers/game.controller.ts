@@ -8,6 +8,7 @@ import {
 	fetchGameById,
 	removeGameById,
 	softRemoveGameById,
+	updateGame,
 } from "../services/game.service";
 import { NextFunction, Request, Response } from "express";
 import {
@@ -23,7 +24,11 @@ import {
 	fetchGamePlayersByGameId,
 } from "../services/gamePlayer.service";
 import { throwValidationError } from "../../types/Errors";
-import { InsertGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
+import {
+	InsertGameSchema,
+	DisplayGameSchemaArray,
+	UpdateGameSchema,
+} from "@civboards/schemas";
 import * as z from "zod";
 
 export async function handleCreateGame(
@@ -38,54 +43,10 @@ export async function handleCreateGame(
 		throwValidationError("Fields were either incorrect or missing");
 		return; //This is just so TS complier doesn't think data may be undefined
 	}
-	const {
-		finished,
-		date,
-		name,
-		map,
-		mapSize,
-		speed,
-		turns,
-		winnerPlayer,
-		winnerLeaderId,
-		victoryId,
-		players,
-		expansions,
-		gamemodes,
-	} = result.data;
 
 	try {
-		const createdGame = await createGame(
-			finished,
-			date,
-			name,
-			map,
-			mapSize,
-			speed,
-			turns,
-			winnerPlayer,
-			winnerLeaderId,
-			victoryId
-		);
-
-		if (createdGame !== null && createdGame !== undefined) {
-			const gameId = createdGame[0].id;
-
-			try {
-				await Promise.all([
-					createGamePlayers(gameId, players),
-					createGameExpansions(gameId, expansions!),
-					createGameGamemodes(gameId, gamemodes!),
-				]);
-			} catch (error) {
-				await removeGameById(gameId);
-				next(error);
-			}
-
-			return res.status(200).end();
-		} else {
-			throw new Error("Failed to create game");
-		}
+		await createGame(result.data);
+		return res.status(200).end();
 	} catch (error) {
 		next(error);
 	}
@@ -252,6 +213,30 @@ export async function handleSoftDeleteGame(
 	try {
 		await softRemoveGameById(id);
 		return res.status(202).end();
+	} catch (error) {
+		next(error);
+	}
+}
+
+export async function handleUpdateGame(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	if (!req.params) throwValidationError("No request id recieved");
+	if (!req.body) throwValidationError("No request body recieved");
+
+	const { id } = req.params;
+
+	const result = UpdateGameSchema.safeParse(req.body);
+	if (!result.success) {
+		throwValidationError("Fields were either incorrect or missing");
+		return; //This is just so TS complier doesn't think data may be undefined
+	}
+
+	try {
+		const update = await updateGame(id, result.data);
+		return res.status(200).json(update);
 	} catch (error) {
 		next(error);
 	}

@@ -7,13 +7,6 @@ export const PlayerSchema = z.object({
 	isHuman: z.boolean(),
 });
 
-// const CivAiSchema = z.object({
-// 	leaderId: z.coerce.number(),
-// 	isHuman: z.literal(false),
-// });
-
-// export const PlayerSchema = CivPlayerSchema.or(CivAiSchema);
-
 export const DisplayPlayerSchema = z.object({
 	id: z.uuid(),
 	leaderId: z.coerce.number(),
@@ -49,11 +42,15 @@ export const InsertGameSchema = z
 		return true;
 	});
 
+export const UpdateGameSchema = z.object({
+	...InsertGameSchema.shape,
+	id: z.uuid(),
+});
+
 export const DisplayGameSchema = z.object({
 	...InsertGameSchema.shape,
 	id: z.uuid(),
 	date: z.string(),
-	isFinished: z.any().optional(),
 	players: z.array(DisplayPlayerSchema),
 	winnerCivilizationId: z.number().optional(),
 });

@@ -1,5 +1,15 @@
-import { TablesInsert } from "../../interfaces/supabase";
-import { throwNotFoundError, throwValidationError } from "../../types/Errors";
+import {
+	PlayerSchema,
+	DisplayGameSchemaArray,
+	UpdateGameSchema,
+	InsertGameSchema,
+} from "@civboards/schemas";
+import { TablesInsert, TablesUpdate } from "../../interfaces/supabase";
+import {
+	AppError,
+	throwNotFoundError,
+	throwValidationError,
+} from "../../types/Errors";
 
 import {
 	deleteGameById,
@@ -12,48 +22,81 @@ import {
 	getGameById,
 	insertGame,
 	softDeleteGameById,
+	updateGameById,
 } from "../repositories/game.repository";
 import { fetchCivilizationById } from "./civilization.service";
-import { removeGameExpansionByGameId } from "./gameExpansion.service";
-import { removeGameGamemodesByGameId } from "./gameGamemode.service";
-import { removeGamePlayerByGameId } from "./gamePlayer.service";
+import {
+	createGameExpansions,
+	removeGameExpansionByGameId,
+} from "./gameExpansion.service";
+import {
+	createGameGamemodes,
+	removeGameGamemodesByGameId,
+} from "./gameGamemode.service";
+import {
+	createGamePlayers,
+	removeGamePlayerByGameId,
+} from "./gamePlayer.service";
 import { fetchLeaderById } from "./leader.service";
 import { fetchVictoryById } from "./victory.service";
+import z from "zod";
 
-export async function createGame(
-	finished: boolean,
-	date: string | undefined,
-	name: string,
-	map: string,
-	mapSize: string,
-	speed: string,
-	turns: number,
-	winnerPlayer?: string,
-	winnerLeaderId?: number,
-	victoryId?: number
-) {
+export async function createGame(game: z.infer<typeof InsertGameSchema>) {
+	// Validation
+
+	if (game.finished) {
+		if (!game.winnerPlayer || !game.winnerLeaderId)
+			throwValidationError("Finished games need a winner");
+		if (!game.victoryId)
+			throwValidationError("Finished games need a victory");
+
+		// Make sure winners match
+		const winner = game.players.find(
+			(player) => player.name === game.winnerPlayer
+		);
+		if (!winner) throwValidationError("Finished games need a winner");
+
+		if (winner!.leaderId !== game.winnerLeaderId)
+			throwValidationError("Finished games need a winner");
+	}
+
 	let winnerCivilizationId;
-	if (finished && winnerLeaderId)
-		winnerCivilizationId = (await fetchLeaderById(winnerLeaderId))
+	if (game.finished && game.winnerLeaderId)
+		winnerCivilizationId = (await fetchLeaderById(game.winnerLeaderId))
 			?.civilization_id;
 
-	const game = {
-		finished: finished,
-		date: date,
-		name: name,
-		map: map,
-		map_size: mapSize,
-		speed: speed,
-		turns: turns,
-		winner_player: winnerPlayer,
-		winner_leader_id: winnerLeaderId,
+	const insert = {
+		finished: game.finished,
+		date: game.date,
+		name: game.name,
+		map: game.map,
+		map_size: game.mapSize,
+		speed: game.speed,
+		turns: game.turns,
+		winner_player: game.winnerPlayer,
+		winner_leader_id: game.winnerLeaderId,
 		winner_civilization_id: winnerCivilizationId || undefined,
-		victory_id: victoryId || undefined,
+		victory_id: game.victoryId || undefined,
 	} as TablesInsert<"game">;
 
-	const insertedGame = await insertGame(game);
+	let gameId;
 
-	return insertedGame;
+	try {
+		const insertedGame = await insertGame(insert);
+		gameId = insertedGame.id;
+
+		await Promise.all([
+			createGamePlayers(gameId, game.players),
+			game.expansions
+				? createGameExpansions(gameId, game.expansions)
+				: null,
+			game.gamemodes ? createGameGamemodes(gameId, game.gamemodes) : null,
+		]);
+		return insertedGame;
+	} catch (error) {
+		if (gameId) await removeGameById(gameId);
+		throw new Error("Failed to create game");
+	}
 }
 
 export async function fetchGameById(id: string) {
@@ -68,12 +111,7 @@ export async function removeGameById(id: string): Promise<void> {
 	if (!id) throwValidationError("Invalid Game Id");
 	if (!(await doesGameIdExist(id))) throwNotFoundError("Invalid Game Id");
 
-	await Promise.all([
-		deleteGameById(id),
-		removeGamePlayerByGameId(id),
-		removeGameExpansionByGameId(id),
-		removeGameGamemodesByGameId(id),
-	]);
+	await deleteGameById(id);
 }
 
 export async function softRemoveGameById(id: string): Promise<void> {
@@ -216,4 +254,74 @@ export async function fetchAllGameVictoryIds() {
 	);
 
 	return victoriesArr;
+}
+
+export async function updateGame(
+	id: string,
+	game: z.infer<typeof UpdateGameSchema>
+) {
+	const gameId = game.id;
+
+	// Validation
+	if (!gameId) throwValidationError("Invalid Game Id");
+	if (id !== gameId) throwValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(gameId))) throwNotFoundError("Invalid Game Id");
+
+	if (game.finished) {
+		if (!game.winnerPlayer || !game.winnerLeaderId)
+			throwValidationError("Finished games need a winner");
+		if (!game.victoryId)
+			throwValidationError("Finished games need a victory");
+
+		// Make sure winners match
+		const winner = game.players.find(
+			(player) => player.name === game.winnerPlayer
+		);
+		if (!winner) throwValidationError("Finished games need a winner");
+
+		if (winner!.leaderId !== game.winnerLeaderId)
+			throwValidationError("Finished games need a winner");
+	}
+
+	// Update game
+	let winnerCivilizationId;
+	if (game.finished && game.winnerLeaderId)
+		winnerCivilizationId = (await fetchLeaderById(game.winnerLeaderId))
+			?.civilization_id;
+
+	const update = {
+		id: gameId,
+		finished: game.finished,
+		date: game.date,
+		name: game.name,
+		map: game.map,
+		map_size: game.mapSize,
+		speed: game.speed,
+		turns: game.turns,
+		winner_player: game.winnerPlayer,
+		winner_leader_id: game.winnerLeaderId,
+		winner_civilization_id: winnerCivilizationId || undefined,
+		victory_id: game.victoryId || undefined,
+	} as TablesUpdate<"game">;
+
+	const updatedGame = await updateGameById(update);
+
+	// Delete & re-create player, expansion, and gamemode
+	await Promise.all([
+		removeGamePlayerByGameId(gameId),
+		game.expansions ? await removeGameExpansionByGameId(gameId) : null,
+		game.gamemodes ? await removeGameGamemodesByGameId(gameId) : null,
+	]);
+
+	await Promise.all([
+		createGamePlayers(gameId, game.players),
+		game.expansions
+			? await createGameExpansions(gameId, game.expansions)
+			: null,
+		game.gamemodes
+			? await createGameGamemodes(gameId, game.gamemodes)
+			: null,
+	]);
+
+	return updatedGame;
 }

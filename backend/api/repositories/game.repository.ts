@@ -1,8 +1,14 @@
-import { TablesInsert } from "../../interfaces/supabase";
-import { throwDatabaseError, throwNotFoundError } from "../../types/Errors";
+import { Tables, TablesInsert, TablesUpdate } from "../../interfaces/supabase";
+import {
+	throwDatabaseError,
+	throwNotFoundError,
+	throwValidationError,
+} from "../../types/Errors";
 import { supabase } from "../server";
 
-export async function insertGame(game: TablesInsert<"game">) {
+export async function insertGame(
+	game: TablesInsert<"game">
+): Promise<Tables<"game">> {
 	const { data, error } = await supabase
 		.from("game")
 		.insert({
@@ -24,7 +30,7 @@ export async function insertGame(game: TablesInsert<"game">) {
 	if (error) throwDatabaseError("Failed to insert game", error);
 	if (!data) throwNotFoundError();
 
-	return data;
+	return data![0];
 }
 
 export async function doesGameIdExist(id: string) {
@@ -127,4 +133,22 @@ export async function getAllGameVictoryIds() {
 		throwDatabaseError("Failed to get game victories", error);
 
 	return data;
+}
+
+export async function updateGameById(game: TablesUpdate<"game">) {
+	if (game.id) {
+		const id = game.id;
+
+		const { data, error } = await supabase
+			.from("game")
+			.update(game)
+			.eq("id", id)
+			.select();
+
+		if (error || !data)
+			throwDatabaseError("Failed to update game", error || undefined);
+
+		return data;
+	}
+	throwValidationError("Invalid game id");
 }

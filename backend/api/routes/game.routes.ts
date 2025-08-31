@@ -16,5 +16,6 @@ GameRouter.get(
 );
 GameRouter.get("/winners/victories", GameController.handleGetAllGameVictoryIds);
 GameRouter.delete("/id/:id", GameController.handleSoftDeleteGame);
+GameRouter.patch("/id/:id", GameController.handleUpdateGame);
 
 export default GameRouter;

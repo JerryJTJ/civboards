@@ -82,11 +82,11 @@ export type Database = {
           date: string
           finished: boolean
           id: string
-          map: string | null
-          map_size: string | null
-          name: string | null
-          speed: string | null
-          turns: number | null
+          map: string
+          map_size: string
+          name: string
+          speed: string
+          turns: number
           victory_id: number | null
           winner_civilization_id: number | null
           winner_leader_id: number | null
@@ -98,11 +98,11 @@ export type Database = {
           date?: string
           finished?: boolean
           id?: string
-          map?: string | null
-          map_size?: string | null
-          name?: string | null
-          speed?: string | null
-          turns?: number | null
+          map: string
+          map_size: string
+          name: string
+          speed: string
+          turns: number
           victory_id?: number | null
           winner_civilization_id?: number | null
           winner_leader_id?: number | null
@@ -114,11 +114,11 @@ export type Database = {
           date?: string
           finished?: boolean
           id?: string
-          map?: string | null
-          map_size?: string | null
-          name?: string | null
-          speed?: string | null
-          turns?: number | null
+          map?: string
+          map_size?: string
+          name?: string
+          speed?: string
+          turns?: number
           victory_id?: number | null
           winner_civilization_id?: number | null
           winner_leader_id?: number | null
