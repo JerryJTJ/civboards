@@ -29,7 +29,7 @@ export async function fetchGameGamemodesIdsByGameId(gameId: string) {
 		return gameGamemode.gamemode_id;
 	});
 
-	return gameGamemodesIds;
+	return gameGamemodesIds.sort();
 }
 
 export async function removeGameGamemodesByGameId(gameId: string) {

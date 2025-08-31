@@ -28,7 +28,7 @@ export async function fetchGameExpansionsIdsByGameId(gameId: string) {
 	const gameExpansionsIds = gameExpansions?.map(
 		(gameExpansions) => gameExpansions.expansion_id
 	);
-	return gameExpansionsIds;
+	return gameExpansionsIds.sort();
 }
 
 export async function removeGameExpansionByGameId(gameId: string) {
