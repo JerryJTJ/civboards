@@ -1,4 +1,8 @@
-import { DisplayGameSchemaArray, InsertGameSchema } from "@civboards/schemas";
+import {
+	DisplayGameSchemaArray,
+	InsertGameSchema,
+	UpdateGameSchema,
+} from "@civboards/schemas";
 import * as z from "zod";
 
 import { instance } from "./axiosInstance";
@@ -9,6 +13,17 @@ export async function insertGame(
 	await instance({
 		url: "/game/add",
 		method: "post",
+		data: game,
+		headers: { "Content-Type": "application/json" },
+	});
+}
+
+export async function updateGame(
+	game: z.infer<typeof UpdateGameSchema>
+): Promise<void> {
+	await instance({
+		url: `/game/id/${game.id}`,
+		method: "patch",
 		data: game,
 		headers: { "Content-Type": "application/json" },
 	});

@@ -21,17 +21,14 @@ import {
 import { SortDescriptor } from "@react-types/shared";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import z from "zod";
-import {
-	QueryObserverResult,
-	RefetchOptions,
-} from "@tanstack/react-query";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
 
 import { SearchIcon, VerticalDotsIcon } from "./icons";
-import GameModal from "./GameModal";
 import DeleteModal from "./DeleteModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
+import ViewGameModal from "./forms/ViewGameModal";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -172,7 +169,6 @@ export default function GamesTable(props: GamesTableProps) {
 
 					return (
 						<p className="text-bold text-small">
-							{" "}
 							{humans.join(", ")}
 						</p>
 					);
@@ -221,7 +217,7 @@ export default function GamesTable(props: GamesTableProps) {
 						</div>
 					);
 				default:
-					return cellValue;
+					return <p>{String(cellValue)}</p>;
 			}
 		},
 		[viewModal, deleteModal]
@@ -408,28 +404,18 @@ export default function GamesTable(props: GamesTableProps) {
 					)}
 				</TableBody>
 			</Table>
-			{viewModal.isOpen && (
-				<GameModal
-					game={currGame}
-					isOpen={viewModal.isOpen}
-					mode="view"
-					onOpenChange={viewModal.onOpenChange}
-				/>
-			)}
-			{deleteModal.isOpen && (
-				<DeleteModal
-					body={
-						<p>
-							Are you sure you want to delete{" "}
-							<b>{currGame.name}</b>?
-						</p>
-					}
-					gameId={currGame.id}
-					isOpen={deleteModal.isOpen}
-					refetch={refetch}
-					onOpenChange={deleteModal.onOpenChange}
-				/>
-			)}
+			<ViewGameModal disclosure={viewModal} game={currGame} />
+			<DeleteModal
+				body={
+					<p>
+						Are you sure you want to delete <b>{currGame.name}</b>?
+					</p>
+				}
+				gameId={currGame.id}
+				isOpen={deleteModal.isOpen}
+				refetch={refetch}
+				onOpenChange={deleteModal.onOpenChange}
+			/>
 		</>
 	);
 }

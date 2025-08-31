@@ -11,8 +11,8 @@ import {
 } from "@heroui/dropdown";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
-import GameModal from "./GameModal";
 import DeleteModal from "./DeleteModal";
+import ViewGameModal from "./forms/ViewGameModal";
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
@@ -78,36 +78,18 @@ export default function GamesCard(props: GameCardProps) {
 					</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
-			{viewModal.isOpen && (
-				<GameModal
-					dispatch={undefined}
-					form={{
-						...game,
-						winner: "",
-						date: Date.parse(game.date),
-						victoryId: game.victoryId || undefined,
-						expansions: new Set(game.expansions),
-						gamemodes: new Set(game.gamemodes),
-						players: game.players,
-					}}
-					isOpen={viewModal.isOpen}
-					mode="view"
-					onOpenChange={viewModal.onOpenChange}
-				/>
-			)}
-			{deleteModal.isOpen && (
-				<DeleteModal
-					body={
-						<p>
-							Are you sure you want to delete <b>{game.name}</b>?
-						</p>
-					}
-					gameId={game.id}
-					isOpen={deleteModal.isOpen}
-					refetch={refetch}
-					onOpenChange={deleteModal.onOpenChange}
-				/>
-			)}
+			<ViewGameModal disclosure={viewModal} game={game} />
+			<DeleteModal
+				body={
+					<p>
+						Are you sure you want to delete <b>{game.name}</b>?
+					</p>
+				}
+				gameId={game.id}
+				isOpen={deleteModal.isOpen}
+				refetch={refetch}
+				onOpenChange={deleteModal.onOpenChange}
+			/>
 		</>
 	);
 }
