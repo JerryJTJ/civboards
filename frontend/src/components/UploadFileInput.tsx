@@ -1,10 +1,10 @@
 import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
 
 import { GameOptions } from "@/interfaces/game.interface";
 import { parseSaveFile } from "@/api/parse";
-import { AxiosError } from "axios";
 
 interface UploadFileInputProps {
 	dispatch: (parsed: Partial<GameOptions>) => void;

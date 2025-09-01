@@ -27,9 +27,9 @@ import { useDisclosure } from "@heroui/modal";
 import { SearchIcon, VerticalDotsIcon } from "./icons";
 import DeleteModal from "./DeleteModal";
 import ViewGameModal from "./forms/ViewGameModal";
+import EditGameModal from "./forms/EditGameModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
-import EditGameModal from "./forms/EditGameModal";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -231,7 +231,7 @@ export default function GamesTable(props: GamesTableProps) {
 					return <p>{String(cellValue)}</p>;
 			}
 		},
-		[viewModal, deleteModal]
+		[viewModal, deleteModal, editModal]
 	);
 
 	const onNextPage = React.useCallback(() => {

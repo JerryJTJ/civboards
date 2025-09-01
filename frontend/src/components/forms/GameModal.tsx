@@ -7,16 +7,17 @@ import {
 	ModalFooter,
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
-
-import { Civ, GameOptions } from "@/interfaces/game.interface";
 import { useRef } from "react";
 
 import UploadFileInput from "../UploadFileInput";
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
+
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
 import { getFormDispatches } from "./gameFormDispatches";
 import { FormAction } from "./gameFormReducer";
+
+import { Civ, GameOptions } from "@/interfaces/game.interface";
 
 interface AddModalProps {
 	mode: "add";

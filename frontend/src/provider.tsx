@@ -15,7 +15,7 @@ export function Provider({ children }: { children: React.ReactNode }) {
 
 	return (
 		// HeroUI requires a hook to be passed in
-		 
+		// eslint-disable-next-line
 		<HeroUIProvider navigate={navigate} useHref={useHref}>
 			<ToastProvider />
 			{children}
