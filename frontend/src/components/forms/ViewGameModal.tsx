@@ -19,12 +19,16 @@ interface ViewGameModalProps {
 export default function ViewGameModal(props: ViewGameModalProps) {
 	const { game, disclosure } = props;
 
+	const winner = game.players.find(
+		(player) => player.name === game.winnerPlayer
+	)?.id;
+
 	return (
 		<GameModal
 			dispatch={undefined}
 			form={{
 				...game,
-				winner: game.winnerPlayer || "",
+				winner: winner || "",
 				date: Date.parse(game.date),
 				victoryId: game.victoryId || undefined,
 				expansions: new Set(game.expansions),
