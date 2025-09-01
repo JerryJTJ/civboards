@@ -7,16 +7,17 @@ import {
 	ModalFooter,
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
-
-import { Civ, GameForm } from "@/interfaces/game.interface";
 import { useRef } from "react";
 
 import UploadFileInput from "../UploadFileInput";
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
+
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
 import { getFormDispatches } from "./gameFormDispatches";
 import { FormAction } from "./gameFormReducer";
+
+import { Civ, GameForm } from "@/interfaces/game.interface";
 
 interface AddModalProps {
 	mode: "add";
@@ -83,13 +84,13 @@ export default function GameModal(props: GameModalProps) {
 
 	return (
 		<Modal
+			backdrop="blur"
 			className="max-h-screen game-modal"
+			isDismissable={false}
 			isOpen={isOpen}
 			placement="top-center"
 			size="5xl"
 			onClose={onModalClose}
-			backdrop="blur"
-			isDismissable={false}
 		>
 			<form onSubmit={onSubmit}>
 				<ModalContent className="overflow-y-auto">

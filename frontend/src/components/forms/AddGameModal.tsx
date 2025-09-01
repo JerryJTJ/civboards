@@ -3,19 +3,19 @@ import { Button } from "@heroui/button";
 import { useReducer } from "react";
 import { addToast } from "@heroui/toast";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { InsertGameSchema } from "@civboards/schemas";
 
 import { PlusIcon } from "../icons";
-import GameModal from "./GameModal";
+import { ValidationError } from "../utils/error";
+import { validateFormFields } from "../utils/validateFormFields";
 
+import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 
 import { GameForm } from "@/interfaces/game.interface";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { insertGame } from "@/api/games";
-import { InsertGameSchema } from "@civboards/schemas";
 
-import { ValidationError } from "../utils/error";
-import { validateFormFields } from "../utils/validateFormFields";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,6 +31,7 @@ export default function AddGameModal() {
 	const mutation = useMutation({
 		mutationFn: async () => {
 			const validate = validateFormFields(form, InsertGameSchema);
+
 			if (!validate.success) throw new ValidationError(validate.message);
 
 			await insertGame(validate.result.data);
