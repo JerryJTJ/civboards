@@ -8,7 +8,7 @@ import {
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
 
-import { Civ, GameForm } from "@/interfaces/game.interface";
+import { Civ, GameOptions } from "@/interfaces/game.interface";
 import { useRef } from "react";
 
 import UploadFileInput from "../UploadFileInput";
@@ -20,7 +20,7 @@ import { FormAction } from "./gameFormReducer";
 
 interface AddModalProps {
 	mode: "add";
-	form: GameForm;
+	form: GameOptions;
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onOpenChange: () => void;
@@ -29,7 +29,7 @@ interface AddModalProps {
 
 interface UpdateModalProps {
 	mode: "edit";
-	form: GameForm;
+	form: GameOptions;
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onOpenChange: () => void;
@@ -37,7 +37,7 @@ interface UpdateModalProps {
 }
 
 interface ViewGameProps {
-	form: GameForm;
+	form: GameOptions;
 	mode: "view";
 	isOpen: boolean;
 	onOpenChange: () => void;
@@ -111,7 +111,7 @@ export default function GameModal(props: GameModalProps) {
 											Players
 										</span>
 										<div className="flex flex-col justify-start gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
-											{form.players.map((civ: Civ) => (
+											{form?.players?.map((civ: Civ) => (
 												<CivField
 													key={civ.id}
 													changeDispatch={

@@ -2,11 +2,12 @@ import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 
-import { GameForm } from "@/interfaces/game.interface";
+import { GameOptions } from "@/interfaces/game.interface";
 import { parseSaveFile } from "@/api/parse";
+import { AxiosError } from "axios";
 
 interface UploadFileInputProps {
-	dispatch: (parsed: Partial<GameForm>) => void;
+	dispatch: (parsed: Partial<GameOptions>) => void;
 	// reset: (form: GameOptions) => void;
 }
 
@@ -15,17 +16,17 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 
 	const mutation = useMutation({
 		mutationFn: parseSaveFile,
-		onError: () => {
+		onError: (err: AxiosError) => {
 			addToast({
-				title: "Error",
+				title: "Failed to parse file",
 				color: "warning",
-				description: "Could not parse file",
+				description: err.message,
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
 		},
 		onSuccess: (data) => {
-			dispatch(data.data);
+			if (data.success) dispatch(data.data);
 		},
 	});
 
