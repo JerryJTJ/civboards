@@ -84,7 +84,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 			game.gamemodes ? createGameGamemodes(gameId, game.gamemodes) : null,
 		]);
 		return insertedGame;
-	} catch (error) {
+	} catch {
 		if (gameId) await removeGameById(gameId);
 		throw new Error("Failed to create game");
 	}

@@ -5,6 +5,7 @@ export const errorHandler = (
 	err: unknown,
 	_req: Request,
 	res: Response,
+	// eslint-disable-next-line
 	_next: NextFunction
 ) => {
 	console.log("Error:", err);
