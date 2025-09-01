@@ -33,7 +33,7 @@ export default function ViewGameModal(props: ViewGameModalProps) {
 			}}
 			isOpen={disclosure.isOpen}
 			mode="view"
-			onOpenChange={disclosure.onOpenChange}
+			onClose={disclosure.onClose}
 		/>
 	);
 }

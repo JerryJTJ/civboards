@@ -18,7 +18,7 @@ import { ValidationError } from "../utils/error";
 import { validateFormFields } from "../utils/validateFormFields";
 
 export default function AddGameModal() {
-	const { isOpen, onOpen, onOpenChange } = useDisclosure();
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	const [form, dispatch] = useReducer<GameForm, [action: FormAction]>(
 		gameFormReducer,
@@ -63,7 +63,7 @@ export default function AddGameModal() {
 				shouldShowTimeoutProgress: true,
 			});
 			dispatch({ field: "reset", payload: DEFAULT_ADD_FORM });
-			onOpenChange();
+			onClose();
 		},
 		onSettled: () => {
 			queryClient.invalidateQueries();
@@ -87,7 +87,7 @@ export default function AddGameModal() {
 				isOpen={isOpen}
 				mode="add"
 				mutation={mutation}
-				onOpenChange={onOpenChange}
+				onClose={onClose}
 			/>
 		</>
 	);

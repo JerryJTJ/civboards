@@ -13,8 +13,6 @@ import GameModal from "./GameModal";
 import { updateGame } from "@/api/games";
 import { GameForm } from "@/interfaces/game.interface";
 
-
-
 interface UpdateGameModalProps {
 	disclosure: {
 		isOpen: boolean;
@@ -107,7 +105,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 			isOpen={disclosure.isOpen}
 			mode="edit"
 			mutation={mutation}
-			onOpenChange={disclosure.onOpenChange}
+			onClose={disclosure.onClose}
 		/>
 	);
 }

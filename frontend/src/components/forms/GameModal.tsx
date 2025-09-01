@@ -23,7 +23,7 @@ interface AddModalProps {
 	form: GameForm;
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
-	onOpenChange: () => void;
+	onClose: () => void;
 	mutation: UseMutationResult<void, Error, void, unknown>;
 }
 
@@ -32,7 +32,7 @@ interface UpdateModalProps {
 	form: GameForm;
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
-	onOpenChange: () => void;
+	onClose: () => void;
 	mutation: UseMutationResult<void, Error, void, unknown>;
 }
 
@@ -40,14 +40,14 @@ interface ViewGameProps {
 	form: GameForm;
 	mode: "view";
 	isOpen: boolean;
-	onOpenChange: () => void;
+	onClose: () => void;
 	dispatch: undefined;
 }
 
 type GameModalProps = AddModalProps | ViewGameProps | UpdateModalProps;
 
 export default function GameModal(props: GameModalProps) {
-	const { mode, isOpen, onOpenChange, form, dispatch } = props;
+	const { mode, isOpen, onClose, form, dispatch } = props;
 
 	const defaultForm = useRef(form);
 
@@ -68,12 +68,11 @@ export default function GameModal(props: GameModalProps) {
 	// Dispatches
 	const dispatches = dispatch ? getFormDispatches(dispatch, form) : undefined;
 
-	// Modal open/close
-	const onModalChange = () => {
+	// Modal close
+	const onModalClose = () => {
 		dispatches?.resetFormDispatch(defaultForm.current);
-		onOpenChange();
+		onClose();
 	};
-
 	// Submitting
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -84,11 +83,13 @@ export default function GameModal(props: GameModalProps) {
 
 	return (
 		<Modal
-			className="max-h-screen"
+			className="max-h-screen game-modal"
 			isOpen={isOpen}
 			placement="top-center"
 			size="5xl"
-			onOpenChange={onModalChange}
+			onClose={onModalClose}
+			backdrop="blur"
+			isDismissable={false}
 		>
 			<form onSubmit={onSubmit}>
 				<ModalContent className="overflow-y-auto">
@@ -169,7 +170,7 @@ export default function GameModal(props: GameModalProps) {
 								<Button
 									color="danger"
 									variant="shadow"
-									onPress={onModalChange}
+									onPress={onModalClose}
 								>
 									Close
 								</Button>
