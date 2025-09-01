@@ -2,16 +2,16 @@ import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 
-import { GameOptions } from "@/interfaces/game.interface";
+import { GameForm } from "@/interfaces/game.interface";
 import { parseSaveFile } from "@/api/parse";
 
 interface UploadFileInputProps {
-	dispatch: (parsed: Partial<GameOptions>) => void;
-	reset: () => void;
+	dispatch: (parsed: Partial<GameForm>) => void;
+	// reset: (form: GameOptions) => void;
 }
 
 export default function UploadFileInput(props: UploadFileInputProps) {
-	const { dispatch, reset } = props;
+	const { dispatch } = props;
 
 	const mutation = useMutation({
 		mutationFn: parseSaveFile,
@@ -44,9 +44,9 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 					await mutation.mutateAsync(e.target.files[0]);
 				}
 			}}
-			onClear={() => {
-				reset();
-			}}
+			// onClear={() => {
+			// 	reset();
+			// }}
 		/>
 	);
 }

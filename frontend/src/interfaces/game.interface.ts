@@ -5,7 +5,7 @@ export interface Civ {
 	isHuman: boolean;
 }
 
-export interface GameOptions {
+export interface GameForm {
 	name: string;
 	date: number | undefined;
 	finished: boolean;

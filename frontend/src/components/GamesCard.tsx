@@ -13,6 +13,7 @@ import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 
 import DeleteModal from "./DeleteModal";
 import ViewGameModal from "./forms/ViewGameModal";
+import EditGameModal from "./forms/EditGameModal";
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
@@ -31,6 +32,7 @@ export default function GamesCard(props: GameCardProps) {
 
 	const viewModal = useDisclosure();
 	const deleteModal = useDisclosure();
+	const editModal = useDisclosure();
 
 	// UI
 	const humans = new Array<string>();
@@ -68,7 +70,9 @@ export default function GamesCard(props: GameCardProps) {
 					<DropdownItem key="view" onPress={viewModal.onOpen}>
 						View
 					</DropdownItem>
-					<DropdownItem key="edit">Edit</DropdownItem>
+					<DropdownItem key="edit" onPress={editModal.onOpen}>
+						Edit
+					</DropdownItem>
 					<DropdownItem
 						key="delete"
 						color="danger"
@@ -78,18 +82,25 @@ export default function GamesCard(props: GameCardProps) {
 					</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
-			<ViewGameModal disclosure={viewModal} game={game} />
-			<DeleteModal
-				body={
-					<p>
-						Are you sure you want to delete <b>{game.name}</b>?
-					</p>
-				}
-				gameId={game.id}
-				isOpen={deleteModal.isOpen}
-				refetch={refetch}
-				onOpenChange={deleteModal.onOpenChange}
-			/>
+			{viewModal.isOpen && (
+				<ViewGameModal disclosure={viewModal} game={game} />
+			)}
+			{editModal.isOpen && (
+				<EditGameModal disclosure={editModal} game={game} />
+			)}
+			{deleteModal.isOpen && (
+				<DeleteModal
+					body={
+						<p>
+							Are you sure you want to delete <b>{game.name}</b>?
+						</p>
+					}
+					gameId={game.id}
+					isOpen={deleteModal.isOpen}
+					refetch={refetch}
+					onOpenChange={deleteModal.onOpenChange}
+				/>
+			)}
 		</>
 	);
 }

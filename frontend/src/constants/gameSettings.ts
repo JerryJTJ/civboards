@@ -72,18 +72,17 @@ export const GAME_SPEED: GameSpeed[] = [
 ];
 
 export interface Victory {
-	key: string;
 	id: number;
 	label: string;
 }
 
 export const VICTORY_TYPES: Victory[] = [
-	{ key: "1", id: 1, label: "Science" },
-	{ key: "2", id: 2, label: "Culture" },
-	{ key: "3", id: 3, label: "Domination" },
-	{ key: "4", id: 4, label: "Religion" },
-	{ key: "5", id: 5, label: "Diplomatic" },
-	{ key: "6", id: 6, label: "Score/Time" },
+	{ id: 1, label: "Science" },
+	{ id: 2, label: "Culture" },
+	{ id: 3, label: "Domination" },
+	{ id: 4, label: "Religion" },
+	{ id: 5, label: "Diplomatic" },
+	{ id: 6, label: "Score/Time" },
 ];
 
 export interface Gamemode {

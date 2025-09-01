@@ -5,19 +5,23 @@ import { addToast } from "@heroui/toast";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 import { PlusIcon } from "../icons";
-import GameModal from "../GameModal";
+import GameModal from "./GameModal";
 
-import addGameReducer, { FormAction } from "./addGameReducer";
+import gameFormReducer, { FormAction } from "./gameFormReducer";
 
-import { GameOptions } from "@/interfaces/game.interface";
+import { GameForm } from "@/interfaces/game.interface";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { insertGame } from "@/api/games";
+import { InsertGameSchema } from "@civboards/schemas";
+
+import { ValidationError } from "../utils/error";
+import { validateFormFields } from "../utils/validateFormFields";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-	const [form, dispatch] = useReducer<GameOptions, [action: FormAction]>(
-		addGameReducer,
+	const [form, dispatch] = useReducer<GameForm, [action: FormAction]>(
+		gameFormReducer,
 		DEFAULT_ADD_FORM
 	);
 
@@ -25,15 +29,30 @@ export default function AddGameModal() {
 	const queryClient = useQueryClient();
 
 	const mutation = useMutation({
-		mutationFn: insertGame,
-		onError: () => {
-			addToast({
-				title: "Error",
-				color: "danger",
-				description: "Failed to add game",
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
+		mutationFn: async () => {
+			const validate = validateFormFields(form, InsertGameSchema);
+			if (!validate.success) throw new ValidationError(validate.message);
+
+			await insertGame(validate.result.data);
+		},
+		onError: (error) => {
+			if (error instanceof ValidationError) {
+				addToast({
+					title: "Error",
+					color: "warning",
+					description: error.message,
+					timeout: 3000,
+					shouldShowTimeoutProgress: true,
+				});
+			} else {
+				addToast({
+					title: "Error",
+					color: "danger",
+					description: "Failed to edit game",
+					timeout: 3000,
+					shouldShowTimeoutProgress: true,
+				});
+			}
 		},
 		onSuccess: () => {
 			addToast({
@@ -43,7 +62,7 @@ export default function AddGameModal() {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-			dispatch({ field: "reset" });
+			dispatch({ field: "reset", payload: DEFAULT_ADD_FORM });
 			onOpenChange();
 		},
 		onSettled: () => {

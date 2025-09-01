@@ -6,6 +6,8 @@ export function isModalFieldEnabled(mode: GameModalType): boolean {
 			return true;
 		case "view":
 			return false;
+		case "edit":
+			return true;
 		default:
 			return false;
 	}

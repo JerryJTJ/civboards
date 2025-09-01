@@ -1,6 +1,6 @@
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { MAP_SIZE } from "@/constants/gameSettings";
-import { Civ, GameOptions } from "@/interfaces/game.interface";
+import { Civ, GameForm } from "@/interfaces/game.interface";
 ("");
 const generateNewPlayer = (isHuman: boolean | undefined) => ({
 	id: crypto.randomUUID(),
@@ -10,12 +10,12 @@ const generateNewPlayer = (isHuman: boolean | undefined) => ({
 });
 
 export type GameOptionsAction = {
-	[Option in keyof GameOptions]: {
+	[Option in keyof GameForm]: {
 		field: "options";
 		option: Option;
-		payload: GameOptions[Option];
+		payload: GameForm[Option];
 	};
-}[keyof GameOptions];
+}[keyof GameForm];
 
 export type GamePlayerAction =
 	| { field: "player"; type: "add"; payload: boolean }
@@ -23,15 +23,15 @@ export type GamePlayerAction =
 	| { field: "player"; type: "change"; payload: Partial<Civ> };
 
 export type ChangeFormAction =
-	| { field: "reset" }
-	| { field: "parse"; payload: Partial<GameOptions> };
+	| { field: "reset"; payload: GameForm }
+	| { field: "parse"; payload: Partial<GameForm> };
 
 export type FormAction =
 	| GameOptionsAction
 	| GamePlayerAction
 	| ChangeFormAction;
 
-function addGameReducer(form: GameOptions, action: FormAction) {
+function gameFormReducer(form: GameForm, action: FormAction) {
 	switch (action.field) {
 		case "player":
 			switch (action.type) {
@@ -157,15 +157,15 @@ function addGameReducer(form: GameOptions, action: FormAction) {
 				...DEFAULT_ADD_FORM,
 				...action.payload,
 				players: players,
-			} as GameOptions;
+			} as GameForm;
 
 			return parsed;
 		case "reset":
-			return DEFAULT_ADD_FORM;
+			return action.payload;
 	}
 
 	//fallback case
 	return form;
 }
 
-export default addGameReducer;
+export default gameFormReducer;

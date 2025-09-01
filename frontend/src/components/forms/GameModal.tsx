@@ -6,46 +6,50 @@ import {
 	ModalBody,
 	ModalFooter,
 } from "@heroui/modal";
-import { InsertGameSchema } from "@civboards/schemas";
 import { UseMutationResult } from "@tanstack/react-query";
-import { addToast } from "@heroui/toast";
-import z from "zod";
 
-import UploadFileInput from "./UploadFileInput";
-import CivField from "./forms/CivField";
-import GameOptionsForm from "./forms/GameOptionsForm";
-import { getFormDispatches } from "./forms/gameFormDispatches";
-import { isModalFieldEnabled } from "./utils/isModalFieldEnabled";
-import { FormAction } from "./forms/addGameReducer";
+import { Civ, GameForm } from "@/interfaces/game.interface";
+import { useRef } from "react";
 
-import { Civ, GameOptions } from "@/interfaces/game.interface";
+import UploadFileInput from "../UploadFileInput";
+import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
+import CivField from "./CivField";
+import GameOptionsForm from "./GameOptionsForm";
+import { getFormDispatches } from "./gameFormDispatches";
+import { FormAction } from "./gameFormReducer";
 
 interface AddModalProps {
 	mode: "add";
-	form: GameOptions;
+	form: GameForm;
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onOpenChange: () => void;
-	mutation: UseMutationResult<
-		void,
-		Error,
-		z.infer<typeof InsertGameSchema>,
-		unknown
-	>;
+	mutation: UseMutationResult<void, Error, void, unknown>;
+}
+
+interface UpdateModalProps {
+	mode: "edit";
+	form: GameForm;
+	dispatch: React.ActionDispatch<[action: FormAction]>;
+	isOpen: boolean;
+	onOpenChange: () => void;
+	mutation: UseMutationResult<void, Error, void, unknown>;
 }
 
 interface ViewGameProps {
-	form: GameOptions;
+	form: GameForm;
 	mode: "view";
 	isOpen: boolean;
 	onOpenChange: () => void;
 	dispatch: undefined;
 }
 
-type GameModalProps = AddModalProps | ViewGameProps;
+type GameModalProps = AddModalProps | ViewGameProps | UpdateModalProps;
 
 export default function GameModal(props: GameModalProps) {
 	const { mode, isOpen, onOpenChange, form, dispatch } = props;
+
+	const defaultForm = useRef(form);
 
 	// UI
 	const headerText = () => {
@@ -54,6 +58,8 @@ export default function GameModal(props: GameModalProps) {
 				return "Add";
 			case "view":
 				return "View";
+			case "edit":
+				return "Edit";
 		}
 	};
 
@@ -64,86 +70,16 @@ export default function GameModal(props: GameModalProps) {
 
 	// Modal open/close
 	const onModalChange = () => {
-		dispatches?.resetFormDispatch();
+		dispatches?.resetFormDispatch(defaultForm.current);
 		onOpenChange();
 	};
 
-	//Validation
-	type ValidateResult =
-		| { errors: true; message: string }
-		| {
-				errors: false;
-				result: z.ZodSafeParseSuccess<z.infer<typeof InsertGameSchema>>;
-		  };
-
-	function validateRequest(form: GameOptions): ValidateResult {
-		// Unique player names & >= 2 humans
-		const names = new Set<string>();
-		let humans: number = 0;
-
-		form.players.forEach((player) => {
-			if (player.isHuman) {
-				names.add(player.name);
-				humans++;
-			}
-		});
-		if (humans < 2)
-			return { errors: true, message: "Need 2 or more human players" };
-		if (names.size !== humans)
-			return {
-				errors: true,
-				message: "Can't have duplicate player names",
-			};
-
-		const winner = form.players.find((player) => player.id === form.winner);
-
-		if (!winner && form.finished)
-			return { errors: true, message: "Can't find winner" };
-
-		const result = InsertGameSchema.safeParse({
-			finished: form.finished,
-			date: form.date ? new Date(form.date).toISOString() : undefined,
-			name: form.name,
-			map: form.map,
-			mapSize: form.mapSize,
-			speed: form.speed,
-			turns: form.turns,
-			winnerPlayer: winner?.name,
-			winnerLeaderId: winner?.leaderId,
-			victoryId: form.victoryId,
-			players: form.players,
-			expansions: Array.from(form.expansions),
-			gamemodes: Array.from(form.gamemodes),
-		});
-
-		if (!result.success)
-			return {
-				errors: true,
-				message: "Failed to pass schema",
-			};
-
-		return { errors: false, result: result };
-	}
-
 	// Submitting
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		if (mode === "view") return;
 		e.preventDefault();
-		const validate = validateRequest(form);
+		if (mode === "view") return;
 
-		if (validate.errors) {
-			addToast({
-				title: "Error",
-				color: "warning",
-				description: validate.message,
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-
-			return;
-		}
-
-		await props.mutation.mutateAsync(validate.result.data);
+		await props.mutation.mutateAsync();
 	};
 
 	return (
@@ -165,7 +101,7 @@ export default function GameModal(props: GameModalProps) {
 								{mode === "add" && dispatches && (
 									<UploadFileInput
 										dispatch={dispatches.parseSaveDispatch}
-										reset={dispatches.resetFormDispatch}
+										// reset={dispatches.resetFormDispatch}
 									/>
 								)}
 								<div className="flex flex-row justify-evenly">
@@ -243,7 +179,7 @@ export default function GameModal(props: GameModalProps) {
 										type="submit"
 										variant="shadow"
 									>
-										Add
+										{headerText()}
 									</Button>
 								)}
 							</ModalFooter>

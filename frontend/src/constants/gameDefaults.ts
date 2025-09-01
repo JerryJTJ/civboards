@@ -1,9 +1,9 @@
 import { DisplayGameSchema } from "@civboards/schemas";
 import z from "zod";
 
-import { GameOptions } from "@/interfaces/game.interface";
+import { GameForm } from "@/interfaces/game.interface";
 
-export const DEFAULT_ADD_FORM: GameOptions = {
+export const DEFAULT_ADD_FORM: GameForm = {
 	finished: true,
 	date: undefined,
 	name: "",

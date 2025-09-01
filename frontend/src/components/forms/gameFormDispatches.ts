@@ -1,12 +1,12 @@
 import { addToast } from "@heroui/toast";
 
-import { FormAction, GameOptionsAction } from "./addGameReducer";
+import { FormAction, GameOptionsAction } from "./gameFormReducer";
 
 import { MAP_SIZE } from "@/constants/gameSettings";
-import { Civ, GameOptions } from "@/interfaces/game.interface";
+import { Civ, GameForm } from "@/interfaces/game.interface";
 
 export interface FormDispatches {
-	resetFormDispatch: () => void;
+	resetFormDispatch: (form: GameForm) => void;
 	gameOptionsDispatch: (
 		option: string,
 		value: string | number | Set<number> | boolean
@@ -14,15 +14,16 @@ export interface FormDispatches {
 	addCivDispatch: (isHuman: boolean) => void;
 	deleteCivDispatch: (civ: Civ) => void;
 	changeCivDispatch: (civ: Partial<Civ>) => void;
-	parseSaveDispatch: (parsed: Partial<GameOptions>) => void;
+	parseSaveDispatch: (parsed: Partial<GameForm>) => void;
 }
 
 // Dispatches
 export function getFormDispatches(
 	dispatch: React.ActionDispatch<[action: FormAction]>,
-	form: GameOptions
+	form: GameForm
 ): FormDispatches {
-	const resetFormDispatch: () => void = () => dispatch({ field: "reset" });
+	const resetFormDispatch = (form: GameForm) =>
+		dispatch({ field: "reset", payload: form });
 
 	const gameOptionsDispatch = (
 		option: string,
@@ -75,7 +76,7 @@ export function getFormDispatches(
 
 	const changeCivDispatch = (civ: Partial<Civ>) =>
 		dispatch({ field: "player", type: "change", payload: civ });
-	const parseSaveDispatch = (parsed: Partial<GameOptions>) =>
+	const parseSaveDispatch = (parsed: Partial<GameForm>) =>
 		dispatch({ field: "parse", payload: parsed });
 
 	return {

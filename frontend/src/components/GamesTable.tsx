@@ -26,9 +26,10 @@ import { useDisclosure } from "@heroui/modal";
 
 import { SearchIcon, VerticalDotsIcon } from "./icons";
 import DeleteModal from "./DeleteModal";
+import ViewGameModal from "./forms/ViewGameModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
-import ViewGameModal from "./forms/ViewGameModal";
+import EditGameModal from "./forms/EditGameModal";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -64,7 +65,9 @@ export default function GamesTable(props: GamesTableProps) {
 
 	// Modal
 	const viewModal = useDisclosure();
+	const editModal = useDisclosure();
 	const deleteModal = useDisclosure();
+
 	const [currGame, setCurrGame] =
 		useState<z.infer<typeof DisplayGameSchema>>(DEFAULT_DISPLAY_GAME);
 
@@ -201,7 +204,15 @@ export default function GamesTable(props: GamesTableProps) {
 									>
 										View
 									</DropdownItem>
-									<DropdownItem key="edit">Edit</DropdownItem>
+									<DropdownItem
+										key="edit"
+										onPress={() => {
+											setCurrGame(game);
+											editModal.onOpen();
+										}}
+									>
+										Edit
+									</DropdownItem>
 									<DropdownItem
 										key="delete"
 										color="danger"
@@ -404,18 +415,26 @@ export default function GamesTable(props: GamesTableProps) {
 					)}
 				</TableBody>
 			</Table>
-			<ViewGameModal disclosure={viewModal} game={currGame} />
-			<DeleteModal
-				body={
-					<p>
-						Are you sure you want to delete <b>{currGame.name}</b>?
-					</p>
-				}
-				gameId={currGame.id}
-				isOpen={deleteModal.isOpen}
-				refetch={refetch}
-				onOpenChange={deleteModal.onOpenChange}
-			/>
+			{viewModal.isOpen && (
+				<ViewGameModal disclosure={viewModal} game={currGame} />
+			)}
+			{editModal.isOpen && (
+				<EditGameModal disclosure={editModal} game={currGame} />
+			)}
+			{deleteModal.isOpen && (
+				<DeleteModal
+					body={
+						<p>
+							Are you sure you want to delete{" "}
+							<b>{currGame.name}</b>?
+						</p>
+					}
+					gameId={currGame.id}
+					isOpen={deleteModal.isOpen}
+					refetch={refetch}
+					onOpenChange={deleteModal.onOpenChange}
+				/>
+			)}
 		</>
 	);
 }

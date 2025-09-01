@@ -4,7 +4,7 @@ import { Select, SelectItem, SelectedItems } from "@heroui/select";
 import { Chip } from "@heroui/chip";
 import { Checkbox } from "@heroui/checkbox";
 
-import { GameOptions } from "@/interfaces/game.interface";
+import { GameForm } from "@/interfaces/game.interface";
 import {
 	VICTORY_TYPES,
 	GAME_SPEED,
@@ -17,7 +17,7 @@ import {
 
 interface GameOptionsFormProps {
 	enabled: boolean;
-	form: GameOptions;
+	form: GameForm;
 	dispatch: (
 		option: string,
 		value: string | number | Set<number> | boolean
@@ -51,20 +51,27 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			/>
 			{form.finished && (
 				<>
-					{" "}
 					<Select
 						isDisabled={!enabled}
 						isRequired={enabled}
 						items={form.players}
 						label="Winner"
+						defaultSelectedKeys={
+							form.winner === ""
+								? undefined
+								: new Set([form.winner])
+						}
+						selectionMode="single"
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 							dispatch("winner", e.target.value)
 						}
 					>
-						{(civ) =>
-							civ.name ? (
-								<SelectItem>{civ.name}</SelectItem>
+						{(player) =>
+							player.name ? (
+								<SelectItem key={player.id}>
+									{player.name}
+								</SelectItem>
 							) : null
 						}
 					</Select>
@@ -73,13 +80,21 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
-						selectedKeys={new Set([String(form.victoryId)])}
+						defaultSelectedKeys={
+							form.victoryId
+								? new Set([String(form.victoryId)])
+								: undefined
+						}
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 							dispatch("victoryId", e.target.value)
 						}
 					>
-						{(victory) => <SelectItem>{victory.label}</SelectItem>}
+						{(victory) => (
+							<SelectItem key={victory.id}>
+								{victory.label}
+							</SelectItem>
+						)}
 					</Select>
 				</>
 			)}

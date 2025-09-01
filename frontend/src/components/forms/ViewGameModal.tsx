@@ -1,6 +1,7 @@
 import { DisplayGameSchema } from "@civboards/schemas";
 import z from "zod";
-import GameModal from "../GameModal";
+
+import GameModal from "./GameModal";
 
 interface ViewGameModalProps {
 	disclosure: {
@@ -23,7 +24,7 @@ export default function ViewGameModal(props: ViewGameModalProps) {
 			dispatch={undefined}
 			form={{
 				...game,
-				winner: "",
+				winner: game.winnerPlayer || "",
 				date: Date.parse(game.date),
 				victoryId: game.victoryId || undefined,
 				expansions: new Set(game.expansions),

@@ -1,1 +1,1 @@
-export type GameModalType = "add" | "view";
+export type GameModalType = "add" | "view" | "edit";
