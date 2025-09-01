@@ -3,11 +3,11 @@ import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-import { GameOptions } from "@/interfaces/game.interface";
+import { GameForm } from "@/interfaces/game.interface";
 import { parseSaveFile } from "@/api/parse";
 
 interface UploadFileInputProps {
-	dispatch: (parsed: Partial<GameOptions>) => void;
+	dispatch: (parsed: Partial<GameForm>) => void;
 	// reset: (form: GameOptions) => void;
 }
 

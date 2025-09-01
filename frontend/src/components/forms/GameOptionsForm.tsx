@@ -52,15 +52,15 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			{form.finished && (
 				<>
 					<Select
+						isDisabled={!enabled}
+						isRequired={enabled}
+						items={form.players}
+						label="Winner"
 						defaultSelectedKeys={
 							form.winner === ""
 								? undefined
 								: new Set([form.winner])
 						}
-						isDisabled={!enabled}
-						isRequired={enabled}
-						items={form.players}
-						label="Winner"
 						selectionMode="single"
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
@@ -76,15 +76,15 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						}
 					</Select>
 					<Select
+						isDisabled={!enabled}
+						isRequired={enabled}
+						items={VICTORY_TYPES}
+						label="Victory Type"
 						defaultSelectedKeys={
 							form.victoryId
 								? new Set([String(form.victoryId)])
 								: undefined
 						}
-						isDisabled={!enabled}
-						isRequired={enabled}
-						items={VICTORY_TYPES}
-						label="Victory Type"
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
 							dispatch("victoryId", e.target.value)
