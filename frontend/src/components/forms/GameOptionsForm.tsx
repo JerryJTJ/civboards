@@ -28,7 +28,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 	const { enabled, form, dispatch } = props;
 
 	return (
-		<>
+		<div className="flex flex-col gap-2">
 			<Checkbox
 				isDisabled={!enabled}
 				isSelected={form.finished}
@@ -218,7 +218,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					</SelectItem>
 				)}
 			</Select>
-		</>
+		</div>
 	);
 }
 

@@ -86,6 +86,9 @@ export default function GameModal(props: GameModalProps) {
 		<Modal
 			backdrop="blur"
 			className="max-h-screen game-modal"
+			classNames={{
+				closeButton: "m-4 scale-150 hover:bg-danger/75 active:red/100",
+			}}
 			isDismissable={false}
 			isOpen={isOpen}
 			placement="top-center"
@@ -96,8 +99,10 @@ export default function GameModal(props: GameModalProps) {
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>
-							<ModalHeader className="flex flex-row gap-2">
-								{headerText()} Game
+							<ModalHeader className="flex flex-row">
+								<p className="pt-2 pl-2 text-large">
+									{headerText()} Game
+								</p>
 							</ModalHeader>
 							<ModalBody>
 								{mode === "add" && dispatches && (
@@ -106,13 +111,13 @@ export default function GameModal(props: GameModalProps) {
 										// reset={dispatches.resetFormDispatch}
 									/>
 								)}
-								<div className="flex flex-row justify-evenly">
-									<div className="flex flex-col justify-start w-1/2 max-h-full gap-2">
+								<div className="grid grid-cols-6 gap-4 px-10 py-2">
+									<div className="col-span-4">
 										{" "}
-										<span className="self-center pb-2 font-bold">
+										<p className="self-center pb-4 font-bold">
 											Players
-										</span>
-										<div className="flex flex-col justify-start gap-2 pr-4 overflow-x-hidden overflow-y-auto max-h-[60vh]">
+										</p>
+										<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]">
 											{form.players.map((civ: Civ) => (
 												<CivField
 													key={civ.id}
@@ -152,8 +157,8 @@ export default function GameModal(props: GameModalProps) {
 											</div>
 										)}
 									</div>
-									<div className="flex flex-col gap-2">
-										<p className="self-center pb-2 font-bold">
+									<div className="col-span-2">
+										<p className="self-center pb-4 font-bold">
 											Game Options
 										</p>
 										<GameOptionsForm
