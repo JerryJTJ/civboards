@@ -5,6 +5,7 @@ import {
 	fetchProfileInfoByName,
 	fetchAllGamesPlayedByPlayer,
 	fetchNumGamesWonByPlayer,
+	fetchNumGamesFinishedByPlayer,
 } from "../services/gamePlayer.service";
 
 export async function handleGetProfileInfoByName(
@@ -17,9 +18,12 @@ export async function handleGetProfileInfoByName(
 	const { name } = req.params;
 
 	try {
-		const wins = await fetchProfileInfoByName(name);
-		const gamesWon = await fetchNumGamesWonByPlayer(name);
-		const gamesPlayed = await fetchAllGamesPlayedByPlayer(name);
+		const [wins, gamesWon, gamesFinished, gamesPlayed] = await Promise.all([
+			fetchProfileInfoByName(name),
+			fetchNumGamesWonByPlayer(name),
+			fetchNumGamesFinishedByPlayer(name),
+			fetchAllGamesPlayedByPlayer(name),
+		]);
 
 		if (gamesPlayed === 0) {
 			throw new ValidationError("Player hasn't played a game yet");
@@ -28,8 +32,8 @@ export async function handleGetProfileInfoByName(
 		const validate = ProfileSchema.safeParse({
 			username: name,
 			played: gamesPlayed,
+			finished: gamesFinished,
 			won: gamesWon,
-			finished: wins.civilizations.length,
 			civs: wins.civilizations,
 			leaders: wins.leaders,
 		});

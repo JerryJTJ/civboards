@@ -129,6 +129,11 @@ export async function fetchAllGamesPlayedByPlayer(player: string) {
 	return getAllGamesPlayedByPlayer(player);
 }
 
+export async function fetchNumGamesFinishedByPlayer(player: string) {
+	const data = await getProfileInfoByName(player);
+	return data.length;
+}
+
 export async function fetchNumGamesWonByPlayer(player: string) {
 	const data = await getGameWinsByPlayer(player);
 	return data.length;

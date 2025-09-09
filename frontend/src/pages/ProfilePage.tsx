@@ -12,7 +12,6 @@ import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
 import { getProfile } from "@/api/users";
-import { AxiosError } from "axios";
 
 export default function ProfilePage() {
 	const params = useParams();
@@ -56,16 +55,17 @@ export default function ProfilePage() {
 					/>
 					<p className="text-xl font-semibold">{data?.username}</p>
 
-					<div className="flex flex-row justify-center gap-10 pt-15">
+					<div className="flex flex-row justify-center gap-10 pt-10">
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card>
+							<Card isBlurred>
 								<CardHeader className="self-center justify-center px-20 ">
-									<b className="pt-2 text-base">OVERVIEW</b>
+									<b className="pt-2 text-base">Overview</b>
 								</CardHeader>
 								<CardBody>
 									{data && (
 										<ProfileStatsTable
 											played={data.played}
+											finished={data.finished}
 											won={data.won}
 										/>
 									)}
@@ -73,10 +73,10 @@ export default function ProfilePage() {
 							</Card>
 						</Skeleton>
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card>
+							<Card isBlurred>
 								<CardHeader className="justify-center px-20">
-									<b className="text-base">
-										TOP CIVILIZATIONS
+									<b className="pt-2 text-base">
+										Civilizations Played
 									</b>
 								</CardHeader>
 								<CardBody>
@@ -89,9 +89,11 @@ export default function ProfilePage() {
 							</Card>
 						</Skeleton>
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card>
+							<Card isBlurred>
 								<CardHeader className="justify-center px-20">
-									<b className="text-base">TOP LEADERS</b>
+									<b className="pt-2 text-base">
+										Top Leaders
+									</b>
 								</CardHeader>
 								<CardBody>
 									{data && (
