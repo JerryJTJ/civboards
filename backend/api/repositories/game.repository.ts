@@ -159,3 +159,32 @@ export async function updateGameById(game: TablesUpdate<"game">) {
 	}
 	throw new ValidationError("Invalid game id");
 }
+
+export async function getGameWinsByPlayer(winner: string) {
+	const { data, error } = await supabase
+		.from("game")
+		.select(
+			`
+			leader (name),
+			civilization (name)
+		`
+		)
+		.eq("finished", true)
+		.eq("active", true)
+		.eq("winner_player", winner)
+		.not("winner_leader_id", "is", null)
+		.not("winner_civilization_id", "is", null);
+
+	if (error || !data)
+		throw new DatabaseError(
+			"Failed to get game wins by winner player",
+			error
+		);
+
+	return data.map((win) => {
+		return {
+			leader: win.leader?.name,
+			civilization: win.civilization?.name,
+		};
+	});
+}

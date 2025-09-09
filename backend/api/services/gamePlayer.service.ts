@@ -2,10 +2,15 @@ import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
 import { TablesInsert } from "../../interfaces/supabase";
 
-import { doesGameIdExist } from "../repositories/game.repository";
+import {
+	doesGameIdExist,
+	getGameWinsByPlayer,
+} from "../repositories/game.repository";
 import {
 	deleteGamePlayersByGameId,
+	getAllGamesPlayedByPlayer,
 	getGamePlayersByGameId,
+	getProfileInfoByName,
 	insertGamePlayers,
 } from "../repositories/gamePlayer.repository";
 import { fetchCivilizationIdByLeaderId } from "./leader.service";
@@ -60,4 +65,66 @@ export async function fetchGamePlayersByGameId(gameId: string) {
 
 export async function removeGamePlayerByGameId(gameId: string) {
 	await deleteGamePlayersByGameId(gameId);
+}
+
+export async function fetchProfileInfoByName(name: string) {
+	const data = await getProfileInfoByName(name);
+	const leaders = new Map<string, { played: number; wins: number }>();
+	const civs = new Map<string, { played: number; wins: number }>();
+
+	data.forEach((play) => {
+		const { leader, civilization } = play;
+
+		if (leader) {
+			leaders.set(leader, {
+				played: leaders.has(leader)
+					? leaders.get(leader)!.played + 1
+					: 1,
+				wins: 0,
+			});
+		}
+		if (civilization) {
+			civs.set(civilization, {
+				played: civs.has(civilization)
+					? civs.get(civilization)!.played + 1
+					: 1,
+				wins: 0,
+			});
+		}
+	});
+
+	const wins = await getGameWinsByPlayer(name);
+	wins.forEach((win) => {
+		if (win.leader) {
+			leaders.set(win.leader, {
+				played: leaders.get(win.leader)?.played as number,
+				wins:
+					leaders.get(win.leader)?.wins === 0
+						? 1
+						: (leaders.get(win.leader)?.wins as number) + 1,
+			});
+		}
+		if (win.civilization) {
+			civs.set(win.civilization, {
+				played: civs.get(win.civilization)?.played as number,
+				wins:
+					civs.get(win.civilization)?.wins === 0
+						? 1
+						: (civs.get(win.civilization)?.wins as number) + 1,
+			});
+		}
+	});
+
+	const leadersArr = Array.from(leaders).map(([name, data]) => {
+		return { name: name, played: data.played, wins: data.wins };
+	});
+	const civsArr = Array.from(civs).map(([name, data]) => {
+		return { name: name, played: data.played, wins: data.wins };
+	});
+
+	return { civilizations: civsArr, leaders: leadersArr };
+}
+
+export async function fetchAllGamesPlayedByPlayer(player: string) {
+	return getAllGamesPlayedByPlayer(player);
 }

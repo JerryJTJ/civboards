@@ -11,6 +11,7 @@ import ExpansionRouter from "./routes/expansion.routes";
 import VictoryRouter from "./routes/victory.routes";
 import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
+import PlayerRouter from "./routes/player.routes";
 import ParseRouter from "./parse/parse.api";
 
 //Supabase connection
@@ -47,6 +48,7 @@ app.use("/expansion", ExpansionRouter);
 app.use("/victory", VictoryRouter);
 app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
+app.use("/player", PlayerRouter);
 app.use("/parse", ParseRouter);
 app.get("/ping", (_req: express.Request, res: express.Response) => {
 	res.status(200).send("Ping!");
