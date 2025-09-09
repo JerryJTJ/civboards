@@ -4,6 +4,7 @@ import { ValidationError } from "../../types/Errors";
 import {
 	fetchProfileInfoByName,
 	fetchAllGamesPlayedByPlayer,
+	fetchNumGamesWonByPlayer,
 } from "../services/gamePlayer.service";
 
 export async function handleGetProfileInfoByName(
@@ -17,15 +18,17 @@ export async function handleGetProfileInfoByName(
 
 	try {
 		const wins = await fetchProfileInfoByName(name);
-		const played = await fetchAllGamesPlayedByPlayer(name);
+		const gamesWon = await fetchNumGamesWonByPlayer(name);
+		const gamesPlayed = await fetchAllGamesPlayedByPlayer(name);
 
-		if (played === 0) {
+		if (gamesPlayed === 0) {
 			throw new ValidationError("Player hasn't played a game yet");
 		}
 
 		const validate = ProfileSchema.safeParse({
 			username: name,
-			played: played,
+			played: gamesPlayed,
+			won: gamesWon,
 			finished: wins.civilizations.length,
 			civs: wins.civilizations,
 			leaders: wins.leaders,
