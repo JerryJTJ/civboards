@@ -11,15 +11,15 @@ import { useMemo } from "react";
 interface ProfileStatsTableProps {
 	played: number;
 	finished: number;
-	won: number;
+	wins: number;
 }
 
 export default function ProfileStatsTable(props: ProfileStatsTableProps) {
-	const { played, finished, won } = props;
+	const { played, finished, wins } = props;
 
 	const percentageWon = useMemo(() => {
-		return Math.round((won / finished) * 100);
-	}, [won, finished]);
+		return Math.round((wins / finished) * 100);
+	}, [wins, finished]);
 
 	return (
 		<Table aria-label="Profile Stats Table">
@@ -37,9 +37,9 @@ export default function ProfileStatsTable(props: ProfileStatsTableProps) {
 					<TableCell>{finished}</TableCell>
 				</TableRow>
 				<TableRow key="games-won">
-					<TableCell>Won</TableCell>
+					<TableCell>Wins</TableCell>
 					<TableCell>
-						{won} ({percentageWon}%)
+						{wins} ({percentageWon}%)
 					</TableCell>
 				</TableRow>
 			</TableBody>

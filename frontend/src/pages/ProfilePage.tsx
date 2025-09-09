@@ -2,7 +2,7 @@ import { Skeleton } from "@heroui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useMemo } from "react";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { ProfileSchema } from "@civboards/schemas";
 import * as z from "zod";
 import { Avatar } from "@heroui/avatar";
@@ -24,28 +24,15 @@ export default function ProfilePage() {
 			z.infer<typeof ProfileSchema> | undefined
 		> => {
 			if (username) {
-				try {
-					const profile = await getProfile(username);
-
-					return profile;
-				} catch (error: any) {
-					console.log(error);
-					if (!data)
-						addToast({
-							title: "Error",
-							color: "danger",
-							description: "Could not load profile info",
-							timeout: 3000,
-							shouldShowTimeoutProgress: true,
-						});
-				}
+				const profile = await getProfile(username);
+				return profile;
 			}
 		},
 	});
 
 	return (
 		<DefaultLayout>
-			{!error && (
+			{!error ? (
 				<div className="flex flex-col items-center gap-5">
 					<Avatar
 						isBordered
@@ -53,7 +40,11 @@ export default function ProfilePage() {
 						name={username}
 						src="https://imgur.com/VB73J90.png"
 					/>
-					<p className="text-xl font-semibold">{data?.username}</p>
+					<Skeleton className="rounded-xl" isLoaded={!isPending}>
+						<p className="text-xl font-semibold">
+							{data?.username}
+						</p>
+					</Skeleton>
 
 					<div className="flex flex-row justify-center gap-10 pt-10">
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
@@ -66,7 +57,7 @@ export default function ProfilePage() {
 										<ProfileStatsTable
 											played={data.played}
 											finished={data.finished}
-											won={data.won}
+											wins={data.won}
 										/>
 									)}
 								</CardBody>
@@ -105,7 +96,23 @@ export default function ProfilePage() {
 							</Card>
 						</Skeleton>
 					</div>
+					{/* <Card>
+						<CardBody className="self-end">
+							<p className="text-xs italic ">
+								Stats are based on finished games only
+							</p>
+						</CardBody>
+					</Card> */}
 				</div>
+			) : (
+				<Card>
+					<CardHeader className="self-center justify-center p-3">
+						<b className="text-base">ERROR</b>
+					</CardHeader>
+					<CardBody className="items-center p-3">
+						Player {username} has played no games yet!
+					</CardBody>
+				</Card>
 			)}
 		</DefaultLayout>
 	);
