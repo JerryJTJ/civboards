@@ -2,7 +2,7 @@ import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useDisclosure } from "@heroui/modal";
-import z from "zod";
+import * as z from "zod";
 import {
 	Dropdown,
 	DropdownItem,

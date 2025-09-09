@@ -1,6 +1,6 @@
 import { DisplayGameSchema, UpdateGameSchema } from "@civboards/schemas";
 import { useReducer } from "react";
-import z from "zod";
+import * as z from "zod";
 import { addToast } from "@heroui/toast";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 

@@ -30,7 +30,7 @@ import {
 } from "./gamePlayer.service";
 import { fetchLeaderById } from "./leader.service";
 import { fetchVictoryById } from "./victory.service";
-import z from "zod";
+import * as z from "zod";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation

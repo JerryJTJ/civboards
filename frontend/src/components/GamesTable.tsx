@@ -20,7 +20,7 @@ import {
 } from "@heroui/dropdown";
 import { SortDescriptor } from "@react-types/shared";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
-import z from "zod";
+import * as z from "zod";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
 

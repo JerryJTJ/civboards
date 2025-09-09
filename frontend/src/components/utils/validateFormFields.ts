@@ -1,7 +1,6 @@
-import z from "zod";
+import * as z from "zod";
 
 import { GameForm } from "@/interfaces/game.interface";
-
 
 export type ValidateFormResult =
 	| { success: false; message: string }

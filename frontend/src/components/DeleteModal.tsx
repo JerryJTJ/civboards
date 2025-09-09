@@ -14,7 +14,7 @@ import {
 	useMutation,
 } from "@tanstack/react-query";
 import { JSX } from "react";
-import z from "zod";
+import * as z from "zod";
 
 import { deleteGameById } from "@/api/games";
 

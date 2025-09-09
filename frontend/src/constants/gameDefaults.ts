@@ -1,5 +1,5 @@
 import { DisplayGameSchema } from "@civboards/schemas";
-import z from "zod";
+import * as z from "zod";
 
 import { GameForm } from "@/interfaces/game.interface";
 
