@@ -8,15 +8,21 @@ import {
 	NavbarMenu,
 	NavbarMenuItem,
 } from "@heroui/navbar";
+import { Skeleton } from "@heroui/skeleton";
 import { link as linkStyles } from "@heroui/theme";
+import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
 import { SvgIcon } from "@/components/icons";
+import LoginButton from "./authorization/LoginButton";
+import LogoutButton from "./authorization/LogoutButton";
+import Profile from "./authorization/ProfileIcon";
 
-export const Navbar = () => {
+export default function Navbar() {
+	const { isAuthenticated, isLoading } = useAuth0();
 	// const searchInput = (
 	// 	<Input
 	// 		aria-label="Search"
@@ -72,6 +78,26 @@ export const Navbar = () => {
 				className="hidden sm:flex basis-1/5 sm:basis-full"
 				justify="end"
 			>
+				{isAuthenticated ? (
+					<>
+						<NavbarItem className="hidden lg:flex">
+							<Skeleton isLoaded={!isLoading}>
+								<Profile />
+							</Skeleton>
+						</NavbarItem>
+						<NavbarItem className="hidden lg:flex">
+							<Skeleton isLoaded={!isLoading}>
+								<LogoutButton />
+							</Skeleton>
+						</NavbarItem>
+					</>
+				) : (
+					<NavbarItem className="hidden lg:flex">
+						<Skeleton isLoaded={!isLoading}>
+							<LoginButton />
+						</Skeleton>
+					</NavbarItem>
+				)}
 				<NavbarItem className="hidden gap-2 sm:flex">
 					<Link
 						isExternal
@@ -82,9 +108,9 @@ export const Navbar = () => {
 					</Link>
 					<ThemeSwitch />
 				</NavbarItem>
-				<NavbarItem className="hidden lg:flex">
-					{/* {searchInput} */}
-				</NavbarItem>
+				{/* <NavbarItem className="hidden lg:flex">
+					{searchInput}
+				</NavbarItem> */}
 			</NavbarContent>
 
 			{/* For mobile view */}
@@ -122,4 +148,4 @@ export const Navbar = () => {
 			</NavbarMenu>
 		</HeroUINavbar>
 	);
-};
+}
