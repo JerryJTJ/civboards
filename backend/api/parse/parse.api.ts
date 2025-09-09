@@ -1,4 +1,4 @@
-import z from "zod";
+import * as z from "zod";
 import express from "express";
 import multer from "multer";
 import { ParseSaveSchema } from "@civboards/schemas";
