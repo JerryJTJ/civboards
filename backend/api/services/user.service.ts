@@ -31,12 +31,10 @@ export async function createUsers(
 }
 
 export async function fetchAllUsers() {
-	const users = await getAllUsers();
+	return await getAllUsers();
 
-	const usersArr = new Array<string>();
-	users.forEach((user) => {
-		usersArr.push(user.name);
-	});
-
-	return usersArr;
+	// const usersArr = new Array<string>();
+	// users.forEach((user) => {
+	// 	usersArr.push(user.name);
+	// });
 }
