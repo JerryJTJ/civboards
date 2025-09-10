@@ -16,18 +16,23 @@ import clsx from "clsx";
 import LoginButton from "./authorization/LoginButton";
 import LogoutButton from "./authorization/LogoutButton";
 import ProfileIcon from "./authorization/ProfileIcon";
+import SearchBar from "./SearchBar";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
 import { SvgIcon } from "@/components/icons";
-import SearchBar from "./SearchBar";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();
 
 	return (
-		<HeroUINavbar maxWidth="xl" position="sticky">
+		<HeroUINavbar
+			className="shadow-md border-b-1 border-default-foreground/20"
+			height={"5rem"}
+			maxWidth="xl"
+			position="sticky"
+		>
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand className="gap-3 max-w-fit">
 					<Link

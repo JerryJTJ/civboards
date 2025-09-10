@@ -11,12 +11,12 @@ import {
 } from "@heroui/table";
 import { Pagination } from "@heroui/pagination";
 import React, { useMemo } from "react";
+import { Link } from "@heroui/link";
 
 import { SearchIcon } from "./icons";
 
 import { LeaderboardView } from "@/pages/LeaderboardPage";
 import { capitalize } from "@/utils/capitalize";
-import { Link } from "@heroui/link";
 
 const columns: Array<{ key: string; name: string; sortable: boolean }> = [
 	{
@@ -145,11 +145,12 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		(entry: LeaderboardEntry, columnKey: React.Key) => {
 			const cellValue = entry[columnKey as keyof LeaderboardEntry];
 			const medal = podium.get(entry.wins) ?? "";
+
 			switch (columnKey) {
 				case "player":
 					return (
 						<div className="flex justify-center w-auto">
-							<Link href={`/profile/${entry.label}`} isBlock>
+							<Link isBlock href={`/profile/${entry.label}`}>
 								<p className="text-base text-center text-bold text-default-foreground">
 									{medal ? `${medal} ` : ""}
 									{capitalize(entry.label)}

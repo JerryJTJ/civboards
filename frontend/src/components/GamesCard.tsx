@@ -14,6 +14,7 @@ import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import DeleteModal from "./DeleteModal";
 import ViewGameModal from "./forms/ViewGameModal";
 import EditGameModal from "./forms/EditGameModal";
+
 import { capitalize } from "@/utils/capitalize";
 
 interface GameCardProps {
