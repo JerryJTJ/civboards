@@ -91,7 +91,7 @@ export default function Navbar() {
 						</NavbarItem>
 						<NavbarItem className="hidden lg:flex">
 							<Skeleton
-								className="rounded-3xl"
+								className="rounded-xl"
 								isLoaded={!isLoading}
 							>
 								<LogoutButton />
@@ -100,7 +100,7 @@ export default function Navbar() {
 					</>
 				) : (
 					<NavbarItem className="hidden lg:flex">
-						<Skeleton isLoaded={!isLoading}>
+						<Skeleton className="rounded-xl" isLoaded={!isLoading}>
 							<LoginButton />
 						</Skeleton>
 					</NavbarItem>
