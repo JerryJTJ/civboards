@@ -16,6 +16,7 @@ import { SearchIcon } from "./icons";
 
 import { LeaderboardView } from "@/pages/LeaderboardPage";
 import { capitalize } from "@/utils/capitalize";
+import { Link } from "@heroui/link";
 
 const columns: Array<{ key: string; name: string; sortable: boolean }> = [
 	{
@@ -147,10 +148,14 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 			switch (columnKey) {
 				case "player":
 					return (
-						<p className="text-base text-center text-bold">
-							{medal ? `${medal} ` : ""}
-							{capitalize(entry.label)}
-						</p>
+						<div className="flex justify-center w-auto">
+							<Link href={`/profile/${entry.label}`} isBlock>
+								<p className="text-base text-center text-bold text-default-foreground">
+									{medal ? `${medal} ` : ""}
+									{capitalize(entry.label)}
+								</p>
+							</Link>
+						</div>
 					);
 				case "leader":
 				case "civilization":

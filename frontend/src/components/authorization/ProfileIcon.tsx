@@ -9,7 +9,7 @@ const ProfileIcon = () => {
 	return (
 		<Skeleton isLoaded={isAuthenticated}>
 			<Link
-				className="flex flex-row items-center gap-3  rounded-xl"
+				className="flex flex-row items-center gap-3 rounded-xl"
 				href={`profile/${user?.username}`}
 				title="Profile"
 			>
