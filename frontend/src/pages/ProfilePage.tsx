@@ -16,7 +16,10 @@ import GamesTable from "@/components/GamesTable";
 
 export default function ProfilePage() {
 	const params = useParams();
-	const username = useMemo(() => params.username, [params]);
+	const username = useMemo(
+		() => params.username?.toLocaleLowerCase(),
+		[params]
+	);
 
 	// APIs
 	const profile = useQuery({
