@@ -1,6 +1,6 @@
 import { UpdateGameSchema, InsertGameSchema } from "@civboards/schemas";
 import { TablesInsert, TablesUpdate } from "../../interfaces/supabase";
-import { NotFoundError, ValidationError } from "../../types/Errors";
+import { AppError, NotFoundError, ValidationError } from "../../types/Errors";
 
 import {
 	deleteGameById,
@@ -11,6 +11,7 @@ import {
 	getAllGameWinners,
 	getAllGames,
 	getGameById,
+	getGamesById,
 	insertGame,
 	softDeleteGameById,
 	updateGameById,
@@ -31,6 +32,7 @@ import {
 import { fetchLeaderById } from "./leader.service";
 import { fetchVictoryById } from "./victory.service";
 import * as z from "zod";
+import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
@@ -319,4 +321,16 @@ export async function updateGame(
 	]);
 
 	return updatedGame;
+}
+
+export async function fetchAllGamesByPlayer(player: string) {
+	const games = await getAllGamesPlayedByPlayer(player);
+
+	if (!games) throw new AppError("No games for player found", 404, "");
+
+	const gameIds: Array<string> = games.map((game) => {
+		return game.game.id;
+	});
+
+	return await getGamesById(gameIds);
 }

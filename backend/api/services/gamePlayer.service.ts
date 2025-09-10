@@ -125,8 +125,9 @@ export async function fetchProfileInfoByName(name: string) {
 	return { civilizations: civsArr, leaders: leadersArr };
 }
 
-export async function fetchAllGamesPlayedByPlayer(player: string) {
-	return getAllGamesPlayedByPlayer(player);
+export async function fetchNumGamesPlayedByPlayer(player: string) {
+	const data = await getAllGamesPlayedByPlayer(player);
+	return data.length;
 }
 
 export async function fetchNumGamesFinishedByPlayer(player: string) {

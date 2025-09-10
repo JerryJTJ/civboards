@@ -52,6 +52,18 @@ export async function getGameById(id: string) {
 	return data;
 }
 
+export async function getGamesById(ids: Array<string>) {
+	const { data, error } = await supabase
+		.from("game")
+		.select()
+		.in("id", ids)
+		.eq("active", true);
+
+	if (error || !data) throw new DatabaseError("Failed to get game", error);
+
+	return data;
+}
+
 export async function getAllGames() {
 	const { data, error } = await supabase
 		.from("game")

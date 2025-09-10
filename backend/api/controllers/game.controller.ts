@@ -5,6 +5,7 @@ import {
 	fetchAllGameWinnerLeaderIds,
 	fetchAllGameWinners,
 	fetchAllGames,
+	fetchAllGamesByPlayer,
 	fetchGameById,
 	softRemoveGameById,
 	updateGame,
@@ -20,6 +21,38 @@ import {
 	UpdateGameSchema,
 } from "@civboards/schemas";
 import * as z from "zod";
+import { Database } from "../../interfaces/supabase";
+
+// UTIL
+async function exportGameObject(
+	game: Database["public"]["Tables"]["game"]["Row"]
+) {
+	const gameId = game.id;
+
+	const [players, gamemodes, expansions] = await Promise.all([
+		fetchGamePlayersByGameId(gameId),
+		fetchGameGamemodesIdsByGameId(gameId),
+		fetchGameExpansionsIdsByGameId(gameId),
+	]);
+
+	return {
+		id: game.id,
+		date: game.date,
+		finished: game.finished,
+		map: game.map,
+		mapSize: game.map_size,
+		name: game.name,
+		speed: game.speed,
+		turns: game.turns,
+		victoryId: game.victory_id || undefined,
+		winnerCivilizationId: game.winner_civilization_id || undefined,
+		winnerLeaderId: game.winner_leader_id,
+		winnerPlayer: game.winner_player,
+		players: players,
+		gamemodes: gamemodes,
+		expansions: expansions,
+	};
+}
 
 export async function handleCreateGame(
 	req: Request,
@@ -85,50 +118,45 @@ export async function handleGetAllGames(
 	res: Response,
 	next: NextFunction
 ) {
-	const games = await fetchAllGames();
+	try {
+		const games = await fetchAllGames();
+		if (games) {
+			const fullGames = await Promise.all(
+				games.map(async (game) => exportGameObject(game))
+			);
 
-	if (games) {
-		const fullGames = await Promise.all(
-			games.map(async (game) => {
-				const gameId = game.id;
-
-				try {
-					const [players, gamemodes, expansions] = await Promise.all([
-						fetchGamePlayersByGameId(gameId),
-						fetchGameGamemodesIdsByGameId(gameId),
-						fetchGameExpansionsIdsByGameId(gameId),
-					]);
-
-					return {
-						id: game.id,
-						date: game.date,
-						finished: game.finished,
-						map: game.map,
-						mapSize: game.map_size,
-						name: game.name,
-						speed: game.speed,
-						turns: game.turns,
-						victoryId: game.victory_id || undefined,
-						winnerCivilizationId:
-							game.winner_civilization_id || undefined,
-						winnerLeaderId: game.winner_leader_id,
-						winnerPlayer: game.winner_player,
-						players: players,
-						gamemodes: gamemodes,
-						expansions: expansions,
-					};
-				} catch (error) {
-					next(error);
-				}
-			})
-		);
-
-		const validate = DisplayGameSchemaArray.safeParse(fullGames);
-		if (validate.success) return res.status(200).json(validate.data);
-		return res.status(400).json(z.treeifyError(validate.error));
+			const validate = DisplayGameSchemaArray.safeParse(fullGames);
+			if (validate.success) return res.status(200).json(validate.data);
+			return res.status(400).json(z.treeifyError(validate.error));
+		}
+		return res.status(400).end();
+	} catch (error) {
+		next(error);
 	}
+}
 
-	return res.status(400).end();
+export async function handleGetAllGamesByPlayer(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	const { name } = req.params;
+
+	try {
+		const games = await fetchAllGamesByPlayer(name);
+		if (games) {
+			const fullGames = await Promise.all(
+				games.map(async (game) => exportGameObject(game))
+			);
+
+			const validate = DisplayGameSchemaArray.safeParse(fullGames);
+			if (validate.success) return res.status(200).json(validate.data);
+			return res.status(400).json(z.treeifyError(validate.error));
+		}
+		return res.status(400).end();
+	} catch (error) {
+		next(error);
+	}
 }
 
 export async function handleGetAllGameWinners(

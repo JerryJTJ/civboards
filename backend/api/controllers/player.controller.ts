@@ -3,9 +3,9 @@ import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "../../types/Errors";
 import {
 	fetchProfileInfoByName,
-	fetchAllGamesPlayedByPlayer,
 	fetchNumGamesWonByPlayer,
 	fetchNumGamesFinishedByPlayer,
+	fetchNumGamesPlayedByPlayer,
 } from "../services/gamePlayer.service";
 
 export async function handleGetProfileInfoByName(
@@ -22,7 +22,7 @@ export async function handleGetProfileInfoByName(
 			fetchProfileInfoByName(name),
 			fetchNumGamesWonByPlayer(name),
 			fetchNumGamesFinishedByPlayer(name),
-			fetchAllGamesPlayedByPlayer(name),
+			fetchNumGamesPlayedByPlayer(name),
 		]);
 
 		if (gamesPlayed === 0) {

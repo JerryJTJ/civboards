@@ -68,13 +68,13 @@ export async function getProfileInfoByName(name: string) {
 export async function getAllGamesPlayedByPlayer(name: string) {
 	const { data, error } = await supabase
 		.from("game_player")
-		.select(`game!inner (active)`)
+		.select(`game!inner (id, active)`)
 		.eq("game.active", true)
 		.eq("name", name)
 		.eq("is_human", true);
 
-	if (error) throw new DatabaseError("Failed to get game count", error);
+	if (error) throw new DatabaseError("Failed to get games", error);
 	if (!data) throw new NotFoundError();
 
-	return data.length;
+	return data;
 }
