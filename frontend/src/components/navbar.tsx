@@ -21,29 +21,10 @@ import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
 import { SvgIcon } from "@/components/icons";
+import SearchBar from "./SearchBar";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();
-	// const searchInput = (
-	// 	<Input
-	// 		aria-label="Search"
-	// 		classNames={{
-	// 			inputWrapper: "bg-default-100",
-	// 			input: "text-sm",
-	// 		}}
-	// 		endContent={
-	// 			<Kbd className="hidden lg:inline-block" keys={["command"]}>
-	// 				K
-	// 			</Kbd>
-	// 		}
-	// 		labelPlacement="outside"
-	// 		placeholder="Search..."
-	// 		startContent={
-	// 			<SearchIcon className="text-base pointer-events-none shrink-0 text-default-400" />
-	// 		}
-	// 		type="search"
-	// 	/>
-	// );
 
 	return (
 		<HeroUINavbar maxWidth="xl" position="sticky">
@@ -79,6 +60,9 @@ export default function Navbar() {
 				className="hidden sm:flex basis-1/5 sm:basis-full"
 				justify="end"
 			>
+				<NavbarItem className="hidden lg:flex">
+					<SearchBar />
+				</NavbarItem>
 				{isAuthenticated ? (
 					<>
 						<NavbarItem className="hidden lg:flex">
@@ -115,9 +99,6 @@ export default function Navbar() {
 					</Link>
 					<ThemeSwitch />
 				</NavbarItem>
-				{/* <NavbarItem className="hidden lg:flex">
-					{searchInput}
-				</NavbarItem> */}
 			</NavbarContent>
 
 			{/* For mobile view */}

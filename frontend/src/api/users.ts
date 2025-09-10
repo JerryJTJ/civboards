@@ -36,3 +36,15 @@ export async function getGamesByPlayer(
 
 	throw new Error(`Failed to get games for ${username}`);
 }
+
+export async function getAllUsers() {
+	const response = await instance({
+		url: "/user",
+		method: "get",
+	});
+
+	if (response.status === 200)
+		return response.data as Array<{ name: string }>;
+
+	throw new Error("Failed to get users");
+}
