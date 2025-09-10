@@ -13,13 +13,14 @@ import { link as linkStyles } from "@heroui/theme";
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
 
+import LoginButton from "./authorization/LoginButton";
+import LogoutButton from "./authorization/LogoutButton";
+import ProfileIcon from "./authorization/ProfileIcon";
+
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { GithubIcon } from "@/components/icons";
 import { SvgIcon } from "@/components/icons";
-import LoginButton from "./authorization/LoginButton";
-import LogoutButton from "./authorization/LogoutButton";
-import Profile from "./authorization/ProfileIcon";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();
@@ -81,12 +82,18 @@ export default function Navbar() {
 				{isAuthenticated ? (
 					<>
 						<NavbarItem className="hidden lg:flex">
-							<Skeleton isLoaded={!isLoading}>
-								<Profile />
+							<Skeleton
+								className="rounded-3xl"
+								isLoaded={!isLoading}
+							>
+								<ProfileIcon />
 							</Skeleton>
 						</NavbarItem>
 						<NavbarItem className="hidden lg:flex">
-							<Skeleton isLoaded={!isLoading}>
+							<Skeleton
+								className="rounded-3xl"
+								isLoaded={!isLoading}
+							>
 								<LogoutButton />
 							</Skeleton>
 						</NavbarItem>

@@ -6,103 +6,143 @@ import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { ProfileSchema } from "@civboards/schemas";
 import * as z from "zod";
 import { Avatar } from "@heroui/avatar";
-import { addToast } from "@heroui/toast";
+import { Tabs, Tab } from "@heroui/tabs";
 
 import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
-import { getProfile } from "@/api/users";
+import { getGamesByPlayer, getProfile } from "@/api/users";
+import GamesTable from "@/components/GamesTable";
 
 export default function ProfilePage() {
 	const params = useParams();
-
 	const username = useMemo(() => params.username, [params]);
 
-	const { data, isPending, error } = useQuery({
+	// APIs
+	const profile = useQuery({
 		queryKey: ["profiles", username],
 		queryFn: async (): Promise<
 			z.infer<typeof ProfileSchema> | undefined
 		> => {
 			if (username) {
-				const profile = await getProfile(username);
-				return profile;
+				return await getProfile(username);
+			}
+		},
+	});
+	const games = useQuery({
+		queryKey: ["games", username],
+		queryFn: async () => {
+			if (username) {
+				return await getGamesByPlayer(username);
 			}
 		},
 	});
 
 	return (
 		<DefaultLayout>
-			{!error ? (
+			{!profile.error ? (
 				<div className="flex flex-col items-center gap-5">
 					<Avatar
 						isBordered
-						className="w-30 h-30 text-large"
+						className="w-20 h-20 text-large"
 						name={username}
 						src="https://imgur.com/VB73J90.png"
 					/>
-					<Skeleton className="rounded-xl" isLoaded={!isPending}>
-						<p className="text-xl font-semibold">
-							{data?.username}
-						</p>
+					<Skeleton
+						className="rounded-xl"
+						isLoaded={!profile.isPending}
+					>
+						<p className="text-xl font-semibold">{username}</p>
 					</Skeleton>
-
-					<div className="flex flex-row justify-center gap-10 pt-10">
-						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card isBlurred>
-								<CardHeader className="self-center justify-center px-20 ">
-									<b className="pt-2 text-base">Overview</b>
-								</CardHeader>
-								<CardBody>
-									{data && (
-										<ProfileStatsTable
-											played={data.played}
-											finished={data.finished}
-											wins={data.won}
-										/>
-									)}
-								</CardBody>
-							</Card>
-						</Skeleton>
-						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card isBlurred>
-								<CardHeader className="justify-center px-20">
-									<b className="pt-2 text-base">
-										Civilizations Played
-									</b>
-								</CardHeader>
-								<CardBody>
-									{data && (
-										<ProfileLeaderboardTable
-											items={data.civs}
-										/>
-									)}
-								</CardBody>
-							</Card>
-						</Skeleton>
-						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<Card isBlurred>
-								<CardHeader className="justify-center px-20">
-									<b className="pt-2 text-base">
-										Top Leaders
-									</b>
-								</CardHeader>
-								<CardBody>
-									{data && (
-										<ProfileLeaderboardTable
-											items={data.leaders}
-										/>
-									)}
-								</CardBody>
-							</Card>
-						</Skeleton>
-					</div>
-					{/* <Card>
-						<CardBody className="self-end">
-							<p className="text-xs italic ">
-								Stats are based on finished games only
-							</p>
-						</CardBody>
-					</Card> */}
+					<Tabs aria-label="Options">
+						<Tab key="overview" title="Overview">
+							<div className="flex flex-row justify-center gap-10 pt-10">
+								<Skeleton
+									className="rounded-xl"
+									isLoaded={!profile.isPending}
+								>
+									<Card isBlurred>
+										<CardHeader className="self-center justify-center px-20 ">
+											<b className="pt-2 text-base">
+												Overview
+											</b>
+										</CardHeader>
+										<CardBody>
+											{profile.data && (
+												<ProfileStatsTable
+													finished={
+														profile.data.finished
+													}
+													played={profile.data.played}
+													wins={profile.data.won}
+												/>
+											)}
+										</CardBody>
+										<CardFooter>
+											<p className="px-4 text-xs italic">
+												Win percentages used finished
+												games only
+											</p>
+										</CardFooter>
+									</Card>
+								</Skeleton>
+								<Skeleton
+									className="rounded-xl"
+									isLoaded={!profile.isPending}
+								>
+									<Card isBlurred>
+										<CardHeader className="justify-center px-20">
+											<b className="pt-2 text-base">
+												Civilizations Played
+											</b>
+										</CardHeader>
+										<CardBody>
+											{profile.data && (
+												<ProfileLeaderboardTable
+													items={profile.data.civs}
+												/>
+											)}
+										</CardBody>
+									</Card>
+								</Skeleton>
+								<Skeleton
+									className="rounded-xl"
+									isLoaded={!profile.isPending}
+								>
+									<Card isBlurred>
+										<CardHeader className="justify-center px-20">
+											<b className="pt-2 text-base">
+												Top Leaders
+											</b>
+										</CardHeader>
+										<CardBody>
+											{profile.data && (
+												<ProfileLeaderboardTable
+													items={profile.data.leaders}
+												/>
+											)}
+										</CardBody>
+									</Card>
+								</Skeleton>
+							</div>
+						</Tab>
+						<Tab key="games" title="Games">
+							<Skeleton
+								className="rounded-xl"
+								isLoaded={
+									!games.isPending && !profile.isPending
+								}
+							>
+								{" "}
+								{games.data && (
+									<GamesTable
+										games={games.data}
+										refetch={games.refetch}
+									/>
+								)}
+							</Skeleton>
+						</Tab>
+					</Tabs>
 				</div>
 			) : (
 				<Card>
