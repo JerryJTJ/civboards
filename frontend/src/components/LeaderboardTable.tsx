@@ -15,6 +15,7 @@ import React, { useMemo } from "react";
 import { SearchIcon } from "./icons";
 
 import { LeaderboardView } from "@/pages/LeaderboardPage";
+import { capitalize } from "@/utils/capitalize";
 
 const columns: Array<{ key: string; name: string; sortable: boolean }> = [
 	{
@@ -142,14 +143,18 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 	const renderCell = React.useCallback(
 		(entry: LeaderboardEntry, columnKey: React.Key) => {
 			const cellValue = entry[columnKey as keyof LeaderboardEntry];
-
+			const medal = podium.get(entry.wins) ?? "";
 			switch (columnKey) {
 				case "player":
+					return (
+						<p className="text-base text-center text-bold">
+							{medal ? `${medal} ` : ""}
+							{capitalize(entry.label)}
+						</p>
+					);
 				case "leader":
 				case "civilization":
 				case "victory":
-					const medal = podium.get(entry.wins) ?? "";
-
 					return (
 						<p className="text-base text-center text-bold">
 							{medal ? `${medal} ` : ""}

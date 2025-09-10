@@ -14,6 +14,7 @@ import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import DeleteModal from "./DeleteModal";
 import ViewGameModal from "./forms/ViewGameModal";
 import EditGameModal from "./forms/EditGameModal";
+import { capitalize } from "@/utils/capitalize";
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
@@ -38,7 +39,7 @@ export default function GamesCard(props: GameCardProps) {
 	const humans = new Array<string>();
 
 	game.players.forEach((player) => {
-		if (player.isHuman) humans.push(player.name);
+		if (player.isHuman) humans.push(capitalize(player.name));
 	});
 
 	return (

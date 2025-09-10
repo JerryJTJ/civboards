@@ -35,7 +35,7 @@ export async function createGamePlayers(
 				?.civilization_id;
 			return {
 				game_id: gameId,
-				name: player.name,
+				name: player.name.toLocaleLowerCase(),
 				leader_id: player.leaderId,
 				civilization_id: civId,
 				is_human: player.isHuman,

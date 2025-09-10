@@ -30,6 +30,7 @@ import ViewGameModal from "./forms/ViewGameModal";
 import EditGameModal from "./forms/EditGameModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
+import { capitalize } from "@/utils/capitalize";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -46,10 +47,6 @@ interface GamesTableProps {
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
 	size?: number;
 };
-
-export function capitalize(s: string) {
-	return s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : "";
-}
 
 export const columns = [
 	{ name: "NAME", key: "name", sortable: true },
@@ -167,7 +164,8 @@ export default function GamesTable(props: GamesTableProps) {
 					const humans = new Array<string>();
 
 					game.players.forEach((player) => {
-						if (player.isHuman) humans.push(player.name);
+						if (player.isHuman)
+							humans.push(capitalize(player.name));
 					});
 
 					return (
@@ -178,7 +176,7 @@ export default function GamesTable(props: GamesTableProps) {
 				case "winner":
 					return (
 						<p className="text-bold text-small">
-							{game.winnerPlayer}
+							{capitalize(game.winnerPlayer as string)}
 						</p>
 					);
 				case "actions":

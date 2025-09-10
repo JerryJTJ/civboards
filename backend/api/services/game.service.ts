@@ -66,7 +66,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		map_size: game.mapSize,
 		speed: game.speed,
 		turns: game.turns,
-		winner_player: game.winnerPlayer,
+		winner_player: game.winnerPlayer?.toLocaleLowerCase(),
 		winner_leader_id: game.winnerLeaderId,
 		winner_civilization_id: winnerCivilizationId || undefined,
 		victory_id: game.victoryId || undefined,
