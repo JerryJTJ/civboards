@@ -5,7 +5,14 @@ const LoginButton = () => {
 	const { loginWithRedirect } = useAuth0();
 
 	return (
-		<Button onPress={async () => await loginWithRedirect()}>Log In</Button>
+		<Button
+			className="border border-white/20"
+			color="primary"
+			variant="shadow"
+			onPress={async () => await loginWithRedirect()}
+		>
+			Log In
+		</Button>
 	);
 };
 

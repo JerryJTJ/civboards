@@ -80,7 +80,7 @@ export default function ProfilePage() {
 										</CardBody>
 										<CardFooter>
 											<p className="px-4 text-xs italic">
-												Win percentages used finished
+												Win percentages use finished
 												games only
 											</p>
 										</CardFooter>

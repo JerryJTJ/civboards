@@ -6,6 +6,9 @@ const LogoutButton = () => {
 
 	return (
 		<Button
+			className="border border-white/20"
+			color="default"
+			variant="shadow"
 			onPress={async () =>
 				await logout({
 					logoutParams: { returnTo: window.location.origin },
