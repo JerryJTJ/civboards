@@ -33,6 +33,7 @@ import { fetchLeaderById } from "./leader.service";
 import { fetchVictoryById } from "./victory.service";
 import * as z from "zod";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository";
+import { createUsers } from "./user.service";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
@@ -79,6 +80,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		gameId = insertedGame.id;
 
 		await Promise.all([
+			createUsers(game.players),
 			createGamePlayers(gameId, game.players),
 			game.expansions
 				? createGameExpansions(gameId, game.expansions)

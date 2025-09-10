@@ -13,6 +13,7 @@ import GamemodeRouter from "./routes/gamemode.routes";
 import GameRouter from "./routes/game.routes";
 import PlayerRouter from "./routes/player.routes";
 import ParseRouter from "./parse/parse.api";
+import UserRouter from "./routes/user.routes";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;
@@ -49,6 +50,7 @@ app.use("/victory", VictoryRouter);
 app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
 app.use("/player", PlayerRouter);
+app.use("/user", UserRouter);
 app.use("/parse", ParseRouter);
 app.get("/ping", (_req: express.Request, res: express.Response) => {
 	res.status(200).send("Ping!");

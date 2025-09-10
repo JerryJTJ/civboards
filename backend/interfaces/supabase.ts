@@ -376,18 +376,15 @@ export type Database = {
       user: {
         Row: {
           created_at: string
-          id: string
-          name: string | null
+          name: string
         }
         Insert: {
           created_at?: string
-          id: string
-          name?: string | null
+          name: string
         }
         Update: {
           created_at?: string
-          id?: string
-          name?: string | null
+          name?: string
         }
         Relationships: []
       }
