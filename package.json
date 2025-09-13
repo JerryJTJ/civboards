@@ -4,7 +4,9 @@
 	"description": "A Civ 6 game tracker",
 	"private": true,
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"build": "pnpm i && pnpm --filter ./frontend --filter ./backend --filter ./packages/* run build",
+		"dev": "pnpm --filter ./packages/* run build && pnpm --filter ./frontend --filter ./backend run dev"
 	},
 	"keywords": [],
 	"author": "",

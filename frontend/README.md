@@ -1,8 +1,6 @@
-# Vite & HeroUI Template
+# Frontend
 
-This is a template for creating applications using Vite and HeroUI (v2).
-
-[Try it on CodeSandbox](https://githubbox.com/frontio-ai/vite-template)
+This webapp was bootstrapped with [Vite and HeroUI (v2)](https://githubbox.com/frontio-ai/vite-template).
 
 ## Technologies Used
 
@@ -23,16 +21,16 @@ git clone https://github.com/frontio-ai/vite-template.git
 
 ### Install dependencies
 
-You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `npm`:
+You can use one of them `npm`, `yarn`, `pnpm`, `bun`, Example using `pnpm`:
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Run the development server
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 ### Setup pnpm (optional)
