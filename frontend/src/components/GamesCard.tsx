@@ -16,6 +16,7 @@ import ViewGameModal from "./forms/ViewGameModal";
 import EditGameModal from "./forms/EditGameModal";
 
 import { capitalize } from "@/utils/capitalize";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
@@ -31,6 +32,7 @@ interface GameCardProps {
 
 export default function GamesCard(props: GameCardProps) {
 	const { game, refetch } = props;
+	const { isAuthenticated } = useAuth0();
 
 	const viewModal = useDisclosure();
 	const deleteModal = useDisclosure();
@@ -68,20 +70,25 @@ export default function GamesCard(props: GameCardProps) {
 						</CardFooter>
 					</Card>
 				</DropdownTrigger>
-				<DropdownMenu aria-label="Game Actions" variant="flat">
+				<DropdownMenu aria-label="Game Actions" variant="faded">
 					<DropdownItem key="view" onPress={viewModal.onOpen}>
 						View
 					</DropdownItem>
-					<DropdownItem key="edit" onPress={editModal.onOpen}>
-						Edit
-					</DropdownItem>
-					<DropdownItem
-						key="delete"
-						color="danger"
-						onPress={deleteModal.onOpen}
-					>
-						Delete
-					</DropdownItem>
+					{isAuthenticated ? (
+						<>
+							{" "}
+							<DropdownItem key="edit" onPress={editModal.onOpen}>
+								Edit
+							</DropdownItem>
+							<DropdownItem
+								key="delete"
+								color="danger"
+								onPress={deleteModal.onOpen}
+							>
+								Delete
+							</DropdownItem>
+						</>
+					) : null}
 				</DropdownMenu>
 			</Dropdown>
 			{viewModal.isOpen && (

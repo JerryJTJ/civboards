@@ -43,120 +43,138 @@ export default function ProfilePage() {
 
 	return (
 		<DefaultLayout>
-			{!profile.error ? (
-				<div className="flex flex-col items-center gap-5">
-					<Avatar
-						isBordered
-						className="w-20 h-20 text-large"
-						name={username}
-						src="https://imgur.com/VB73J90.png"
-					/>
-					<Skeleton
-						className="rounded-xl"
-						isLoaded={!profile.isPending}
-					>
-						<p className="text-xl font-semibold">{username}</p>
-					</Skeleton>
-					<Tabs aria-label="Options">
-						<Tab key="overview" title="Overview">
-							<div className="flex flex-row justify-center gap-10 pt-10">
-								<Skeleton
-									className="rounded-xl"
-									isLoaded={!profile.isPending}
-								>
-									<Card isBlurred>
-										<CardHeader className="self-center justify-center px-20 ">
-											<b className="pt-2 text-base">
-												Overview
-											</b>
-										</CardHeader>
-										<CardBody>
-											{profile.data && (
-												<ProfileStatsTable
-													finished={
-														profile.data.finished
-													}
-													played={profile.data.played}
-													wins={profile.data.won}
-												/>
-											)}
-										</CardBody>
-										<CardFooter>
-											<p className="px-4 text-xs italic">
-												Win percentages use finished
-												games only
-											</p>
-										</CardFooter>
-									</Card>
-								</Skeleton>
-								<Skeleton
-									className="rounded-xl"
-									isLoaded={!profile.isPending}
-								>
-									<Card isBlurred>
-										<CardHeader className="justify-center px-20">
-											<b className="pt-2 text-base">
-												Civilizations Played
-											</b>
-										</CardHeader>
-										<CardBody>
-											{profile.data && (
-												<ProfileLeaderboardTable
-													items={profile.data.civs}
-												/>
-											)}
-										</CardBody>
-									</Card>
-								</Skeleton>
-								<Skeleton
-									className="rounded-xl"
-									isLoaded={!profile.isPending}
-								>
-									<Card isBlurred>
-										<CardHeader className="justify-center px-20">
-											<b className="pt-2 text-base">
-												Top Leaders
-											</b>
-										</CardHeader>
-										<CardBody>
-											{profile.data && (
-												<ProfileLeaderboardTable
-													items={profile.data.leaders}
-												/>
-											)}
-										</CardBody>
-									</Card>
-								</Skeleton>
-							</div>
-						</Tab>
-						<Tab key="games" title="Games">
-							<Skeleton
-								className="rounded-xl"
-								isLoaded={
-									!games.isPending && !profile.isPending
-								}
-							>
-								{" "}
-								{games.data && (
-									<GamesTable
-										games={games.data}
-										refetch={games.refetch}
-									/>
-								)}
-							</Skeleton>
-						</Tab>
-					</Tabs>
-				</div>
-			) : (
-				<Card>
-					<CardHeader className="self-center justify-center p-3">
-						<b className="text-base">ERROR</b>
-					</CardHeader>
-					<CardBody className="items-center p-3">
-						Player {username} has played no games yet!
-					</CardBody>
-				</Card>
-			)}
+			<div className="flex flex-col items-center gap-5">
+				<Avatar
+					isBordered
+					className="w-20 h-20 text-large"
+					name={username}
+					src="https://imgur.com/VB73J90.png"
+				/>
+				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
+					<p className="text-xl font-semibold">{username}</p>
+				</Skeleton>
+				<Tabs aria-label="Options">
+					<Tab key="overview" title="Overview">
+						<div className="flex flex-row justify-center gap-10 pt-10">
+							{!profile.error ? (
+								<>
+									{" "}
+									<Skeleton
+										className="rounded-xl"
+										isLoaded={!profile.isPending}
+									>
+										<Card isBlurred>
+											<CardHeader className="self-center justify-center px-20 ">
+												<b className="pt-2 text-base">
+													Overview
+												</b>
+											</CardHeader>
+											<CardBody>
+												{profile.data && (
+													<ProfileStatsTable
+														finished={
+															profile.data
+																.finished
+														}
+														played={
+															profile.data.played
+														}
+														wins={profile.data.won}
+													/>
+												)}
+											</CardBody>
+											<CardFooter>
+												<p className="px-4 text-xs italic">
+													Win percentages use finished
+													games only
+												</p>
+											</CardFooter>
+										</Card>
+									</Skeleton>
+									<Skeleton
+										className="rounded-xl"
+										isLoaded={!profile.isPending}
+									>
+										<Card isBlurred>
+											<CardHeader className="justify-center px-20">
+												<b className="pt-2 text-base">
+													Civilizations Played
+												</b>
+											</CardHeader>
+											<CardBody>
+												{profile.data && (
+													<ProfileLeaderboardTable
+														items={
+															profile.data.civs
+														}
+													/>
+												)}
+											</CardBody>
+										</Card>
+									</Skeleton>
+									<Skeleton
+										className="rounded-xl"
+										isLoaded={!profile.isPending}
+									>
+										<Card isBlurred>
+											<CardHeader className="justify-center px-20">
+												<b className="pt-2 text-base">
+													Top Leaders
+												</b>
+											</CardHeader>
+											<CardBody>
+												{profile.data && (
+													<ProfileLeaderboardTable
+														items={
+															profile.data.leaders
+														}
+													/>
+												)}
+											</CardBody>
+										</Card>
+									</Skeleton>
+								</>
+							) : (
+								<Card isBlurred>
+									<CardHeader className="justify-center px-20 pt-5">
+										<b className="pt-2 text-base">
+											No games found!
+										</b>
+									</CardHeader>
+									<CardBody className="justify-center px-10 py-10">
+										Upload some games to get stats!
+									</CardBody>
+								</Card>
+							)}
+						</div>
+					</Tab>
+					<Tab key="games" title="Games">
+						<Skeleton
+							className="rounded-xl"
+							isLoaded={!games.isPending && !profile.isPending}
+						>
+							{" "}
+							{games.data && (
+								<GamesTable
+									games={games.data}
+									refetch={games.refetch}
+								/>
+							)}
+						</Skeleton>
+					</Tab>
+				</Tabs>
+			</div>
+
+			{/* // (
+			// 	<Card>
+			// 		<CardHeader className="self-center justify-center p-3">
+			// 			<b className="text-base">ERROR</b>
+			// 		</CardHeader>
+			// 		<CardBody className="items-center p-3">
+			// 			Player {username} has played no games yet!
+			// 		</CardBody>
+			// 	</Card>
+			// ) */}
 		</DefaultLayout>
 	);
 }

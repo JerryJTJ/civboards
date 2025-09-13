@@ -14,9 +14,9 @@ const ProfileIcon = () => {
 				title="Profile"
 			>
 				<Avatar
-					isBordered
 					isFocusable
 					showFallback
+					isBordered
 					name={user?.name}
 					src={user?.picture}
 				/>

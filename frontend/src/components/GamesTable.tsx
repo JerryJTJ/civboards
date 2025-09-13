@@ -31,6 +31,7 @@ import EditGameModal from "./forms/EditGameModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 import { capitalize } from "@/utils/capitalize";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -59,6 +60,8 @@ export const columns = [
 
 export default function GamesTable(props: GamesTableProps) {
 	const { games, refetch } = props;
+
+	const { isAuthenticated } = useAuth0();
 
 	// Modal
 	const viewModal = useDisclosure();
@@ -192,7 +195,10 @@ export default function GamesTable(props: GamesTableProps) {
 										<VerticalDotsIcon className="text-default-300" />
 									</Button>
 								</DropdownTrigger>
-								<DropdownMenu selectionMode="single">
+								<DropdownMenu
+									selectionMode="single"
+									variant="shadow"
+								>
 									<DropdownItem
 										key="view"
 										onPress={() => {
@@ -202,25 +208,29 @@ export default function GamesTable(props: GamesTableProps) {
 									>
 										View
 									</DropdownItem>
-									<DropdownItem
-										key="edit"
-										onPress={() => {
-											setCurrGame(game);
-											editModal.onOpen();
-										}}
-									>
-										Edit
-									</DropdownItem>
-									<DropdownItem
-										key="delete"
-										color="danger"
-										onPress={() => {
-											setCurrGame(game);
-											deleteModal.onOpen();
-										}}
-									>
-										Delete
-									</DropdownItem>
+									{isAuthenticated ? (
+										<>
+											<DropdownItem
+												key="edit"
+												onPress={() => {
+													setCurrGame(game);
+													editModal.onOpen();
+												}}
+											>
+												Edit
+											</DropdownItem>
+											<DropdownItem
+												key="delete"
+												color="danger"
+												onPress={() => {
+													setCurrGame(game);
+													deleteModal.onOpen();
+												}}
+											>
+												Delete
+											</DropdownItem>
+										</>
+									) : null}
 								</DropdownMenu>
 							</Dropdown>
 						</div>

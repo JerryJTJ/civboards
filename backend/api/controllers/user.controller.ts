@@ -8,7 +8,6 @@ export async function handleGetAllUsers(
 ) {
 	try {
 		const users = await fetchAllUsers();
-
 		res.status(200).json(users);
 	} catch (error) {
 		next(error);
