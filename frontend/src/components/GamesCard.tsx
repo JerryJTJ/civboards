@@ -10,13 +10,13 @@ import {
 	DropdownTrigger,
 } from "@heroui/dropdown";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import DeleteModal from "./DeleteModal";
 import ViewGameModal from "./forms/ViewGameModal";
 import EditGameModal from "./forms/EditGameModal";
 
 import { capitalize } from "@/utils/capitalize";
-import { useAuth0 } from "@auth0/auth0-react";
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;

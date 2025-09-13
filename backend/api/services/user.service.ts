@@ -1,7 +1,6 @@
 import { TablesInsert } from "../../interfaces/supabase";
 import {
 	getAllUsers,
-	getUserById,
 	getUserByName,
 	insertUser,
 } from "../repositories/user.repository";

@@ -23,6 +23,7 @@ import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import * as z from "zod";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { SearchIcon, VerticalDotsIcon } from "./icons";
 import DeleteModal from "./DeleteModal";
@@ -31,7 +32,6 @@ import EditGameModal from "./forms/EditGameModal";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 import { capitalize } from "@/utils/capitalize";
-import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
