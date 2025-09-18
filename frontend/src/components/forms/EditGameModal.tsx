@@ -10,8 +10,8 @@ import { validateFormFields } from "../utils/validateFormFields";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 import GameModal from "./GameModal";
 
-import { updateGame } from "@/api/games";
 import { GameForm } from "@/interfaces/game.interface";
+import { useGamesAPI } from "@/api/games";
 
 interface UpdateGameModalProps {
 	disclosure: {
@@ -50,6 +50,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 	// API
 	const queryClient = useQueryClient();
+	const { updateGame } = useGamesAPI();
 
 	const mutation = useMutation({
 		mutationFn: async () => {

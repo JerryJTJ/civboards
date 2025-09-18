@@ -14,8 +14,7 @@ import gameFormReducer, { FormAction } from "./gameFormReducer";
 
 import { GameForm } from "@/interfaces/game.interface";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
-import { insertGame } from "@/api/games";
-
+import { useGamesAPI } from "@/api/games";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -28,6 +27,7 @@ export default function AddGameModal() {
 	// API
 	const queryClient = useQueryClient();
 
+	const { insertGame } = useGamesAPI();
 	const mutation = useMutation({
 		mutationFn: async () => {
 			const validate = validateFormFields(form, InsertGameSchema);

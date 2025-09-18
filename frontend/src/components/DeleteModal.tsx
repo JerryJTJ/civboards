@@ -16,7 +16,7 @@ import {
 import { JSX } from "react";
 import * as z from "zod";
 
-import { deleteGameById } from "@/api/games";
+import { useGamesAPI } from "@/api/games";
 
 interface DeleteModalProps {
 	gameId: string;
@@ -35,6 +35,7 @@ interface DeleteModalProps {
 
 export default function DeleteModal(props: DeleteModalProps) {
 	const { gameId, onOpenChange, body, isOpen, refetch } = props;
+	const { deleteGameById } = useGamesAPI();
 
 	// API
 	const mutation = useMutation({

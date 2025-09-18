@@ -22,7 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
 					authorizationParams={{
 						redirect_uri: window.location.origin,
 						audience: "https://civboards.ca.auth0.com/api/v2/",
-						// scope: "read:current_user update:current_user_metadata",
+						scope: "read:current_user update:current_user_metadata",
 					}}
 					clientId={AUTH0_CLIENT_ID}
 					domain={AUTH0_DOMAIN}

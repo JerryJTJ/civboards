@@ -6,54 +6,88 @@ import {
 import * as z from "zod";
 
 import { instance } from "./axiosInstance";
+import useAccessToken from "./useAccessToken";
 
-export async function insertGame(
-	game: z.infer<typeof InsertGameSchema>
-): Promise<void> {
-	await instance({
-		url: "/game/add",
-		method: "post",
-		data: game,
-		headers: { "Content-Type": "application/json" },
-	});
-}
+export function useGamesAPI() {
+	const getToken = useAccessToken();
 
-export async function updateGame(
-	game: z.infer<typeof UpdateGameSchema>
-): Promise<void> {
-	await instance({
-		url: `/game/id/${game.id}`,
-		method: "patch",
-		data: game,
-		headers: { "Content-Type": "application/json" },
-	});
-}
+	// Protected Routes
+	const insertGame = async (
+		game: z.infer<typeof InsertGameSchema>
+	): Promise<void> => {
+		const token = await getToken();
 
-export async function getAllGames(): Promise<
-	z.infer<typeof DisplayGameSchemaArray> | undefined
-> {
-	const response = await instance({
-		url: "/game/all",
-		method: "get",
-	});
+		if (!token) throw new Error("You do not have permission to do this");
 
-	if (response.status === 200) {
-		return response.data;
-	}
-}
+		await instance({
+			url: "/game/add",
+			method: "post",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: game,
+		});
+	};
 
-export async function getGameByGameId(id: string) {
-	const response = await instance({
-		url: `/game/id/${id}`,
-		method: "get",
-	});
+	const updateGame = async (
+		game: z.infer<typeof UpdateGameSchema>
+	): Promise<void> => {
+		const token = await getToken();
 
-	if (response.status === 200) return response.data;
-}
+		if (!token) throw new Error("You do not have permission to do this");
 
-export async function deleteGameById(id: string): Promise<void> {
-	await instance({
-		url: `game/id/${id}`,
-		method: "delete",
-	});
+		await instance({
+			url: `/game/id/${game.id}`,
+			method: "patch",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			data: game,
+		});
+	};
+
+	const deleteGameById = async (id: string): Promise<void> => {
+		const token = await getToken();
+
+		if (!token) throw new Error("You do not have permission to do this");
+
+		await instance({
+			url: `game/id/${id}`,
+			method: "delete",
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+		});
+	};
+
+	// Public routes
+	const getAllGames = async (): Promise<
+		z.infer<typeof DisplayGameSchemaArray> | undefined
+	> => {
+		const response = await instance({
+			url: "/game/all",
+			method: "get",
+		});
+
+		if (response.status === 200) {
+			return response.data;
+		}
+	};
+
+	const getGameByGameId = async (id: string) => {
+		const response = await instance({
+			url: `/game/id/${id}`,
+			method: "get",
+		});
+
+		if (response.status === 200) return response.data;
+	};
+
+	return {
+		insertGame,
+		updateGame,
+		deleteGameById,
+		getAllGames,
+		getGameByGameId,
+	};
 }

@@ -239,7 +239,7 @@ export default function GamesTable(props: GamesTableProps) {
 					return <p>{String(cellValue)}</p>;
 			}
 		},
-		[viewModal, deleteModal, editModal]
+		[viewModal, deleteModal, editModal, isAuthenticated]
 	);
 
 	const onNextPage = React.useCallback(() => {

@@ -6,14 +6,15 @@ import DefaultLayout from "@/layouts/default";
 import GamesCard from "@/components/GamesCard";
 import GamesTable from "@/components/GamesTable";
 import AddGameModal from "@/components/forms/AddGameModal";
-import { getAllGames } from "@/api/games";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { useGamesAPI } from "@/api/games";
 
 type TabView = "cards" | "table";
 
 export default function GamesPage() {
 	const [currTab, setCurrTab] = React.useState<TabView>("cards");
 
+	const { getAllGames } = useGamesAPI();
 	const { data, isPending, refetch } = useQuery({
 		queryKey: ["games"],
 		queryFn: getAllGames,
