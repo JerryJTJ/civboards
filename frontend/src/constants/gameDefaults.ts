@@ -5,6 +5,7 @@ import { GameForm } from "@/interfaces/game.interface";
 
 export const DEFAULT_ADD_FORM: GameForm = {
 	finished: true,
+	createdBy: "",
 	date: undefined,
 	name: "",
 	speed: "",
@@ -69,6 +70,7 @@ export const DEFAULT_ADD_FORM: GameForm = {
 
 export const DEFAULT_DISPLAY_GAME: z.infer<typeof DisplayGameSchema> = {
 	id: "",
+	createdBy: "",
 	date: "",
 	players: [],
 	finished: false,

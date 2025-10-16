@@ -46,10 +46,11 @@ export default function AddGameModal() {
 					shouldShowTimeoutProgress: true,
 				});
 			} else {
+				console.log(form);
 				addToast({
 					title: "Error",
 					color: "danger",
-					description: "Failed to edit game",
+					description: "Failed to add game",
 					timeout: 3000,
 					shouldShowTimeoutProgress: true,
 				});

@@ -61,6 +61,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 
 	const insert = {
 		finished: game.finished,
+		created_by: game?.createdBy,
 		date: game.date,
 		name: game.name,
 		map: game.map,

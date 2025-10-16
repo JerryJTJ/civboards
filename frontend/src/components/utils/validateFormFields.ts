@@ -40,6 +40,7 @@ export function validateFormFields(
 	const result = schema.safeParse({
 		id: gameId,
 		finished: form.finished,
+		createdBy: form.createdBy,
 		date: form.date ? new Date(form.date).toISOString() : undefined,
 		name: form.name,
 		map: form.map,
@@ -54,11 +55,14 @@ export function validateFormFields(
 		gamemodes: Array.from(form.gamemodes),
 	});
 
-	if (!result.success)
+	if (!result.success) {
+		console.log(result);
+
 		return {
 			success: false,
 			message: "Failed to pass schema",
 		};
+	}
 
 	return { success: true, result: result };
 }

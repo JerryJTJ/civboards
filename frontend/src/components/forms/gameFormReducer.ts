@@ -144,6 +144,11 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						...form,
 						gamemodes: action.payload,
 					};
+				case "createdBy":
+					return {
+						...form,
+						createdBy: action.payload,
+					};
 				default:
 			}
 			break;

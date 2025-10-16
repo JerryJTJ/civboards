@@ -1,24 +1,29 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
 export default function useAccessToken() {
-	const { getAccessTokenSilently, loginWithPopup } = useAuth0();
+	const { loginWithPopup, getAccessTokenSilently } = useAuth0();
+
+	const getAccessToken = async () => {
+		return await getAccessTokenSilently({
+			authorizationParams: {
+				audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE,
+				scope: "games:authorized",
+			},
+		});
+	};
 
 	const getToken = async (): Promise<string> => {
 		try {
-			return await getAccessTokenSilently({
-				authorizationParams: {
-					audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE,
-					scope: "games:authorized",
-				},
-			});
+			return await getAccessToken();
 		} catch (_e) {
-			loginWithPopup({
+			await loginWithPopup({
 				authorizationParams: {
 					audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE,
 					scope: "games:authorized",
 				},
 			});
-			return "";
+
+			return await getAccessToken();
 		}
 	};
 

@@ -7,6 +7,7 @@ export interface Civ {
 
 export interface GameForm {
 	name: string;
+	createdBy: string;
 	date: number | undefined;
 	finished: boolean;
 	speed: string;

@@ -17,6 +17,7 @@ export const DisplayPlayerSchema = z.object({
 export const InsertGameSchema = z
 	.object({
 		finished: z.boolean(),
+		createdBy: z.string(),
 		name: z.string(),
 		date: z.string().optional(),
 		map: z.string(),

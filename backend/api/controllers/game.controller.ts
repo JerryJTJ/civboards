@@ -21,12 +21,10 @@ import {
 	UpdateGameSchema,
 } from "@civboards/schemas";
 import * as z from "zod";
-import { Database } from "../../interfaces/supabase";
+import { Tables } from "../../interfaces/supabase";
 
 // UTIL
-async function exportGameObject(
-	game: Database["public"]["Tables"]["game"]["Row"]
-) {
+async function exportGameObject(game: Tables<"game">) {
 	const gameId = game.id;
 
 	const [players, gamemodes, expansions] = await Promise.all([
@@ -37,6 +35,7 @@ async function exportGameObject(
 
 	return {
 		id: game.id,
+		createdBy: game.created_by,
 		date: game.date,
 		finished: game.finished,
 		map: game.map,

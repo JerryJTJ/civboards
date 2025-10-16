@@ -13,6 +13,7 @@ export async function insertGame(
 		.from("game")
 		.insert({
 			finished: game.finished,
+			created_by: game.created_by,
 			date: game.date,
 			name: game.name,
 			map: game.map,

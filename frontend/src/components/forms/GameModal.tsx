@@ -18,6 +18,7 @@ import { getFormDispatches } from "./gameFormDispatches";
 import { FormAction } from "./gameFormReducer";
 
 import { Civ, GameForm } from "@/interfaces/game.interface";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface AddModalProps {
 	mode: "add";
@@ -48,6 +49,8 @@ interface ViewGameProps {
 type GameModalProps = AddModalProps | ViewGameProps | UpdateModalProps;
 
 export default function GameModal(props: GameModalProps) {
+	const { user } = useAuth0();
+
 	const { mode, isOpen, onClose, form, dispatch } = props;
 
 	const defaultForm = useRef(form);
@@ -79,6 +82,7 @@ export default function GameModal(props: GameModalProps) {
 		e.preventDefault();
 		if (mode === "view") return;
 
+		dispatches?.gameOptionsDispatch("createdBy", user?.username || "");
 		await props.mutation.mutateAsync();
 	};
 
