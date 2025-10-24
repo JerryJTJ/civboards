@@ -4,6 +4,7 @@ import { useReducer } from "react";
 import { addToast } from "@heroui/toast";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { InsertGameSchema } from "@civboards/schemas";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import { PlusIcon } from "../icons";
 import { ValidationError } from "../utils/error";
@@ -18,6 +19,7 @@ import { useGamesAPI } from "@/api/games";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { user } = useAuth0();
 
 	const [form, dispatch] = useReducer<GameForm, [action: FormAction]>(
 		gameFormReducer,
@@ -46,7 +48,6 @@ export default function AddGameModal() {
 					shouldShowTimeoutProgress: true,
 				});
 			} else {
-				console.log(form);
 				addToast({
 					title: "Error",
 					color: "danger",
@@ -72,6 +73,19 @@ export default function AddGameModal() {
 		},
 	});
 
+	// UI
+	const handleOnOpen = () => {
+		if (!user)
+			addToast({
+				title: "Error",
+				color: "danger",
+				description: "Please login to add a game",
+				timeout: 3000,
+				shouldShowTimeoutProgress: true,
+			});
+		else onOpen();
+	};
+
 	return (
 		<>
 			<Button
@@ -79,7 +93,7 @@ export default function AddGameModal() {
 				color="primary"
 				endContent={<PlusIcon />}
 				variant="shadow"
-				onPress={onOpen}
+				onPress={handleOnOpen}
 			>
 				Add Game
 			</Button>

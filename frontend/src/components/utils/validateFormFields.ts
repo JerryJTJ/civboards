@@ -56,8 +56,6 @@ export function validateFormFields(
 	});
 
 	if (!result.success) {
-		console.log(result);
-
 		return {
 			success: false,
 			message: "Failed to pass schema",

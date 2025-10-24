@@ -8,6 +8,7 @@ import {
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
 import { useRef } from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import UploadFileInput from "../UploadFileInput";
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
@@ -18,7 +19,6 @@ import { getFormDispatches } from "./gameFormDispatches";
 import { FormAction } from "./gameFormReducer";
 
 import { Civ, GameForm } from "@/interfaces/game.interface";
-import { useAuth0 } from "@auth0/auth0-react";
 
 interface AddModalProps {
 	mode: "add";

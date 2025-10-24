@@ -14,18 +14,24 @@ import GameRouter from "./routes/game.routes";
 import PlayerRouter from "./routes/player.routes";
 import ParseRouter from "./parse/parse.api";
 import UserRouter from "./routes/user.routes";
+import checkJwt from "./middlewares/auth/checkJwt";
 
 //Supabase connection
 const PORT = process.env.PORT || 5050;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
+// const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+const SUPABASE_SECRET_KEY = process.env.SUPABASE_SECRET_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_SECRET_KEY) {
 	throw new Error("Missing supabase env variables");
 }
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY);
+export const supabase = createClient<Database>(
+	SUPABASE_URL,
+	SUPABASE_SECRET_KEY
+);
 
 //Express stuff
 const app = express();
@@ -51,7 +57,7 @@ app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
 app.use("/player", PlayerRouter);
 app.use("/user", UserRouter);
-app.use("/parse", ParseRouter);
+app.use("/parse", checkJwt, ParseRouter);
 app.get("/ping", (_req: express.Request, res: express.Response) => {
 	res.status(200).send("Ping!");
 });

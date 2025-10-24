@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 import { GameForm } from "@/interfaces/game.interface";
-import { parseSaveFile } from "@/api/parse";
+import { useParseAPI } from "@/api/parse";
 
 interface UploadFileInputProps {
 	dispatch: (parsed: Partial<GameForm>) => void;
@@ -13,6 +13,7 @@ interface UploadFileInputProps {
 
 export default function UploadFileInput(props: UploadFileInputProps) {
 	const { dispatch } = props;
+	const { parseSaveFile } = useParseAPI();
 
 	const mutation = useMutation({
 		mutationFn: parseSaveFile,

@@ -1,3 +1,9 @@
+import {
+	InsufficientScopeError,
+	InvalidRequestError,
+	InvalidTokenError,
+	UnauthorizedError,
+} from "express-oauth2-jwt-bearer";
 import { AppError, DatabaseError } from "../../types/Errors";
 import { Response, Request, NextFunction } from "express";
 
@@ -9,6 +15,17 @@ export const errorHandler = (
 	_next: NextFunction
 ) => {
 	console.log("Error:", err);
+
+	if (
+		err instanceof UnauthorizedError ||
+		err instanceof InvalidRequestError ||
+		err instanceof InvalidTokenError ||
+		err instanceof InsufficientScopeError
+	) {
+		return res
+			.status(err.status || 500)
+			.json({ message: err.message || "Invalid or missing token" });
+	}
 
 	if (err instanceof AppError) {
 		const response = {

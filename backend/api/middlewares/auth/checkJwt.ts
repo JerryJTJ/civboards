@@ -7,8 +7,8 @@ const AUTH0_DOMAIN = process.env.AUTH0_DOMAIN;
 const AUTH0_AUDIENCE = process.env.AUTH0_AUDIENCE;
 
 const checkJwt = auth({
-	issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}`,
-	audience: process.env.AUTH0_AUDIENCE,
+	issuerBaseURL: AUTH0_DOMAIN,
+	audience: AUTH0_AUDIENCE,
 	tokenSigningAlg: "RS256",
 });
 

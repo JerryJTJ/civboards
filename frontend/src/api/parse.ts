@@ -1,30 +1,41 @@
 import { instance } from "./axiosInstance";
+import useAccessToken from "./useAccessToken";
 
-export async function parseSaveFile(
-	save: File
-): Promise<{ success: boolean; data?: any; name?: string }> {
-	const bodyData = new FormData();
+export function useParseAPI() {
+	const getToken = useAccessToken();
 
-	bodyData.append("savefile", save);
+	async function parseSaveFile(
+		save: File
+	): Promise<{ success: boolean; data?: any; name?: string }> {
+		const bodyData = new FormData();
 
-	const response = await instance({
-		url: "/parse/upload",
-		method: "post",
-		data: bodyData,
-	});
+		bodyData.append("savefile", save);
+		const token = await getToken();
 
-	if (response.status === 200) {
-		return {
-			success: true,
-			data: {
-				...response.data,
-				name: save.name.replace(".Civ6Save", ""),
-				date: save.lastModified,
+		const response = await instance({
+			url: "/parse/upload",
+			method: "post",
+			headers: {
+				Authorization: `Bearer ${token}`,
 			},
+			data: bodyData,
+		});
+
+		if (response.status === 200) {
+			return {
+				success: true,
+				data: {
+					...response.data,
+					name: save.name.replace(".Civ6Save", ""),
+					date: save.lastModified,
+				},
+			};
+		}
+
+		return {
+			success: false,
 		};
 	}
 
-	return {
-		success: false,
-	};
+	return { parseSaveFile };
 }
