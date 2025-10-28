@@ -37,6 +37,23 @@ export async function getGamesByPlayer(
 	throw new Error(`Failed to get games for ${username}`);
 }
 
+export async function getGamesByUploader(
+	username: string
+): Promise<z.infer<typeof DisplayGameSchemaArray>> {
+	const response = await instance({
+		url: `/game/uploader/${username}`,
+		method: "get",
+	});
+
+	if (response.status === 200) {
+		const validate = DisplayGameSchemaArray.safeParse(response.data);
+
+		if (validate.success) return validate.data;
+	}
+
+	throw new Error(`Failed to get uploaded games for ${username}`);
+}
+
 export async function getAllUsers() {
 	const response = await instance({
 		url: "/player/all",

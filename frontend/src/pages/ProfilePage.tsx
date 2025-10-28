@@ -11,7 +11,7 @@ import { Tabs, Tab } from "@heroui/tabs";
 import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
-import { getGamesByPlayer, getProfile } from "@/api/users";
+import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
 import GamesTable from "@/components/games/GamesTable";
 
 export default function ProfilePage() {
@@ -40,6 +40,12 @@ export default function ProfilePage() {
 			}
 		},
 	});
+	const uploaded = useQuery({
+		queryKey: ["uploaded", username],
+		queryFn: async () => {
+			if (username) return getGamesByUploader(username);
+		},
+	});
 
 	return (
 		<DefaultLayout>
@@ -53,7 +59,7 @@ export default function ProfilePage() {
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
 					<p className="text-xl font-semibold">{username}</p>
 				</Skeleton>
-				<Tabs aria-label="Options">
+				<Tabs aria-label="Options" color="primary">
 					<Tab key="overview" title="Overview">
 						<div className="flex flex-row justify-center gap-10 pt-10">
 							{!profile.error ? (
@@ -142,13 +148,13 @@ export default function ProfilePage() {
 										</b>
 									</CardHeader>
 									<CardBody className="justify-center px-10 py-10">
-										Upload some games to get stats!
+										Upload and play some games to get stats!
 									</CardBody>
 								</Card>
 							)}
 						</div>
 					</Tab>
-					<Tab key="games" title="Games">
+					<Tab key="games" title="Joined">
 						<Skeleton
 							className="rounded-xl"
 							isLoaded={!games.isPending && !profile.isPending}
@@ -158,6 +164,20 @@ export default function ProfilePage() {
 								<GamesTable
 									games={games.data}
 									refetch={games.refetch}
+								/>
+							)}
+						</Skeleton>
+					</Tab>
+					<Tab key="uploaded" title="Uploaded">
+						<Skeleton
+							className="rounded-xl"
+							isLoaded={!uploaded.isPending && !profile.isPending}
+						>
+							{" "}
+							{uploaded.data && (
+								<GamesTable
+									games={uploaded.data}
+									refetch={uploaded.refetch}
 								/>
 							)}
 						</Skeleton>

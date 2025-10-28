@@ -65,6 +65,17 @@ export async function getGamesById(ids: Array<string>) {
 	return data;
 }
 
+export async function getGamesByCreatedBy(createdBy: string) {
+	const { data, error } = await supabase
+		.from("game")
+		.select()
+		.eq("created_by", createdBy);
+
+	if (error || !data) throw new DatabaseError("Failed to get games", error);
+
+	return data;
+}
+
 export async function getAllGames() {
 	const { data, error } = await supabase
 		.from("game")
@@ -200,4 +211,16 @@ export async function getGameWinsByPlayer(winner: string) {
 			civilization: win.civilization?.name,
 		};
 	});
+}
+
+export async function hasUserUploaded(user: string): Promise<boolean> {
+	const { data, error } = await supabase
+		.from("game")
+		.select("")
+		.eq("created_by", user);
+
+	if (error) throw new DatabaseError("Error", error);
+
+	if (data) return true;
+	return false;
 }

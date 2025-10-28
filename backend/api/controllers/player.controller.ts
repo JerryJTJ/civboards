@@ -8,6 +8,7 @@ import {
 	fetchNumGamesPlayedByPlayer,
 	fetchAllUniqueGamePlayers,
 } from "../services/gamePlayer.service";
+import { handleHasUserUploaded } from "../services/game.service";
 
 export async function handleGetAllUniquePlayers(
 	req: Request,
@@ -37,9 +38,12 @@ export async function handleGetProfileInfoByName(
 
 	try {
 		const gamesPlayed = await fetchNumGamesPlayedByPlayer(name);
+		const hasUploaded = await handleHasUserUploaded(name);
 
-		if (gamesPlayed === 0) {
-			throw new ValidationError("Player hasn't played a game yet");
+		if (gamesPlayed === 0 && !hasUploaded) {
+			throw new ValidationError(
+				"Player hasn't played or uploaded a game yet"
+			);
 		}
 
 		const [wins, gamesWon, gamesFinished] = await Promise.all([

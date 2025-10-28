@@ -6,6 +6,7 @@ const GameRouter = express.Router();
 GameRouter.post("/add", checkJwt, GameController.handleCreateGame);
 GameRouter.get("/id/:id", GameController.handleGetGameById);
 GameRouter.get("/player/:name", GameController.handleGetAllGamesByPlayer);
+GameRouter.get("/uploader/:name", GameController.handleGetAllGamesByCreatedBy);
 GameRouter.get("/all", GameController.handleGetAllGames);
 GameRouter.get("/winners/players", GameController.handleGetAllGameWinners);
 GameRouter.get(

@@ -11,7 +11,9 @@ import {
 	getAllGameWinners,
 	getAllGames,
 	getGameById,
+	getGamesByCreatedBy,
 	getGamesById,
+	hasUserUploaded,
 	insertGame,
 	softDeleteGameById,
 	updateGameById,
@@ -102,6 +104,10 @@ export async function fetchGameById(id: string) {
 
 	const game = await getGameById(id);
 	return game;
+}
+
+export async function fetchGamesByCreatedBy(createdBy: string) {
+	return getGamesByCreatedBy(createdBy);
 }
 
 export async function removeGameById(id: string): Promise<void> {
@@ -336,4 +342,8 @@ export async function fetchAllGamesByPlayer(player: string) {
 	});
 
 	return await getGamesById(gameIds);
+}
+
+export async function handleHasUserUploaded(user: string) {
+	return hasUserUploaded(user);
 }
