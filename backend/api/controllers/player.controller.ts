@@ -16,7 +16,11 @@ export async function handleGetAllUniquePlayers(
 ) {
 	try {
 		const players = await fetchAllUniqueGamePlayers();
-		return res.status(200).json([...players]);
+		return res.status(200).json(
+			[...players].map((player) => {
+				return { name: player };
+			})
+		);
 	} catch (error) {
 		next(error);
 	}

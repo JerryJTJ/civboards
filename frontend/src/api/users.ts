@@ -44,9 +44,7 @@ export async function getAllUsers() {
 	});
 
 	if (response.status === 200)
-		return response.data.map((name: string) => {
-			return { name: name };
-		});
+		return response.data as Array<{ name: string }>;
 
 	throw new Error("Failed to get users");
 }
