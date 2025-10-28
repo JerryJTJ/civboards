@@ -4,10 +4,10 @@ export const siteConfig = {
 	name: "CivBoards",
 	content: "A Civilization 6 leaderboard.",
 	navItems: [
-		{
-			label: "Home",
-			href: "/",
-		},
+		// {
+		// 	label: "Home",
+		// 	href: "/",
+		// },
 		{
 			label: "Games",
 			href: "/games",
@@ -18,10 +18,10 @@ export const siteConfig = {
 		},
 	],
 	navMenuItems: [
-		{
-			label: "Home",
-			href: "/",
-		},
+		// {
+		// 	label: "Home",
+		// 	href: "/",
+		// },
 		{
 			label: "Games",
 			href: "/games",
