@@ -7,7 +7,7 @@ import {
 	ModalFooter,
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
@@ -55,6 +55,8 @@ export default function GameModal(props: GameModalProps) {
 
 	const defaultForm = useRef(form);
 
+	const [loading, setLoading] = useState<boolean>(false);
+
 	// UI
 	const headerText = () => {
 		switch (mode) {
@@ -82,8 +84,11 @@ export default function GameModal(props: GameModalProps) {
 		e.preventDefault();
 		if (mode === "view") return;
 
+		setLoading(true);
+
 		dispatches?.gameOptionsDispatch("createdBy", user?.username || "");
 		await props.mutation.mutateAsync();
+		setLoading(false);
 	};
 
 	return (
@@ -187,6 +192,7 @@ export default function GameModal(props: GameModalProps) {
 								{enabled && (
 									<Button
 										color="primary"
+										isLoading={loading}
 										type="submit"
 										variant="shadow"
 									>
