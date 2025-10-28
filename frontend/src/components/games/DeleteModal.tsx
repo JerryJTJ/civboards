@@ -66,15 +66,15 @@ export default function DeleteModal(props: DeleteModalProps) {
 	});
 
 	return (
-		<Modal isOpen={isOpen}>
+		<Modal isDismissable isOpen={isOpen} onClose={onOpenChange}>
 			<ModalContent>
-				<ModalHeader>Confirmation Deletion</ModalHeader>
+				<ModalHeader>Confirm Deletion</ModalHeader>
 				<ModalBody>{body}</ModalBody>
 				<ModalFooter>
 					<Button onPress={onOpenChange}>Cancel</Button>
 					<Button
-						isLoading={loading}
 						color="danger"
+						isLoading={loading}
 						onPress={async () => {
 							setLoading(true);
 							await mutation.mutateAsync(gameId);

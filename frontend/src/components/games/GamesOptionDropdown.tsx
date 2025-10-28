@@ -44,6 +44,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});
+
 								return;
 							}
 							setCurrGame && setCurrGame(game);
@@ -65,6 +66,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});
+
 								return;
 							}
 							setCurrGame && setCurrGame(game);
