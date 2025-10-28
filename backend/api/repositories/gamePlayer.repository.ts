@@ -5,9 +5,13 @@ import { supabase } from "../server";
 export async function getAllGamePlayers() {
 	const { data, error } = await supabase
 		.from("game_player")
-		.select("name")
+		.select(
+			`name, 
+			game!inner (active)`
+		)
 		.neq("name", "")
-		.not("name", "is", null);
+		.not("name", "is", null)
+		.eq("game.active", true);
 
 	if (error)
 		throw new DatabaseError("Failed to get all unique game players", error);
@@ -63,7 +67,7 @@ export async function getProfileInfoByName(name: string) {
 			leader (name),
 			civilization (name),
 			game!inner (finished)
-		`
+			`
 		)
 		.eq("name", name)
 		.eq("game.finished", true)

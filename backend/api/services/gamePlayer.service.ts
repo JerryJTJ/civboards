@@ -19,7 +19,7 @@ import { ValidationError } from "../../types/Errors";
 
 export async function fetchAllUniqueGamePlayers() {
 	const data = await getAllGamePlayers();
-	return new Set<string>(data.map((player) => player.name).sort());
+	return new Set<string>(data.map((player) => player.name));
 }
 
 export async function createGamePlayers(

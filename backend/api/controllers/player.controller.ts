@@ -32,16 +32,17 @@ export async function handleGetProfileInfoByName(
 	const { name } = req.params;
 
 	try {
-		const [wins, gamesWon, gamesFinished, gamesPlayed] = await Promise.all([
-			fetchProfileInfoByName(name),
-			fetchNumGamesWonByPlayer(name),
-			fetchNumGamesFinishedByPlayer(name),
-			fetchNumGamesPlayedByPlayer(name),
-		]);
+		const gamesPlayed = await fetchNumGamesPlayedByPlayer(name);
 
 		if (gamesPlayed === 0) {
 			throw new ValidationError("Player hasn't played a game yet");
 		}
+
+		const [wins, gamesWon, gamesFinished] = await Promise.all([
+			fetchProfileInfoByName(name),
+			fetchNumGamesWonByPlayer(name),
+			fetchNumGamesFinishedByPlayer(name),
+		]);
 
 		const validate = ProfileSchema.safeParse({
 			username: name,
