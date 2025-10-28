@@ -19,6 +19,9 @@ export async function createUsers(
 	}>
 ) {
 	const promises = players.map(async (player) => {
+		// prevent no-name players (ai)
+		if (!player) return;
+
 		const exist = await doesUserExist(player.name.toLocaleLowerCase());
 		if (exist) return;
 		await insertUser({

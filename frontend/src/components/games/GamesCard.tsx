@@ -3,18 +3,14 @@ import { Card, CardFooter } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { useDisclosure } from "@heroui/modal";
 import * as z from "zod";
-import {
-	Dropdown,
-	DropdownItem,
-	DropdownMenu,
-	DropdownTrigger,
-} from "@heroui/dropdown";
+import { Dropdown, DropdownTrigger } from "@heroui/dropdown";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { useAuth0 } from "@auth0/auth0-react";
+
+import ViewGameModal from "../forms/ViewGameModal";
+import EditGameModal from "../forms/EditGameModal";
 
 import DeleteModal from "./DeleteModal";
-import ViewGameModal from "./forms/ViewGameModal";
-import EditGameModal from "./forms/EditGameModal";
+import GamesOptionDropdown from "./GamesOptionDropdown";
 
 import { capitalize } from "@/utils/capitalize";
 
@@ -32,7 +28,6 @@ interface GameCardProps {
 
 export default function GamesCard(props: GameCardProps) {
 	const { game, refetch } = props;
-	const { isAuthenticated } = useAuth0();
 
 	const viewModal = useDisclosure();
 	const deleteModal = useDisclosure();
@@ -70,26 +65,12 @@ export default function GamesCard(props: GameCardProps) {
 						</CardFooter>
 					</Card>
 				</DropdownTrigger>
-				<DropdownMenu aria-label="Game Actions" variant="faded">
-					<DropdownItem key="view" onPress={viewModal.onOpen}>
-						View
-					</DropdownItem>
-					{isAuthenticated ? (
-						<>
-							{" "}
-							<DropdownItem key="edit" onPress={editModal.onOpen}>
-								Edit
-							</DropdownItem>
-							<DropdownItem
-								key="delete"
-								color="danger"
-								onPress={deleteModal.onOpen}
-							>
-								Delete
-							</DropdownItem>
-						</>
-					) : null}
-				</DropdownMenu>
+				<GamesOptionDropdown
+					game={game}
+					onOpenDelete={deleteModal.onOpen}
+					onOpenEdit={editModal.onOpen}
+					onOpenView={viewModal.onOpen}
+				/>
 			</Dropdown>
 			{viewModal.isOpen && (
 				<ViewGameModal disclosure={viewModal} game={game} />

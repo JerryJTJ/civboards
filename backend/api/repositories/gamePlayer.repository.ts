@@ -2,6 +2,21 @@ import { TablesInsert } from "../../interfaces/supabase";
 import { DatabaseError, NotFoundError } from "../../types/Errors";
 import { supabase } from "../server";
 
+export async function getAllGamePlayers() {
+	const { data, error } = await supabase
+		.from("game_player")
+		.select("name")
+		.neq("name", "")
+		.not("name", "is", null);
+
+	if (error)
+		throw new DatabaseError("Failed to get all unique game players", error);
+
+	if (!data) throw new NotFoundError();
+
+	return data;
+}
+
 export async function insertGamePlayers(
 	players: Array<TablesInsert<"game_player">>
 ) {

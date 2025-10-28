@@ -6,7 +6,21 @@ import {
 	fetchNumGamesWonByPlayer,
 	fetchNumGamesFinishedByPlayer,
 	fetchNumGamesPlayedByPlayer,
+	fetchAllUniqueGamePlayers,
 } from "../services/gamePlayer.service";
+
+export async function handleGetAllUniquePlayers(
+	req: Request,
+	res: Response,
+	next: NextFunction
+) {
+	try {
+		const players = await fetchAllUniqueGamePlayers();
+		return res.status(200).json([...players]);
+	} catch (error) {
+		next(error);
+	}
+}
 
 export async function handleGetProfileInfoByName(
 	req: Request,

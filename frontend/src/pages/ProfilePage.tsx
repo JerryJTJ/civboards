@@ -12,7 +12,7 @@ import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
 import { getGamesByPlayer, getProfile } from "@/api/users";
-import GamesTable from "@/components/GamesTable";
+import GamesTable from "@/components/games/GamesTable";
 
 export default function ProfilePage() {
 	const params = useParams();

@@ -39,12 +39,14 @@ export async function getGamesByPlayer(
 
 export async function getAllUsers() {
 	const response = await instance({
-		url: "/user",
+		url: "/player/all",
 		method: "get",
 	});
 
 	if (response.status === 200)
-		return response.data as Array<{ name: string }>;
+		return response.data.map((name: string) => {
+			return { name: name };
+		});
 
 	throw new Error("Failed to get users");
 }

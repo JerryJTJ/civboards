@@ -13,7 +13,7 @@ import {
 	RefetchOptions,
 	useMutation,
 } from "@tanstack/react-query";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import * as z from "zod";
 
 import { useGamesAPI } from "@/api/games";
@@ -35,6 +35,7 @@ interface DeleteModalProps {
 
 export default function DeleteModal(props: DeleteModalProps) {
 	const { gameId, onOpenChange, body, isOpen, refetch } = props;
+	const [loading, setLoading] = useState<boolean>(false);
 	const { deleteGameById } = useGamesAPI();
 
 	// API
@@ -59,6 +60,7 @@ export default function DeleteModal(props: DeleteModalProps) {
 			});
 		},
 		onSettled: () => {
+			setLoading(false);
 			refetch();
 		},
 	});
@@ -71,8 +73,10 @@ export default function DeleteModal(props: DeleteModalProps) {
 				<ModalFooter>
 					<Button onPress={onOpenChange}>Cancel</Button>
 					<Button
+						isLoading={loading}
 						color="danger"
 						onPress={async () => {
+							setLoading(true);
 							await mutation.mutateAsync(gameId);
 							onOpenChange();
 						}}

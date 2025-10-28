@@ -12,23 +12,19 @@ import {
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Pagination } from "@heroui/pagination";
-import {
-	DropdownTrigger,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
-} from "@heroui/dropdown";
+import { DropdownTrigger, Dropdown } from "@heroui/dropdown";
 import { SortDescriptor } from "@react-types/shared";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import * as z from "zod";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
-import { useAuth0 } from "@auth0/auth0-react";
 
-import { SearchIcon, VerticalDotsIcon } from "./icons";
+import { SearchIcon, VerticalDotsIcon } from "../icons";
+import ViewGameModal from "../forms/ViewGameModal";
+import EditGameModal from "../forms/EditGameModal";
+
 import DeleteModal from "./DeleteModal";
-import ViewGameModal from "./forms/ViewGameModal";
-import EditGameModal from "./forms/EditGameModal";
+import GamesOptionDropdown from "./GamesOptionDropdown";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 import { capitalize } from "@/utils/capitalize";
@@ -60,8 +56,6 @@ export const columns = [
 
 export default function GamesTable(props: GamesTableProps) {
 	const { games, refetch } = props;
-
-	const { isAuthenticated } = useAuth0();
 
 	// Modal
 	const viewModal = useDisclosure();
@@ -195,43 +189,13 @@ export default function GamesTable(props: GamesTableProps) {
 										<VerticalDotsIcon className="text-default-300" />
 									</Button>
 								</DropdownTrigger>
-								<DropdownMenu
-									selectionMode="single"
-									variant="shadow"
-								>
-									<DropdownItem
-										key="view"
-										onPress={() => {
-											setCurrGame(game);
-											viewModal.onOpen();
-										}}
-									>
-										View
-									</DropdownItem>
-									{isAuthenticated ? (
-										<>
-											<DropdownItem
-												key="edit"
-												onPress={() => {
-													setCurrGame(game);
-													editModal.onOpen();
-												}}
-											>
-												Edit
-											</DropdownItem>
-											<DropdownItem
-												key="delete"
-												color="danger"
-												onPress={() => {
-													setCurrGame(game);
-													deleteModal.onOpen();
-												}}
-											>
-												Delete
-											</DropdownItem>
-										</>
-									) : null}
-								</DropdownMenu>
+								<GamesOptionDropdown
+									game={game}
+									setCurrGame={setCurrGame}
+									onOpenDelete={deleteModal.onOpen}
+									onOpenEdit={editModal.onOpen}
+									onOpenView={viewModal.onOpen}
+								/>
 							</Dropdown>
 						</div>
 					);
@@ -239,7 +203,7 @@ export default function GamesTable(props: GamesTableProps) {
 					return <p>{String(cellValue)}</p>;
 			}
 		},
-		[viewModal, deleteModal, editModal, isAuthenticated]
+		[viewModal, deleteModal, editModal]
 	);
 
 	const onNextPage = React.useCallback(() => {

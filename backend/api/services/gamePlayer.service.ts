@@ -8,6 +8,7 @@ import {
 } from "../repositories/game.repository";
 import {
 	deleteGamePlayersByGameId,
+	getAllGamePlayers,
 	getAllGamesPlayedByPlayer,
 	getGamePlayersByGameId,
 	getProfileInfoByName,
@@ -15,6 +16,11 @@ import {
 } from "../repositories/gamePlayer.repository";
 import { fetchCivilizationIdByLeaderId } from "./leader.service";
 import { ValidationError } from "../../types/Errors";
+
+export async function fetchAllUniqueGamePlayers() {
+	const data = await getAllGamePlayers();
+	return new Set<string>(data.map((player) => player.name).sort());
+}
 
 export async function createGamePlayers(
 	gameId: string,

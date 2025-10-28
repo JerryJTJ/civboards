@@ -3,8 +3,8 @@ import { Button, ButtonGroup } from "@heroui/button";
 import { useQuery } from "@tanstack/react-query";
 
 import DefaultLayout from "@/layouts/default";
-import GamesCard from "@/components/GamesCard";
-import GamesTable from "@/components/GamesTable";
+import GamesCard from "@/components/games/GamesCard";
+import GamesTable from "@/components/games/GamesTable";
 import AddGameModal from "@/components/forms/AddGameModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useGamesAPI } from "@/api/games";
