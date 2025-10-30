@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, ButtonGroup } from "@heroui/button";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useQuery } from "@tanstack/react-query";
 
 import DefaultLayout from "@/layouts/default";
@@ -50,7 +51,11 @@ export default function GamesPage() {
 				</div>
 				{/* Janky formatting to keep buttons positioned while loading */}
 				{isPending && <LoadingSpinner height={20} />}
-				<div className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden">
+				<ScrollShadow
+					orientation="horizontal"
+					size={20}
+					className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden "
+				>
 					{!isPending && (
 						<>
 							{currTab === "cards" ? (
@@ -65,16 +70,11 @@ export default function GamesPage() {
 								</>
 							) : null}
 							{currTab === "table" ? (
-								<>
-									<GamesTable
-										games={data!}
-										refetch={refetch}
-									/>
-								</>
+								<GamesTable games={data!} refetch={refetch} />
 							) : null}
 						</>
 					)}
-				</div>
+				</ScrollShadow>
 			</div>
 		</DefaultLayout>
 	);

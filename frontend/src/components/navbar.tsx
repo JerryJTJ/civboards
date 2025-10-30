@@ -9,9 +9,11 @@ import {
 	NavbarMenuItem,
 } from "@heroui/navbar";
 import { Skeleton } from "@heroui/skeleton";
+import { Divider } from "@heroui/divider";
 import { link as linkStyles } from "@heroui/theme";
 import { useAuth0 } from "@auth0/auth0-react";
 import clsx from "clsx";
+import { useMemo } from "react";
 
 import LoginButton from "./authorization/LoginButton";
 import LogoutButton from "./authorization/LogoutButton";
@@ -25,6 +27,40 @@ import { SvgIcon } from "@/components/icons";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();
+
+	const profileContent = useMemo(() => {
+		return (
+			<>
+				{" "}
+				{isAuthenticated ? (
+					<>
+						<NavbarItem className="flex">
+							<Skeleton
+								className="rounded-3xl"
+								isLoaded={!isLoading}
+							>
+								<ProfileIcon />
+							</Skeleton>
+						</NavbarItem>
+						<NavbarItem className="flex">
+							<Skeleton
+								className="rounded-xl"
+								isLoaded={!isLoading}
+							>
+								<LogoutButton />
+							</Skeleton>
+						</NavbarItem>
+					</>
+				) : (
+					<NavbarItem className="flex">
+						<Skeleton className="rounded-xl" isLoaded={!isLoading}>
+							<LoginButton />
+						</Skeleton>
+					</NavbarItem>
+				)}
+			</>
+		);
+	}, [isAuthenticated, isLoading]);
 
 	return (
 		<HeroUINavbar
@@ -43,7 +79,7 @@ export default function Navbar() {
 						<SvgIcon />
 					</Link>
 				</NavbarBrand>
-				<div className="justify-start hidden gap-4 ml-2 lg:flex">
+				<div className="justify-start hidden gap-4 ml-2 md:flex">
 					{siteConfig.navItems.map((item) => (
 						<NavbarItem key={item.href}>
 							<Link
@@ -62,38 +98,14 @@ export default function Navbar() {
 			</NavbarContent>
 
 			<NavbarContent
-				className="hidden sm:flex basis-1/5 sm:basis-full"
+				className="hidden md:flex basis-1/5 sm:basis-full"
 				justify="end"
 			>
-				<NavbarItem className="hidden lg:flex">
+				<NavbarItem>
 					<SearchBar />
 				</NavbarItem>
-				{isAuthenticated ? (
-					<>
-						<NavbarItem className="hidden lg:flex">
-							<Skeleton
-								className="rounded-3xl"
-								isLoaded={!isLoading}
-							>
-								<ProfileIcon />
-							</Skeleton>
-						</NavbarItem>
-						<NavbarItem className="hidden lg:flex">
-							<Skeleton
-								className="rounded-xl"
-								isLoaded={!isLoading}
-							>
-								<LogoutButton />
-							</Skeleton>
-						</NavbarItem>
-					</>
-				) : (
-					<NavbarItem className="hidden lg:flex">
-						<Skeleton className="rounded-xl" isLoaded={!isLoading}>
-							<LoginButton />
-						</Skeleton>
-					</NavbarItem>
-				)}
+				{profileContent}
+
 				<NavbarItem className="hidden gap-2 sm:flex">
 					<Link
 						isExternal
@@ -107,17 +119,14 @@ export default function Navbar() {
 			</NavbarContent>
 
 			{/* For mobile view */}
-			<NavbarContent className="pl-4 sm:hidden basis-1" justify="end">
-				<Link isExternal href={siteConfig.links.github}>
-					<GithubIcon className="text-default-500" />
-				</Link>
-				<ThemeSwitch />
+			<NavbarContent className="pl-4 md:hidden basis-1" justify="end">
+				{profileContent}
 				<NavbarMenuToggle />
 			</NavbarContent>
 
 			<NavbarMenu>
-				{/* {searchInput} */}
 				<div className="flex flex-col gap-2 mx-4 mt-2">
+					<p className="text-small text-primary">Pages</p>
 					{siteConfig.navMenuItems.map((item, index) => (
 						<NavbarMenuItem key={`${item}-${index}`}>
 							<Link
@@ -137,6 +146,20 @@ export default function Navbar() {
 							</Link>
 						</NavbarMenuItem>
 					))}
+
+					<Divider className="my-4" />
+					<div className="flex items-center justify-center space-x-4 text-small">
+						{" "}
+						<SearchBar />
+					</div>
+					<Divider className="my-4" />
+					<div className="flex items-center justify-center space-x-4 text-small">
+						<ThemeSwitch />
+						{/* <Divider orientation="vertical" /> */}
+						<Link isExternal href={siteConfig.links.github}>
+							<GithubIcon className="text-default-500" />
+						</Link>
+					</div>
 				</div>
 			</NavbarMenu>
 		</HeroUINavbar>

@@ -17,7 +17,7 @@ const titleCards = [
 export default function IndexPage() {
 	return (
 		<DefaultLayout>
-			<section className="flex h-auto w-auto flex-row justify-self-center gap-4 h-[75vh] py-8 h-9/10 md:py-10 md:gap-10 lg:h-[85vh] lg:w-[55vw]">
+			<section className="flex w-auto flex-row justify-self-center gap-4 h-[75vh] py-8 md:py-10 md:gap-10 lg:h-[85vh] lg:w-[55vw]">
 				<>
 					{titleCards.map((titleCard) => (
 						<TitleCard key={titleCard.title} {...titleCard} />
