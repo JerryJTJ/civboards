@@ -49,7 +49,7 @@ export default function ProfilePage() {
 
 	return (
 		<DefaultLayout>
-			<div className="flex flex-col items-center gap-5">
+			<div className="flex flex-col items-center gap-5 overflow-y-scroll">
 				<Avatar
 					isBordered
 					className="w-20 h-20 text-large"
@@ -61,7 +61,7 @@ export default function ProfilePage() {
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
 					<Tab key="overview" title="Overview">
-						<div className="flex flex-row justify-center gap-10 pt-10">
+						<div className="flex flex-col justify-center gap-10 pt-10 sm:flex-row">
 							{!profile.error ? (
 								<>
 									{" "}
@@ -69,7 +69,10 @@ export default function ProfilePage() {
 										className="rounded-xl"
 										isLoaded={!profile.isPending}
 									>
-										<Card isBlurred>
+										<Card
+											isBlurred
+											aria-label="Player Overview"
+										>
 											<CardHeader className="self-center justify-center px-20 ">
 												<b className="pt-2 text-base">
 													Overview

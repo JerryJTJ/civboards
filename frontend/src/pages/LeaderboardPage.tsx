@@ -11,6 +11,8 @@ import {
 import DefaultLayout from "@/layouts/default";
 import LeaderboardTable from "@/components/LeaderboardTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import getViewportSize from "@/components/utils/getViewportSize";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 function sanitizeForLeaderboard(type: LeaderboardView, data: Array<any>) {
 	switch (type) {
@@ -43,6 +45,7 @@ export type LeaderboardView = "player" | "leader" | "civilization" | "victory";
 
 export default function LeaderboardPage() {
 	const [tab, setTab] = useState<LeaderboardView>("player");
+	const { width } = useWindowDimensions();
 
 	//API
 	const [players, leaders, civilizations, victories] = useQueries({
@@ -133,8 +136,11 @@ export default function LeaderboardPage() {
 
 	return (
 		<DefaultLayout>
-			<section className="flex flex-col items-center justify-center w-full gap-10 py-4 2xl:py-8 md:w-[40vw]">
-				<ButtonGroup className="justify-self-start ">
+			<section className="flex flex-col items-center justify-center w-full gap-10 py-4 2xl:py-8 max-w-[85vw] md:w-[40vw]">
+				<ButtonGroup
+					className="justify-self-start "
+					size={getViewportSize(width) === "xs" ? "sm" : "md"}
+				>
 					<Button
 						className="border border-white/20"
 						color={tab === "player" ? "primary" : "default"}

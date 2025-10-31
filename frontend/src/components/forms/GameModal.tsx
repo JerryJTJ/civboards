@@ -7,10 +7,12 @@ import {
 	ModalFooter,
 } from "@heroui/modal";
 import { UseMutationResult } from "@tanstack/react-query";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Tab, Tabs } from "@heroui/tabs";
 
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
+import getViewportSize from "../utils/getViewportSize";
 
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
@@ -19,6 +21,7 @@ import { FormAction } from "./gameFormReducer";
 import UploadFileInput from "./UploadFileInput";
 
 import { Civ, GameForm } from "@/interfaces/game.interface";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 interface AddModalProps {
 	mode: "add";
@@ -50,6 +53,7 @@ type GameModalProps = AddModalProps | ViewGameProps | UpdateModalProps;
 
 export default function GameModal(props: GameModalProps) {
 	const { user } = useAuth0();
+	const { width } = useWindowDimensions();
 
 	const { mode, isOpen, onClose, form, dispatch } = props;
 
@@ -91,10 +95,56 @@ export default function GameModal(props: GameModalProps) {
 		setLoading(false);
 	};
 
+	// Content
+	const civFields = useMemo(() => {
+		return (
+			<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh] ">
+				{form.players.map((civ: Civ) => (
+					<CivField
+						key={civ.id}
+						changeDispatch={
+							dispatches?.changeCivDispatch ?? (() => {})
+						}
+						civ={civ}
+						deleteDispatch={
+							dispatches?.deleteCivDispatch ?? (() => {})
+						}
+						enabled={enabled}
+					/>
+				))}
+
+				{enabled && (
+					<div className="flex flex-row gap-2 pt-4">
+						<Button
+							onPress={() => dispatches?.addCivDispatch(true)}
+						>
+							Add Human
+						</Button>
+						<Button
+							onPress={() => dispatches?.addCivDispatch(false)}
+						>
+							Add AI
+						</Button>
+					</div>
+				)}
+			</div>
+		);
+	}, [dispatches, enabled, form.players]);
+
+	const gameOptionFields = useMemo(() => {
+		return (
+			<GameOptionsForm
+				dispatch={dispatches?.gameOptionsDispatch ?? (() => {})}
+				enabled={enabled}
+				form={form}
+			/>
+		);
+	}, [dispatches?.gameOptionsDispatch, enabled, form]);
+
 	return (
 		<Modal
 			backdrop="blur"
-			className="max-h-screen game-modal"
+			className="max-h-screen game-modal "
 			classNames={{
 				closeButton: "m-4 scale-150 hover:bg-danger/75 active:red/100",
 			}}
@@ -120,66 +170,70 @@ export default function GameModal(props: GameModalProps) {
 										// reset={dispatches.resetFormDispatch}
 									/>
 								)}
-								<div className="grid grid-cols-6 gap-4 px-10 py-2">
-									<div className="col-span-4">
-										{" "}
-										<p className="self-center pb-4 font-bold">
-											Players
-										</p>
-										<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]">
-											{form.players.map((civ: Civ) => (
-												<CivField
-													key={civ.id}
-													changeDispatch={
-														dispatches?.changeCivDispatch ??
-														(() => {})
-													}
-													civ={civ}
-													deleteDispatch={
-														dispatches?.deleteCivDispatch ??
-														(() => {})
-													}
-													enabled={enabled}
-												/>
-											))}
+								{/* Content for mobile v. web */}
+								{getViewportSize(width) === "xs" ? (
+									<div className="flex flex-col py-2 sm:px-10">
+										<Tabs
+											aria-label="Options"
+											// color="primary"
+										>
+											<Tab
+												key="players"
+												className="flex flex-col"
+												title="Players"
+											>
+												{civFields}
+											</Tab>
+											<Tab
+												key="options"
+												className="flex flex-col"
+												title="Game Options"
+											>
+												{gameOptionFields}
+											</Tab>
+										</Tabs>
+									</div>
+								) : (
+									<div className="grid grid-cols-6 gap-4 px-10 py-2">
+										<div className="col-span-4">
+											{" "}
+											<p className="self-center pb-4 font-bold">
+												Players
+											</p>
+											{civFields}
+											{enabled && (
+												<div className="flex flex-row gap-2 pt-4">
+													<Button
+														onPress={() =>
+															dispatches?.addCivDispatch(
+																true
+															)
+														}
+													>
+														Add Human
+													</Button>
+													<Button
+														onPress={() =>
+															dispatches?.addCivDispatch(
+																false
+															)
+														}
+													>
+														Add AI
+													</Button>
+												</div>
+											)}
 										</div>
-										{enabled && (
-											<div className="flex flex-row gap-2 pt-4">
-												<Button
-													onPress={() =>
-														dispatches?.addCivDispatch(
-															true
-														)
-													}
-												>
-													Add Human
-												</Button>
-												<Button
-													onPress={() =>
-														dispatches?.addCivDispatch(
-															false
-														)
-													}
-												>
-													Add AI
-												</Button>
-											</div>
-										)}
+										<div className="col-span-2">
+											<p className="self-center pb-4 font-bold">
+												Game Options
+											</p>
+											{gameOptionFields}
+										</div>
 									</div>
-									<div className="col-span-2">
-										<p className="self-center pb-4 font-bold">
-											Game Options
-										</p>
-										<GameOptionsForm
-											dispatch={
-												dispatches?.gameOptionsDispatch ??
-												(() => {})
-											}
-											enabled={enabled}
-											form={form}
-										/>
-									</div>
-								</div>
+								)}
+
+								<div className="flex flex-row gap-2" />
 							</ModalBody>
 							<ModalFooter>
 								<Button

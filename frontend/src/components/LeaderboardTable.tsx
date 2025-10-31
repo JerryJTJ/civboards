@@ -328,7 +328,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 			bottomContentPlacement="outside"
 			className="self-center align-center"
 			classNames={{
-				wrapper: "max-h-[382px] lg:max-h-[60vh] self-center",
+				wrapper: "max-h-[350px] lg:max-h-[60vh] self-center",
 			}}
 			sortDescriptor={sortDescriptor}
 			topContent={topContent}

@@ -1,5 +1,3 @@
-import type { SVGProps } from "react";
-
 import React, { useState } from "react";
 import {
 	Table,
@@ -12,14 +10,20 @@ import {
 import { Input } from "@heroui/input";
 import { Button } from "@heroui/button";
 import { Pagination } from "@heroui/pagination";
-import { DropdownTrigger, Dropdown } from "@heroui/dropdown";
+import {
+	DropdownTrigger,
+	Dropdown,
+	DropdownMenu,
+	DropdownItem,
+} from "@heroui/dropdown";
 import { SortDescriptor } from "@react-types/shared";
 import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import * as z from "zod";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
+import { SharedSelection } from "@heroui/system";
 
-import { SearchIcon, VerticalDotsIcon } from "../icons";
+import { ChevronDownIcon, SearchIcon, VerticalDotsIcon } from "../icons";
 import ViewGameModal from "../forms/ViewGameModal";
 import EditGameModal from "../forms/EditGameModal";
 
@@ -28,6 +32,7 @@ import GamesOptionDropdown from "./GamesOptionDropdown";
 
 import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
 import { capitalize } from "@/utils/capitalize";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -41,11 +46,7 @@ interface GamesTableProps {
 	>;
 }
 
-export type IconSvgProps = SVGProps<SVGSVGElement> & {
-	size?: number;
-};
-
-export const columns = [
+const columns = [
 	{ name: "NAME", key: "name", sortable: true },
 	{ name: "DATE", key: "date", sortable: true },
 	{ name: "MAP", key: "map", sortable: true },
@@ -54,8 +55,12 @@ export const columns = [
 	{ name: "ACTIONS", key: "actions" },
 ];
 
+const DEFAULT_COLUMNS = ["name", "date", "map", "players", "winner", "actions"];
+const MOBILE_COLUMNS = ["name", "date", "players"];
+
 export default function GamesTable(props: GamesTableProps) {
 	const { games, refetch } = props;
+	const { width } = useWindowDimensions();
 
 	// Modal
 	const viewModal = useDisclosure();
@@ -67,6 +72,20 @@ export default function GamesTable(props: GamesTableProps) {
 
 	type Game = z.infer<typeof DisplayGameSchema>;
 
+	// Visible Columns
+	const [visibleColumns, setVisibleColumns] = React.useState<SharedSelection>(
+		width > 640 ? new Set(DEFAULT_COLUMNS) : new Set(MOBILE_COLUMNS)
+	);
+
+	const headerColumns = React.useMemo(() => {
+		if (visibleColumns === "all") return columns;
+
+		return columns.filter((column) =>
+			Array.from(visibleColumns).includes(column.key)
+		);
+	}, [visibleColumns]);
+
+	// Table Logic
 	const [filterValue, setFilterValue] = React.useState("");
 	const [rowsPerPage, setRowsPerPage] = React.useState(5);
 	const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
@@ -148,15 +167,23 @@ export default function GamesTable(props: GamesTableProps) {
 
 			switch (columnKey) {
 				case "name":
-					return <p className="text-bold text-small">{game.name}</p>;
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{game.name}
+						</p>
+					);
 				case "date":
 					return (
-						<p className="text-bold text-small">
+						<p className="text-xs sm:text-bold sm:text-small">
 							{new Date(game.date).toLocaleDateString()}
 						</p>
 					);
 				case "map":
-					return <p className="text-bold text-small">{game.map}</p>;
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{game.map}
+						</p>
+					);
 				case "players":
 					const humans = new Array<string>();
 
@@ -166,13 +193,13 @@ export default function GamesTable(props: GamesTableProps) {
 					});
 
 					return (
-						<p className="text-bold text-small">
+						<p className="text-xs sm:text-bold sm:text-small">
 							{humans.join(", ")}
 						</p>
 					);
 				case "winner":
 					return (
-						<p className="text-bold text-small">
+						<p className="text-xs sm:text-bold sm:text-small">
 							{capitalize(game.winnerPlayer as string)}
 						</p>
 					);
@@ -262,6 +289,27 @@ export default function GamesTable(props: GamesTableProps) {
 					/>
 					<div className="flex gap-3">
 						{/* <Dropdown>
+              <DropdownTrigger className="hidden sm:flex">
+                <Button endContent={<ChevronDownIcon className="text-small" />} variant="flat">
+                  Status
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu
+                disallowEmptySelection
+                aria-label="Table Columns"
+                closeOnSelect={false}
+                selectedKeys={statusFilter}
+                selectionMode="multiple"
+                onSelectionChange={setStatusFilter}
+              >
+                {statusOptions.map((status) => (
+                  <DropdownItem key={status.uid} className="capitalize">
+                    {capitalize(status.name)}
+                  </DropdownItem>
+                ))}
+              </DropdownMenu>
+            </Dropdown> */}
+						<Dropdown>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
 									endContent={
@@ -282,14 +330,14 @@ export default function GamesTable(props: GamesTableProps) {
 							>
 								{columns.map((column) => (
 									<DropdownItem
-										key={column.uid}
+										key={column.key}
 										className="capitalize"
 									>
 										{capitalize(column.name)}
 									</DropdownItem>
 								))}
 							</DropdownMenu>
-						</Dropdown> */}
+						</Dropdown>
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
@@ -310,7 +358,14 @@ export default function GamesTable(props: GamesTableProps) {
 				</div>
 			</div>
 		);
-	}, [filterValue, onSearchChange, onRowsPerPageChange, headerText, onClear]);
+	}, [
+		filterValue,
+		onSearchChange,
+		onRowsPerPageChange,
+		headerText,
+		visibleColumns,
+		onClear,
+	]);
 
 	const bottomContent = React.useMemo(() => {
 		return (
@@ -355,14 +410,14 @@ export default function GamesTable(props: GamesTableProps) {
 				bottomContent={bottomContent}
 				bottomContentPlacement="outside"
 				classNames={{
-					wrapper: "max-h-[382px] lg:max-h-[50vh]",
+					wrapper: "max-h-[50vh]",
 				}}
 				sortDescriptor={sortDescriptor}
 				topContent={topContent}
 				topContentPlacement="outside"
 				onSortChange={setSortDescriptor}
 			>
-				<TableHeader columns={columns}>
+				<TableHeader columns={headerColumns}>
 					{(column) => (
 						<TableColumn
 							key={column.key}

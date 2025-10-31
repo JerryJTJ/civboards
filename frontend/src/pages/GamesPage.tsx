@@ -9,11 +9,14 @@ import GamesTable from "@/components/games/GamesTable";
 import AddGameModal from "@/components/forms/AddGameModal";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { useGamesAPI } from "@/api/games";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
+import getViewportSize from "@/components/utils/getViewportSize";
 
 type TabView = "cards" | "table";
 
 export default function GamesPage() {
 	const [currTab, setCurrTab] = React.useState<TabView>("cards");
+	const { width } = useWindowDimensions();
 
 	const { getAllGames } = useGamesAPI();
 	const { data, isPending, refetch } = useQuery({
@@ -24,8 +27,11 @@ export default function GamesPage() {
 	return (
 		<DefaultLayout>
 			<div className="flex flex-col w-full">
-				<div className="grid grid-cols-2 pb-4 lg:pb-0">
-					<ButtonGroup className="justify-self-start ">
+				<div className="grid grid-cols-2 pb-4">
+					<ButtonGroup
+						className="justify-self-start "
+						size={getViewportSize(width) === "xs" ? "sm" : "md"}
+					>
 						<Button
 							className="border border-white/20"
 							color={currTab === "cards" ? "primary" : "default"}
@@ -47,34 +53,35 @@ export default function GamesPage() {
 							Table
 						</Button>
 					</ButtonGroup>
-					<AddGameModal />
+					{getViewportSize(width) === "xs" ? null : <AddGameModal />}
 				</div>
 				{/* Janky formatting to keep buttons positioned while loading */}
 				{isPending && <LoadingSpinner height={20} />}
-				<ScrollShadow
-					orientation="horizontal"
-					size={20}
-					className="flex flex-row self-center items-center gap-4 h-[65vh] py-8 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-[70vw] overflow-y-hidden "
-				>
-					{!isPending && (
-						<>
-							{currTab === "cards" ? (
-								<>
-									{data?.map((game) => (
-										<GamesCard
-											key={`${game.id}-card`}
-											game={game}
-											refetch={refetch}
-										/>
-									))}
-								</>
-							) : null}
-							{currTab === "table" ? (
+
+				{!isPending && (
+					<>
+						{currTab === "cards" ? (
+							<ScrollShadow
+								className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
+								orientation="horizontal"
+								size={20}
+							>
+								{data?.map((game) => (
+									<GamesCard
+										key={`${game.id}-card`}
+										game={game}
+										refetch={refetch}
+									/>
+								))}
+							</ScrollShadow>
+						) : null}
+						{currTab === "table" ? (
+							<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
 								<GamesTable games={data!} refetch={refetch} />
-							) : null}
-						</>
-					)}
-				</ScrollShadow>
+							</div>
+						) : null}
+					</>
+				)}
 			</div>
 		</DefaultLayout>
 	);

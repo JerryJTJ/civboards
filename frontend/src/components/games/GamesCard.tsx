@@ -47,7 +47,7 @@ export default function GamesCard(props: GameCardProps) {
 					<Card
 						isFooterBlurred
 						isPressable
-						className="flex items-center rounded-large justify-center object-none min-w-[150px] md:min-w-[200px] sm:h-[60vh] md:h-[65vh] lg:h-[70vh] col-span-12 sm:col-span-7 2xl:min-w-[10vw] border-white/20 border"
+						className="flex items-center rounded-large justify-center object-none min-w-[150px] md:min-w-[200px] h-[60vh] md:h-[65vh] lg:h-[70vh] col-span-12 sm:col-span-7 2xl:min-w-[10vw] border-white/20 border"
 						shadow="sm"
 					>
 						<Image
