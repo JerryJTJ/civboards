@@ -49,9 +49,13 @@ interface GamesTableProps {
 const columns = [
 	{ name: "NAME", key: "name", sortable: true },
 	{ name: "DATE", key: "date", sortable: true },
+	{ name: "SPEED", key: "speed", sortable: true },
 	{ name: "MAP", key: "map", sortable: true },
+	{ name: "SIZE", key: "size", sortable: true },
+	{ name: "TURNS", key: "turns", sortable: true },
 	{ name: "PLAYERS", key: "players", sortable: false },
 	{ name: "WINNER", key: "winner", sortable: true },
+	{ name: "FINISHED", key: "finished", sortable: true },
 	{ name: "ACTIONS", key: "actions" },
 ];
 
@@ -113,6 +117,23 @@ export default function GamesTable(props: GamesTableProps) {
 					break;
 				case "map":
 					cmp = a.map.localeCompare(b.map);
+					break;
+				case "size":
+					cmp = a.mapSize.localeCompare(b.mapSize);
+					break;
+				case "finished":
+					cmp =
+						Number(a.finished) > Number(b.finished)
+							? 1
+							: Number(a.finished) === Number(b.finished)
+								? 0
+								: -1;
+					break;
+				case "speed":
+					cmp = a.speed.localeCompare(b.speed);
+					break;
+				case "turns":
+					cmp = a.turns > b.turns ? 1 : a.turns === b.turns ? 0 : -1;
 					break;
 				case "winner":
 					cmp = (a.winnerPlayer || "").localeCompare(
@@ -201,6 +222,30 @@ export default function GamesTable(props: GamesTableProps) {
 					return (
 						<p className="text-xs sm:text-bold sm:text-small">
 							{capitalize(game.winnerPlayer as string)}
+						</p>
+					);
+				case "finished":
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{game.finished ? "✔️" : ""}
+						</p>
+					);
+				case "size":
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{game.mapSize}
+						</p>
+					);
+				case "speed":
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{capitalize(game.speed)}
+						</p>
+					);
+				case "turns":
+					return (
+						<p className="text-xs sm:text-bold sm:text-small">
+							{game.turns}
 						</p>
 					);
 				case "actions":
