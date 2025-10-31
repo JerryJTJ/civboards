@@ -226,7 +226,7 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "finished":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
+						<p className="text-xs text-center  sm:text-bold sm:text-small">
 							{game.finished ? "✔️" : ""}
 						</p>
 					);
@@ -467,7 +467,9 @@ export default function GamesTable(props: GamesTableProps) {
 						<TableColumn
 							key={column.key}
 							align={
-								column.key === "actions" ? "center" : "start"
+								column.key === ("actions" || "finished")
+									? "center"
+									: "start"
 							}
 							allowsSorting={column.sortable}
 						>
