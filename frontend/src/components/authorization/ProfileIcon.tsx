@@ -24,7 +24,7 @@ const ProfileIcon = () => {
 					showFallback
 					name={user?.name}
 					size={getViewportSize(width) === "xs" ? "sm" : "md"}
-					src={user?.picture}
+					src={user?.profile_pic}
 				/>
 				<h2>{user?.username}</h2>
 			</Link>

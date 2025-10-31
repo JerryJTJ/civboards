@@ -13,8 +13,11 @@ import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTabl
 import DefaultLayout from "@/layouts/default";
 import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
 import GamesTable from "@/components/games/GamesTable";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Button } from "@heroui/button";
 
 export default function ProfilePage() {
+	const { user } = useAuth0();
 	const params = useParams();
 	const username = useMemo(
 		() => params.username?.toLocaleLowerCase(),
@@ -52,10 +55,17 @@ export default function ProfilePage() {
 			<div className="flex flex-col items-center gap-5 overflow-y-scroll">
 				<Avatar
 					isBordered
+					showFallback={false}
 					className="w-20 h-20 mt-2 text-large"
-					name={username}
-					src="https://imgur.com/VB73J90.png"
+					src={user?.profile_pic}
 				/>
+				<Button
+					onPress={() => {
+						console.log(user);
+					}}
+				>
+					Click me
+				</Button>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
 					<p className="text-xl font-semibold">{username}</p>
 				</Skeleton>
