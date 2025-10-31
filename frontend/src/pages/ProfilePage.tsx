@@ -52,7 +52,7 @@ export default function ProfilePage() {
 			<div className="flex flex-col items-center gap-5 overflow-y-scroll">
 				<Avatar
 					isBordered
-					className="w-20 h-20 text-large"
+					className="w-20 h-20 mt-2 text-large"
 					name={username}
 					src="https://imgur.com/VB73J90.png"
 				/>
