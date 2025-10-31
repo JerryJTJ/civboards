@@ -7,14 +7,13 @@ import { ProfileSchema } from "@civboards/schemas";
 import * as z from "zod";
 import { Avatar } from "@heroui/avatar";
 import { Tabs, Tab } from "@heroui/tabs";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
 import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
 import GamesTable from "@/components/games/GamesTable";
-import { useAuth0 } from "@auth0/auth0-react";
-import { Button } from "@heroui/button";
 
 export default function ProfilePage() {
 	const { user } = useAuth0();
@@ -55,17 +54,10 @@ export default function ProfilePage() {
 			<div className="flex flex-col items-center gap-5 overflow-y-scroll">
 				<Avatar
 					isBordered
-					showFallback={false}
 					className="w-20 h-20 mt-2 text-large"
+					showFallback={false}
 					src={user?.profile_pic}
 				/>
-				<Button
-					onPress={() => {
-						console.log(user);
-					}}
-				>
-					Click me
-				</Button>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
 					<p className="text-xl font-semibold">{username}</p>
 				</Skeleton>
