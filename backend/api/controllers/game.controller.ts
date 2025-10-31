@@ -59,6 +59,18 @@ async function exportGameObject(game: Tables<"game">) {
 	throw new ValidationError(JSON.stringify(z.treeifyError(validate.error)));
 }
 
+async function exportGameObjects(games: Array<Tables<"game">>) {
+	const fullGames = await Promise.all(
+		games.map(async (game) => exportGameObject(game))
+	);
+
+	fullGames.sort((a, b) => {
+		return a.date > b.date ? -1 : a.date === b.date ? 0 : 1;
+	});
+
+	return fullGames;
+}
+
 // CONTROLLER
 
 export async function handleCreateGame(
@@ -107,10 +119,7 @@ export async function handleGetAllGames(
 	try {
 		const games = await fetchAllGames();
 		if (games) {
-			const fullGames = await Promise.all(
-				games.map(async (game) => exportGameObject(game))
-			);
-
+			const fullGames = await exportGameObjects(games);
 			return res.status(200).json(fullGames);
 		}
 		return res.status(400).end();
@@ -132,10 +141,7 @@ export async function handleGetAllGamesByCreatedBy(
 		const games = await fetchGamesByCreatedBy(name);
 
 		if (games) {
-			const fullGames = await Promise.all(
-				games.map(async (game) => exportGameObject(game))
-			);
-
+			const fullGames = await exportGameObjects(games);
 			return res.status(200).json(fullGames);
 		}
 
@@ -155,10 +161,7 @@ export async function handleGetAllGamesByPlayer(
 	try {
 		const games = await fetchAllGamesByPlayer(name);
 		if (games) {
-			const fullGames = await Promise.all(
-				games.map(async (game) => exportGameObject(game))
-			);
-
+			const fullGames = await exportGameObjects(games);
 			return res.status(200).json(fullGames);
 		}
 		return res.status(400).end();
