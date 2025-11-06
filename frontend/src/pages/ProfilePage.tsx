@@ -3,8 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import { useMemo } from "react";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
-import { ProfileSchema } from "@civboards/schemas";
-import * as z from "zod";
 import { Avatar } from "@heroui/avatar";
 import { Tabs, Tab } from "@heroui/tabs";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -26,21 +24,15 @@ export default function ProfilePage() {
 	// APIs
 	const profile = useQuery({
 		queryKey: ["profiles", username],
-		queryFn: async (): Promise<
-			z.infer<typeof ProfileSchema> | undefined
-		> => {
-			if (username) {
-				return await getProfile(username);
-			}
-		},
+		queryFn: () => getProfile(username!),
+		enabled: !!username,
 	});
 	const games = useQuery({
 		queryKey: ["games", username],
 		queryFn: async () => {
-			if (username) {
-				return await getGamesByPlayer(username);
-			}
+			if (username) return await getGamesByPlayer(username);
 		},
+		enabled: !!username,
 	});
 	const uploaded = useQuery({
 		queryKey: ["uploaded", username],
@@ -153,7 +145,8 @@ export default function ProfilePage() {
 										</b>
 									</CardHeader>
 									<CardBody className="justify-center px-10 py-10">
-										Upload and play some games to get stats!
+										Play in some finished games to see your
+										stats.
 									</CardBody>
 								</Card>
 							)}
@@ -164,7 +157,6 @@ export default function ProfilePage() {
 							className="rounded-xl"
 							isLoaded={!games.isPending && !profile.isPending}
 						>
-							{" "}
 							{games.data && (
 								<GamesTable
 									games={games.data}

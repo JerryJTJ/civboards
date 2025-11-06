@@ -142,7 +142,7 @@ export async function handleGetAllGamesByCreatedBy(
 			return res.status(200).json(fullGames);
 		}
 
-		return res.status(400).end();
+		return res.status(404).end();
 	} catch (error) {
 		next(error);
 	}

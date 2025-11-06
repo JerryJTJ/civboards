@@ -102,6 +102,8 @@ export default function GamesTable(props: GamesTableProps) {
 	const hasSearchFilter = Boolean(filterValue);
 
 	const sortedItems = React.useMemo(() => {
+		if (games.length === 0) return games;
+
 		return [...games].sort((a: Game, b: Game) => {
 			let cmp: number = 0;
 
@@ -149,6 +151,7 @@ export default function GamesTable(props: GamesTableProps) {
 	}, [sortDescriptor, games]);
 
 	const filteredItems = React.useMemo(() => {
+		if (games.length === 0) return games;
 		let filteredGames = [...sortedItems];
 
 		if (hasSearchFilter) {
@@ -448,7 +451,6 @@ export default function GamesTable(props: GamesTableProps) {
 
 	return (
 		<>
-			{" "}
 			<Table
 				isHeaderSticky
 				aria-label="Table of games"
