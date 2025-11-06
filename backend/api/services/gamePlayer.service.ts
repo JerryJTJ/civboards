@@ -24,10 +24,11 @@ export async function fetchAllUniqueGamePlayers() {
 
 export async function createGamePlayers(
 	gameId: string,
-	players: Array<z.infer<typeof PlayerSchema>>
+	players: z.infer<typeof PlayerSchema>[]
 ) {
 	if (players.length === 0) throw new ValidationError("No players to add");
-	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(gameId)))
+		throw new ValidationError("Invalid Game Id");
 
 	players.forEach((player) => {
 		if (!player.leaderId || !player.leaderId)
@@ -38,7 +39,7 @@ export async function createGamePlayers(
 	const gamePlayers = (await Promise.all(
 		players.map(async (player) => {
 			const civId = (await fetchCivilizationIdByLeaderId(player.leaderId))
-				?.civilization_id;
+				.civilization_id;
 			return {
 				game_id: gameId,
 				name: player.name.toLocaleLowerCase(),
@@ -47,16 +48,17 @@ export async function createGamePlayers(
 				is_human: player.isHuman,
 			};
 		})
-	)) as Array<TablesInsert<"game_player">>;
+	)) as TablesInsert<"game_player">[];
 	await insertGamePlayers(gamePlayers);
 }
 
 export async function fetchGamePlayersByGameId(gameId: string) {
 	if (!gameId) throw new ValidationError("No Game Id Provided");
-	if (!doesGameIdExist(gameId)) throw new ValidationError("Invalid Game Id");
+	if (!(await doesGameIdExist(gameId)))
+		throw new ValidationError("Invalid Game Id");
 
 	const gamePlayers = await getGamePlayersByGameId(gameId);
-	const gamePlayersSanitized = gamePlayers?.map((gamePlayer) => {
+	const gamePlayersSanitized = gamePlayers.map((gamePlayer) => {
 		return {
 			id: gamePlayer.id,
 			leaderId: gamePlayer.leader_id,
@@ -82,41 +84,39 @@ export async function fetchProfileInfoByName(name: string) {
 		const { leader, civilization } = play;
 
 		if (leader) {
+			const current = leaders.get(leader) ?? { played: 0 };
 			leaders.set(leader, {
-				played: leaders.has(leader)
-					? leaders.get(leader)!.played + 1
-					: 1,
+				played: current.played + 1,
 				wins: 0,
 			});
 		}
 		if (civilization) {
+			const current = civs.get(civilization) ?? { played: 0 };
 			civs.set(civilization, {
-				played: civs.has(civilization)
-					? civs.get(civilization)!.played + 1
-					: 1,
+				played: current.played + 1,
 				wins: 0,
 			});
 		}
 	});
 
 	const wins = await getGameWinsByPlayer(name);
+	// Played should already be recorded above, but just in case initialize played to 1
 	wins.forEach((win) => {
+		const current = leaders.get(win.leader) ?? { played: 1, wins: 0 };
 		if (win.leader) {
 			leaders.set(win.leader, {
-				played: leaders.get(win.leader)?.played as number,
-				wins:
-					leaders.get(win.leader)?.wins === 0
-						? 1
-						: (leaders.get(win.leader)?.wins as number) + 1,
+				played: current.played,
+				wins: current.wins + 1,
 			});
 		}
 		if (win.civilization) {
+			const current = civs.get(win.civilization) ?? {
+				played: 1,
+				wins: 0,
+			};
 			civs.set(win.civilization, {
-				played: civs.get(win.civilization)?.played as number,
-				wins:
-					civs.get(win.civilization)?.wins === 0
-						? 1
-						: (civs.get(win.civilization)?.wins as number) + 1,
+				played: current.played,
+				wins: current.wins + 1,
 			});
 		}
 	});

@@ -6,11 +6,11 @@ export async function getCivilizationByCode(code: string) {
 		.from("civilization")
 		.select()
 		.eq("code", code)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error)
 		throw new DatabaseError("Failed to get civilization by code", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -20,11 +20,11 @@ export async function getCivilizationById(id: number) {
 		.from("civilization")
 		.select()
 		.eq("id", id)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error)
 		throw new DatabaseError("Failed to get civilization by id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -37,7 +37,7 @@ export async function getAllCivilizations() {
 
 	if (error)
 		throw new DatabaseError("Failed to get all civilizations", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }

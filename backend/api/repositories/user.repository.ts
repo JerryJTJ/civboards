@@ -6,7 +6,6 @@ export async function insertUser(user: TablesInsert<"user">) {
 	const { data, error } = await supabase.from("user").insert(user).select();
 
 	if (error) throw new DatabaseError("Failed to insert user", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -16,10 +15,10 @@ export async function getUserById(id: string) {
 		.from("user")
 		.select()
 		.eq("id", id)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get user by id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -29,7 +28,8 @@ export async function getUserByName(name: string) {
 		.from("user")
 		.select()
 		.eq("name", name)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get user by name", error);
 
@@ -40,7 +40,7 @@ export async function getAllUsers() {
 	const { data, error } = await supabase.from("user").select("name");
 
 	if (error) throw new DatabaseError("Failed to get user by id", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }

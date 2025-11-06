@@ -17,12 +17,12 @@ interface ParseApiResponse {
 	turns: number;
 	map: string;
 	mapSize: string;
-	players: Array<{
+	players: {
 		leader: string;
 		isHuman: boolean;
 		name?: string;
-	}>;
-	expansions: Array<string>;
+	}[];
+	expansions: string[];
 }
 
 ParseRouter.post(
@@ -33,14 +33,13 @@ ParseRouter.post(
 			throw new ValidationError("No file provided");
 		}
 		try {
-			const parsed = parse(req.file?.buffer, {
+			const parsed = parse(req.file.buffer, {
 				api: true,
-			});
+			}) as ParseApiResponse;
 			const sanitized = await sanitizeSaveFile(parsed);
 			res.status(200).json(sanitized);
 		} catch (error: unknown) {
-			if (error instanceof Error)
-				throw new ParseError(error.message || "");
+			if (error instanceof Error) throw new ParseError(error.message);
 			throw new ParseError();
 		}
 	}
@@ -60,18 +59,18 @@ async function sanitizeSaveFile(
 
 	const players = await Promise.all(
 		parsed.players.map(async (player) => {
-			const leaderId = (await fetchLeaderFromCode(player.leader))?.id;
+			const leaderId = (await fetchLeaderFromCode(player.leader)).id;
 			return {
 				leaderId: leaderId,
 				isHuman: player.isHuman,
-				name: player.name || "",
+				name: player.name ?? "",
 			};
 		})
 	);
 
 	const expansions = await Promise.all(
 		parsed.expansions.map(
-			async (expansion) => (await fetchExpansionByCode(expansion))?.id
+			async (expansion) => (await fetchExpansionByCode(expansion)).id
 		)
 	);
 

@@ -52,18 +52,18 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		);
 		if (!winner) throw new ValidationError("Finished games need a winner");
 
-		if (winner!.leaderId !== game.winnerLeaderId)
+		if (winner.leaderId !== game.winnerLeaderId)
 			throw new ValidationError("Finished games need a winner");
 	}
 
 	let winnerCivilizationId;
 	if (game.finished && game.winnerLeaderId)
 		winnerCivilizationId = (await fetchLeaderById(game.winnerLeaderId))
-			?.civilization_id;
+			.civilization_id;
 
 	const insert = {
 		finished: game.finished,
-		created_by: game?.createdBy,
+		created_by: game.createdBy,
 		date: game.date,
 		name: game.name,
 		map: game.map,
@@ -72,8 +72,8 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		turns: game.turns,
 		winner_player: game.winnerPlayer?.toLocaleLowerCase(),
 		winner_leader_id: game.winnerLeaderId,
-		winner_civilization_id: winnerCivilizationId || undefined,
-		victory_id: game.victoryId || undefined,
+		winner_civilization_id: winnerCivilizationId ?? undefined,
+		victory_id: game.victoryId ?? undefined,
 	} as TablesInsert<"game">;
 
 	let gameId;
@@ -135,14 +135,10 @@ export async function fetchAllGameWinners() {
 
 	const winners = new Map<string, number>();
 
-	gameWinners?.forEach((winner) => {
+	gameWinners.forEach((winner) => {
 		if (typeof winner.winner_player === "string") {
-			winners.set(
-				winner.winner_player,
-				winners.has(winner.winner_player)
-					? winners.get(winner.winner_player)! + 1
-					: 1
-			);
+			const current = winners.get(winner.winner_player) ?? 0;
+			winners.set(winner.winner_player, current + 1);
 		}
 	});
 
@@ -155,25 +151,21 @@ export async function fetchAllGameWinnerLeaderIds() {
 	const leaders = new Map<number, number>();
 
 	// Find the count
-	gameWinners?.forEach((leader) => {
+	gameWinners.forEach((leader) => {
 		if (typeof leader.winner_leader_id === "number") {
-			leaders.set(
-				leader.winner_leader_id,
-				leaders.has(leader.winner_leader_id)
-					? leaders.get(leader.winner_leader_id)! + 1
-					: 1
-			);
+			const current = leaders.get(leader.winner_leader_id) ?? 0;
+			leaders.set(leader.winner_leader_id, current + 1);
 		}
 	});
 
 	// Add names
-	const leadersArr: Array<{
+	const leadersArr: {
 		leaderId: number;
 		leaderName: string;
 		wins: number;
-	}> = await Promise.all(
+	}[] = await Promise.all(
 		Array.from(leaders).map(async ([leaderId, wins]) => {
-			const name = (await fetchLeaderById(leaderId))?.name || "";
+			const name = (await fetchLeaderById(leaderId)).name;
 
 			return {
 				leaderId: leaderId,
@@ -192,26 +184,21 @@ export async function fetchAllGameWinnerCivilizationIds() {
 	const civs = new Map<number, number>();
 
 	// Find count
-	gameWinners?.forEach((civ) => {
+	gameWinners.forEach((civ) => {
 		if (typeof civ.winner_civilization_id === "number") {
-			civs.set(
-				civ.winner_civilization_id,
-				civs.has(civ.winner_civilization_id)
-					? civs.get(civ.winner_civilization_id)! + 1
-					: 1
-			);
+			const current = civs.get(civ.winner_civilization_id) ?? 0;
+			civs.set(civ.winner_civilization_id, current + 1);
 		}
 	});
 
 	// Add names
-	const civsArr: Array<{
+	const civsArr: {
 		civilizationId: number;
 		civilizationName: string;
 		wins: number;
-	}> = await Promise.all(
+	}[] = await Promise.all(
 		Array.from(civs).map(async ([civilizationId, wins]) => {
-			const name =
-				(await fetchCivilizationById(civilizationId))?.name || "";
+			const name = (await fetchCivilizationById(civilizationId)).name;
 
 			return {
 				civilizationId: civilizationId,
@@ -230,25 +217,21 @@ export async function fetchAllGameVictoryIds() {
 	const victories = new Map<number, number>();
 
 	// Get count
-	wins?.forEach((victory) => {
+	wins.forEach((victory) => {
 		if (typeof victory.victory_id === "number") {
-			victories.set(
-				victory.victory_id,
-				victories.has(victory.victory_id)
-					? victories.get(victory.victory_id)! + 1
-					: 1
-			);
+			const current = victories.get(victory.victory_id) ?? 0;
+			victories.set(victory.victory_id, current + 1);
 		}
 	});
 
 	// Add names
-	const victoriesArr: Array<{
+	const victoriesArr: {
 		victoryId: number;
 		victoryType: string;
 		wins: number;
-	}> = await Promise.all(
+	}[] = await Promise.all(
 		Array.from(victories).map(async ([victoryId, wins]) => {
-			const name = (await fetchVictoryById(victoryId))?.type || "";
+			const name = (await fetchVictoryById(victoryId)).type;
 
 			return {
 				victoryId: victoryId,
@@ -285,7 +268,7 @@ export async function updateGame(
 		);
 		if (!winner) throw new ValidationError("Finished games need a winner");
 
-		if (winner!.leaderId !== game.winnerLeaderId)
+		if (winner.leaderId !== game.winnerLeaderId)
 			throw new ValidationError("Finished games need a winner");
 	}
 
@@ -293,7 +276,7 @@ export async function updateGame(
 	let winnerCivilizationId;
 	if (game.finished && game.winnerLeaderId)
 		winnerCivilizationId = (await fetchLeaderById(game.winnerLeaderId))
-			?.civilization_id;
+			.civilization_id;
 
 	const update = {
 		id: gameId,
@@ -306,8 +289,8 @@ export async function updateGame(
 		turns: game.turns,
 		winner_player: game.winnerPlayer,
 		winner_leader_id: game.winnerLeaderId,
-		winner_civilization_id: winnerCivilizationId || undefined,
-		victory_id: game.victoryId || undefined,
+		winner_civilization_id: winnerCivilizationId ?? undefined,
+		victory_id: game.victoryId ?? undefined,
 	} as TablesUpdate<"game">;
 
 	const updatedGame = await updateGameById(update);
@@ -315,18 +298,24 @@ export async function updateGame(
 	// Delete & re-create player, expansion, and gamemode
 	await Promise.all([
 		removeGamePlayerByGameId(gameId),
-		game.expansions ? await removeGameExpansionByGameId(gameId) : null,
-		game.gamemodes ? await removeGameGamemodesByGameId(gameId) : null,
+		async () => {
+			if (game.expansions) await removeGameExpansionByGameId(gameId);
+		},
+		async () => {
+			if (game.gamemodes) await removeGameGamemodesByGameId(gameId);
+		},
 	]);
 
 	await Promise.all([
 		createGamePlayers(gameId, game.players),
-		game.expansions
-			? await createGameExpansions(gameId, game.expansions)
-			: null,
-		game.gamemodes
-			? await createGameGamemodes(gameId, game.gamemodes)
-			: null,
+		async () => {
+			if (game.expansions)
+				await createGameExpansions(gameId, game.expansions);
+		},
+		async () => {
+			if (game.gamemodes)
+				await createGameGamemodes(gameId, game.gamemodes);
+		},
 	]);
 
 	return updatedGame;
@@ -335,9 +324,10 @@ export async function updateGame(
 export async function fetchAllGamesByPlayer(player: string) {
 	const games = await getAllGamesPlayedByPlayer(player);
 
-	if (!games) throw new AppError("No games for player found", 404, "");
+	if (games.length === 0)
+		throw new AppError("No games for player found", 404, "");
 
-	const gameIds: Array<string> = games.map((game) => {
+	const gameIds: string[] = games.map((game) => {
 		return game.game.id;
 	});
 

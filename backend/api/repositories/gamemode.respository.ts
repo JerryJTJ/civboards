@@ -6,10 +6,10 @@ export async function getGamemodeById(id: number) {
 		.from("gamemode")
 		.select("id, name")
 		.eq("id", id)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get gamemode from id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -21,7 +21,7 @@ export async function getAllGamemodes() {
 		.order("id", { ascending: true });
 
 	if (error) throw new DatabaseError("Failed to get all gamemodes", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }

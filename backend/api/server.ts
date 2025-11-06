@@ -17,7 +17,7 @@ import UserRouter from "./routes/user.routes";
 import checkJwt from "./middlewares/auth/checkJwt";
 
 //Supabase connection
-const PORT = process.env.PORT || 5050;
+const PORT = process.env.PORT ?? 5050;
 
 const SUPABASE_URL = process.env.SUPABASE_URL;
 // const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
@@ -65,9 +65,9 @@ app.get("/ping", (_req: express.Request, res: express.Response) => {
 //Error handlers (must be last)
 app.use(errorHandler);
 
-app.listen(PORT, () =>
+app.listen(PORT, () => {
 	console.log(
 		new Date().toLocaleTimeString() +
-			`: Server is running on port ${PORT}...`
-	)
-);
+			`: Server is running on port ${PORT.toString()}...`
+	);
+});

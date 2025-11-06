@@ -1,9 +1,5 @@
 import { Tables, TablesInsert, TablesUpdate } from "../../interfaces/supabase";
-import {
-	DatabaseError,
-	NotFoundError,
-	ValidationError,
-} from "../../types/Errors";
+import { DatabaseError, ValidationError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function insertGame(
@@ -29,9 +25,8 @@ export async function insertGame(
 		.select();
 
 	if (error) throw new DatabaseError("Failed to insert game", error);
-	if (!data) throw new NotFoundError();
 
-	return data![0];
+	return data[0];
 }
 
 export async function doesGameIdExist(id: string) {
@@ -48,19 +43,19 @@ export async function getGameById(id: string) {
 		.eq("active", true)
 		.single();
 
-	if (error || !data) throw new DatabaseError("Failed to get game", error);
+	if (error) throw new DatabaseError("Failed to get game", error);
 
 	return data;
 }
 
-export async function getGamesById(ids: Array<string>) {
+export async function getGamesById(ids: string[]) {
 	const { data, error } = await supabase
 		.from("game")
 		.select()
 		.in("id", ids)
 		.eq("active", true);
 
-	if (error || !data) throw new DatabaseError("Failed to get game", error);
+	if (error) throw new DatabaseError("Failed to get game", error);
 
 	return data;
 }
@@ -71,7 +66,7 @@ export async function getGamesByCreatedBy(createdBy: string) {
 		.select()
 		.eq("created_by", createdBy);
 
-	if (error || !data) throw new DatabaseError("Failed to get games", error);
+	if (error) throw new DatabaseError("Failed to get games", error);
 
 	return data;
 }
@@ -82,8 +77,7 @@ export async function getAllGames() {
 		.select()
 		.eq("active", true);
 
-	if (error || !data)
-		throw new DatabaseError("Failed to get all games", error);
+	if (error) throw new DatabaseError("Failed to get all games", error);
 
 	return data;
 }
@@ -116,7 +110,7 @@ export async function getAllGameWinners() {
 		.eq("active", true)
 		.eq("finished", true);
 
-	if (error || !data) throw new DatabaseError("Failed to get winners", error);
+	if (error) throw new DatabaseError("Failed to get winners", error);
 
 	return data;
 }
@@ -128,7 +122,7 @@ export async function getAllGameWinnerLeaderIds() {
 		.eq("active", true)
 		.eq("finished", true);
 
-	if (error || !data)
+	if (error)
 		throw new DatabaseError("Failed to get game winner leaders", error);
 
 	return data;
@@ -141,7 +135,7 @@ export async function getAllGameWinnerCivilizationIds() {
 		.eq("active", true)
 		.eq("finished", true);
 
-	if (error || !data)
+	if (error)
 		throw new DatabaseError(
 			"Failed to get game winner civiliations",
 			error
@@ -157,8 +151,7 @@ export async function getAllGameVictoryIds() {
 		.eq("active", true)
 		.eq("finished", true);
 
-	if (error || !data)
-		throw new DatabaseError("Failed to get game victories", error);
+	if (error) throw new DatabaseError("Failed to get game victories", error);
 
 	return data;
 }
@@ -173,11 +166,7 @@ export async function updateGameById(game: TablesUpdate<"game">) {
 			.eq("id", id)
 			.select();
 
-		if (error || !data)
-			throw new DatabaseError(
-				"Failed to update game",
-				error || undefined
-			);
+		if (error) throw new DatabaseError("Failed to update game", error);
 
 		return data;
 	}
@@ -199,28 +188,38 @@ export async function getGameWinsByPlayer(winner: string) {
 		.not("winner_leader_id", "is", null)
 		.not("winner_civilization_id", "is", null);
 
-	if (error || !data)
+	if (error)
 		throw new DatabaseError(
 			"Failed to get game wins by winner player",
 			error
 		);
 
-	return data.map((win) => {
-		return {
-			leader: win.leader?.name,
-			civilization: win.civilization?.name,
-		};
-	});
+	return data
+		.map((win) => {
+			return {
+				leader: win.leader?.name,
+				civilization: win.civilization?.name,
+			};
+		})
+		.filter(
+			(win) => win.civilization !== undefined && win.leader !== undefined
+		) as unknown as Promise<
+		{
+			leader: string;
+			civilization: string;
+		}[]
+	>;
 }
 
 export async function hasUserUploaded(user: string): Promise<boolean> {
 	const { data, error } = await supabase
 		.from("game")
-		.select("")
-		.eq("created_by", user);
+		.select("id")
+		.eq("created_by", user)
+		.eq("active", true);
 
 	if (error) throw new DatabaseError("Error", error);
 
-	if (data) return true;
+	if (data.length > 0) return true;
 	return false;
 }

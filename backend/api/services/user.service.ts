@@ -6,26 +6,33 @@ import {
 } from "../repositories/user.repository";
 
 export async function doesUserExist(name: string): Promise<boolean> {
-	const userByName = await getUserByName(name);
-
-	return !(userByName === null);
+	// If user isn't found, it's not a "real" error
+	try {
+		await getUserByName(name);
+		return true;
+	} catch (_e) {
+		return false;
+	}
 }
 
 export async function createUsers(
-	players: Array<{
+	players: {
 		leaderId: number;
 		name: string;
 		isHuman: boolean;
-	}>
+	}[]
 ) {
 	const promises = players.map(async (player) => {
 		// prevent no-name players (ai)
-		if (!player) return;
+		if (!player.name) return;
 
-		const exist = await doesUserExist(player.name.toLocaleLowerCase());
+		const name = player.name.toLocaleLowerCase();
+
+		const exist = await doesUserExist(name);
 		if (exist) return;
+
 		await insertUser({
-			name: player.name.toLocaleLowerCase(),
+			name: name,
 		} as TablesInsert<"user">);
 	});
 

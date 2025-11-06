@@ -32,8 +32,6 @@ export async function handleGetProfileInfoByName(
 	res: Response,
 	next: NextFunction
 ) {
-	if (!req.params) throw new ValidationError("No request id recieved");
-
 	const { name } = req.params;
 
 	try {

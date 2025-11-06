@@ -6,10 +6,10 @@ export async function getVictoryFromId(id: number) {
 		.from("victory")
 		.select("id, type")
 		.eq("id", id)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get victory from id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -21,7 +21,7 @@ export async function getAllVictories() {
 		.order("id", { ascending: true });
 
 	if (error) throw new DatabaseError("Failed to get all victories", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }

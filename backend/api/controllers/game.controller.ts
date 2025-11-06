@@ -44,8 +44,8 @@ async function exportGameObject(game: Tables<"game">) {
 		name: game.name,
 		speed: game.speed,
 		turns: game.turns,
-		victoryId: game.victory_id || undefined,
-		winnerCivilizationId: game.winner_civilization_id || undefined,
+		victoryId: game.victory_id ?? undefined,
+		winnerCivilizationId: game.winner_civilization_id ?? undefined,
 		winnerLeaderId: game.winner_leader_id,
 		winnerPlayer: game.winner_player,
 		players: players,
@@ -59,7 +59,7 @@ async function exportGameObject(game: Tables<"game">) {
 	throw new ValidationError(JSON.stringify(z.treeifyError(validate.error)));
 }
 
-async function exportGameObjects(games: Array<Tables<"game">>) {
+async function exportGameObjects(games: Tables<"game">[]) {
 	const fullGames = await Promise.all(
 		games.map(async (game) => exportGameObject(game))
 	);
@@ -101,11 +101,8 @@ export async function handleGetGameById(
 
 	try {
 		const game = await fetchGameById(id);
-		if (game) {
-			const gameObj = exportGameObject(game);
-			return res.status(200).json(gameObj);
-		}
-		return res.status(404).end();
+		const gameObj = exportGameObject(game);
+		return res.status(200).json(gameObj);
 	} catch (error) {
 		next(error);
 	}
@@ -118,7 +115,7 @@ export async function handleGetAllGames(
 ) {
 	try {
 		const games = await fetchAllGames();
-		if (games) {
+		if (games.length > 0) {
 			const fullGames = await exportGameObjects(games);
 			return res.status(200).json(fullGames);
 		}
@@ -140,7 +137,7 @@ export async function handleGetAllGamesByCreatedBy(
 	try {
 		const games = await fetchGamesByCreatedBy(name);
 
-		if (games) {
+		if (games.length > 0) {
 			const fullGames = await exportGameObjects(games);
 			return res.status(200).json(fullGames);
 		}
@@ -160,11 +157,8 @@ export async function handleGetAllGamesByPlayer(
 
 	try {
 		const games = await fetchAllGamesByPlayer(name);
-		if (games) {
-			const fullGames = await exportGameObjects(games);
-			return res.status(200).json(fullGames);
-		}
-		return res.status(400).end();
+		const fullGames = await exportGameObjects(games);
+		return res.status(200).json(fullGames);
 	} catch (error) {
 		next(error);
 	}
@@ -250,7 +244,6 @@ export async function handleUpdateGame(
 	res: Response,
 	next: NextFunction
 ) {
-	if (!req.params) throw new ValidationError("No request id recieved");
 	if (!req.body) throw new ValidationError("No request body recieved");
 
 	const { id } = req.params;

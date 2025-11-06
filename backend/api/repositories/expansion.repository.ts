@@ -6,11 +6,11 @@ export async function getExpansionByCode(code: string) {
 		.from("expansion")
 		.select("id, name")
 		.eq("code", code)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error)
 		throw new DatabaseError("Failed to get expansion by code", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -20,10 +20,10 @@ export async function getExpansionById(id: number) {
 		.from("expansion")
 		.select("id, name")
 		.eq("id", id)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get expansion by id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -35,7 +35,7 @@ export async function getAllExpansions() {
 		.order("id", { ascending: true });
 
 	if (error) throw new DatabaseError("Failed to get all expansions", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }

@@ -20,9 +20,9 @@ export class DatabaseError extends AppError {
 
 	constructor(message: string, error: PostgrestError | undefined) {
 		super(message, 400, ERROR_CODES.DATABASE.INVALID_QUERY);
-		this.databaseDetails = error?.details || "";
-		this.databaseMessage = error?.message || "";
-		this.databaseCode = error?.code || "";
+		this.databaseDetails = error?.details ?? "";
+		this.databaseMessage = error?.message ?? "";
+		this.databaseCode = error?.code ?? "";
 	}
 }
 
@@ -35,7 +35,7 @@ export class ValidationError extends AppError {
 export class NotFoundError extends AppError {
 	constructor(message?: string) {
 		super(
-			message || "Resource not found",
+			message ?? "Resource not found",
 			404,
 			ERROR_CODES.DATABASE.NOT_FOUND
 		);
@@ -44,6 +44,6 @@ export class NotFoundError extends AppError {
 
 export class ParseError extends AppError {
 	constructor(message?: string) {
-		super(message || "Failed to parse file", 400, ERROR_CODES.PARSE.FAILED);
+		super(message ?? "Failed to parse file", 400, ERROR_CODES.PARSE.FAILED);
 	}
 }

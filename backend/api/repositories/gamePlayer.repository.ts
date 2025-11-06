@@ -16,13 +16,11 @@ export async function getAllGamePlayers() {
 	if (error)
 		throw new DatabaseError("Failed to get all unique game players", error);
 
-	if (!data) throw new NotFoundError();
-
 	return data;
 }
 
 export async function insertGamePlayers(
-	players: Array<TablesInsert<"game_player">>
+	players: TablesInsert<"game_player">[]
 ) {
 	const { data, error } = await supabase
 		.from("game_player")
@@ -30,8 +28,6 @@ export async function insertGamePlayers(
 		.select();
 
 	if (error) throw new DatabaseError("Failed to insert game players", error);
-
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -44,7 +40,7 @@ export async function getGamePlayersByGameId(gameId: string) {
 
 	if (error)
 		throw new DatabaseError("Failed to get game players by game id", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }
@@ -74,7 +70,7 @@ export async function getProfileInfoByName(name: string) {
 		.eq("is_human", true);
 
 	if (error) throw new DatabaseError("Failed to get profiles", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data.map((play) => {
 		return {
@@ -93,7 +89,6 @@ export async function getAllGamesPlayedByPlayer(name: string) {
 		.eq("is_human", true);
 
 	if (error) throw new DatabaseError("Failed to get games", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }

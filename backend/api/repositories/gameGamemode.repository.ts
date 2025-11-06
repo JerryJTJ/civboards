@@ -1,9 +1,9 @@
 import { TablesInsert } from "../../interfaces/supabase";
-import { DatabaseError, NotFoundError } from "../../types/Errors";
+import { DatabaseError } from "../../types/Errors";
 import { supabase } from "../server";
 
 export async function insertGamemodes(
-	gamemodes: Array<TablesInsert<"game_gamemode">>
+	gamemodes: TablesInsert<"game_gamemode">[]
 ) {
 	const { data, error } = await supabase
 		.from("game_gamemode")
@@ -11,7 +11,6 @@ export async function insertGamemodes(
 		.select();
 
 	if (error) throw new DatabaseError("Failed to insert game gamemode", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -27,7 +26,6 @@ export async function getGameGamemodesByGameId(gameId: string) {
 			"Failed to get game gamemodes by game id",
 			error
 		);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }

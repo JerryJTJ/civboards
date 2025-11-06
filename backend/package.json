@@ -7,7 +7,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"dev": "npx tsx watch --inspect --env-file=config.env api/server.ts",
-		"debug": "npx tsx --inspect --env-file=config.env api/server.ts"
+		"debug": "npx tsx --inspect --env-file=config.env api/server.ts",
+		"lint": "pnpm eslint .",
+		"build": "npx tsc"
 	},
 	"keywords": [],
 	"author": "Jerry Ju",

@@ -6,7 +6,8 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "pnpm i && pnpm --filter ./frontend --filter ./backend --filter ./packages/* run build",
-		"dev": "pnpm --filter ./packages/* run build && pnpm --filter ./frontend --filter ./backend run dev"
+		"dev": "pnpm --filter ./packages/* run build && pnpm --filter ./frontend --filter ./backend run dev",
+		"lint": "pnpm eslint ."
 	},
 	"keywords": [],
 	"author": "",

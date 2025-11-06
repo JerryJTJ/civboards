@@ -7,10 +7,10 @@ export async function getLeaderByCode(code: string) {
 		.select("id, name, civilization_id")
 		.eq("code", code)
 		.eq("active", true)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get leader by code", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -21,10 +21,10 @@ export async function getLeaderById(id: number) {
 		.select("id, name, civilization_id")
 		.eq("id", id)
 		.eq("active", true)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error) throw new DatabaseError("Failed to get leader by id", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -35,11 +35,11 @@ export async function getCivilizationIdByLeaderId(id: number) {
 		.select("civilization_id")
 		.eq("id", id)
 		.eq("active", true)
-		.maybeSingle();
+		.limit(1)
+		.single();
 
 	if (error)
 		throw new DatabaseError("Failed to get civilization by leader", error);
-	if (!data) throw new NotFoundError();
 
 	return data;
 }
@@ -52,7 +52,7 @@ export async function getAllLeaders() {
 		.order("name", { ascending: true });
 
 	if (error) throw new DatabaseError("Failed to get all leaders", error);
-	if (!data) throw new NotFoundError();
+	if (data.length === 0) throw new NotFoundError();
 
 	return data;
 }
