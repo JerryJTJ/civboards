@@ -4,10 +4,10 @@ export const siteConfig = {
 	name: "CivBoards",
 	content: "A Civilization 6 leaderboard.",
 	navItems: [
-		{
-			label: "Home",
-			href: "/",
-		},
+		// {
+		// 	label: "Home",
+		// 	href: "/",
+		// },
 		{
 			label: "Games",
 			href: "/games",
@@ -18,39 +18,20 @@ export const siteConfig = {
 		},
 	],
 	navMenuItems: [
+		// {
+		// 	label: "Home",
+		// 	href: "/",
+		// },
 		{
-			label: "Profile",
-			href: "/profile",
+			label: "Games",
+			href: "/games",
 		},
 		{
-			label: "Dashboard",
-			href: "/dashboard",
-		},
-		{
-			label: "Projects",
-			href: "/projects",
-		},
-		{
-			label: "Team",
-			href: "/team",
-		},
-		{
-			label: "Calendar",
-			href: "/calendar",
-		},
-		{
-			label: "Settings",
-			href: "/settings",
-		},
-		{
-			label: "Help & Feedback",
-			href: "/help-feedback",
-		},
-		{
-			label: "Logout",
-			href: "/logout",
+			label: "Leaderboard",
+			href: "/leaderboard",
 		},
 	],
+
 	links: {
 		github: "https://github.com/JerryJTJ/civboards",
 	},

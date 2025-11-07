@@ -1,0 +1,29 @@
+import { useAuth0 } from "@auth0/auth0-react";
+import { Button } from "@heroui/button";
+
+import getViewportSize from "../utils/getViewportSize";
+
+import useWindowDimensions from "@/hooks/useWindowDimensions";
+
+const LogoutButton = () => {
+	const { logout } = useAuth0();
+	const { width } = useWindowDimensions();
+
+	return (
+		<Button
+			className="border border-white/20"
+			color="default"
+			size={getViewportSize(width) === "xs" ? "sm" : "md"}
+			variant="shadow"
+			onPress={() => {
+				void logout({
+					logoutParams: { returnTo: window.location.origin },
+				});
+			}}
+		>
+			Log Out
+		</Button>
+	);
+};
+
+export default LogoutButton;

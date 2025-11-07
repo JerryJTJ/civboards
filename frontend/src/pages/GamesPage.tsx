@@ -1,79 +1,90 @@
-import { Card, CardBody, CardFooter } from "@heroui/card";
-import { Image } from "@heroui/image";
-import DefaultLayout from "@/layouts/default";
-import GamesCard from "@/components/GamesCard";
-import { Tabs, Tab } from "@heroui/tabs";
 import React from "react";
-import GamesTable from "@/components/GamesTable";
-import { PlusIcon } from "@/components/icons";
 import { Button, ButtonGroup } from "@heroui/button";
-import AddGameModal from "@/components/AddGameModal";
-import { games } from "@/constants/mockData";
+import { ScrollShadow } from "@heroui/scroll-shadow";
+import { useQuery } from "@tanstack/react-query";
 
-enum TabView {
-	Cards,
-	Table,
-}
+import DefaultLayout from "@/layouts/default";
+import GamesCard from "@/components/games/GamesCard";
+import GamesTable from "@/components/games/GamesTable";
+import AddGameModal from "@/components/forms/AddGameModal";
+import LoadingSpinner from "@/components/LoadingSpinner";
+import { useGamesAPI } from "@/api/games";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
+import getViewportSize from "@/components/utils/getViewportSize";
+
+type TabView = "cards" | "table";
 
 export default function GamesPage() {
-	const [currTab, setCurrTab] = React.useState<TabView>(TabView.Cards);
+	const [currTab, setCurrTab] = React.useState<TabView>("cards");
+	const { width } = useWindowDimensions();
+
+	const { getAllGames } = useGamesAPI();
+	const { data, isPending, refetch } = useQuery({
+		queryKey: ["games"],
+		queryFn: getAllGames,
+	});
 
 	return (
 		<DefaultLayout>
 			<div className="flex flex-col w-full">
-				<div className="grid grid-cols-2 pb-4 lg:pb-0">
-					<ButtonGroup className="justify-self-start ">
+				<div className="grid grid-cols-2 pb-4">
+					<ButtonGroup
+						className="justify-self-start "
+						size={getViewportSize(width) === "xs" ? "sm" : "md"}
+					>
 						<Button
-							className="border-white/20 border-1"
+							className="border border-white/20"
+							color={currTab === "cards" ? "primary" : "default"}
 							variant="shadow"
 							onPress={() => {
-								setCurrTab(TabView.Cards);
+								setCurrTab("cards");
 							}}
-							color={
-								currTab === TabView.Cards
-									? "primary"
-									: "default"
-							}
 						>
 							Cards
 						</Button>
 						<Button
-							className=" border-white/20 border-1"
+							className="border border-white/20"
+							color={currTab === "table" ? "primary" : "default"}
 							variant="shadow"
 							onPress={() => {
-								setCurrTab(TabView.Table);
+								setCurrTab("table");
 							}}
-							color={
-								currTab === TabView.Table
-									? "primary"
-									: "default"
-							}
 						>
 							Table
 						</Button>
 					</ButtonGroup>
-					<AddGameModal />
+					{getViewportSize(width) === "xs" ? null : <AddGameModal />}
 				</div>
+				{/* Janky formatting to keep buttons positioned while loading */}
+				{isPending && <LoadingSpinner height={20} />}
 
-				<div className="flex flex-row justify-self-center items-center gap-4 h-[65vh] py-8 h-9/10 md:py-10 scroll-smooth snap-mandatory md:gap-10 lg:h-[80vh] w-full overflow-y-hidden">
-					{currTab === TabView.Cards ? (
-						<>
-							{" "}
-							{games.map((game) => (
-								<GamesCard
-									key={`${game.uuid}-card`}
-									game={game}
+				{!isPending && (
+					<>
+						{currTab === "cards" ? (
+							<ScrollShadow
+								className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
+								orientation="horizontal"
+								size={20}
+							>
+								{data?.map((game) => (
+									<GamesCard
+										key={`${game.id}-card`}
+										game={game}
+										refetch={refetch}
+									/>
+								))}
+							</ScrollShadow>
+						) : null}
+						{currTab === "table" ? (
+							<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
+								<GamesTable
+									games={data ?? []}
+									refetch={refetch}
 								/>
-							))}
-						</>
-					) : null}
-					{currTab === TabView.Table ? (
-						<>
-							{" "}
-							<GamesTable games={games} />
-						</>
-					) : null}
-				</div>
+							</div>
+						) : null}
+					</>
+				)}
 			</div>
 		</DefaultLayout>
 	);

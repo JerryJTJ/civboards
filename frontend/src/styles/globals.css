@@ -1,3 +1,117 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+/* @plugin './hero.ts'; */
+/* Note: You may need to change the path to fit your project structure */
+/* @source '../../node_modules/@heroui/theme/dist*.{js,ts,jsx,tsx}'; */
+/* @custom-variant dark (&:is(.dark *)); */
+
+/* @theme {
+	--default-light-50: #f6f5f4;
+	--default-light-100: #e9e7e5;
+	--default-light-200: #dbd9d6;
+	--default-light-300: #cecbc6;
+	--default-light-400: #c1bdb7;
+	--default-light-500: #b4afa8;
+	--default-light-600: #95908b;
+	--default-light-700: #75726d;
+	--default-light-800: #565350;
+	--default-light-900: #363532;
+	--default-light-foreground: #000;
+	--default-light: #b4afa8;
+
+	--primary-light-50: #fbf1e9;
+	--primary-light-100: #f4dec9;
+	--primary-light-200: #eecbaa;
+	--primary-light-300: #e8b88a;
+	--primary-light-400: #e1a56b;
+	--primary-light-500: #db924b;
+	--primary-light-600: #b5783e;
+	--primary-light-700: #8e5f31;
+	--primary-light-800: #684524;
+	--primary-light-900: #422c17;
+	--primary-light-foreground: #000;
+	--primary-light: #db924b;
+
+	--secondary-light-50: #eaf0f0;
+	--secondary-light-100: #cedadb;
+	--secondary-light-200: #b1c5c6;
+	--secondary-light-300: #94afb0;
+	--secondary-light-400: #779a9b;
+	--secondary-light-500: #5a8486;
+	--secondary-light-600: #4a6d6f;
+	--secondary-light-700: #3b5657;
+	--secondary-light-800: #2b3f40;
+	--secondary-light-900: #1b2828;
+	--secondary-light-foreground: #000;
+	--secondary-light: #5a8486;
+
+	--success-light-50: #f3f6f0;
+	--success-light-100: #e2e9db;
+	--success-light-200: #d0ddc6;
+	--success-light-300: #bfd0b1;
+	--success-light-400: #aec49c;
+	--success-light-500: #9db787;
+	--success-light-600: #82976f;
+	--success-light-700: #667758;
+	--success-light-800: #4b5740;
+	--success-light-900: #2f3729;
+	--success-light-foreground: #000;
+	--success-light: #9db787;
+
+	--warning-light-50: #fff9eb;
+	--warning-light-100: #fff2cf;
+	--warning-light-200: #ffeab3;
+	--warning-light-300: #ffe297;
+	--warning-light-400: #ffda7b;
+	--warning-light-500: #ffd25f;
+	--warning-light-600: #d2ad4e;
+	--warning-light-700: #a6893e;
+	--warning-light-800: #79642d;
+	--warning-light-900: #4d3f1d;
+	--warning-light-foreground: #000;
+	--warning-light: #ffd25f;
+
+	--danger-light-50: #fff2ef;
+	--danger-light-100: #fedfd9;
+	--danger-light-200: #fecdc3;
+	--danger-light-300: #fdbaad;
+	--danger-light-400: #fda897;
+	--danger-light-500: #fc9581;
+	--danger-light-600: #d07b6a;
+	--danger-light-700: #a46154;
+	--danger-light-800: #78473d;
+	--danger-light-900: #4c2d27;
+	--danger-light-foreground: #000;
+	--danger-light: #fc9581;
+
+	--background-light: #faecdb;
+
+	--foreground-light-50: #e2e2e2;
+	--foreground-light-100: #bababa;
+	--foreground-light-200: #929292;
+	--foreground-light-300: #6a6a6a;
+	--foreground-light-400: #424242;
+	--foreground-light-500: #1a1a1a;
+	--foreground-light-600: #151515;
+	--foreground-light-700: #111111;
+	--foreground-light-800: #0c0c0c;
+	--foreground-light-900: #080808;
+	--foreground-light-foreground: #fff;
+	--foreground-light: #1a1a1a;
+
+	--content1-light: #fff2e0;
+	--content1-light-foreground: #000;
+
+	--content2-light: #ffe9cc;
+	--content2-light-foreground: #000;
+
+	--content3-light: #ffe0b8;
+	--content3-light-foreground: #000;
+
+	--content4-light: #ffd7a3;
+	--content4-light-foreground: #000;
+
+	--focus-light: #db924b;
+	--overlay-light: #000000;
+	--divider-light: #111111;
+} */
