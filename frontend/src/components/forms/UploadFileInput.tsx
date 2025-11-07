@@ -41,14 +41,11 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 			labelPlacement="inside"
 			size="md"
 			type="file"
-			onChange={async (e: React.ChangeEvent<HTMLInputElement>) => {
+			onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 				if (e.target.files) {
-					await mutation.mutateAsync(e.target.files[0]);
+					void mutation.mutateAsync(e.target.files[0]);
 				}
 			}}
-			// onClear={() => {
-			// 	reset();
-			// }}
 		/>
 	);
 }

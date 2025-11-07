@@ -16,6 +16,7 @@ import gameFormReducer, { FormAction } from "./gameFormReducer";
 import { GameForm } from "@/interfaces/game.interface";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { useGamesAPI } from "@/api/games";
+import z from "zod";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -36,7 +37,9 @@ export default function AddGameModal() {
 
 			if (!validate.success) throw new ValidationError(validate.message);
 
-			await insertGame(validate.result.data);
+			await insertGame(
+				validate.result.data as z.infer<typeof InsertGameSchema>
+			);
 		},
 		onError: (error) => {
 			if (error instanceof ValidationError) {
@@ -69,7 +72,7 @@ export default function AddGameModal() {
 			onClose();
 		},
 		onSettled: () => {
-			queryClient.invalidateQueries();
+			void queryClient.invalidateQueries();
 		},
 	});
 

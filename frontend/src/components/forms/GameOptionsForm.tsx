@@ -15,17 +15,31 @@ import {
 	Gamemode,
 } from "@/constants/gameSettings";
 
-interface GameOptionsFormProps {
-	enabled: boolean;
-	form: GameForm;
-	dispatch: (
-		option: string,
-		value: string | number | Set<number> | boolean
-	) => void;
-}
+type GameOptionsFormProps =
+	| {
+			enabled: true;
+			form: GameForm;
+			dispatch: (
+				option: string,
+				value: string | number | Set<number> | boolean
+			) => void;
+	  }
+	| {
+			enabled: false;
+			form: GameForm;
+	  };
+
+// interface GameOptionsFormProps {
+// 	enabled: boolean;
+// 	form: GameForm;
+// 	dispatch: (
+// 		option: string,
+// 		value: string | number | Set<number> | boolean
+// 	) => void;
+// }
 
 function GameOptionsForm(props: GameOptionsFormProps) {
-	const { enabled, form, dispatch } = props;
+	const { enabled, form } = props;
 
 	return (
 		<div className="flex flex-col gap-2">
@@ -33,7 +47,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				isDisabled={!enabled}
 				isSelected={form.finished}
 				onValueChange={() => {
-					dispatch("finished", !form.finished);
+					if (enabled) props.dispatch("finished", !form.finished);
 				}}
 			>
 				<p className="font-normal text-small text-foreground-500">
@@ -44,10 +58,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				isDisabled={!enabled}
 				isRequired={enabled}
 				label="Game Name"
-				maxLength={20}
+				maxLength={30}
 				value={form.name}
 				variant="bordered"
-				onValueChange={(val: string) => dispatch("name", val)}
+				onValueChange={(val: string) => {
+					if (enabled) props.dispatch("name", val);
+				}}
 			/>
 			{form.finished && (
 				<>
@@ -63,9 +79,10 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						label="Winner"
 						selectionMode="single"
 						variant="bordered"
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-							dispatch("winner", e.target.value)
-						}
+						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							if (enabled)
+								props.dispatch("winner", e.target.value);
+						}}
 					>
 						{(player) =>
 							player.name ? (
@@ -86,9 +103,10 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						items={VICTORY_TYPES}
 						label="Victory Type"
 						variant="bordered"
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-							dispatch("victoryId", e.target.value)
-						}
+						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							if (enabled)
+								props.dispatch("victoryId", e.target.value);
+						}}
 					>
 						{(victory) => (
 							<SelectItem key={victory.id}>
@@ -106,9 +124,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				label="Game Speed"
 				selectedKeys={new Set([form.speed])}
 				variant="bordered"
-				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-					dispatch("speed", e.target.value)
-				}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+					if (enabled) props.dispatch("speed", e.target.value);
+				}}
 			>
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
 			</Select>
@@ -119,9 +137,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				maxLength={20}
 				value={form.map}
 				variant="bordered"
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-					dispatch("map", e.target.value)
-				}
+				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+					if (enabled) props.dispatch("map", e.target.value);
+				}}
 			/>
 			<Select
 				isDisabled={!enabled}
@@ -130,9 +148,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				label="Map Size"
 				selectedKeys={new Set([form.mapSize])}
 				variant="bordered"
-				onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-					dispatch("mapSize", e.target.value)
-				}
+				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+					if (enabled) props.dispatch("mapSize", e.target.value);
+				}}
 			>
 				{(size) => <SelectItem>{size.size}</SelectItem>}
 			</Select>
@@ -146,7 +164,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				minValue={0}
 				value={form.turns}
 				variant="bordered"
-				onValueChange={(val: number) => dispatch("turns", val)}
+				onValueChange={(val: number) => {
+					if (enabled) props.dispatch("turns", val);
+				}}
 			/>
 			<Select
 				classNames={{
@@ -171,10 +191,11 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				selectionMode="multiple"
 				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-					dispatch(
-						"expansions",
-						new Set(e.target.value.split(",").map(Number))
-					);
+					if (enabled)
+						props.dispatch(
+							"expansions",
+							new Set(e.target.value.split(",").map(Number))
+						);
 				}}
 			>
 				{(expansion) => (
@@ -206,10 +227,11 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				selectionMode="multiple"
 				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-					dispatch(
-						"gamemodes",
-						new Set(e.target.value.split(",").map(Number))
-					);
+					if (enabled)
+						props.dispatch(
+							"gamemodes",
+							new Set(e.target.value.split(",").map(Number))
+						);
 				}}
 			>
 				{(gamemode) => (

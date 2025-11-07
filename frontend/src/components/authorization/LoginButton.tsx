@@ -15,7 +15,9 @@ const LoginButton = () => {
 			color="primary"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
 			variant="shadow"
-			onPress={async () => await loginWithRedirect()}
+			onPress={() => {
+				void loginWithRedirect();
+			}}
 		>
 			Log In
 		</Button>

@@ -77,7 +77,10 @@ export default function GamesPage() {
 						) : null}
 						{currTab === "table" ? (
 							<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
-								<GamesTable games={data!} refetch={refetch} />
+								<GamesTable
+									games={data ?? []}
+									refetch={refetch}
+								/>
 							</div>
 						) : null}
 					</>

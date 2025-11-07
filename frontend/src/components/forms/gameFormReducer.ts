@@ -1,12 +1,12 @@
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { MAP_SIZE } from "@/constants/gameSettings";
 import { Civ, GameForm } from "@/interfaces/game.interface";
-("");
-const generateNewPlayer = (isHuman: boolean | undefined) => ({
+
+const generateNewPlayer = (isHuman: boolean) => ({
 	id: crypto.randomUUID(),
 	name: "",
 	leaderId: undefined,
-	isHuman: isHuman === undefined ? true : isHuman,
+	isHuman: isHuman,
 });
 
 export type GameOptionsAction = {
@@ -35,7 +35,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 	switch (action.field) {
 		case "player":
 			switch (action.type) {
-				case "add":
+				case "add": {
 					const currMapSize = MAP_SIZE.find(
 						(mapSize) => mapSize.key === form.mapSize
 					);
@@ -50,6 +50,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 							generateNewPlayer(action.payload),
 						],
 					};
+				}
 				case "delete":
 					return {
 						...form,
@@ -103,7 +104,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						...form,
 						map: action.payload,
 					};
-				case "mapSize":
+				case "mapSize": {
 					const mapSize = MAP_SIZE.find(
 						(size) => size.key === action.payload
 					);
@@ -127,8 +128,9 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 					return {
 						...form,
 						players: players,
-						mapSize: mapSize?.key || action.payload,
+						mapSize: mapSize?.key ?? action.payload,
 					};
+				}
 				case "turns":
 					return {
 						...form,
@@ -152,7 +154,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 				default:
 			}
 			break;
-		case "parse":
+		case "parse": {
 			const players = action.payload.players?.map((player) => ({
 				...player,
 				id: crypto.randomUUID(),
@@ -165,6 +167,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 			} as GameForm;
 
 			return parsed;
+		}
 		case "reset":
 			return action.payload;
 	}

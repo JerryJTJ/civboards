@@ -18,7 +18,7 @@ import { SearchIcon } from "./icons";
 import { LeaderboardView } from "@/pages/LeaderboardPage";
 import { capitalize } from "@/utils/capitalize";
 
-const columns: Array<{ key: string; name: string; sortable: boolean }> = [
+const columns: { key: string; name: string; sortable: boolean }[] = [
 	{
 		key: "player",
 		name: "PLAYER",
@@ -46,14 +46,17 @@ const columns: Array<{ key: string; name: string; sortable: boolean }> = [
 	},
 ];
 
-type LeaderboardEntry = { label: string; wins: number };
+interface LeaderboardEntry {
+	label: string;
+	wins: number;
+}
 
 interface LeaderboardProps {
 	view: LeaderboardView;
-	leaderboardData: Array<LeaderboardEntry>;
+	leaderboardData: LeaderboardEntry[];
 }
 
-function getPodiumScores(entries: Array<{ label: string; wins: number }>) {
+function getPodiumScores(entries: { label: string; wins: number }[]) {
 	//Function used to find the scores necessary for podium placement
 	const scores = new Set<number>();
 
@@ -99,7 +102,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 	const sortedItems = React.useMemo(() => {
 		return [...leaderboardData].sort(
 			(a: LeaderboardEntry, b: LeaderboardEntry) => {
-				let cmp: number = 0;
+				let cmp = 0;
 
 				switch (sortDescriptor.column) {
 					case "player":
@@ -218,7 +221,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		const prefix = filterValue ? "Filtered" : "Total";
 		const suffix = filteredItems.length === 1 ? "entry" : "entries";
 
-		return `${prefix} ${filteredItems.length} ${suffix}`;
+		return `${prefix} ${filteredItems.length.toString()} ${suffix}`;
 	}, [filterValue, filteredItems.length]);
 
 	const topContent = React.useMemo(() => {
@@ -231,7 +234,9 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 						placeholder="Search"
 						startContent={<SearchIcon />}
 						value={filterValue}
-						onClear={() => onClear()}
+						onClear={() => {
+							onClear();
+						}}
 						onValueChange={onSearchChange}
 					/>
 					<div className="flex gap-3">

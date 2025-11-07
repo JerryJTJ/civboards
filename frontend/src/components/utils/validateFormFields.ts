@@ -6,17 +6,17 @@ export type ValidateFormResult =
 	| { success: false; message: string }
 	| {
 			success: true;
-			result: z.ZodSafeParseSuccess<any>;
+			result: z.ZodSafeParseSuccess<Record<string, unknown>>;
 	  };
 
 export function validateFormFields(
 	form: GameForm,
-	schema: z.ZodObject<{}>,
+	schema: z.ZodObject,
 	gameId?: string
 ): ValidateFormResult {
 	// Unique player names & >= 2 humans
 	const names = new Set<string>();
-	let humans: number = 0;
+	let humans = 0;
 
 	form.players.forEach((player) => {
 		if (player.isHuman) {

@@ -22,41 +22,53 @@ export function getFormDispatches(
 	dispatch: React.ActionDispatch<[action: FormAction]>,
 	form: GameForm
 ): FormDispatches {
-	const resetFormDispatch = (form: GameForm) =>
+	const resetFormDispatch = (form: GameForm) => {
 		dispatch({ field: "reset", payload: form });
+	};
 
 	const gameOptionsDispatch = (
 		option: string,
 		value: string | number | Set<number> | boolean
-	) =>
+	) => {
 		dispatch({
 			field: "options",
 			option: option,
 			payload: value,
 		} as GameOptionsAction);
+	};
 
 	const addCivDispatch = (isHuman: boolean) => {
 		const currMapSize = MAP_SIZE.find(
 			(mapSize) => mapSize.key === form.mapSize
 		);
 
-		if (form.players.length >= currMapSize?.players.max!) {
+		if (currMapSize) {
+			if (form.players.length >= currMapSize.players.max) {
+				addToast({
+					title: "Error",
+					color: "warning",
+					description: `${currMapSize.size} maps have a maximum of ${currMapSize.players.max.toString()} players`,
+					timeout: 3000,
+					shouldShowTimeoutProgress: true,
+				});
+
+				return;
+			}
+			dispatch({
+				field: "player",
+				type: "add",
+				payload: isHuman,
+			});
+		} else {
 			addToast({
 				title: "Error",
 				color: "warning",
-				description: `${currMapSize!.size} maps have a maximum of ${currMapSize!.players.max} players`,
+				description: "No map size selected",
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
-
 			return;
 		}
-
-		dispatch({
-			field: "player",
-			type: "add",
-			payload: isHuman,
-		});
 	};
 
 	const deleteCivDispatch = (civ: Civ) => {
@@ -74,10 +86,12 @@ export function getFormDispatches(
 		dispatch({ field: "player", type: "delete", payload: civ });
 	};
 
-	const changeCivDispatch = (civ: Partial<Civ>) =>
+	const changeCivDispatch = (civ: Partial<Civ>) => {
 		dispatch({ field: "player", type: "change", payload: civ });
-	const parseSaveDispatch = (parsed: Partial<GameForm>) =>
+	};
+	const parseSaveDispatch = (parsed: Partial<GameForm>) => {
 		dispatch({ field: "parse", payload: parsed });
+	};
 
 	return {
 		resetFormDispatch,

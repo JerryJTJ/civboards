@@ -20,8 +20,10 @@ interface UpdateGameModalProps {
 		onClose: () => void;
 		onOpenChange: () => void;
 		isControlled: boolean;
-		getButtonProps: (props?: any) => any;
-		getDisclosureProps: (props?: any) => any;
+		getButtonProps: (props?: any) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
+		getDisclosureProps: (props?: any) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
+		// The disclosure is from useDisclosure hook from HeroUI
+		// It's internally typed as any so
 	};
 	game: z.infer<typeof DisplayGameSchema>;
 }
@@ -35,9 +37,9 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 	const gameForm: GameForm = {
 		...game,
-		winner: winner || "",
+		winner: winner ?? "",
 		date: Date.parse(game.date),
-		victoryId: game.victoryId || undefined,
+		victoryId: game.victoryId ?? undefined,
 		expansions: new Set(game.expansions),
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
@@ -62,7 +64,9 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 			if (!validate.success) throw new ValidationError(validate.message);
 
-			await updateGame(validate.result.data);
+			await updateGame(
+				validate.result.data as z.infer<typeof UpdateGameSchema>
+			);
 		},
 		onError: (error) => {
 			if (error instanceof ValidationError) {
@@ -95,7 +99,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 			disclosure.onOpenChange();
 		},
 		onSettled: () => {
-			queryClient.invalidateQueries();
+			void queryClient.invalidateQueries();
 		},
 	});
 

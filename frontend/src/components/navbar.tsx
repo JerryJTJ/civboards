@@ -128,7 +128,9 @@ export default function Navbar() {
 				<div className="flex flex-col gap-2 mx-4 mt-2">
 					<p className="text-small text-primary">Pages</p>
 					{siteConfig.navMenuItems.map((item, index) => (
-						<NavbarMenuItem key={`${item}-${index}`}>
+						<NavbarMenuItem
+							key={`${item.label}-${index.toString()}`}
+						>
 							<Link
 								color="foreground"
 								// color={

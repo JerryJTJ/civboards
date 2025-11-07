@@ -10,7 +10,7 @@ export async function doesUserExist(name: string): Promise<boolean> {
 	try {
 		await getUserByName(name);
 		return true;
-	} catch (_e) {
+	} catch {
 		return false;
 	}
 }

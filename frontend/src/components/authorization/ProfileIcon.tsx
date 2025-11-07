@@ -15,16 +15,16 @@ const ProfileIcon = () => {
 		<Skeleton isLoaded={isAuthenticated}>
 			<Link
 				className="flex flex-row items-center gap-3 rounded-xl"
-				href={`profile/${user?.username}`}
+				href={`profile/${user?.username as string}`}
 				title="Profile"
 			>
 				<Avatar
 					isBordered
 					isFocusable
 					showFallback
-					name={user?.name}
+					name={user ? user.name : ""}
 					size={getViewportSize(width) === "xs" ? "sm" : "md"}
-					src={user?.profile_pic}
+					src={user ? (user.profile_pic as string) : ""}
 				/>
 				<h2>{user?.username}</h2>
 			</Link>

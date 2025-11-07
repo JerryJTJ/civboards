@@ -18,7 +18,7 @@ export const InsertGameSchema = z
 	.object({
 		finished: z.boolean(),
 		createdBy: z.string(),
-		name: z.string(),
+		name: z.string().max(100),
 		date: z.string().optional(),
 		map: z.string(),
 		mapSize: z.string(),

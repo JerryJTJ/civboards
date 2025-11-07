@@ -18,10 +18,11 @@ export async function getProfile(
 
 		if (response.status === 200) {
 			const validate = ProfileSchema.safeParse(response.data);
+
 			if (validate.success) return validate.data;
 		}
-	} catch (error) {
-		console.error(`Failed to get profile ${username}`);
+	} catch {
+		// console.error(`Failed to get profile ${username}`);
 	}
 
 	throw new Error(`Failed to get profile ${username}`);
@@ -38,10 +39,11 @@ export async function getGamesByPlayer(
 
 		if (response.status === 200) {
 			const validate = DisplayGameSchemaArray.safeParse(response.data);
+
 			if (validate.success) return validate.data;
 		}
-	} catch (error) {
-		console.error(`Failed to get games for ${username}`);
+	} catch {
+		// console.error(`Failed to get games for ${username}`);
 	}
 
 	return [] as z.infer<typeof DisplayGameSchema>[];
@@ -58,10 +60,11 @@ export async function getGamesByUploader(
 
 		if (response.status === 200) {
 			const validate = DisplayGameSchemaArray.safeParse(response.data);
+
 			if (validate.success) return validate.data;
 		}
 	} catch {
-		console.error(`Failed to get games for ${username}`);
+		// console.error(`Failed to get games for ${username}`);
 	}
 
 	return [] as z.infer<typeof DisplayGameSchema>[];
@@ -75,9 +78,9 @@ export async function getAllUsers(): Promise<{ name: string }[]> {
 		});
 
 		if (response.status === 200)
-			return response.data as Array<{ name: string }>;
-	} catch (error) {
-		console.error("Failed to get users");
+			return response.data as { name: string }[];
+	} catch {
+		// console.error("Failed to get users");
 	}
 
 	return [] as { name: string }[];

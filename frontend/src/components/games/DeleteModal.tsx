@@ -24,12 +24,9 @@ interface DeleteModalProps {
 	isOpen: boolean;
 	onOpenChange: () => void;
 	refetch: (
-		options?: RefetchOptions | undefined
+		options?: RefetchOptions
 	) => Promise<
-		QueryObserverResult<
-			z.infer<typeof DisplayGameSchemaArray> | undefined,
-			Error
-		>
+		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
 	>;
 }
 
@@ -59,9 +56,9 @@ export default function DeleteModal(props: DeleteModalProps) {
 				shouldShowTimeoutProgress: true,
 			});
 		},
-		onSettled: () => {
+		onSettled: async () => {
 			setLoading(false);
-			refetch();
+			await refetch();
 		},
 	});
 
@@ -75,10 +72,20 @@ export default function DeleteModal(props: DeleteModalProps) {
 					<Button
 						color="danger"
 						isLoading={loading}
-						onPress={async () => {
+						onPress={() => {
 							setLoading(true);
-							await mutation.mutateAsync(gameId);
-							onOpenChange();
+							mutation
+								.mutateAsync(gameId)
+								.then(onOpenChange)
+								.catch(() => {
+									addToast({
+										title: "Error",
+										color: "warning",
+										description: "Failed to delete game",
+										timeout: 3000,
+										shouldShowTimeoutProgress: true,
+									});
+								});
 						}}
 					>
 						Delete

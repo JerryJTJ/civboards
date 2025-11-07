@@ -29,7 +29,7 @@ interface AddModalProps {
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onClose: () => void;
-	mutation: UseMutationResult<void, Error, void, unknown>;
+	mutation: UseMutationResult<void, Error, void>;
 }
 
 interface UpdateModalProps {
@@ -38,7 +38,7 @@ interface UpdateModalProps {
 	dispatch: React.ActionDispatch<[action: FormAction]>;
 	isOpen: boolean;
 	onClose: () => void;
-	mutation: UseMutationResult<void, Error, void, unknown>;
+	mutation: UseMutationResult<void, Error, void>;
 }
 
 interface ViewGameProps {
@@ -90,55 +90,55 @@ export default function GameModal(props: GameModalProps) {
 
 		setLoading(true);
 
-		dispatches?.gameOptionsDispatch("createdBy", user?.username || "");
-		await props.mutation.mutateAsync();
+		dispatches?.gameOptionsDispatch(
+			"createdBy",
+			user ? (user.username as string) : ""
+		);
+		try {
+			await props.mutation.mutateAsync();
+		} catch {
+			// TODO: Add logging
+		}
 		setLoading(false);
 	};
 
 	// Content
 	const civFields = useMemo(() => {
+		const display = enabled
+			? dispatches
+				? form.players.map((civ: Civ) => (
+						<CivField
+							key={civ.id}
+							changeDispatch={dispatches.changeCivDispatch}
+							civ={civ}
+							deleteDispatch={dispatches.deleteCivDispatch}
+							enabled={enabled}
+						/>
+					))
+				: null
+			: form.players.map((civ: Civ) => (
+					<CivField key={civ.id} civ={civ} enabled={enabled} />
+				));
+
 		return (
 			<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh] ">
-				{form.players.map((civ: Civ) => (
-					<CivField
-						key={civ.id}
-						changeDispatch={
-							dispatches?.changeCivDispatch ?? (() => {})
-						}
-						civ={civ}
-						deleteDispatch={
-							dispatches?.deleteCivDispatch ?? (() => {})
-						}
-						enabled={enabled}
-					/>
-				))}
-
-				{enabled && (
-					<div className="flex flex-row gap-2 pt-4">
-						<Button
-							onPress={() => dispatches?.addCivDispatch(true)}
-						>
-							Add Human
-						</Button>
-						<Button
-							onPress={() => dispatches?.addCivDispatch(false)}
-						>
-							Add AI
-						</Button>
-					</div>
-				)}
+				{display}
 			</div>
 		);
 	}, [dispatches, enabled, form.players]);
 
 	const gameOptionFields = useMemo(() => {
-		return (
-			<GameOptionsForm
-				dispatch={dispatches?.gameOptionsDispatch ?? (() => {})}
-				enabled={enabled}
-				form={form}
-			/>
-		);
+		if (enabled && dispatches) {
+			return (
+				<GameOptionsForm
+					dispatch={dispatches.gameOptionsDispatch}
+					enabled={enabled}
+					form={form}
+				/>
+			);
+		} else if (!enabled) {
+			return <GameOptionsForm enabled={enabled} form={form} />;
+		}
 	}, [dispatches?.gameOptionsDispatch, enabled, form]);
 
 	return (
@@ -154,7 +154,7 @@ export default function GameModal(props: GameModalProps) {
 			size="5xl"
 			onClose={onModalClose}
 		>
-			<form onSubmit={onSubmit}>
+			<form onSubmit={void onSubmit}>
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>

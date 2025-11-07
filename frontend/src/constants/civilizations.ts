@@ -7,7 +7,7 @@ export interface Leader {
 	image?: string;
 }
 
-export const LEADERS: Array<Leader> = [
+export const LEADERS: Leader[] = [
 	{
 		id: 2,
 		name: "Teddy Roosevelt (Bull Moose)",

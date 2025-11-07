@@ -17,12 +17,9 @@ import { capitalize } from "@/utils/capitalize";
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
 	refetch: (
-		options?: RefetchOptions | undefined
+		options?: RefetchOptions
 	) => Promise<
-		QueryObserverResult<
-			z.infer<typeof DisplayGameSchemaArray> | undefined,
-			Error
-		>
+		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
 	>;
 }
 

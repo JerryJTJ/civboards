@@ -11,10 +11,10 @@ import "@/styles/globals.css";
 
 const queryClient = new QueryClient();
 
-const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN;
-const AUTH0_CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID;
+const AUTH0_DOMAIN = import.meta.env.VITE_AUTH0_DOMAIN as string;
+const AUTH0_CLIENT_ID = import.meta.env.VITE_AUTH0_CLIENT_ID as string;
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+ReactDOM.createRoot(document.getElementById("root") as Element).render(
 	<React.StrictMode>
 		<BrowserRouter>
 			<Provider>

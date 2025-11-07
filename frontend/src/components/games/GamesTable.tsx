@@ -37,12 +37,9 @@ import useWindowDimensions from "@/hooks/useWindowDimensions";
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
 	refetch: (
-		options?: RefetchOptions | undefined
+		options?: RefetchOptions
 	) => Promise<
-		QueryObserverResult<
-			z.infer<typeof DisplayGameSchemaArray> | undefined,
-			Error
-		>
+		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
 	>;
 }
 
@@ -105,18 +102,19 @@ export default function GamesTable(props: GamesTableProps) {
 		if (games.length === 0) return games;
 
 		return [...games].sort((a: Game, b: Game) => {
-			let cmp: number = 0;
+			let cmp = 0;
 
 			switch (sortDescriptor.column) {
 				case "name":
 					cmp = a.name.localeCompare(b.name);
 					break;
-				case "date":
+				case "date": {
 					const aDate = new Date(a.date);
 					const bDate = new Date(b.date);
 
 					cmp = aDate > bDate ? 1 : aDate === bDate ? 0 : -1;
 					break;
+				}
 				case "map":
 					cmp = a.map.localeCompare(b.map);
 					break;
@@ -138,8 +136,8 @@ export default function GamesTable(props: GamesTableProps) {
 					cmp = a.turns > b.turns ? 1 : a.turns === b.turns ? 0 : -1;
 					break;
 				case "winner":
-					cmp = (a.winnerPlayer || "").localeCompare(
-						b.winnerPlayer || ""
+					cmp = (a.winnerPlayer ?? "").localeCompare(
+						b.winnerPlayer ?? ""
 					);
 					break;
 				default:
@@ -163,7 +161,7 @@ export default function GamesTable(props: GamesTableProps) {
 					game.map
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
-					(game.winnerPlayer || "")
+					(game.winnerPlayer ?? "")
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
 					new Date(game.date)
@@ -174,7 +172,7 @@ export default function GamesTable(props: GamesTableProps) {
 		}
 
 		return filteredGames;
-	}, [sortedItems, filterValue, hasSearchFilter]);
+	}, [sortedItems, filterValue, hasSearchFilter, games]);
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
@@ -187,7 +185,7 @@ export default function GamesTable(props: GamesTableProps) {
 
 	const renderCell = React.useCallback(
 		(game: Game, columnKey: React.Key) => {
-			const cellValue = game[columnKey as keyof Game];
+			// const cellValue = game[columnKey as keyof Game];
 
 			switch (columnKey) {
 				case "name":
@@ -208,8 +206,8 @@ export default function GamesTable(props: GamesTableProps) {
 							{game.map}
 						</p>
 					);
-				case "players":
-					const humans = new Array<string>();
+				case "players": {
+					const humans: string[] = [];
 
 					game.players.forEach((player) => {
 						if (player.isHuman)
@@ -221,10 +219,11 @@ export default function GamesTable(props: GamesTableProps) {
 							{humans.join(", ")}
 						</p>
 					);
+				}
 				case "winner":
 					return (
 						<p className="text-xs sm:text-bold sm:text-small">
-							{capitalize(game.winnerPlayer as string)}
+							{capitalize(game.winnerPlayer ?? "")}
 						</p>
 					);
 				case "finished":
@@ -275,7 +274,7 @@ export default function GamesTable(props: GamesTableProps) {
 						</div>
 					);
 				default:
-					return <p>{String(cellValue)}</p>;
+				// return <p>{cellValue?.toString()}</p>;
 			}
 		},
 		[viewModal, deleteModal, editModal]
@@ -319,7 +318,7 @@ export default function GamesTable(props: GamesTableProps) {
 		const prefix = filterValue ? "Filtered" : "Total";
 		const suffix = filteredItems.length === 1 ? "" : "s";
 
-		return `${prefix} ${filteredItems.length} game${suffix}`;
+		return `${prefix} ${filteredItems.length.toString()} game${suffix}`;
 	}, [filterValue, filteredItems.length]);
 
 	const topContent = React.useMemo(() => {
@@ -332,7 +331,9 @@ export default function GamesTable(props: GamesTableProps) {
 						placeholder="Search"
 						startContent={<SearchIcon />}
 						value={filterValue}
-						onClear={() => onClear()}
+						onClear={() => {
+							onClear();
+						}}
 						onValueChange={onSearchChange}
 					/>
 					<div className="flex gap-3">

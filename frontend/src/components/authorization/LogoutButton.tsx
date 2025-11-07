@@ -15,11 +15,11 @@ const LogoutButton = () => {
 			color="default"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
 			variant="shadow"
-			onPress={async () =>
-				await logout({
+			onPress={() => {
+				void logout({
 					logoutParams: { returnTo: window.location.origin },
-				})
-			}
+				});
+			}}
 		>
 			Log Out
 		</Button>

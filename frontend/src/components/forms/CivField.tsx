@@ -8,15 +8,24 @@ import { Civ } from "@/interfaces/game.interface";
 import { LEADERS, Leader } from "@/constants/civilizations";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 
-interface CivFieldProps {
-	enabled: boolean;
-	civ: Civ;
-	changeDispatch: (civ: Partial<Civ>) => void;
-	deleteDispatch: (civ: Civ) => void;
-}
+// interface CivFieldProps {
+// 	enabled: boolean;
+// 	civ: Civ;
+// 	changeDispatch: (civ: Partial<Civ>) => void;
+// 	deleteDispatch: (civ: Civ) => void;
+// }
+
+type CivFieldProps =
+	| {
+			enabled: true;
+			civ: Civ;
+			changeDispatch: (civ: Partial<Civ>) => void;
+			deleteDispatch: (civ: Civ) => void;
+	  }
+	| { enabled: false; civ: Civ };
 
 export default function CivField(props: CivFieldProps) {
-	const { enabled, civ, changeDispatch, deleteDispatch } = props;
+	const { enabled, civ } = props;
 	//just have civs live on one thing, and get from there
 
 	const { width } = useWindowDimensions();
@@ -40,11 +49,11 @@ export default function CivField(props: CivFieldProps) {
 							isDisabled={!enabled}
 							isRequired={enabled}
 							label="Leader"
-							selectedKey={civ.leaderId?.toString() || undefined}
+							selectedKey={civ.leaderId?.toString() ?? undefined}
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
 							variant="bordered"
 							onSelectionChange={(e) => {
-								changeDispatch({
+								props.changeDispatch({
 									leaderId: Number(e),
 									id: civ.id,
 								});
@@ -77,12 +86,13 @@ export default function CivField(props: CivFieldProps) {
 							required={true}
 							value={civ.name}
 							variant="bordered"
-							onChange={(e) =>
-								changeDispatch({
-									name: e.target.value,
-									id: civ.id,
-								})
-							}
+							onChange={(e) => {
+								if (enabled)
+									props.changeDispatch({
+										name: e.target.value,
+										id: civ.id,
+									});
+							}}
 						/>
 					)}
 				</div>
@@ -97,11 +107,12 @@ export default function CivField(props: CivFieldProps) {
 						isDisabled={!enabled}
 						size="sm"
 						onPress={() => {
-							changeDispatch({
-								name: civ.isHuman ? "" : civ.name,
-								isHuman: !civ.isHuman,
-								id: civ.id,
-							});
+							if (enabled)
+								props.changeDispatch({
+									name: civ.isHuman ? "" : civ.name,
+									isHuman: !civ.isHuman,
+									id: civ.id,
+								});
 						}}
 					>
 						{civ.isHuman ? "Human" : "AI"}
@@ -113,7 +124,7 @@ export default function CivField(props: CivFieldProps) {
 							color="danger"
 							size="sm"
 							onPress={() => {
-								deleteDispatch(civ);
+								props.deleteDispatch(civ);
 							}}
 						>
 							Remove

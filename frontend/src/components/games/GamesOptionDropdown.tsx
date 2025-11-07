@@ -24,7 +24,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 			<DropdownItem
 				key="view"
 				onPress={() => {
-					setCurrGame && setCurrGame(game);
+					if (setCurrGame) setCurrGame(game);
 					onOpenView();
 				}}
 			>
@@ -47,7 +47,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 
 								return;
 							}
-							setCurrGame && setCurrGame(game);
+							if (setCurrGame) setCurrGame(game);
 							onOpenEdit();
 						}}
 					>
@@ -69,7 +69,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 
 								return;
 							}
-							setCurrGame && setCurrGame(game);
+							if (setCurrGame) setCurrGame(game);
 							onOpenDelete();
 						}}
 					>

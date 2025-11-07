@@ -18,5 +18,5 @@ export interface GameForm {
 	victoryId: number | undefined;
 	expansions: Set<number>;
 	gamemodes: Set<number>;
-	players: Array<Civ>;
+	players: Civ[];
 }

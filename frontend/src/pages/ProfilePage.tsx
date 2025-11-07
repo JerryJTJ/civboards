@@ -24,7 +24,7 @@ export default function ProfilePage() {
 	// APIs
 	const profile = useQuery({
 		queryKey: ["profiles", username],
-		queryFn: () => getProfile(username!),
+		queryFn: () => (username ? getProfile(username) : undefined),
 		enabled: !!username,
 	});
 	const games = useQuery({
@@ -48,7 +48,7 @@ export default function ProfilePage() {
 					isBordered
 					className="w-20 h-20 mt-2 text-large"
 					showFallback={false}
-					src={user?.profile_pic}
+					src={user ? (user.profile_pic as string) : ""}
 				/>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
 					<p className="text-xl font-semibold">{username}</p>

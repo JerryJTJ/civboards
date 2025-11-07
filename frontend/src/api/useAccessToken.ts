@@ -6,7 +6,7 @@ export default function useAccessToken() {
 	const getAccessToken = async () => {
 		return await getAccessTokenSilently({
 			authorizationParams: {
-				audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE,
+				audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,
 				scope: "games:authorized",
 			},
 		});
@@ -15,10 +15,11 @@ export default function useAccessToken() {
 	const getToken = async (): Promise<string> => {
 		try {
 			return await getAccessToken();
-		} catch (_e) {
+		} catch {
 			await loginWithPopup({
 				authorizationParams: {
-					audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE,
+					audience: import.meta.env
+						.VITE_AUTHO_GAMES_AUDIENCE as string,
 					scope: "games:authorized",
 				},
 			});

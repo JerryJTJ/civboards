@@ -1,4 +1,5 @@
 import {
+	DisplayGameSchema,
 	DisplayGameSchemaArray,
 	InsertGameSchema,
 	UpdateGameSchema,
@@ -70,17 +71,20 @@ export function useGamesAPI() {
 		});
 
 		if (response.status === 200) {
-			return response.data;
+			return response.data as z.infer<typeof DisplayGameSchemaArray>;
 		}
 	};
 
-	const getGameByGameId = async (id: string) => {
+	const getGameByGameId = async (
+		id: string
+	): Promise<z.infer<typeof DisplayGameSchema> | undefined> => {
 		const response = await instance({
 			url: `/game/id/${id}`,
 			method: "get",
 		});
 
-		if (response.status === 200) return response.data;
+		if (response.status === 200)
+			return response.data as z.infer<typeof DisplayGameSchema>;
 	};
 
 	return {

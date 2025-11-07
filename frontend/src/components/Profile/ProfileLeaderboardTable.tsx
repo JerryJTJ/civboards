@@ -9,14 +9,14 @@ import {
 	SortDescriptor,
 } from "@heroui/table";
 
-type Item = {
+interface Item {
 	name: string;
 	played: number;
 	wins: number;
-};
+}
 
 interface ProfileLeaderboardTableProps {
-	items: Array<Item>;
+	items: Item[];
 }
 
 export default function ProfileLeaderboardTable(
@@ -30,7 +30,7 @@ export default function ProfileLeaderboardTable(
 
 	const sortedItems = useMemo(() => {
 		return [...items].sort((a: Item, b: Item) => {
-			let cmp: number = 0;
+			let cmp = 0;
 
 			switch (sortDescriptor.column) {
 				case "name":
@@ -60,11 +60,11 @@ export default function ProfileLeaderboardTable(
 	) => {
 		switch (columnKey) {
 			case "name":
-				return `${item.name}`;
+				return item.name;
 			case "played":
-				return `${item.played}`;
+				return item.played.toString();
 			case "wins":
-				return `${item.wins} (${Math.round((item.wins / item.played) * 100)}%)`;
+				return `${item.wins.toString()} (${Math.round((item.wins / item.played) * 100).toString()}%)`;
 		}
 	};
 

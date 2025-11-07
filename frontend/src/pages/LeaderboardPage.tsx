@@ -13,8 +13,21 @@ import LeaderboardTable from "@/components/LeaderboardTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import getViewportSize from "@/components/utils/getViewportSize";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
+import {
+	CivilizationsData,
+	LeadersData,
+	PlayersData,
+	VictoriesData,
+} from "@/types/leaderboard.types";
 
-function sanitizeForLeaderboard(type: LeaderboardView, data: Array<any>) {
+type LeaderbordStats =
+	| { type: "player"; data: PlayersData[] }
+	| { type: "leader"; data: LeadersData[] }
+	| { type: "civilization"; data: CivilizationsData[] }
+	| { type: "victory"; data: VictoriesData[] };
+
+function sanitizeForLeaderboard(stats: LeaderbordStats) {
+	const { type, data } = stats;
 	switch (type) {
 		case "player":
 			return data.map((player) => {
@@ -83,7 +96,12 @@ export default function LeaderboardPage() {
 				) : (
 					<LeaderboardTable
 						leaderboardData={
-							sanitizeForLeaderboard(tab, players.data!)!
+							players.data
+								? sanitizeForLeaderboard({
+										type: "player",
+										data: players.data,
+									})
+								: []
 						}
 						view={tab}
 					/>
@@ -94,7 +112,12 @@ export default function LeaderboardPage() {
 				) : (
 					<LeaderboardTable
 						leaderboardData={
-							sanitizeForLeaderboard(tab, leaders.data!)!
+							leaders.data
+								? sanitizeForLeaderboard({
+										type: "leader",
+										data: leaders.data,
+									})
+								: []
 						}
 						view={tab}
 					/>
@@ -105,7 +128,12 @@ export default function LeaderboardPage() {
 				) : (
 					<LeaderboardTable
 						leaderboardData={
-							sanitizeForLeaderboard(tab, civilizations.data!)!
+							civilizations.data
+								? sanitizeForLeaderboard({
+										type: "civilization",
+										data: civilizations.data,
+									})
+								: []
 						}
 						view={tab}
 					/>
@@ -116,7 +144,12 @@ export default function LeaderboardPage() {
 				) : (
 					<LeaderboardTable
 						leaderboardData={
-							sanitizeForLeaderboard(tab, victories.data!)!
+							victories.data
+								? sanitizeForLeaderboard({
+										type: "victory",
+										data: victories.data,
+									})
+								: []
 						}
 						view={tab}
 					/>
