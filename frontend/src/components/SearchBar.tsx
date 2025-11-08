@@ -1,4 +1,3 @@
-
 import { useQuery } from "@tanstack/react-query";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Skeleton } from "@heroui/skeleton";
@@ -17,7 +16,7 @@ export default function SearchBar() {
 	});
 
 	return (
-		<Skeleton isLoaded={!isPending}>
+		<Skeleton isLoaded={!isPending} className="rounded-xl">
 			{!isPending && (
 				<Autocomplete
 					isVirtualized
