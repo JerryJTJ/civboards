@@ -1,3 +1,6 @@
 // hero.ts
 import { heroui } from "@heroui/theme";
-export default heroui();
+import plugin from "tailwindcss/plugin.js";
+
+const theme: ReturnType<typeof plugin> = heroui();
+export default theme;
