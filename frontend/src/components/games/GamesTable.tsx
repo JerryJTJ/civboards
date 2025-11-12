@@ -136,9 +136,7 @@ export default function GamesTable(props: GamesTableProps) {
 					cmp = a.turns > b.turns ? 1 : a.turns === b.turns ? 0 : -1;
 					break;
 				case "winner":
-					cmp = (a.winnerPlayer ?? "").localeCompare(
-						b.winnerPlayer ?? ""
-					);
+					cmp = (a.winnerPlayer ?? "").localeCompare(b.winnerPlayer ?? "");
 					break;
 				default:
 					break;
@@ -155,12 +153,8 @@ export default function GamesTable(props: GamesTableProps) {
 		if (hasSearchFilter) {
 			filteredGames = filteredGames.filter(
 				(game) =>
-					game.name
-						.toLowerCase()
-						.includes(filterValue.toLowerCase()) ||
-					game.map
-						.toLowerCase()
-						.includes(filterValue.toLowerCase()) ||
+					game.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+					game.map.toLowerCase().includes(filterValue.toLowerCase()) ||
 					(game.winnerPlayer ?? "")
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
@@ -190,9 +184,7 @@ export default function GamesTable(props: GamesTableProps) {
 			switch (columnKey) {
 				case "name":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.name}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.name}</p>
 					);
 				case "date":
 					return (
@@ -202,16 +194,13 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "map":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.map}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.map}</p>
 					);
 				case "players": {
 					const humans: string[] = [];
 
 					game.players.forEach((player) => {
-						if (player.isHuman)
-							humans.push(capitalize(player.name));
+						if (player.isHuman) humans.push(capitalize(player.name));
 					});
 
 					return (
@@ -234,9 +223,7 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "size":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.mapSize}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.mapSize}</p>
 					);
 				case "speed":
 					return (
@@ -246,20 +233,14 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "turns":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.turns}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.turns}</p>
 					);
 				case "actions":
 					return (
 						<div className="relative flex items-center justify-end gap-2">
 							<Dropdown>
 								<DropdownTrigger>
-									<Button
-										isIconOnly
-										size="sm"
-										variant="light"
-									>
+									<Button isIconOnly size="sm" variant="light">
 										<VerticalDotsIcon className="text-default-300" />
 									</Button>
 								</DropdownTrigger>
@@ -361,9 +342,7 @@ export default function GamesTable(props: GamesTableProps) {
 						<Dropdown>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
-									endContent={
-										<ChevronDownIcon className="text-small" />
-									}
+									endContent={<ChevronDownIcon className="text-small" />}
 									variant="flat"
 								>
 									Columns
@@ -378,10 +357,7 @@ export default function GamesTable(props: GamesTableProps) {
 								onSelectionChange={setVisibleColumns}
 							>
 								{columns.map((column) => (
-									<DropdownItem
-										key={column.key}
-										className="capitalize"
-									>
+									<DropdownItem key={column.key} className="capitalize">
 										{capitalize(column.name)}
 									</DropdownItem>
 								))}
@@ -390,9 +366,7 @@ export default function GamesTable(props: GamesTableProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-700 text-small">
-						{headerText}
-					</span>
+					<span className="text-default-700 text-small">{headerText}</span>
 					<label className="flex items-center text-default-700 text-small">
 						Rows per page:&nbsp;
 						<select
@@ -470,8 +444,7 @@ export default function GamesTable(props: GamesTableProps) {
 						<TableColumn
 							key={column.key}
 							align={
-								column.key === "actions" ||
-								column.key === "finished"
+								column.key === "actions" || column.key === "finished"
 									? "center"
 									: "start"
 							}
@@ -485,9 +458,7 @@ export default function GamesTable(props: GamesTableProps) {
 					{(item) => (
 						<TableRow key={item.id}>
 							{(columnKey) => (
-								<TableCell>
-									{renderCell(item, columnKey)}
-								</TableCell>
+								<TableCell>{renderCell(item, columnKey)}</TableCell>
 							)}
 						</TableRow>
 					)}
@@ -503,8 +474,7 @@ export default function GamesTable(props: GamesTableProps) {
 				<DeleteModal
 					body={
 						<p>
-							Are you sure you want to delete{" "}
-							<b>{currGame.name}</b>?
+							Are you sure you want to delete <b>{currGame.name}</b>?
 						</p>
 					}
 					gameId={currGame.id}

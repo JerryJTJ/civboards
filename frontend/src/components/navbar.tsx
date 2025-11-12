@@ -35,18 +35,12 @@ export default function Navbar() {
 				{isAuthenticated ? (
 					<>
 						<NavbarItem className="flex">
-							<Skeleton
-								className="rounded-3xl"
-								isLoaded={!isLoading}
-							>
+							<Skeleton className="rounded-3xl" isLoaded={!isLoading}>
 								<ProfileIcon />
 							</Skeleton>
 						</NavbarItem>
 						<NavbarItem className="flex">
-							<Skeleton
-								className="rounded-xl"
-								isLoaded={!isLoading}
-							>
+							<Skeleton className="rounded-xl" isLoaded={!isLoading}>
 								<LogoutButton />
 							</Skeleton>
 						</NavbarItem>
@@ -107,11 +101,7 @@ export default function Navbar() {
 				{profileContent}
 
 				<NavbarItem className="hidden gap-2 sm:flex">
-					<Link
-						isExternal
-						href={siteConfig.links.github}
-						title="GitHub"
-					>
+					<Link isExternal href={siteConfig.links.github} title="GitHub">
 						<GithubIcon className="text-default-500" />
 					</Link>
 					<ThemeSwitch />
@@ -128,9 +118,7 @@ export default function Navbar() {
 				<div className="flex flex-col gap-2 mx-4 mt-2">
 					<p className="text-small text-primary">Pages</p>
 					{siteConfig.navMenuItems.map((item, index) => (
-						<NavbarMenuItem
-							key={`${item.label}-${index.toString()}`}
-						>
+						<NavbarMenuItem key={`${item.label}-${index.toString()}`}>
 							<Link
 								color="foreground"
 								// color={

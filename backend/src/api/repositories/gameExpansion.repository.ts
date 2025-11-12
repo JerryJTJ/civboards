@@ -10,8 +10,7 @@ export async function insertExpansions(
 		.insert(expansions)
 		.select();
 
-	if (error)
-		throw new DatabaseError("Failed to insert game expansion", error);
+	if (error) throw new DatabaseError("Failed to insert game expansion", error);
 
 	return data;
 }
@@ -23,10 +22,7 @@ export async function getGameExpansionsByGameId(gameId: string) {
 		.eq("game_id", gameId);
 
 	if (error)
-		throw new DatabaseError(
-			"Failed to get game expansions by game id",
-			error
-		);
+		throw new DatabaseError("Failed to get game expansions by game id", error);
 
 	return data;
 }
@@ -38,8 +34,5 @@ export async function deleteGameExpansionsByGameId(gameId: string) {
 		.in("game_id", [gameId]);
 
 	if (response.error)
-		throw new DatabaseError(
-			"Failed delete game expansions",
-			response.error
-		);
+		throw new DatabaseError("Failed delete game expansions", response.error);
 }

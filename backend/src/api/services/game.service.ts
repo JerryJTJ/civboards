@@ -89,9 +89,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		await Promise.all([
 			createUsers(game.players),
 			createGamePlayers(gameId, game.players),
-			game.expansions
-				? createGameExpansions(gameId, game.expansions)
-				: null,
+			game.expansions ? createGameExpansions(gameId, game.expansions) : null,
 			game.gamemodes ? createGameGamemodes(gameId, game.gamemodes) : null,
 		]);
 		return insertedGame;
@@ -103,8 +101,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 
 export async function fetchGameById(id: string) {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	const game = await getGameById(id);
 	return game;
@@ -116,16 +113,14 @@ export async function fetchGamesByCreatedBy(createdBy: string) {
 
 export async function removeGameById(id: string): Promise<void> {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	await deleteGameById(id);
 }
 
 export async function softRemoveGameById(id: string): Promise<void> {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	await softDeleteGameById(id);
 }
@@ -313,12 +308,10 @@ export async function updateGame(
 	await Promise.all([
 		createGamePlayers(gameId, game.players),
 		async () => {
-			if (game.expansions)
-				await createGameExpansions(gameId, game.expansions);
+			if (game.expansions) await createGameExpansions(gameId, game.expansions);
 		},
 		async () => {
-			if (game.gamemodes)
-				await createGameGamemodes(gameId, game.gamemodes);
+			if (game.gamemodes) await createGameGamemodes(gameId, game.gamemodes);
 		},
 	]);
 

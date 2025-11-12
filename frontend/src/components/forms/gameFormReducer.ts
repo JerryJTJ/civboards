@@ -40,15 +40,11 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						(mapSize) => mapSize.key === form.mapSize
 					);
 
-					if (form.players.length === currMapSize?.players.max)
-						return form;
+					if (form.players.length === currMapSize?.players.max) return form;
 
 					return {
 						...form,
-						players: [
-							...form.players,
-							generateNewPlayer(action.payload),
-						],
+						players: [...form.players, generateNewPlayer(action.payload)],
 					};
 				}
 				case "delete":
@@ -105,9 +101,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						map: action.payload,
 					};
 				case "mapSize": {
-					const mapSize = MAP_SIZE.find(
-						(size) => size.key === action.payload
-					);
+					const mapSize = MAP_SIZE.find((size) => size.key === action.payload);
 					const players = form.players;
 
 					//auto-resize civs
@@ -117,9 +111,7 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 							while (players.length < mapSize.players.default) {
 								players.push(generateNewPlayer(true));
 							}
-						} else if (
-							form.players.length > mapSize.players.default
-						) {
+						} else if (form.players.length > mapSize.players.default) {
 							//resize down to default
 							players.splice(mapSize.players.default);
 						}

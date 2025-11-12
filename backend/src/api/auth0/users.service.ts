@@ -16,7 +16,7 @@ interface Auth0User {
 			user_id: string;
 			provider: string;
 			isSocial: boolean;
-		}
+		},
 	];
 	email: string;
 	name: string;
@@ -40,9 +40,7 @@ export async function getUserByUsername(username: string) {
 	};
 
 	try {
-		const response: AxiosResponse<Auth0User[]> = await axios.request(
-			options
-		);
+		const response: AxiosResponse<Auth0User[]> = await axios.request(options);
 		if (response.data.length === 0)
 			throw new NotFoundError(`Username ${username} not found`);
 		return response.data;

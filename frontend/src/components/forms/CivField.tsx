@@ -69,11 +69,7 @@ export default function CivField(props: CivFieldProps) {
 						<Input
 							isDisabled={!enabled}
 							label="Leader"
-							value={
-								LEADERS.find(
-									(leader) => leader.id === civ.leaderId
-								)?.name
-							}
+							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
 							variant="bordered"
 						/>
 					)}

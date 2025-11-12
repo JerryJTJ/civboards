@@ -33,9 +33,7 @@ export default async function getManagementToken(): Promise<string> {
 	};
 
 	try {
-		const response: AxiosResponse<AccessToken> = await axios.request(
-			options
-		);
+		const response: AxiosResponse<AccessToken> = await axios.request(options);
 		return response.data.access_token;
 	} catch {
 		throw new Error("Failed to get Auth0 access token");

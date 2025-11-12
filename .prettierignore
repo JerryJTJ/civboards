@@ -1,0 +1,15 @@
+# Ignore artifacts:
+**/dist/**
+**/submodules/**
+
+# Ignore all HTML files:
+**/*.html
+
+# Version Control
+**/.git
+**/.svn
+**/.hg
+**/node_modules
+
+# Misc
+**/README.md

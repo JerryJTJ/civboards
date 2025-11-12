@@ -18,8 +18,7 @@ export default function useAccessToken() {
 		} catch {
 			await loginWithPopup({
 				authorizationParams: {
-					audience: import.meta.env
-						.VITE_AUTHO_GAMES_AUDIENCE as string,
+					audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,
 					scope: "games:authorized",
 				},
 			});

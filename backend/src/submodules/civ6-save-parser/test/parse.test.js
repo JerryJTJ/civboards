@@ -59,12 +59,8 @@ describe("Parse Cathy Save", () => {
 
 		it("should have civs in the correct order", () => {
 			for (let i = 0; i < parsed.CIVS.length; i++) {
-				expect(parsed.CIVS[i].PLAYER_NAME.data).to.equal(
-					"Player " + (i + 1)
-				);
-				expect(parsedSimple.CIVS[i].PLAYER_NAME).to.equal(
-					"Player " + (i + 1)
-				);
+				expect(parsed.CIVS[i].PLAYER_NAME.data).to.equal("Player " + (i + 1));
+				expect(parsedSimple.CIVS[i].PLAYER_NAME).to.equal("Player " + (i + 1));
 			}
 		});
 
@@ -79,7 +75,7 @@ describe("Parse Cathy Save", () => {
 
 describe("Parse Hojo Save", () => {
 	const buffer = Buffer.from(
-		readFileSync("test/saves/HŌJŌ TOKIMUNE 341 1920 d. C..Civ6Save")
+		readFileSync("test/saves/HŌJŌ TOKIMUNE 341 1920 d. C..Civ6Save"),
 	);
 	const parsed = parse(buffer).parsed;
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
@@ -156,23 +152,19 @@ describe("Parse 12 Peeps Save", () => {
 	it("should have correct data for the 12 civs", () => {
 		expect(parsedSimple.CIVS[0].ACTOR_NAME).to.equal("CIVILIZATION_FRANCE");
 		expect(parsedSimple.CIVS[0].LEADER_NAME).to.equal(
-			"LEADER_CATHERINE_DE_MEDICI"
+			"LEADER_CATHERINE_DE_MEDICI",
 		);
 
 		expect(parsedSimple.CIVS[1].ACTOR_NAME).to.equal("CIVILIZATION_EGYPT");
 		expect(parsedSimple.CIVS[1].LEADER_NAME).to.equal("LEADER_CLEOPATRA");
 
-		expect(parsedSimple.CIVS[2].ACTOR_NAME).to.equal(
-			"CIVILIZATION_GERMANY"
-		);
+		expect(parsedSimple.CIVS[2].ACTOR_NAME).to.equal("CIVILIZATION_GERMANY");
 		expect(parsedSimple.CIVS[2].LEADER_NAME).to.equal("LEADER_BARBAROSSA");
 
 		expect(parsedSimple.CIVS[3].ACTOR_NAME).to.equal("CIVILIZATION_INDIA");
 		expect(parsedSimple.CIVS[3].LEADER_NAME).to.equal("LEADER_GANDHI");
 
-		expect(parsedSimple.CIVS[4].ACTOR_NAME).to.equal(
-			"CIVILIZATION_SUMERIA"
-		);
+		expect(parsedSimple.CIVS[4].ACTOR_NAME).to.equal("CIVILIZATION_SUMERIA");
 		expect(parsedSimple.CIVS[4].LEADER_NAME).to.equal("LEADER_GILGAMESH");
 
 		expect(parsedSimple.CIVS[5].ACTOR_NAME).to.equal("CIVILIZATION_GREECE");
@@ -190,14 +182,10 @@ describe("Parse 12 Peeps Save", () => {
 		expect(parsedSimple.CIVS[9].ACTOR_NAME).to.equal("CIVILIZATION_KONGO");
 		expect(parsedSimple.CIVS[9].LEADER_NAME).to.equal("LEADER_MVEMBA");
 
-		expect(parsedSimple.CIVS[10].ACTOR_NAME).to.equal(
-			"CIVILIZATION_BRAZIL"
-		);
+		expect(parsedSimple.CIVS[10].ACTOR_NAME).to.equal("CIVILIZATION_BRAZIL");
 		expect(parsedSimple.CIVS[10].LEADER_NAME).to.equal("LEADER_PEDRO");
 
-		expect(parsedSimple.CIVS[11].ACTOR_NAME).to.equal(
-			"CIVILIZATION_GREECE"
-		);
+		expect(parsedSimple.CIVS[11].ACTOR_NAME).to.equal("CIVILIZATION_GREECE");
 		expect(parsedSimple.CIVS[11].LEADER_NAME).to.equal("LEADER_PERICLES");
 	});
 
@@ -209,9 +197,7 @@ describe("Parse 12 Peeps Save", () => {
 });
 
 describe("Parse User Marker Bug Save", () => {
-	const buffer = Buffer.from(
-		readFileSync("test/saves/UserMarkerBug.Civ6Save")
-	);
+	const buffer = Buffer.from(readFileSync("test/saves/UserMarkerBug.Civ6Save"));
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
 
 	it("should have 6 civs", () => {
@@ -241,9 +227,7 @@ describe("Parse another file that broke things", () => {
 });
 
 describe("charlie is dead", () => {
-	const buffer = Buffer.from(
-		readFileSync("test/saves/charlieisdead.Civ6Save")
-	);
+	const buffer = Buffer.from(readFileSync("test/saves/charlieisdead.Civ6Save"));
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
 
 	it("should have 4 civs", () => {
@@ -283,9 +267,7 @@ describe("Parse Outback Tycoon saves", () => {
 });
 
 describe("Parse save file with empty slots", () => {
-	const buffer = Buffer.from(
-		readFileSync("test/saves/emptycivslots.Civ6Save")
-	);
+	const buffer = Buffer.from(readFileSync("test/saves/emptycivslots.Civ6Save"));
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
 
 	it("should have 4 civs (not 6!)", () => {
@@ -295,7 +277,7 @@ describe("Parse save file with empty slots", () => {
 
 describe("Parse file with string longer than null terminator", () => {
 	const buffer = Buffer.from(
-		readFileSync("test/saves/nullterminator.Civ6Save")
+		readFileSync("test/saves/nullterminator.Civ6Save"),
 	);
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
 
@@ -327,7 +309,7 @@ describe("Apocalypse save", () => {
 
 describe("Save that was triggering compressed data read", () => {
 	const buffer = Buffer.from(
-		readFileSync("test/saves/JAYAVARMAN VII. 1 4000 v. Chr..Civ6Save")
+		readFileSync("test/saves/JAYAVARMAN VII. 1 4000 v. Chr..Civ6Save"),
 	);
 	const parsedSimple = parse(buffer, { simple: true }).parsed;
 

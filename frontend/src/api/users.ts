@@ -77,8 +77,7 @@ export async function getAllUsers(): Promise<{ name: string }[]> {
 			method: "get",
 		});
 
-		if (response.status === 200)
-			return response.data as { name: string }[];
+		if (response.status === 200) return response.data as { name: string }[];
 	} catch {
 		// console.error("Failed to get users");
 	}

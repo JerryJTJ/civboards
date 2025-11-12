@@ -50,11 +50,7 @@ export class ValidationError extends AppError {
 
 export class NotFoundError extends AppError {
 	constructor(message?: string) {
-		super(
-			message ?? "Resource not found",
-			404,
-			ERROR_CODES.DATABASE.NOT_FOUND
-		);
+		super(message ?? "Resource not found", 404, ERROR_CODES.DATABASE.NOT_FOUND);
 	}
 }
 

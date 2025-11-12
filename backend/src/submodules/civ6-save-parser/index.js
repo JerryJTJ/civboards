@@ -26,7 +26,7 @@ if (import.meta.url === pathToFileURL(process.argv[1]).href) {
 		if (argv.clean) {
 			writeFileSync(
 				`${basename(argv._[0])}_CLEAN.json`,
-				JSON.stringify(result.parsed)
+				JSON.stringify(result.parsed),
 			);
 		}
 	}
