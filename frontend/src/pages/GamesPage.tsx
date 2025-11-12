@@ -7,10 +7,11 @@ import DefaultLayout from "@/layouts/default";
 import GamesCard from "@/components/games/GamesCard";
 import GamesTable from "@/components/games/GamesTable";
 import AddGameModal from "@/components/forms/AddGameModal";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import { useGamesAPI } from "@/api/games";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
 import getViewportSize from "@/components/utils/getViewportSize";
+import { Card, CardHeader, CardBody } from "@heroui/card";
+import { Skeleton } from "@heroui/skeleton";
 
 type TabView = "cards" | "table";
 
@@ -19,7 +20,7 @@ export default function GamesPage() {
 	const { width } = useWindowDimensions();
 
 	const { getAllGames } = useGamesAPI();
-	const { data, isPending, refetch } = useQuery({
+	const { data, isPending, refetch, error } = useQuery({
 		queryKey: ["games"],
 		queryFn: getAllGames,
 	});
@@ -28,39 +29,58 @@ export default function GamesPage() {
 		<DefaultLayout>
 			<div className="flex flex-col w-full">
 				<div className="grid grid-cols-2 pb-4">
-					<ButtonGroup
-						className="justify-self-start "
-						size={getViewportSize(width) === "xs" ? "sm" : "md"}
-					>
-						<Button
-							className="border border-white/20"
-							color={currTab === "cards" ? "primary" : "default"}
-							variant="shadow"
-							onPress={() => {
-								setCurrTab("cards");
-							}}
+					{!error && (
+						<ButtonGroup
+							className="justify-self-start "
+							size={getViewportSize(width) === "xs" ? "sm" : "md"}
 						>
-							Cards
-						</Button>
-						<Button
-							className="border border-white/20"
-							color={currTab === "table" ? "primary" : "default"}
-							variant="shadow"
-							onPress={() => {
-								setCurrTab("table");
-							}}
-						>
-							Table
-						</Button>
-					</ButtonGroup>
-					{getViewportSize(width) === "xs" ? null : <AddGameModal />}
+							<Button
+								className="border border-white/20"
+								color={
+									currTab === "cards" ? "primary" : "default"
+								}
+								variant="shadow"
+								onPress={() => {
+									setCurrTab("cards");
+								}}
+							>
+								Cards
+							</Button>
+							<Button
+								className="border border-white/20"
+								color={
+									currTab === "table" ? "primary" : "default"
+								}
+								variant="shadow"
+								onPress={() => {
+									setCurrTab("table");
+								}}
+							>
+								Table
+							</Button>
+						</ButtonGroup>
+					)}
+					{getViewportSize(width) === "xs" ||
+					error ||
+					isPending ? null : (
+						<AddGameModal />
+					)}
 				</div>
-				{/* Janky formatting to keep buttons positioned while loading */}
-				{isPending && <LoadingSpinner height={20} />}
+				{/* Janky formatting to keep buttons positioned while loading
+				{isPending && <LoadingSpinner height={20} />} */}
 
-				{!isPending && (
-					<>
-						{currTab === "cards" ? (
+				<Skeleton isLoaded={!isPending} className="rounded-4xl">
+					{currTab === "cards" ? (
+						error ? (
+							<Card isBlurred>
+								<CardHeader className="justify-center px-20 pt-5">
+									<b className="pt-2 text-base">Error</b>
+								</CardHeader>
+								<CardBody className="justify-center px-10 py-5 text-center">
+									No games found!
+								</CardBody>
+							</Card>
+						) : (
 							<ScrollShadow
 								className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
 								orientation="horizontal"
@@ -74,17 +94,14 @@ export default function GamesPage() {
 									/>
 								))}
 							</ScrollShadow>
-						) : null}
-						{currTab === "table" ? (
-							<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
-								<GamesTable
-									games={data ?? []}
-									refetch={refetch}
-								/>
-							</div>
-						) : null}
-					</>
-				)}
+						)
+					) : null}
+					{currTab === "table" ? (
+						<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
+							<GamesTable games={data ?? []} refetch={refetch} />
+						</div>
+					) : null}
+				</Skeleton>
 			</div>
 		</DefaultLayout>
 	);

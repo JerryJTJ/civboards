@@ -8,6 +8,7 @@
 		"build": "pnpm i && pnpm --filter ./frontend --filter ./backend --filter ./packages/* run build",
 		"build-frontend": "pnpm i && pnpm --filter ./frontend --filter ./packages/* run build",
 		"build-backend": "pnpm i && pnpm --filter ./backend --filter ./packages/* run build",
+		"start-backend": "pnpm --filter ./backend run start",
 		"dev": "pnpm --filter ./packages/* run build && pnpm --filter ./frontend --filter ./backend run dev",
 		"lint": "pnpm eslint ."
 	},
