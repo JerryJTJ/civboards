@@ -9,8 +9,7 @@ export async function getExpansionByCode(code: string) {
 		.limit(1)
 		.single();
 
-	if (error)
-		throw new DatabaseError("Failed to get expansion by code", error);
+	if (error) throw new DatabaseError("Failed to get expansion by code", error);
 
 	return data;
 }

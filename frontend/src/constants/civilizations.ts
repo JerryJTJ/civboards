@@ -21,7 +21,8 @@ export const LEADERS: Leader[] = [
 		code: "LEADER_T_ROOSEVELT_ROUGHRIDER",
 		active: true,
 		civilization_id: 1,
-		image: "https://static.wikia.nocookie.net/civilization/images/c/c3/Teddy_Roosevelt_%28Rough_Rider%29_%28Civ6%29.png",
+		image:
+			"https://static.wikia.nocookie.net/civilization/images/c/c3/Teddy_Roosevelt_%28Rough_Rider%29_%28Civ6%29.png",
 	},
 	{
 		id: 4,
@@ -29,7 +30,8 @@ export const LEADERS: Leader[] = [
 		code: "LEADER_ABRAHAM_LINCOLN",
 		active: true,
 		civilization_id: 1,
-		image: "https://static.wikia.nocookie.net/civilization/images/9/97/Abraham_Lincoln_(Civ6).png",
+		image:
+			"https://static.wikia.nocookie.net/civilization/images/9/97/Abraham_Lincoln_(Civ6).png",
 	},
 	{
 		id: 5,
@@ -170,7 +172,8 @@ export const LEADERS: Leader[] = [
 		code: "LEADER_VICTORIA",
 		active: true,
 		civilization_id: 13,
-		image: "https://static.wikia.nocookie.net/civilization/images/5/53/Victoria_%28Civ6%29.png",
+		image:
+			"https://static.wikia.nocookie.net/civilization/images/5/53/Victoria_%28Civ6%29.png",
 	},
 	{
 		id: 25,
@@ -178,7 +181,8 @@ export const LEADERS: Leader[] = [
 		code: "LEADER_VICTORIA_ALT",
 		active: true,
 		civilization_id: 13,
-		image: "https://static.wikia.nocookie.net/civilization/images/8/8d/Victoria_%28Age_of_Steam%29_%28Civ6%29.png",
+		image:
+			"https://static.wikia.nocookie.net/civilization/images/8/8d/Victoria_%28Age_of_Steam%29_%28Civ6%29.png",
 	},
 	{
 		id: 26,

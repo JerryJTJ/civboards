@@ -1,5 +1,6 @@
 {
 	"name": "civboards",
+	"type": "module",
 	"version": "1.0.0",
 	"description": "A Civ 6 game tracker",
 	"private": true,
@@ -10,7 +11,8 @@
 		"build-backend": "pnpm i && pnpm --filter ./backend --filter ./packages/* run build",
 		"start-backend": "pnpm --filter ./backend run start",
 		"dev": "pnpm --filter ./packages/* run build && pnpm --filter ./frontend --filter ./backend run dev",
-		"lint": "pnpm eslint ."
+		"lint": "pnpm eslint .",
+		"prettier": "node --experimental-strip-types node_modules/prettier/bin/prettier.cjs . --write"
 	},
 	"keywords": [],
 	"author": "",
@@ -31,6 +33,7 @@
 		"eslint-plugin-react": "7.37.5",
 		"eslint-plugin-react-hooks": "5.2.0",
 		"eslint-plugin-unused-imports": "4.1.4",
+		"prettier": "3.6.2",
 		"tsx": "^4.20.3",
 		"typescript": "5.6.3",
 		"typescript-eslint": "^8.38.0"

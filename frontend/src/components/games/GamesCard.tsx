@@ -69,12 +69,8 @@ export default function GamesCard(props: GameCardProps) {
 					onOpenView={viewModal.onOpen}
 				/>
 			</Dropdown>
-			{viewModal.isOpen && (
-				<ViewGameModal disclosure={viewModal} game={game} />
-			)}
-			{editModal.isOpen && (
-				<EditGameModal disclosure={editModal} game={game} />
-			)}
+			{viewModal.isOpen && <ViewGameModal disclosure={viewModal} game={game} />}
+			{editModal.isOpen && <EditGameModal disclosure={editModal} game={game} />}
 			{deleteModal.isOpen && (
 				<DeleteModal
 					body={

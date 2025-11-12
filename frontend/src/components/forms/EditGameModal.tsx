@@ -56,11 +56,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 	const mutation = useMutation({
 		mutationFn: async () => {
-			const validate = validateFormFields(
-				form,
-				UpdateGameSchema,
-				game.id
-			);
+			const validate = validateFormFields(form, UpdateGameSchema, game.id);
 
 			if (!validate.success) throw new ValidationError(validate.message);
 

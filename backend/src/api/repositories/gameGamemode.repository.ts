@@ -22,10 +22,7 @@ export async function getGameGamemodesByGameId(gameId: string) {
 		.eq("game_id", gameId);
 
 	if (error)
-		throw new DatabaseError(
-			"Failed to get game gamemodes by game id",
-			error
-		);
+		throw new DatabaseError("Failed to get game gamemodes by game id", error);
 
 	return data;
 }

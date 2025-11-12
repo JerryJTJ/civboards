@@ -6,10 +6,11 @@ import {
 import * as z from "zod";
 
 import { instance } from "./axiosInstance";
+import { AxiosError } from "axios";
 
 export async function getProfile(
 	username: string
-): Promise<z.infer<typeof ProfileSchema>> {
+): Promise<z.infer<typeof ProfileSchema> | undefined> {
 	try {
 		const response = await instance({
 			url: `/player/name/${username}`,
@@ -21,8 +22,12 @@ export async function getProfile(
 
 			if (validate.success) return validate.data;
 		}
-	} catch {
-		// console.error(`Failed to get profile ${username}`);
+	} catch (error) {
+		if (
+			error instanceof AxiosError &&
+			(error.status === 404 || error.status === 422)
+		)
+			return undefined;
 	}
 
 	throw new Error(`Failed to get profile ${username}`);
@@ -77,8 +82,7 @@ export async function getAllUsers(): Promise<{ name: string }[]> {
 			method: "get",
 		});
 
-		if (response.status === 200)
-			return response.data as { name: string }[];
+		if (response.status === 200) return response.data as { name: string }[];
 	} catch {
 		// console.error("Failed to get users");
 	}

@@ -39,8 +39,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 								addToast({
 									title: "Error",
 									color: "warning",
-									description:
-										"You may only modify games you created",
+									description: "You may only modify games you created",
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});
@@ -61,8 +60,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 								addToast({
 									title: "Error",
 									color: "warning",
-									description:
-										"You may only modify games you created",
+									description: "You may only modify games you created",
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});

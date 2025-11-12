@@ -172,9 +172,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					);
 				case "wins":
 					return (
-						<p className="text-base text-center text-bold">
-							{entry.wins}
-						</p>
+						<p className="text-base text-center text-bold">{entry.wins}</p>
 					);
 				default:
 					return cellValue;
@@ -272,9 +270,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-700 text-small">
-						{headerText}
-					</span>
+					<span className="text-default-700 text-small">{headerText}</span>
 					<label className="flex items-center text-default-700 text-small">
 						Rows per page:&nbsp;
 						<select

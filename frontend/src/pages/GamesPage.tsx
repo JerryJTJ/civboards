@@ -36,9 +36,7 @@ export default function GamesPage() {
 						>
 							<Button
 								className="border border-white/20"
-								color={
-									currTab === "cards" ? "primary" : "default"
-								}
+								color={currTab === "cards" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {
 									setCurrTab("cards");
@@ -48,9 +46,7 @@ export default function GamesPage() {
 							</Button>
 							<Button
 								className="border border-white/20"
-								color={
-									currTab === "table" ? "primary" : "default"
-								}
+								color={currTab === "table" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {
 									setCurrTab("table");
@@ -60,9 +56,7 @@ export default function GamesPage() {
 							</Button>
 						</ButtonGroup>
 					)}
-					{getViewportSize(width) === "xs" ||
-					error ||
-					isPending ? null : (
+					{getViewportSize(width) === "xs" || error || isPending ? null : (
 						<AddGameModal />
 					)}
 				</div>

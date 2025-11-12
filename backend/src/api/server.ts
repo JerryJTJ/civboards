@@ -16,6 +16,7 @@ import ParseRouter from "./parse/parse.api.js";
 import UserRouter from "./routes/user.routes.js";
 import checkJwt from "./middlewares/auth/checkJwt.js";
 import { getExpansionById } from "./repositories/expansion.repository.js";
+import Auth0Router from "./auth0/auth0.routes.js";
 
 //Supabase connection
 const PORT = process.env.PORT ?? 5050;
@@ -56,7 +57,8 @@ app.use("/gamemode", GamemodeRouter);
 app.use("/game", GameRouter);
 app.use("/player", PlayerRouter);
 app.use("/user", UserRouter);
-app.use("/parse", checkJwt, ParseRouter);
+app.use("/parse", checkJwt(), ParseRouter);
+app.use("/auth0", Auth0Router);
 
 // This is just to keep the database and backend running via a cron job
 app.get("/ping", async (_req: express.Request, res: express.Response) => {

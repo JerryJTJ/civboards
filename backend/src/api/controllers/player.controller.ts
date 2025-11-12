@@ -39,9 +39,7 @@ export async function handleGetProfileInfoByName(
 		const hasUploaded = await handleHasUserUploaded(name);
 
 		if (gamesPlayed === 0 && !hasUploaded) {
-			throw new ValidationError(
-				"Player hasn't played or uploaded a game yet"
-			);
+			throw new ValidationError("Player hasn't played or uploaded a game yet");
 		}
 
 		const [wins, gamesWon, gamesFinished] = await Promise.all([

@@ -159,9 +159,7 @@ export default function GameModal(props: GameModalProps) {
 					{() => (
 						<>
 							<ModalHeader className="flex flex-row">
-								<p className="pt-2 pl-2 text-large">
-									{headerText()} Game
-								</p>
+								<p className="pt-2 pl-2 text-large">{headerText()} Game</p>
 							</ModalHeader>
 							<ModalBody>
 								{mode === "add" && dispatches && (
@@ -197,27 +195,17 @@ export default function GameModal(props: GameModalProps) {
 									<div className="grid grid-cols-6 gap-4 px-10 py-2">
 										<div className="col-span-4">
 											{" "}
-											<p className="self-center pb-4 font-bold">
-												Players
-											</p>
+											<p className="self-center pb-4 font-bold">Players</p>
 											{civFields}
 											{enabled && (
 												<div className="flex flex-row gap-2 pt-4">
 													<Button
-														onPress={() =>
-															dispatches?.addCivDispatch(
-																true
-															)
-														}
+														onPress={() => dispatches?.addCivDispatch(true)}
 													>
 														Add Human
 													</Button>
 													<Button
-														onPress={() =>
-															dispatches?.addCivDispatch(
-																false
-															)
-														}
+														onPress={() => dispatches?.addCivDispatch(false)}
 													>
 														Add AI
 													</Button>
@@ -225,9 +213,7 @@ export default function GameModal(props: GameModalProps) {
 											)}
 										</div>
 										<div className="col-span-2">
-											<p className="self-center pb-4 font-bold">
-												Game Options
-											</p>
+											<p className="self-center pb-4 font-bold">Game Options</p>
 											{gameOptionFields}
 										</div>
 									</div>
@@ -236,11 +222,7 @@ export default function GameModal(props: GameModalProps) {
 								<div className="flex flex-row gap-2" />
 							</ModalBody>
 							<ModalFooter>
-								<Button
-									color="danger"
-									variant="shadow"
-									onPress={onModalClose}
-								>
+								<Button color="danger" variant="shadow" onPress={onModalClose}>
 									Close
 								</Button>
 								{enabled && (

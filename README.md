@@ -8,8 +8,8 @@ The live website can be seen here: https://civboard.onrender.com/
 
 To run this project:
 
--   Dev: `pnpm run dev`
--   Build: `pnpm run build`
+- Dev: `pnpm run dev`
+- Build: `pnpm run build`
 
 ## Technologies Used
 
