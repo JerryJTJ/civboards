@@ -1,6 +1,15 @@
 import { ERROR_CODES } from "./errorCodes.js";
 import { PostgrestError } from "@supabase/supabase-js";
 
+interface AxiosError {
+	message: string;
+	name: string;
+	stack: string;
+	config: object;
+	code: string;
+	status: number;
+}
+
 //Error Handling
 export class AppError extends Error {
 	status: number;
@@ -9,6 +18,13 @@ export class AppError extends Error {
 		super(message);
 		this.status = status;
 		this.code = code;
+	}
+}
+
+// AxiosError
+export class RestError extends AppError {
+	constructor(message: string, error: AxiosError) {
+		super(message, error.status, error.code);
 	}
 }
 
