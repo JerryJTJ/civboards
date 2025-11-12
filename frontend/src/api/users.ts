@@ -22,8 +22,12 @@ export async function getProfile(
 
 			if (validate.success) return validate.data;
 		}
-	} catch(error) {
-		if(error instanceof AxiosError && error.status === 404) return undefined;
+	} catch (error) {
+		if (
+			error instanceof AxiosError &&
+			(error.status === 404 || error.status === 422)
+		)
+			return undefined;
 	}
 
 	throw new Error(`Failed to get profile ${username}`);
