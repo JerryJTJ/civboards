@@ -22,7 +22,7 @@ export default function ProfilePage() {
 	// APIs
 	const profile = useQuery({
 		queryKey: ["profiles", username],
-		queryFn: () => (username ? getProfile(username) : undefined),
+		queryFn: async () => {if(username) return await getProfile(username)},
 		enabled: !!username,
 	});
 	const games = useQuery({
