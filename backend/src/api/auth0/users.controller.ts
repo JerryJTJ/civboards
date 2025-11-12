@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "../../types/Errors.js";
-import { getProfilePicByUsername, getUserByUsername } from "./users.service.js";
+import { getProfilePicByUsername } from "./users.service.js";
 
 export async function handleGetPicFromUsername(
 	req: Request,
@@ -10,7 +10,8 @@ export async function handleGetPicFromUsername(
 	const { username } = req.params;
 
 	// Validate alphanumeric
-	if (!username.match(/^[a-z0-9]+$/i))
+	const regex = /^[a-z0-9]+$/i;
+	if (!regex.exec(username))
 		throw new ValidationError("Username must be alphanumeric");
 
 	try {

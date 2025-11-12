@@ -1,6 +1,13 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
-export default async function getAccessToken(): Promise<string> {
+interface AccessToken {
+	access_token: string;
+	scope: string;
+	expires_in: number;
+	token_type: string;
+}
+
+export default async function getManagementToken(): Promise<string> {
 	const AUTH0_MANAGEMENT_CLIENT_ID = process.env.AUTH0_MANAGEMENT_CLIENT_ID;
 	const AUTH0_MANAGEMENT_CLIENT_SECRET =
 		process.env.AUTH0_MANAGEMENT_CLIENT_SECRET;
@@ -15,20 +22,22 @@ export default async function getAccessToken(): Promise<string> {
 
 	const options = {
 		method: "POST",
-		url: `${AUTH0_DOMAIN}oauth/token`,
+		url: `https://${AUTH0_DOMAIN}/oauth/token`,
 		headers: { "content-type": "application/x-www-form-urlencoded" },
 		data: new URLSearchParams({
 			grant_type: "client_credentials",
 			client_id: AUTH0_MANAGEMENT_CLIENT_ID,
 			client_secret: AUTH0_MANAGEMENT_CLIENT_SECRET,
-			audience: `${AUTH0_DOMAIN}api/v2/`,
+			audience: `https://${AUTH0_DOMAIN}/api/v2/`,
 		}),
 	};
 
 	try {
-		const response = await axios.request(options);
-		return response.data.access_token as string;
-	} catch (error) {
+		const response: AxiosResponse<AccessToken> = await axios.request(
+			options
+		);
+		return response.data.access_token;
+	} catch {
 		throw new Error("Failed to get Auth0 access token");
 	}
 }

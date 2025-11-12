@@ -18,7 +18,7 @@ GameRouter.get(
 	GameController.handleGetAllGameWinnerCivilizationIds
 );
 GameRouter.get("/winners/victories", GameController.handleGetAllGameVictoryIds);
-GameRouter.delete("/id/:id", checkJwt, GameController.handleSoftDeleteGame);
-GameRouter.patch("/id/:id", checkJwt, GameController.handleUpdateGame);
+GameRouter.delete("/id/:id", checkJwt(), GameController.handleSoftDeleteGame);
+GameRouter.patch("/id/:id", checkJwt(), GameController.handleUpdateGame);
 
 export default GameRouter;
