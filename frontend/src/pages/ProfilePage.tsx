@@ -5,16 +5,14 @@ import { useMemo } from "react";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Avatar } from "@heroui/avatar";
 import { Tabs, Tab } from "@heroui/tabs";
-import { useAuth0 } from "@auth0/auth0-react";
-
 import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
 import DefaultLayout from "@/layouts/default";
 import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
 import GamesTable from "@/components/games/GamesTable";
+import { getProfilePic } from "@/api/auth0";
 
 export default function ProfilePage() {
-	const { user } = useAuth0();
 	const params = useParams();
 	const username = useMemo(
 		() => params.username?.toLocaleLowerCase(),
@@ -39,6 +37,14 @@ export default function ProfilePage() {
 		queryFn: async () => {
 			if (username) return getGamesByUploader(username);
 		},
+		enabled: !!username,
+	});
+	const profilePic = useQuery({
+		queryKey: ["profilepic", username],
+		queryFn: async () => {
+			if (username) return getProfilePic(username);
+		},
+		enabled: !!username,
 	});
 
 	return (
@@ -48,7 +54,7 @@ export default function ProfilePage() {
 					isBordered
 					className="w-20 h-20 mt-2 text-large"
 					showFallback={false}
-					src={user ? (user.profile_pic as string) : ""}
+					src={profilePic.data}
 				/>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
 					<p className="text-xl font-semibold">{username}</p>
