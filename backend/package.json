@@ -31,7 +31,6 @@
 	"dependencies": {
 		"@civboards/schemas": "workspace:*",
 		"@supabase/supabase-js": "^2.50.3",
-		"axios": "^1.13.2",
 		"buffer-v6-polyfill": "^1.0.5",
 		"compression": "^1.8.0",
 		"cors": "^2.8.5",
