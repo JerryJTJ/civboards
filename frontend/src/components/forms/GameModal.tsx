@@ -84,8 +84,7 @@ export default function GameModal(props: GameModalProps) {
 		onClose();
 	};
 	// Submitting
-	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const onSubmit = async () => {
 		if (mode === "view") return;
 
 		setLoading(true);
@@ -154,7 +153,14 @@ export default function GameModal(props: GameModalProps) {
 			size="5xl"
 			onClose={onModalClose}
 		>
-			<form onSubmit={void onSubmit}>
+			<form
+				onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+					e.preventDefault();
+					void (async () => {
+						await onSubmit();
+					})();
+				}}
+			>
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>
