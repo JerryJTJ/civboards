@@ -1,8 +1,9 @@
 import { Card, CardFooter, CardHeader } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Link } from "@heroui/link";
-
 import DefaultLayout from "@/layouts/default";
+
+import defeat from "/defeat.webp";
 
 export default function NotFoundPage() {
 	return (
@@ -21,7 +22,7 @@ export default function NotFoundPage() {
 						className="z-0 object-cover w-full h-full"
 						height={500}
 						radius="lg"
-						src="https://imgur.com/HqPh7KY.png"
+						src={defeat}
 						width={800}
 					/>
 				</Link>

@@ -55,7 +55,7 @@ export default function ProfilePage() {
 				<Avatar
 					isBordered
 					className="w-20 h-20 mt-2 text-large"
-					showFallback={false}
+					showFallback
 					src={profilePic.data}
 				/>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>
