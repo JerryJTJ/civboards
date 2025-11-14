@@ -10,6 +10,7 @@ export async function getProfilePic(username: string): Promise<string> {
 			});
 
 		const regex = /(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))/;
+
 		if (regex.exec(response.data.picture)) return response.data.picture;
 		throw new Error();
 	} catch {

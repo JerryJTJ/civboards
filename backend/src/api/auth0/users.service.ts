@@ -1,6 +1,6 @@
+import { NotFoundError } from "../../types/Errors.js";
 import axios, { AxiosResponse } from "axios";
 import getManagementToken from "./getManagementToken.js";
-import { NotFoundError } from "../../types/Errors.js";
 
 interface Auth0User {
 	nickname: string;

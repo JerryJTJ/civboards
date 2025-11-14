@@ -1,8 +1,8 @@
+import { NextFunction, Request, Response } from "express";
 import {
 	fetchAllGamemodes,
 	fetchGamemodeById,
 } from "../services/gamemode.service.js";
-import { Request, Response, NextFunction } from "express";
 
 export async function handleGetGamemodeById(
 	req: Request,

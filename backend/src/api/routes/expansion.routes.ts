@@ -1,7 +1,7 @@
-import express from "express";
 import * as ExpansionController from "../controllers/expansion.controller.js";
+import { Router } from "express";
 
-const ExpansionRouter = express.Router();
+const ExpansionRouter = Router();
 
 ExpansionRouter.get(
 	"/code/:code",

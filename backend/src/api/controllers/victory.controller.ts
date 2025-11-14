@@ -1,8 +1,8 @@
+import { NextFunction, Request, Response } from "express";
 import {
 	fetchAllVictories,
 	fetchVictoryById,
 } from "../services/victory.service.js";
-import { Request, Response, NextFunction } from "express";
 
 export async function handleGetVictoryById(
 	req: Request,

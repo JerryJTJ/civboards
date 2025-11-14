@@ -1,9 +1,9 @@
+import { NextFunction, Request, Response } from "express";
 import {
 	fetchAllCivilizations,
 	fetchCivilizationByCode,
 	fetchCivilizationById,
 } from "../services/civilization.service.js";
-import { Request, Response, NextFunction } from "express";
 
 export async function handleGetCivilizationByCode(
 	req: Request,

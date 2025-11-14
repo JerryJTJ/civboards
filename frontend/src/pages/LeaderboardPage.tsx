@@ -1,7 +1,13 @@
-import { useQueries } from "@tanstack/react-query";
+import { Button, ButtonGroup } from "@heroui/button";
 import { useMemo, useState } from "react";
-import { ButtonGroup, Button } from "@heroui/button";
+import { useQueries } from "@tanstack/react-query";
 
+import {
+	CivilizationsData,
+	LeadersData,
+	PlayersData,
+	VictoriesData,
+} from "@/types/leaderboard.types";
 import {
 	getAllGameVictoryIds,
 	getAllGameWinnerCivilizationIds,
@@ -13,12 +19,6 @@ import LeaderboardTable from "@/components/LeaderboardTable";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import getViewportSize from "@/components/utils/getViewportSize";
 import useWindowDimensions from "@/hooks/useWindowDimensions";
-import {
-	CivilizationsData,
-	LeadersData,
-	PlayersData,
-	VictoriesData,
-} from "@/types/leaderboard.types";
 
 type LeaderbordStats =
 	| { type: "player"; data: PlayersData[] }
@@ -28,6 +28,7 @@ type LeaderbordStats =
 
 function sanitizeForLeaderboard(stats: LeaderbordStats) {
 	const { type, data } = stats;
+
 	switch (type) {
 		case "player":
 			return data.map((player) => {

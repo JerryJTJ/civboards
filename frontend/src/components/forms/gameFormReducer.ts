@@ -1,6 +1,6 @@
+import { Civ, GameForm } from "@/interfaces/game.interface";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
 import { MAP_SIZE } from "@/constants/gameSettings";
-import { Civ, GameForm } from "@/interfaces/game.interface";
 
 const generateNewPlayer = (isHuman: boolean) => ({
 	id: crypto.randomUUID(),

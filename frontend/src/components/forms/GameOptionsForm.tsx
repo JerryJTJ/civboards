@@ -1,19 +1,19 @@
+import { Checkbox } from "@heroui/checkbox";
+import { Chip } from "@heroui/chip";
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem, SelectedItems } from "@heroui/select";
-import { Chip } from "@heroui/chip";
-import { Checkbox } from "@heroui/checkbox";
 
-import { GameForm } from "@/interfaces/game.interface";
 import {
-	VICTORY_TYPES,
-	GAME_SPEED,
-	MAP_SIZE,
-	GAMEMODES,
 	EXPANSIONS,
 	Expansion,
+	GAMEMODES,
+	GAME_SPEED,
 	Gamemode,
+	MAP_SIZE,
+	VICTORY_TYPES,
 } from "@/constants/gameSettings";
+import { GameForm } from "@/interfaces/game.interface";
 
 type GameOptionsFormProps =
 	| {

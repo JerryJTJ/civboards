@@ -2,8 +2,7 @@ import { Card, CardFooter, CardHeader } from "@heroui/card";
 import { Image } from "@heroui/image";
 import { Link } from "@heroui/link";
 import DefaultLayout from "@/layouts/default";
-
-import defeat from "/defeat.webp";
+import defeat from "/defeat.webp"; // eslint-disable-line import-x/no-unresolved
 
 export default function NotFoundPage() {
 	return (

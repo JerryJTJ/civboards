@@ -1,23 +1,23 @@
 import { Button } from "@heroui/button";
 import {
 	Modal,
-	ModalContent,
-	ModalHeader,
 	ModalBody,
+	ModalContent,
 	ModalFooter,
+	ModalHeader,
 } from "@heroui/modal";
-import { UseMutationResult } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Tab, Tabs } from "@heroui/tabs";
+import { UseMutationResult } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMemo, useRef, useState } from "react";
 
 import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
 import getViewportSize from "../utils/getViewportSize";
 
+import { FormAction } from "./gameFormReducer";
+import { getFormDispatches } from "./gameFormDispatches";
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
-import { getFormDispatches } from "./gameFormDispatches";
-import { FormAction } from "./gameFormReducer";
 import UploadFileInput from "./UploadFileInput";
 
 import { Civ, GameForm } from "@/interfaces/game.interface";
@@ -138,7 +138,7 @@ export default function GameModal(props: GameModalProps) {
 		} else if (!enabled) {
 			return <GameOptionsForm enabled={enabled} form={form} />;
 		}
-	}, [dispatches?.gameOptionsDispatch, enabled, form]);
+	}, [dispatches, enabled, form]);
 
 	return (
 		<Modal

@@ -1,12 +1,12 @@
+import * as z from "zod";
 import {
 	DisplayGameSchema,
 	DisplayGameSchemaArray,
 	ProfileSchema,
 } from "@civboards/schemas";
-import * as z from "zod";
 
-import { instance } from "./axiosInstance";
 import { AxiosError } from "axios";
+import { instance } from "./axiosInstance";
 
 export async function getProfile(
 	username: string

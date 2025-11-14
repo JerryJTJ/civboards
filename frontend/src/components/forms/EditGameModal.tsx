@@ -1,14 +1,14 @@
-import { DisplayGameSchema, UpdateGameSchema } from "@civboards/schemas";
-import { useReducer } from "react";
 import * as z from "zod";
+import { DisplayGameSchema, UpdateGameSchema } from "@civboards/schemas";
 import { addToast } from "@heroui/toast";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useReducer } from "react";
 
 import { ValidationError } from "../utils/error";
 import { validateFormFields } from "../utils/validateFormFields";
 
-import gameFormReducer, { FormAction } from "./gameFormReducer";
 import GameModal from "./GameModal";
+import gameFormReducer, { FormAction } from "./gameFormReducer";
 
 import { GameForm } from "@/interfaces/game.interface";
 import { useGamesAPI } from "@/api/games";

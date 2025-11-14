@@ -1,7 +1,7 @@
-import express from "express";
 import * as PlayerController from "../controllers/player.controller.js";
+import { Router } from "express";
 
-const PlayerRouter = express.Router();
+const PlayerRouter = Router();
 PlayerRouter.get("/name/:name", PlayerController.handleGetProfileInfoByName);
 PlayerRouter.get("/all", PlayerController.handleGetAllUniquePlayers);
 

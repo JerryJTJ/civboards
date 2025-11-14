@@ -1,7 +1,7 @@
-import express from "express";
 import * as CivilizationController from "../controllers/civilization.controller.js";
+import { Router } from "express";
 
-const CivilizationRouter = express.Router();
+const CivilizationRouter = Router();
 
 CivilizationRouter.get(
 	"/code/:code",

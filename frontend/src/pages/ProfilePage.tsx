@@ -1,16 +1,16 @@
-import { Skeleton } from "@heroui/skeleton";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
-import { useMemo } from "react";
-import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Avatar } from "@heroui/avatar";
-import { Tabs, Tab } from "@heroui/tabs";
-import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
-import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
-import DefaultLayout from "@/layouts/default";
+import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
+import { Skeleton } from "@heroui/skeleton";
+import { Tab, Tabs } from "@heroui/tabs";
 import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
-import GamesTable from "@/components/games/GamesTable";
 import { getProfilePic } from "@/api/auth0";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import DefaultLayout from "@/layouts/default";
+import GamesTable from "@/components/games/GamesTable";
+import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
+import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
 
 export default function ProfilePage() {
 	const params = useParams();
@@ -54,8 +54,8 @@ export default function ProfilePage() {
 			<div className="flex flex-col items-center gap-5 overflow-y-scroll">
 				<Avatar
 					isBordered
-					className="w-20 h-20 mt-2 text-large"
 					showFallback
+					className="w-20 h-20 mt-2 text-large"
 					src={profilePic.data}
 				/>
 				<Skeleton className="rounded-xl" isLoaded={!profile.isPending}>

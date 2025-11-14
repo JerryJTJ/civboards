@@ -1,10 +1,10 @@
-import { useDisclosure } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { useReducer } from "react";
-import { addToast } from "@heroui/toast";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { InsertGameSchema } from "@civboards/schemas";
+import { addToast } from "@heroui/toast";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDisclosure } from "@heroui/modal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useReducer } from "react";
 
 import { PlusIcon } from "../icons";
 import { ValidationError } from "../utils/error";
@@ -13,10 +13,10 @@ import { validateFormFields } from "../utils/validateFormFields";
 import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 
-import { GameForm } from "@/interfaces/game.interface";
+import * as z from "zod";
 import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
+import { GameForm } from "@/interfaces/game.interface";
 import { useGamesAPI } from "@/api/games";
-import z from "zod";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();

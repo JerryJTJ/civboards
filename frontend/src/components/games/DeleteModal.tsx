@@ -1,5 +1,7 @@
-import { DisplayGameSchemaArray } from "@civboards/schemas";
+import * as z from "zod";
 import { Button } from "@heroui/button";
+import { DisplayGameSchemaArray } from "@civboards/schemas";
+import { JSX, useState } from "react";
 import {
 	Modal,
 	ModalBody,
@@ -7,14 +9,12 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import { addToast } from "@heroui/toast";
 import {
 	QueryObserverResult,
 	RefetchOptions,
 	useMutation,
 } from "@tanstack/react-query";
-import { JSX, useState } from "react";
-import * as z from "zod";
+import { addToast } from "@heroui/toast";
 
 import { useGamesAPI } from "@/api/games";
 

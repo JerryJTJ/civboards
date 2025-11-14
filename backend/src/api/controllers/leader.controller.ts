@@ -1,9 +1,9 @@
+import { NextFunction, Request, Response } from "express";
 import {
-	fetchLeaderFromCode,
-	fetchLeaderById,
 	fetchAllLeaders,
+	fetchLeaderById,
+	fetchLeaderFromCode,
 } from "../services/leader.service.js";
-import { Request, Response, NextFunction } from "express";
 
 export async function handleGetLeaderByCode(
 	req: Request,

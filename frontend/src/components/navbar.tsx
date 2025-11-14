@@ -1,18 +1,18 @@
-import { Link } from "@heroui/link";
+import { Divider } from "@heroui/divider";
 import {
 	Navbar as HeroUINavbar,
 	NavbarBrand,
 	NavbarContent,
 	NavbarItem,
-	NavbarMenuToggle,
 	NavbarMenu,
 	NavbarMenuItem,
+	NavbarMenuToggle,
 } from "@heroui/navbar";
+import { Link } from "@heroui/link";
 import { Skeleton } from "@heroui/skeleton";
-import { Divider } from "@heroui/divider";
+import { clsx } from "clsx";
 import { link as linkStyles } from "@heroui/theme";
 import { useAuth0 } from "@auth0/auth0-react";
-import clsx from "clsx";
 import { useMemo } from "react";
 
 import LoginButton from "./authorization/LoginButton";
@@ -20,10 +20,9 @@ import LogoutButton from "./authorization/LogoutButton";
 import ProfileIcon from "./authorization/ProfileIcon";
 import SearchBar from "./SearchBar";
 
-import { siteConfig } from "@/config/site";
+import { GithubIcon, SvgIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { GithubIcon } from "@/components/icons";
-import { SvgIcon } from "@/components/icons";
+import { siteConfig } from "@/config/site";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();

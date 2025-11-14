@@ -1,22 +1,22 @@
-import React from "react";
 import { Button, ButtonGroup } from "@heroui/button";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useQuery } from "@tanstack/react-query";
 
+import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Skeleton } from "@heroui/skeleton";
+import { useGamesAPI } from "@/api/games";
+import { useState } from "react";
+import AddGameModal from "@/components/forms/AddGameModal";
 import DefaultLayout from "@/layouts/default";
 import GamesCard from "@/components/games/GamesCard";
 import GamesTable from "@/components/games/GamesTable";
-import AddGameModal from "@/components/forms/AddGameModal";
-import { useGamesAPI } from "@/api/games";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
 import getViewportSize from "@/components/utils/getViewportSize";
-import { Card, CardHeader, CardBody } from "@heroui/card";
-import { Skeleton } from "@heroui/skeleton";
+import useWindowDimensions from "@/hooks/useWindowDimensions";
 
 type TabView = "cards" | "table";
 
 export default function GamesPage() {
-	const [currTab, setCurrTab] = React.useState<TabView>("cards");
+	const [currTab, setCurrTab] = useState<TabView>("cards");
 	const { width } = useWindowDimensions();
 
 	const { getAllGames } = useGamesAPI();
@@ -63,7 +63,7 @@ export default function GamesPage() {
 				{/* Janky formatting to keep buttons positioned while loading
 				{isPending && <LoadingSpinner height={20} />} */}
 
-				<Skeleton isLoaded={!isPending} className="rounded-4xl">
+				<Skeleton className="rounded-4xl" isLoaded={!isPending}>
 					{currTab === "cards" ? (
 						error ? (
 							<Card isBlurred>

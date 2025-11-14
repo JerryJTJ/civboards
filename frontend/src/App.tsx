@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 
-import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProfilePage from "./pages/ProfilePage";
 
+import GamesPage from "@/pages/GamesPage";
 import IndexPage from "@/pages/index";
 import LeaderboardPage from "@/pages/LeaderboardPage";
-import GamesPage from "@/pages/GamesPage";
 
 function App() {
 	return (

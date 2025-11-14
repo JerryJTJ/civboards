@@ -1,9 +1,9 @@
+import { DatabaseError, ValidationError } from "../../types/Errors.js";
 import {
 	Tables,
 	TablesInsert,
 	TablesUpdate,
 } from "../../interfaces/supabase.js";
-import { DatabaseError, ValidationError } from "../../types/Errors.js";
 import { supabase } from "../server.js";
 
 export async function insertGame(

@@ -1,10 +1,10 @@
+import * as z from "zod";
 import {
 	DisplayGameSchema,
 	DisplayGameSchemaArray,
 	InsertGameSchema,
 	UpdateGameSchema,
 } from "@civboards/schemas";
-import * as z from "zod";
 
 import { instance } from "./axiosInstance";
 import useAccessToken from "./useAccessToken";

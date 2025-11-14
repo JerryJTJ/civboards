@@ -8,7 +8,7 @@ export default function useAccessToken() {
 			authorizationParams: {
 				audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,
 				scope: "games:authorized",
-			},
+			},	
 		});
 	};
 
@@ -18,8 +18,8 @@ export default function useAccessToken() {
 		} catch {
 			// Only verifiable first-party applications may skip consent
 			// When in dev, comment the error and run the code below to get consent
-			throw new Error("Failed to get access token");
 
+			throw new Error("Failed to get access token");
 			// await loginWithPopup({
 			// 	authorizationParams: {
 			// 		audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,

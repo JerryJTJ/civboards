@@ -1,15 +1,15 @@
-import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
-import { Card, CardFooter } from "@heroui/card";
-import { Image } from "@heroui/image";
-import { useDisclosure } from "@heroui/modal";
 import * as z from "zod";
+import { Card, CardFooter } from "@heroui/card";
+import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import { Dropdown, DropdownTrigger } from "@heroui/dropdown";
+import { Image } from "@heroui/image";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { useDisclosure } from "@heroui/modal";
 
-import ViewGameModal from "../forms/ViewGameModal";
-import EditGameModal from "../forms/EditGameModal";
 import DeleteModal from "./DeleteModal";
+import EditGameModal from "../forms/EditGameModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
+import ViewGameModal from "../forms/ViewGameModal";
 
 import { capitalize } from "@/utils/capitalize";
 

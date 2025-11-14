@@ -1,8 +1,8 @@
-import { DropdownMenu, DropdownItem } from "@heroui/dropdown";
-import { DisplayGameSchema } from "@civboards/schemas";
 import * as z from "zod";
-import { useAuth0 } from "@auth0/auth0-react";
+import { DisplayGameSchema } from "@civboards/schemas";
+import { DropdownItem, DropdownMenu } from "@heroui/dropdown";
 import { addToast } from "@heroui/toast";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesOptionDropdownProps {
 	onOpenView: () => void;

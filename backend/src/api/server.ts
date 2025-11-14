@@ -1,22 +1,22 @@
-import express from "express";
-import cors from "cors";
-import compression from "compression";
-import helmet from "helmet";
-import { errorHandler } from "./middlewares/errorHandler.js";
-import { createClient } from "@supabase/supabase-js";
 import { Database } from "../interfaces/supabase.js";
-import CivilizationRouter from "./routes/civilization.routes.js";
-import LeaderRouter from "./routes/leader.routes.js";
-import ExpansionRouter from "./routes/expansion.routes.js";
-import VictoryRouter from "./routes/victory.routes.js";
-import GamemodeRouter from "./routes/gamemode.routes.js";
-import GameRouter from "./routes/game.routes.js";
-import PlayerRouter from "./routes/player.routes.js";
-import ParseRouter from "./parse/parse.api.js";
-import UserRouter from "./routes/user.routes.js";
-import checkJwt from "./middlewares/auth/checkJwt.js";
+import { contentSecurityPolicy } from "helmet";
+import { createClient } from "@supabase/supabase-js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 import { getExpansionById } from "./repositories/expansion.repository.js";
 import Auth0Router from "./auth0/auth0.routes.js";
+import CivilizationRouter from "./routes/civilization.routes.js";
+import ExpansionRouter from "./routes/expansion.routes.js";
+import GameRouter from "./routes/game.routes.js";
+import GamemodeRouter from "./routes/gamemode.routes.js";
+import LeaderRouter from "./routes/leader.routes.js";
+import ParseRouter from "./parse/parse.api.js";
+import PlayerRouter from "./routes/player.routes.js";
+import UserRouter from "./routes/user.routes.js";
+import VictoryRouter from "./routes/victory.routes.js";
+import checkJwt from "./middlewares/auth/checkJwt.js";
+import compression from "compression";
+import cors from "cors";
+import express, { json } from "express";
 
 //Supabase connection
 const PORT = process.env.PORT ?? 5050;
@@ -40,13 +40,13 @@ const app = express();
 app.use(cors());
 app.use(compression());
 app.use(
-	helmet.contentSecurityPolicy({
+	contentSecurityPolicy({
 		directives: {
 			"script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
 		},
 	})
 );
-app.use(express.json());
+app.use(json());
 
 // Routes
 app.use("/civilization", CivilizationRouter);

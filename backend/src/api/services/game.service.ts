@@ -1,11 +1,25 @@
-import { UpdateGameSchema, InsertGameSchema } from "@civboards/schemas";
-import { TablesInsert, TablesUpdate } from "../../interfaces/supabase.js";
 import {
 	AppError,
 	NotFoundError,
 	ValidationError,
 } from "../../types/Errors.js";
+import { InsertGameSchema, UpdateGameSchema } from "@civboards/schemas";
+import { TablesInsert, TablesUpdate } from "../../interfaces/supabase.js";
 
+import * as z from "zod";
+import {
+	createGameExpansions,
+	removeGameExpansionByGameId,
+} from "./gameExpansion.service.js";
+import {
+	createGameGamemodes,
+	removeGameGamemodesByGameId,
+} from "./gameGamemode.service.js";
+import {
+	createGamePlayers,
+	removeGamePlayerByGameId,
+} from "./gamePlayer.service.js";
+import { createUsers } from "./user.service.js";
 import {
 	deleteGameById,
 	doesGameIdExist,
@@ -23,23 +37,9 @@ import {
 	updateGameById,
 } from "../repositories/game.repository.js";
 import { fetchCivilizationById } from "./civilization.service.js";
-import {
-	createGameExpansions,
-	removeGameExpansionByGameId,
-} from "./gameExpansion.service.js";
-import {
-	createGameGamemodes,
-	removeGameGamemodesByGameId,
-} from "./gameGamemode.service.js";
-import {
-	createGamePlayers,
-	removeGamePlayerByGameId,
-} from "./gamePlayer.service.js";
 import { fetchLeaderById } from "./leader.service.js";
 import { fetchVictoryById } from "./victory.service.js";
-import * as z from "zod";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository.js";
-import { createUsers } from "./user.service.js";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
