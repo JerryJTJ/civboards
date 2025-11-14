@@ -48,6 +48,7 @@ export default function DeleteModal(props: DeleteModalProps) {
 			});
 		},
 		onSuccess: () => {
+			onOpenChange();
 			addToast({
 				title: "Success",
 				color: "success",
@@ -74,18 +75,9 @@ export default function DeleteModal(props: DeleteModalProps) {
 						isLoading={loading}
 						onPress={() => {
 							setLoading(true);
-							mutation
-								.mutateAsync(gameId)
-								.then(onOpenChange)
-								.catch(() => {
-									addToast({
-										title: "Error",
-										color: "warning",
-										description: "Failed to delete game",
-										timeout: 3000,
-										shouldShowTimeoutProgress: true,
-									});
-								});
+							void (async () => {
+								await mutation.mutateAsync(gameId);
+							})();
 						}}
 					>
 						Delete

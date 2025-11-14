@@ -16,10 +16,9 @@ export default function useAccessToken() {
 		try {
 			return await getAccessToken();
 		} catch {
-			throw new Error("Failed to get access token");
-
 			// Only verifiable first-party applications may skip consent
 			// When in dev, comment the error and run the code below to get consent
+			throw new Error("Failed to get access token");
 
 			// await loginWithPopup({
 			// 	authorizationParams: {
