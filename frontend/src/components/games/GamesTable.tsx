@@ -223,7 +223,9 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "size":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">{game.mapSize}</p>
+						<p className="text-xs sm:text-bold sm:text-small">
+							{capitalize(game.mapSize)}
+						</p>
 					);
 				case "speed":
 					return (
