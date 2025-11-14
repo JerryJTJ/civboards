@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 
 import { SearchIcon } from "./icons";
 
-import { capitalize } from "@/utils/capitalize";
 import { getAllUsers } from "@/api/users";
 
 export default function SearchBar() {
