@@ -19,11 +19,15 @@ export default function SearchBar() {
 		<Skeleton isLoaded={!isPending} className="rounded-xl">
 			{!isPending && (
 				<Autocomplete
-					isVirtualized
+					// isVirtualized
 					aria-label="Search"
 					className="max-w-[250px]"
+					radius="md"
+					classNames={{
+						base: "border border-white/20 rounded-xl",
+						popoverContent: "border border-white/20 rounded-xl",
+					}}
 					defaultItems={data}
-					maxListboxHeight={200}
 					placeholder="Search for user..."
 					size="md"
 					startContent={
@@ -37,7 +41,7 @@ export default function SearchBar() {
 								navigate(`/profile/${user.name}`);
 							}}
 						>
-							{capitalize(user.name)}
+							{user.name}
 						</AutocompleteItem>
 					)}
 				</Autocomplete>

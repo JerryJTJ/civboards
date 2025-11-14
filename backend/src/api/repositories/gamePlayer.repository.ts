@@ -11,7 +11,8 @@ export async function getAllGamePlayers() {
 		)
 		.neq("name", "")
 		.not("name", "is", null)
-		.eq("game.active", true);
+		.eq("game.active", true)
+		.order("name", { ascending: true });
 
 	if (error)
 		throw new DatabaseError("Failed to get all unique game players", error);
