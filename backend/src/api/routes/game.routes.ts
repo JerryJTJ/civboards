@@ -3,7 +3,7 @@ import * as GameController from "../controllers/game.controller.js";
 import checkJwt from "../middlewares/auth/checkJwt.js";
 
 const GameRouter = express.Router();
-GameRouter.post("/add", checkJwt, GameController.handleCreateGame);
+GameRouter.post("/add", checkJwt(), GameController.handleCreateGame);
 GameRouter.get("/id/:id", GameController.handleGetGameById);
 GameRouter.get("/player/:name", GameController.handleGetAllGamesByPlayer);
 GameRouter.get("/uploader/:name", GameController.handleGetAllGamesByCreatedBy);

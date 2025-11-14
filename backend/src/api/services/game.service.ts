@@ -57,7 +57,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		if (!winner) throw new ValidationError("Finished games need a winner");
 
 		if (winner.leaderId !== game.winnerLeaderId)
-			throw new ValidationError("Finished games need a winner");
+			throw new ValidationError("Winning leaders don't match");
 	}
 
 	let winnerCivilizationId;
