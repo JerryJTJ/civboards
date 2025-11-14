@@ -11,7 +11,7 @@ import EditGameModal from "../forms/EditGameModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
 import ViewGameModal from "../forms/ViewGameModal";
 
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "utils/capitalize";
 
 import menu from "../../../public/menu_background.webp";
 

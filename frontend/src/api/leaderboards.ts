@@ -1,10 +1,10 @@
-import {
+import { instance } from "./axiosInstance";
+import type {
 	CivilizationsData,
 	LeadersData,
 	PlayersData,
 	VictoriesData,
-} from "@/types/leaderboard.types";
-import { instance } from "./axiosInstance";
+} from "@customTypes/leaderboard.types";
 
 export async function getAllGameWinners(): Promise<PlayersData[] | undefined> {
 	const response = await instance({

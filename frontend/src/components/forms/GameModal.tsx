@@ -20,8 +20,8 @@ import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
 import UploadFileInput from "./UploadFileInput";
 
-import { Civ, GameForm } from "@/interfaces/game.interface";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { Civ, GameForm } from "@interfaces/game.interface";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface AddModalProps {
 	mode: "add";

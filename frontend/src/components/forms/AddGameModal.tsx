@@ -14,9 +14,9 @@ import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 
 import * as z from "zod";
-import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
-import { GameForm } from "@/interfaces/game.interface";
-import { useGamesAPI } from "@/api/games";
+import { DEFAULT_ADD_FORM } from "@constants/gameDefaults";
+import { GameForm } from "@interfaces/game.interface";
+import { useGamesAPI } from "@api/games";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();

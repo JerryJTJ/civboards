@@ -4,9 +4,9 @@ import { Link } from "@heroui/link";
 
 import getViewportSize from "../utils/getViewportSize";
 
-import { Civ } from "@/interfaces/game.interface";
-import { LEADERS, Leader } from "@/constants/civilizations";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { Civ } from "@interfaces/game.interface";
+import { LEADERS, Leader } from "@constants/civilizations";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 // interface CivFieldProps {
 // 	enabled: boolean;

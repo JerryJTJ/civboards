@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { SearchIcon } from "./icons";
 
-import { getAllUsers } from "@/api/users";
+import { getAllUsers } from "@api/users";
 
 export default function SearchBar() {
 	const navigate = useNavigate();

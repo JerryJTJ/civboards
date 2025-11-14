@@ -16,7 +16,7 @@ import {
 } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
 
-import { useGamesAPI } from "@/api/games";
+import { useGamesAPI } from "@api/games";
 
 interface DeleteModalProps {
 	gameId: string;

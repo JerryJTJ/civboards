@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { GameForm } from "@/interfaces/game.interface";
+import { GameForm } from "@interfaces/game.interface";
 import { ParseSaveSchema } from "@civboards/schemas";
 import { instance } from "./axiosInstance";
 import useAccessToken from "./useAccessToken";

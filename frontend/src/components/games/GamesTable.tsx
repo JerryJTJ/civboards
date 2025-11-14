@@ -30,9 +30,9 @@ import ViewGameModal from "../forms/ViewGameModal";
 import DeleteModal from "./DeleteModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
 
-import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
-import { capitalize } from "@/utils/capitalize";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { DEFAULT_DISPLAY_GAME } from "@constants/gameDefaults";
+import { capitalize } from "utils/capitalize";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;

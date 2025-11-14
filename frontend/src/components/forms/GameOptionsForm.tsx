@@ -12,8 +12,8 @@ import {
 	Gamemode,
 	MAP_SIZE,
 	VICTORY_TYPES,
-} from "@/constants/gameSettings";
-import { GameForm } from "@/interfaces/game.interface";
+} from "@constants/gameSettings";
+import { GameForm } from "@interfaces/game.interface";
 
 type GameOptionsFormProps =
 	| {

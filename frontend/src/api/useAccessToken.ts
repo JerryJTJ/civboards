@@ -8,7 +8,7 @@ export default function useAccessToken() {
 			authorizationParams: {
 				audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,
 				scope: "games:authorized",
-			},	
+			},
 		});
 	};
 

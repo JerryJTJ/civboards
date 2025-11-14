@@ -7,18 +7,18 @@ import {
 	LeadersData,
 	PlayersData,
 	VictoriesData,
-} from "@/types/leaderboard.types";
+} from "@customTypes/leaderboard.types";
 import {
 	getAllGameVictoryIds,
 	getAllGameWinnerCivilizationIds,
 	getAllGameWinnerLeaderIds,
 	getAllGameWinners,
-} from "@/api/leaderboards";
-import DefaultLayout from "@/layouts/default";
-import LeaderboardTable from "@/components/LeaderboardTable";
-import LoadingSpinner from "@/components/LoadingSpinner";
-import getViewportSize from "@/components/utils/getViewportSize";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+} from "@api/leaderboards";
+import DefaultLayout from "@layouts/default";
+import LeaderboardTable from "@components/LeaderboardTable";
+import LoadingSpinner from "@components/LoadingSpinner";
+import getViewportSize from "@components/utils/getViewportSize";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 type LeaderbordStats =
 	| { type: "player"; data: PlayersData[] }

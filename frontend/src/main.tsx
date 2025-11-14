@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import "@/styles/globals.css";
+import "@styles/globals.css";
 import { Provider } from "./provider.tsx";
 import App from "./App.tsx";
 

@@ -20,9 +20,9 @@ import LogoutButton from "./authorization/LogoutButton";
 import ProfileIcon from "./authorization/ProfileIcon";
 import SearchBar from "./SearchBar";
 
-import { GithubIcon, SvgIcon } from "@/components/icons";
-import { ThemeSwitch } from "@/components/theme-switch";
-import { siteConfig } from "@/config/site";
+import { GithubIcon, SvgIcon } from "@components/icons";
+import { ThemeSwitch } from "@components/theme-switch";
+import { siteConfig } from "@config/site";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();

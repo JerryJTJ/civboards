@@ -4,14 +4,14 @@ import { useQuery } from "@tanstack/react-query";
 
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
-import { useGamesAPI } from "@/api/games";
+import { useGamesAPI } from "@api/games";
 import { useState } from "react";
-import AddGameModal from "@/components/forms/AddGameModal";
-import DefaultLayout from "@/layouts/default";
-import GamesCard from "@/components/games/GamesCard";
-import GamesTable from "@/components/games/GamesTable";
-import getViewportSize from "@/components/utils/getViewportSize";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import AddGameModal from "@components/forms/AddGameModal";
+import DefaultLayout from "@layouts/default";
+import GamesCard from "@components/games/GamesCard";
+import GamesTable from "@components/games/GamesTable";
+import getViewportSize from "@components/utils/getViewportSize";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 type TabView = "cards" | "table";
 

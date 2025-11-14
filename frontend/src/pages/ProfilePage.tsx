@@ -2,15 +2,15 @@ import { Avatar } from "@heroui/avatar";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
 import { Tab, Tabs } from "@heroui/tabs";
-import { getGamesByPlayer, getGamesByUploader, getProfile } from "@/api/users";
-import { getProfilePic } from "@/api/auth0";
+import { getGamesByPlayer, getGamesByUploader, getProfile } from "@api/users";
+import { getProfilePic } from "@api/auth0";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import DefaultLayout from "@/layouts/default";
-import GamesTable from "@/components/games/GamesTable";
-import ProfileLeaderboardTable from "@/components/Profile/ProfileLeaderboardTable";
-import ProfileStatsTable from "@/components/Profile/ProfileStatsTable";
+import DefaultLayout from "@layouts/default";
+import GamesTable from "@components/games/GamesTable";
+import ProfileLeaderboardTable from "@components/profile/ProfileLeaderboardTable";
+import ProfileStatsTable from "@components/profile/ProfileStatsTable";
 
 export default function ProfilePage() {
 	const params = useParams();

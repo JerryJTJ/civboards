@@ -10,8 +10,8 @@ import { validateFormFields } from "../utils/validateFormFields";
 import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 
-import { GameForm } from "@/interfaces/game.interface";
-import { useGamesAPI } from "@/api/games";
+import { GameForm } from "@interfaces/game.interface";
+import { useGamesAPI } from "@api/games";
 
 interface UpdateGameModalProps {
 	disclosure: {

@@ -1,5 +1,5 @@
-import DefaultLayout from "@/layouts/default";
-import TitleCard from "@/components/TitleCard";
+import DefaultLayout from "@layouts/default";
+import TitleCard from "@components/TitleCard";
 import atlas from "/atlas.webp"; // eslint-disable-line import-x/no-unresolved
 import discobolus from "/discobolus.webp"; // eslint-disable-line import-x/no-unresolved
 

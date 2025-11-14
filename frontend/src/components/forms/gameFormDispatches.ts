@@ -2,8 +2,8 @@ import { addToast } from "@heroui/toast";
 
 import { FormAction, GameOptionsAction } from "./gameFormReducer";
 
-import { Civ, GameForm } from "@/interfaces/game.interface";
-import { MAP_SIZE } from "@/constants/gameSettings";
+import { Civ, GameForm } from "@interfaces/game.interface";
+import { MAP_SIZE } from "@constants/gameSettings";
 
 export interface FormDispatches {
 	resetFormDispatch: (form: GameForm) => void;

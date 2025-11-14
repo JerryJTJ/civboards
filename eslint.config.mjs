@@ -84,7 +84,6 @@ export default defineConfig(
 					alwaysTryTypes: true,
 					noWarnOnMultipleProjects: true,
 				}),
-				createNodeResolver(),
 			],
 		},
 	},

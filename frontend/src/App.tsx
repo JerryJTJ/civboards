@@ -3,9 +3,9 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProfilePage from "./pages/ProfilePage";
 
-import GamesPage from "@/pages/GamesPage";
-import IndexPage from "@/pages/index";
-import LeaderboardPage from "@/pages/LeaderboardPage";
+import GamesPage from "@pages/GamesPage";
+import IndexPage from "@pages/index";
+import LeaderboardPage from "@pages/LeaderboardPage";
 
 function App() {
 	return (
