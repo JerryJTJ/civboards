@@ -16,7 +16,7 @@ import { ChangeEvent, Key, useCallback, useMemo, useState } from "react";
 import { SearchIcon } from "./icons";
 
 import { LeaderboardView } from "@pages/LeaderboardPage";
-import { capitalize } from "utils/capitalize";
+import { capitalize } from "@utils/capitalize";
 
 const columns: { key: string; name: string; sortable: boolean }[] = [
 	{
