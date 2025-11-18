@@ -1,11 +1,11 @@
 import { TablesInsert } from "../../interfaces/supabase.js";
 import { ValidationError } from "../../types/Errors.js";
-import { doesGameIdExist } from "../repositories/game.repository.js";
 import {
 	deleteGameExpansionsByGameId,
 	getGameExpansionsByGameId,
 	insertExpansions,
 } from "../repositories/gameExpansion.repository.js";
+import { doesGameIdExist } from "../repositories/game.repository.js";
 
 export async function createGameExpansions(
 	gameId: string,

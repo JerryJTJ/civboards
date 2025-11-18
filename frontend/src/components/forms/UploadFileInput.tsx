@@ -1,10 +1,10 @@
+import { AxiosError } from "axios";
 import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { useMutation } from "@tanstack/react-query";
-import { AxiosError } from "axios";
 
-import { GameForm } from "@/interfaces/game.interface";
-import { useParseAPI } from "@/api/parse";
+import { GameForm } from "@interfaces/game.interface";
+import { useParseAPI } from "@api/parse";
 
 interface UploadFileInputProps {
 	dispatch: (parsed: Partial<GameForm>) => void;

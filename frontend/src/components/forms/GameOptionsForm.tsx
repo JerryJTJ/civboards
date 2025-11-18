@@ -1,19 +1,19 @@
+import { Checkbox } from "@heroui/checkbox";
+import { Chip } from "@heroui/chip";
 import { Input } from "@heroui/input";
 import { NumberInput } from "@heroui/number-input";
 import { Select, SelectItem, SelectedItems } from "@heroui/select";
-import { Chip } from "@heroui/chip";
-import { Checkbox } from "@heroui/checkbox";
 
-import { GameForm } from "@/interfaces/game.interface";
 import {
-	VICTORY_TYPES,
-	GAME_SPEED,
-	MAP_SIZE,
-	GAMEMODES,
 	EXPANSIONS,
 	Expansion,
+	GAMEMODES,
+	GAME_SPEED,
 	Gamemode,
-} from "@/constants/gameSettings";
+	MAP_SIZE,
+	VICTORY_TYPES,
+} from "@constants/gameSettings";
+import { GameForm } from "@interfaces/game.interface";
 
 type GameOptionsFormProps =
 	| {
@@ -69,9 +69,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				<>
 					<Select
 						defaultSelectedKeys={
-							form.winner === ""
-								? undefined
-								: new Set([form.winner])
+							form.winner === "" ? undefined : new Set([form.winner])
 						}
 						isDisabled={!enabled}
 						isRequired={enabled}
@@ -80,23 +78,18 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						selectionMode="single"
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							if (enabled)
-								props.dispatch("winner", e.target.value);
+							if (enabled) props.dispatch("winner", e.target.value);
 						}}
 					>
 						{(player) =>
 							player.name ? (
-								<SelectItem key={player.id}>
-									{player.name}
-								</SelectItem>
+								<SelectItem key={player.id}>{player.name}</SelectItem>
 							) : null
 						}
 					</Select>
 					<Select
 						defaultSelectedKeys={
-							form.victoryId
-								? new Set([String(form.victoryId)])
-								: undefined
+							form.victoryId ? new Set([String(form.victoryId)]) : undefined
 						}
 						isDisabled={!enabled}
 						isRequired={enabled}
@@ -104,14 +97,11 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						label="Victory Type"
 						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							if (enabled)
-								props.dispatch("victoryId", e.target.value);
+							if (enabled) props.dispatch("victoryId", e.target.value);
 						}}
 					>
 						{(victory) => (
-							<SelectItem key={victory.id}>
-								{victory.label}
-							</SelectItem>
+							<SelectItem key={victory.id}>{victory.label}</SelectItem>
 						)}
 					</Select>
 				</>

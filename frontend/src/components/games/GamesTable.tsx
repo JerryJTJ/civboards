@@ -1,38 +1,42 @@
-import React, { useState } from "react";
+import * as z from "zod";
+import { Button } from "@heroui/button";
+import { ChangeEvent, Key, useCallback, useMemo, useState } from "react";
+import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
+import {
+	Dropdown,
+	DropdownItem,
+	DropdownMenu,
+	DropdownTrigger,
+} from "@heroui/dropdown";
+import { Input } from "@heroui/input";
+import { Pagination } from "@heroui/pagination";
+import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
+import { SharedSelection } from "@heroui/system";
+import { SortDescriptor } from "@react-types/shared";
 import {
 	Table,
-	TableHeader,
 	TableBody,
-	TableColumn,
-	TableRow,
 	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
 } from "@heroui/table";
-import { Input } from "@heroui/input";
-import { Button } from "@heroui/button";
-import { Pagination } from "@heroui/pagination";
-import {
-	DropdownTrigger,
-	Dropdown,
-	DropdownMenu,
-	DropdownItem,
-} from "@heroui/dropdown";
-import { SortDescriptor } from "@react-types/shared";
-import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
-import * as z from "zod";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
-import { SharedSelection } from "@heroui/system";
 
-import { ChevronDownIcon, SearchIcon, VerticalDotsIcon } from "../icons";
-import ViewGameModal from "../forms/ViewGameModal";
-import EditGameModal from "../forms/EditGameModal";
+import {
+	ChevronDownIcon,
+	SearchIcon,
+	VerticalDotsIcon,
+} from "@components/icons";
+import EditGameModal from "@components/forms/EditGameModal";
+import ViewGameModal from "@components/forms/ViewGameModal";
 
 import DeleteModal from "./DeleteModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
 
-import { DEFAULT_DISPLAY_GAME } from "@/constants/gameDefaults";
-import { capitalize } from "@/utils/capitalize";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { DEFAULT_DISPLAY_GAME } from "@constants/gameDefaults";
+import { capitalize } from "@utils/capitalize";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
@@ -74,11 +78,11 @@ export default function GamesTable(props: GamesTableProps) {
 	type Game = z.infer<typeof DisplayGameSchema>;
 
 	// Visible Columns
-	const [visibleColumns, setVisibleColumns] = React.useState<SharedSelection>(
+	const [visibleColumns, setVisibleColumns] = useState<SharedSelection>(
 		width > 640 ? new Set(DEFAULT_COLUMNS) : new Set(MOBILE_COLUMNS)
 	);
 
-	const headerColumns = React.useMemo(() => {
+	const headerColumns = useMemo(() => {
 		if (visibleColumns === "all") return columns;
 
 		return columns.filter((column) =>
@@ -87,18 +91,18 @@ export default function GamesTable(props: GamesTableProps) {
 	}, [visibleColumns]);
 
 	// Table Logic
-	const [filterValue, setFilterValue] = React.useState("");
-	const [rowsPerPage, setRowsPerPage] = React.useState(5);
-	const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+	const [filterValue, setFilterValue] = useState("");
+	const [rowsPerPage, setRowsPerPage] = useState(5);
+	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
 		column: "date",
 		direction: "descending",
 	});
 
-	const [page, setPage] = React.useState(1);
+	const [page, setPage] = useState(1);
 
 	const hasSearchFilter = Boolean(filterValue);
 
-	const sortedItems = React.useMemo(() => {
+	const sortedItems = useMemo(() => {
 		if (games.length === 0) return games;
 
 		return [...games].sort((a: Game, b: Game) => {
@@ -136,9 +140,7 @@ export default function GamesTable(props: GamesTableProps) {
 					cmp = a.turns > b.turns ? 1 : a.turns === b.turns ? 0 : -1;
 					break;
 				case "winner":
-					cmp = (a.winnerPlayer ?? "").localeCompare(
-						b.winnerPlayer ?? ""
-					);
+					cmp = (a.winnerPlayer ?? "").localeCompare(b.winnerPlayer ?? "");
 					break;
 				default:
 					break;
@@ -148,19 +150,15 @@ export default function GamesTable(props: GamesTableProps) {
 		});
 	}, [sortDescriptor, games]);
 
-	const filteredItems = React.useMemo(() => {
+	const filteredItems = useMemo(() => {
 		if (games.length === 0) return games;
 		let filteredGames = [...sortedItems];
 
 		if (hasSearchFilter) {
 			filteredGames = filteredGames.filter(
 				(game) =>
-					game.name
-						.toLowerCase()
-						.includes(filterValue.toLowerCase()) ||
-					game.map
-						.toLowerCase()
-						.includes(filterValue.toLowerCase()) ||
+					game.name.toLowerCase().includes(filterValue.toLowerCase()) ||
+					game.map.toLowerCase().includes(filterValue.toLowerCase()) ||
 					(game.winnerPlayer ?? "")
 						.toLowerCase()
 						.includes(filterValue.toLowerCase()) ||
@@ -176,23 +174,21 @@ export default function GamesTable(props: GamesTableProps) {
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
-	const items = React.useMemo(() => {
+	const items = useMemo(() => {
 		const start = (page - 1) * rowsPerPage;
 		const end = start + rowsPerPage;
 
 		return filteredItems.slice(start, end);
 	}, [page, filteredItems, rowsPerPage]);
 
-	const renderCell = React.useCallback(
-		(game: Game, columnKey: React.Key) => {
+	const renderCell = useCallback(
+		(game: Game, columnKey: Key) => {
 			// const cellValue = game[columnKey as keyof Game];
 
 			switch (columnKey) {
 				case "name":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.name}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.name}</p>
 					);
 				case "date":
 					return (
@@ -202,16 +198,13 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "map":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.map}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.map}</p>
 					);
 				case "players": {
 					const humans: string[] = [];
 
 					game.players.forEach((player) => {
-						if (player.isHuman)
-							humans.push(capitalize(player.name));
+						if (player.isHuman) humans.push(capitalize(player.name));
 					});
 
 					return (
@@ -235,7 +228,7 @@ export default function GamesTable(props: GamesTableProps) {
 				case "size":
 					return (
 						<p className="text-xs sm:text-bold sm:text-small">
-							{game.mapSize}
+							{capitalize(game.mapSize)}
 						</p>
 					);
 				case "speed":
@@ -246,20 +239,14 @@ export default function GamesTable(props: GamesTableProps) {
 					);
 				case "turns":
 					return (
-						<p className="text-xs sm:text-bold sm:text-small">
-							{game.turns}
-						</p>
+						<p className="text-xs sm:text-bold sm:text-small">{game.turns}</p>
 					);
 				case "actions":
 					return (
 						<div className="relative flex items-center justify-end gap-2">
 							<Dropdown>
 								<DropdownTrigger>
-									<Button
-										isIconOnly
-										size="sm"
-										variant="light"
-									>
+									<Button isIconOnly size="sm" variant="light">
 										<VerticalDotsIcon className="text-default-300" />
 									</Button>
 								</DropdownTrigger>
@@ -280,27 +267,27 @@ export default function GamesTable(props: GamesTableProps) {
 		[viewModal, deleteModal, editModal]
 	);
 
-	const onNextPage = React.useCallback(() => {
+	const onNextPage = useCallback(() => {
 		if (page < pages) {
 			setPage(page + 1);
 		}
 	}, [page, pages]);
 
-	const onPreviousPage = React.useCallback(() => {
+	const onPreviousPage = useCallback(() => {
 		if (page > 1) {
 			setPage(page - 1);
 		}
 	}, [page]);
 
-	const onRowsPerPageChange = React.useCallback(
-		(e: React.ChangeEvent<HTMLSelectElement>) => {
+	const onRowsPerPageChange = useCallback(
+		(e: ChangeEvent<HTMLSelectElement>) => {
 			setRowsPerPage(Number(e.target.value));
 			setPage(1);
 		},
 		[]
 	);
 
-	const onSearchChange = React.useCallback((value?: string) => {
+	const onSearchChange = useCallback((value?: string) => {
 		if (value) {
 			setFilterValue(value);
 			setPage(1);
@@ -309,19 +296,19 @@ export default function GamesTable(props: GamesTableProps) {
 		}
 	}, []);
 
-	const onClear = React.useCallback(() => {
+	const onClear = useCallback(() => {
 		setFilterValue("");
 		setPage(1);
 	}, []);
 
-	const headerText = React.useMemo(() => {
+	const headerText = useMemo(() => {
 		const prefix = filterValue ? "Filtered" : "Total";
 		const suffix = filteredItems.length === 1 ? "" : "s";
 
 		return `${prefix} ${filteredItems.length.toString()} game${suffix}`;
 	}, [filterValue, filteredItems.length]);
 
-	const topContent = React.useMemo(() => {
+	const topContent = useMemo(() => {
 		return (
 			<div className="flex flex-col h-full gap-4">
 				<div className="flex items-end justify-between gap-3 ">
@@ -361,9 +348,7 @@ export default function GamesTable(props: GamesTableProps) {
 						<Dropdown>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
-									endContent={
-										<ChevronDownIcon className="text-small" />
-									}
+									endContent={<ChevronDownIcon className="text-small" />}
 									variant="flat"
 								>
 									Columns
@@ -378,10 +363,7 @@ export default function GamesTable(props: GamesTableProps) {
 								onSelectionChange={setVisibleColumns}
 							>
 								{columns.map((column) => (
-									<DropdownItem
-										key={column.key}
-										className="capitalize"
-									>
+									<DropdownItem key={column.key} className="capitalize">
 										{capitalize(column.name)}
 									</DropdownItem>
 								))}
@@ -390,9 +372,7 @@ export default function GamesTable(props: GamesTableProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-700 text-small">
-						{headerText}
-					</span>
+					<span className="text-default-700 text-small">{headerText}</span>
 					<label className="flex items-center text-default-700 text-small">
 						Rows per page:&nbsp;
 						<select
@@ -416,7 +396,7 @@ export default function GamesTable(props: GamesTableProps) {
 		onClear,
 	]);
 
-	const bottomContent = React.useMemo(() => {
+	const bottomContent = useMemo(() => {
 		return (
 			<div className="flex items-center justify-between px-2 py-2">
 				<Pagination
@@ -470,8 +450,7 @@ export default function GamesTable(props: GamesTableProps) {
 						<TableColumn
 							key={column.key}
 							align={
-								column.key === "actions" ||
-								column.key === "finished"
+								column.key === "actions" || column.key === "finished"
 									? "center"
 									: "start"
 							}
@@ -485,9 +464,7 @@ export default function GamesTable(props: GamesTableProps) {
 					{(item) => (
 						<TableRow key={item.id}>
 							{(columnKey) => (
-								<TableCell>
-									{renderCell(item, columnKey)}
-								</TableCell>
+								<TableCell>{renderCell(item, columnKey)}</TableCell>
 							)}
 						</TableRow>
 					)}
@@ -503,8 +480,7 @@ export default function GamesTable(props: GamesTableProps) {
 				<DeleteModal
 					body={
 						<p>
-							Are you sure you want to delete{" "}
-							<b>{currGame.name}</b>?
+							Are you sure you want to delete <b>{currGame.name}</b>?
 						</p>
 					}
 					gameId={currGame.id}

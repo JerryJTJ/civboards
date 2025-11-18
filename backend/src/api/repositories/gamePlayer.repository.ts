@@ -1,5 +1,5 @@
-import { TablesInsert } from "../../interfaces/supabase.js";
 import { DatabaseError, NotFoundError } from "../../types/Errors.js";
+import { TablesInsert } from "../../interfaces/supabase.js";
 import { supabase } from "../server.js";
 
 export async function getAllGamePlayers() {
@@ -11,7 +11,8 @@ export async function getAllGamePlayers() {
 		)
 		.neq("name", "")
 		.not("name", "is", null)
-		.eq("game.active", true);
+		.eq("game.active", true)
+		.order("name", { ascending: true });
 
 	if (error)
 		throw new DatabaseError("Failed to get all unique game players", error);

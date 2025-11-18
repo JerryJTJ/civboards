@@ -1,9 +1,7 @@
-import { useAuth0 } from "@auth0/auth0-react";
 import { Button } from "@heroui/button";
-
-import getViewportSize from "../utils/getViewportSize";
-
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { useAuth0 } from "@auth0/auth0-react";
+import getViewportSize from "@components/utils/getViewportSize";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 const LoginButton = () => {
 	const { loginWithRedirect } = useAuth0();

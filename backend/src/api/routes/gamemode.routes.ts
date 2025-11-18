@@ -1,7 +1,7 @@
-import express from "express";
 import * as GamemodeController from "../controllers/gamemode.controller.js";
+import { Router } from "express";
 
-const GamemodeRouter = express.Router();
+const GamemodeRouter = Router();
 GamemodeRouter.get("/id/:id", GamemodeController.handleGetGamemodeById);
 GamemodeRouter.get("/all", GamemodeController.handleGetAllGamemodes);
 

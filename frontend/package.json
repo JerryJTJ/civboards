@@ -1,11 +1,11 @@
 {
 	"name": "frontend",
 	"private": true,
-	"version": "0.0.0",
+	"version": "1.0.0",
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "tsc && vite build",
+		"build": "tsc && tsc-alias && vite build",
 		"lint": "eslint --fix",
 		"preview": "vite preview"
 	},
@@ -69,7 +69,6 @@
 		"eslint-plugin-react-hooks": "6.0.0-rc.1",
 		"globals": "16.0.0",
 		"postcss": "8.5.3",
-		"prettier": "3.5.3",
 		"typescript": "5.6.3",
 		"vite": "5.2.0",
 		"vite-tsconfig-paths": "4.3.2"

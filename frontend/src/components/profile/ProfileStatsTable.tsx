@@ -1,10 +1,10 @@
 import {
 	Table,
-	TableHeader,
-	TableColumn,
 	TableBody,
-	TableRow,
 	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
 } from "@heroui/table";
 import { useMemo } from "react";
 

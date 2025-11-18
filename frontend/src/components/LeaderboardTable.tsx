@@ -1,22 +1,22 @@
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import {
-	Table,
-	TableHeader,
-	TableBody,
-	TableColumn,
-	TableRow,
-	TableCell,
-	SortDescriptor,
-} from "@heroui/table";
-import { Pagination } from "@heroui/pagination";
-import React, { useMemo } from "react";
 import { Link } from "@heroui/link";
+import { Pagination } from "@heroui/pagination";
+import {
+	SortDescriptor,
+	Table,
+	TableBody,
+	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
+} from "@heroui/table";
 
+import { ChangeEvent, Key, useCallback, useMemo, useState } from "react";
 import { SearchIcon } from "./icons";
 
-import { LeaderboardView } from "@/pages/LeaderboardPage";
-import { capitalize } from "@/utils/capitalize";
+import { LeaderboardView } from "@pages/LeaderboardPage";
+import { capitalize } from "@utils/capitalize";
 
 const columns: { key: string; name: string; sortable: boolean }[] = [
 	{
@@ -83,14 +83,14 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		return getPodiumScores(leaderboardData);
 	}, [leaderboardData]);
 
-	const [filterValue, setFilterValue] = React.useState("");
-	const [rowsPerPage, setRowsPerPage] = React.useState(10);
-	const [sortDescriptor, setSortDescriptor] = React.useState<SortDescriptor>({
+	const [filterValue, setFilterValue] = useState("");
+	const [rowsPerPage, setRowsPerPage] = useState(10);
+	const [sortDescriptor, setSortDescriptor] = useState<SortDescriptor>({
 		column: "wins",
 		direction: "descending",
 	});
 
-	const [page, setPage] = React.useState(1);
+	const [page, setPage] = useState(1);
 
 	const hasSearchFilter = Boolean(filterValue);
 
@@ -99,7 +99,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 	);
 
 	//Filter -> Sort -> Paginate
-	const sortedItems = React.useMemo(() => {
+	const sortedItems = useMemo(() => {
 		return [...leaderboardData].sort(
 			(a: LeaderboardEntry, b: LeaderboardEntry) => {
 				let cmp = 0;
@@ -123,7 +123,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		);
 	}, [sortDescriptor, leaderboardData]);
 
-	const filteredItems = React.useMemo(() => {
+	const filteredItems = useMemo(() => {
 		let filtered = [...sortedItems];
 
 		if (hasSearchFilter) {
@@ -137,15 +137,15 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 
 	const pages = Math.ceil(filteredItems.length / rowsPerPage) || 1;
 
-	const items = React.useMemo(() => {
+	const items = useMemo(() => {
 		const start = (page - 1) * rowsPerPage;
 		const end = start + rowsPerPage;
 
 		return filteredItems.slice(start, end);
 	}, [page, filteredItems, rowsPerPage]);
 
-	const renderCell = React.useCallback(
-		(entry: LeaderboardEntry, columnKey: React.Key) => {
+	const renderCell = useCallback(
+		(entry: LeaderboardEntry, columnKey: Key) => {
 			const cellValue = entry[columnKey as keyof LeaderboardEntry];
 			const medal = podium.get(entry.wins) ?? "";
 
@@ -172,9 +172,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					);
 				case "wins":
 					return (
-						<p className="text-base text-center text-bold">
-							{entry.wins}
-						</p>
+						<p className="text-base text-center text-bold">{entry.wins}</p>
 					);
 				default:
 					return cellValue;
@@ -183,27 +181,27 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		[podium]
 	);
 
-	const onNextPage = React.useCallback(() => {
+	const onNextPage = useCallback(() => {
 		if (page < pages) {
 			setPage(page + 1);
 		}
 	}, [page, pages]);
 
-	const onPreviousPage = React.useCallback(() => {
+	const onPreviousPage = useCallback(() => {
 		if (page > 1) {
 			setPage(page - 1);
 		}
 	}, [page]);
 
-	const onRowsPerPageChange = React.useCallback(
-		(e: React.ChangeEvent<HTMLSelectElement>) => {
+	const onRowsPerPageChange = useCallback(
+		(e: ChangeEvent<HTMLSelectElement>) => {
 			setRowsPerPage(Number(e.target.value));
 			setPage(1);
 		},
 		[]
 	);
 
-	const onSearchChange = React.useCallback((value?: string) => {
+	const onSearchChange = useCallback((value?: string) => {
 		if (value) {
 			setFilterValue(value);
 			setPage(1);
@@ -212,19 +210,19 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		}
 	}, []);
 
-	const onClear = React.useCallback(() => {
+	const onClear = useCallback(() => {
 		setFilterValue("");
 		setPage(1);
 	}, []);
 
-	const headerText = React.useMemo(() => {
+	const headerText = useMemo(() => {
 		const prefix = filterValue ? "Filtered" : "Total";
 		const suffix = filteredItems.length === 1 ? "entry" : "entries";
 
 		return `${prefix} ${filteredItems.length.toString()} ${suffix}`;
 	}, [filterValue, filteredItems.length]);
 
-	const topContent = React.useMemo(() => {
+	const topContent = useMemo(() => {
 		return (
 			<div className="flex flex-col h-full gap-4">
 				<div className="flex items-end justify-between gap-3 ">
@@ -272,9 +270,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					</div>
 				</div>
 				<div className="flex items-center justify-between">
-					<span className="text-default-700 text-small">
-						{headerText}
-					</span>
+					<span className="text-default-700 text-small">{headerText}</span>
 					<label className="flex items-center text-default-700 text-small">
 						Rows per page:&nbsp;
 						<select
@@ -291,7 +287,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 		);
 	}, [filterValue, onSearchChange, onRowsPerPageChange, headerText, onClear]);
 
-	const bottomContent = React.useMemo(() => {
+	const bottomContent = useMemo(() => {
 		return (
 			<div className="flex items-center justify-between px-2 py-2">
 				<Pagination

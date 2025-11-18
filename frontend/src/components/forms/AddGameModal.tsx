@@ -1,22 +1,22 @@
-import { useDisclosure } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { useReducer } from "react";
-import { addToast } from "@heroui/toast";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { InsertGameSchema } from "@civboards/schemas";
+import { addToast } from "@heroui/toast";
 import { useAuth0 } from "@auth0/auth0-react";
+import { useDisclosure } from "@heroui/modal";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useReducer } from "react";
 
-import { PlusIcon } from "../icons";
-import { ValidationError } from "../utils/error";
-import { validateFormFields } from "../utils/validateFormFields";
+import { PlusIcon } from "@components/icons";
+import { ValidateFormError } from "@components/utils/error";
+import { validateFormFields } from "@components/utils/validateFormFields";
 
 import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
 
-import { GameForm } from "@/interfaces/game.interface";
-import { DEFAULT_ADD_FORM } from "@/constants/gameDefaults";
-import { useGamesAPI } from "@/api/games";
-import z from "zod";
+import * as z from "zod";
+import { DEFAULT_ADD_FORM } from "@constants/gameDefaults";
+import { GameForm } from "@interfaces/game.interface";
+import { useGamesAPI } from "@api/games";
 
 export default function AddGameModal() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -35,14 +35,14 @@ export default function AddGameModal() {
 		mutationFn: async () => {
 			const validate = validateFormFields(form, InsertGameSchema);
 
-			if (!validate.success) throw new ValidationError(validate.message);
+			if (!validate.success) throw new ValidateFormError(validate.message);
 
 			await insertGame(
 				validate.result.data as z.infer<typeof InsertGameSchema>
 			);
 		},
 		onError: (error) => {
-			if (error instanceof ValidationError) {
+			if (error instanceof ValidateFormError) {
 				addToast({
 					title: "Error",
 					color: "warning",

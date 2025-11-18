@@ -1,15 +1,15 @@
 import * as z from "zod";
-import express from "express";
-import multer from "multer";
-import { ParseSaveSchema } from "@civboards/schemas";
-import { parse } from "../../submodules/civ6-save-parser/parse.js";
 import { ParseError, ValidationError } from "../../types/Errors.js";
-import { fetchLeaderFromCode } from "../services/leader.service.js";
+import { ParseSaveSchema } from "@civboards/schemas";
+import { Request, Response, Router } from "express";
 import { fetchExpansionByCode } from "../services/expansion.service.js";
+import { fetchLeaderFromCode } from "../services/leader.service.js";
+import { parse } from "../../submodules/civ6-save-parser/parse.js";
+import multer, { memoryStorage } from "multer";
 
-const ParseRouter = express.Router();
+const ParseRouter = Router();
 
-const storage = multer.memoryStorage();
+const storage = memoryStorage();
 const upload = multer({ storage: storage });
 
 interface ParseApiResponse {
@@ -28,7 +28,7 @@ interface ParseApiResponse {
 ParseRouter.post(
 	"/upload",
 	upload.single("savefile"),
-	async (req: express.Request, res: express.Response) => {
+	async (req: Request, res: Response) => {
 		if (!req.file) {
 			throw new ValidationError("No file provided");
 		}

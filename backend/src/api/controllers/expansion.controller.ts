@@ -1,9 +1,9 @@
+import { NextFunction, Request, Response } from "express";
 import {
 	fetchAllExpansions,
 	fetchExpansionByCode,
 	fetchExpansionById,
 } from "../services/expansion.service.js";
-import { Request, Response, NextFunction } from "express";
 
 export async function handleGetExpansionByCode(
 	req: Request,

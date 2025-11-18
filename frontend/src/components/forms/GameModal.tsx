@@ -1,27 +1,27 @@
 import { Button } from "@heroui/button";
 import {
 	Modal,
-	ModalContent,
-	ModalHeader,
 	ModalBody,
+	ModalContent,
 	ModalFooter,
+	ModalHeader,
 } from "@heroui/modal";
-import { UseMutationResult } from "@tanstack/react-query";
-import { useMemo, useRef, useState } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Tab, Tabs } from "@heroui/tabs";
+import { UseMutationResult } from "@tanstack/react-query";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useMemo, useRef, useState } from "react";
 
-import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
-import getViewportSize from "../utils/getViewportSize";
+import { isModalFieldEnabled } from "@components/utils/isModalFieldEnabled";
+import getViewportSize from "@components/utils/getViewportSize";
 
+import { FormAction } from "./gameFormReducer";
+import { getFormDispatches } from "./gameFormDispatches";
 import CivField from "./CivField";
 import GameOptionsForm from "./GameOptionsForm";
-import { getFormDispatches } from "./gameFormDispatches";
-import { FormAction } from "./gameFormReducer";
 import UploadFileInput from "./UploadFileInput";
 
-import { Civ, GameForm } from "@/interfaces/game.interface";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { Civ, GameForm } from "@interfaces/game.interface";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface AddModalProps {
 	mode: "add";
@@ -84,8 +84,7 @@ export default function GameModal(props: GameModalProps) {
 		onClose();
 	};
 	// Submitting
-	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
+	const onSubmit = async () => {
 		if (mode === "view") return;
 
 		setLoading(true);
@@ -139,7 +138,7 @@ export default function GameModal(props: GameModalProps) {
 		} else if (!enabled) {
 			return <GameOptionsForm enabled={enabled} form={form} />;
 		}
-	}, [dispatches?.gameOptionsDispatch, enabled, form]);
+	}, [dispatches, enabled, form]);
 
 	return (
 		<Modal
@@ -154,14 +153,19 @@ export default function GameModal(props: GameModalProps) {
 			size="5xl"
 			onClose={onModalClose}
 		>
-			<form onSubmit={void onSubmit}>
+			<form
+				onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+					e.preventDefault();
+					void (async () => {
+						await onSubmit();
+					})();
+				}}
+			>
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>
 							<ModalHeader className="flex flex-row">
-								<p className="pt-2 pl-2 text-large">
-									{headerText()} Game
-								</p>
+								<p className="pt-2 pl-2 text-large">{headerText()} Game</p>
 							</ModalHeader>
 							<ModalBody>
 								{mode === "add" && dispatches && (
@@ -197,27 +201,17 @@ export default function GameModal(props: GameModalProps) {
 									<div className="grid grid-cols-6 gap-4 px-10 py-2">
 										<div className="col-span-4">
 											{" "}
-											<p className="self-center pb-4 font-bold">
-												Players
-											</p>
+											<p className="self-center pb-4 font-bold">Players</p>
 											{civFields}
 											{enabled && (
 												<div className="flex flex-row gap-2 pt-4">
 													<Button
-														onPress={() =>
-															dispatches?.addCivDispatch(
-																true
-															)
-														}
+														onPress={() => dispatches?.addCivDispatch(true)}
 													>
 														Add Human
 													</Button>
 													<Button
-														onPress={() =>
-															dispatches?.addCivDispatch(
-																false
-															)
-														}
+														onPress={() => dispatches?.addCivDispatch(false)}
 													>
 														Add AI
 													</Button>
@@ -225,9 +219,7 @@ export default function GameModal(props: GameModalProps) {
 											)}
 										</div>
 										<div className="col-span-2">
-											<p className="self-center pb-4 font-bold">
-												Game Options
-											</p>
+											<p className="self-center pb-4 font-bold">Game Options</p>
 											{gameOptionFields}
 										</div>
 									</div>
@@ -236,11 +228,7 @@ export default function GameModal(props: GameModalProps) {
 								<div className="flex flex-row gap-2" />
 							</ModalBody>
 							<ModalFooter>
-								<Button
-									color="danger"
-									variant="shadow"
-									onPress={onModalClose}
-								>
+								<Button color="danger" variant="shadow" onPress={onModalClose}>
 									Close
 								</Button>
 								{enabled && (

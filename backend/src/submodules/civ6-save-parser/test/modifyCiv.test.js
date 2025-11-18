@@ -28,44 +28,44 @@ describe("Modify civtype2 save", function () {
 
 		expect(
 			data.parsed.MOD_BLOCK_1.data.some(
-				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176"
-			)
+				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176",
+			),
 		).to.equal(false);
 		expect(data.parsed.MOD_BLOCK_1.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_1.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_1.data.length - 1,
 		);
 		expect(
 			modifiedData.parsed.MOD_BLOCK_1.data.some(
-				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176"
-			)
+				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176",
+			),
 		).to.equal(true);
 		expect(data.parsed.MOD_BLOCK_2.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_2.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_2.data.length - 1,
 		);
 		expect(data.parsed.MOD_BLOCK_2_2.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_2_2.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_2_2.data.length - 1,
 		);
 		expect(data.parsed.MOD_BLOCK_3.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_3.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_3.data.length - 1,
 		);
 		expect(data.parsed.MOD_BLOCK_3_2.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_3_2.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_3_2.data.length - 1,
 		);
 		expect(data.parsed.MOD_BLOCK_4.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_4.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_4.data.length - 1,
 		);
 	});
 
 	it("should be able to add and remove MPH mod", () => {
 		const buffer = Buffer.from(
-			readFileSync("test/saves/CATHERINE DE MEDICI 1 4000 BC.Civ6Save")
+			readFileSync("test/saves/CATHERINE DE MEDICI 1 4000 BC.Civ6Save"),
 		);
 		const modid = "619ac86e-d99d-4bf3-b8f0-8c5b8c402176";
 		const modname = "Multiplayer Helper 1.5.1";
 		const saveWithAddedMod = addMod(buffer, modid, modname);
 		const saveWithoutMod = deleteMod(
 			Buffer.concat(saveWithAddedMod.chunks),
-			modid
+			modid,
 		);
 		expect(buffer).deep.to.equal(Buffer.concat(saveWithoutMod.chunks));
 	});
@@ -73,7 +73,7 @@ describe("Modify civtype2 save", function () {
 
 describe("Modify Cathy Save", function () {
 	const buffer = Buffer.from(
-		readFileSync("test/saves/CATHERINE DE MEDICI 1 4000 BC.Civ6Save")
+		readFileSync("test/saves/CATHERINE DE MEDICI 1 4000 BC.Civ6Save"),
 	);
 	let data = parse(buffer);
 
@@ -86,41 +86,29 @@ describe("Modify Cathy Save", function () {
 
 		expect(
 			data.parsed.MOD_BLOCK_1.data.some(
-				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176"
-			)
+				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176",
+			),
 		).to.equal(false);
 		expect(data.parsed.MOD_BLOCK_1.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_1.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_1.data.length - 1,
 		);
 		expect(
 			modifiedData.parsed.MOD_BLOCK_1.data.some(
-				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176"
-			)
+				(x) => x.MOD_ID.data === "619ac86e-d99d-4bf3-b8f0-8c5b8c402176",
+			),
 		).to.equal(true);
 		expect(data.parsed.MOD_BLOCK_2.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_2.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_2.data.length - 1,
 		);
 		expect(data.parsed.MOD_BLOCK_3.data.length).to.equal(
-			modifiedData.parsed.MOD_BLOCK_3.data.length - 1
+			modifiedData.parsed.MOD_BLOCK_3.data.length - 1,
 		);
 	});
 
 	it("should be able to change player names in any order", () => {
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[0].PLAYER_NAME,
-			"Mike Rosack 0"
-		);
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[2].PLAYER_NAME,
-			"Mike Rosack 2"
-		);
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[1].PLAYER_NAME,
-			"Mike Rosack 1"
-		);
+		modifyChunk(data.chunks, data.parsed.CIVS[0].PLAYER_NAME, "Mike Rosack 0");
+		modifyChunk(data.chunks, data.parsed.CIVS[2].PLAYER_NAME, "Mike Rosack 2");
+		modifyChunk(data.chunks, data.parsed.CIVS[1].PLAYER_NAME, "Mike Rosack 1");
 
 		data = parse(Buffer.concat(data.chunks));
 
@@ -130,11 +118,7 @@ describe("Modify Cathy Save", function () {
 	});
 
 	it("should be able to set a non-ascii player name and have it safely save", () => {
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[0].PLAYER_NAME,
-			"ϻĮЌẸ ŘỖŜÃČЌ"
-		);
+		modifyChunk(data.chunks, data.parsed.CIVS[0].PLAYER_NAME, "ϻĮЌẸ ŘỖŜÃČЌ");
 
 		data = parse(Buffer.concat(data.chunks));
 
@@ -148,13 +132,9 @@ describe("Modify Cathy Save", function () {
 			data.parsed.CIVS[0].PLAYER_NAME,
 			MARKERS.ACTOR_DATA.PLAYER_PASSWORD,
 			DATA_TYPES.STRING,
-			"password1"
+			"password1",
 		);
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[0].SLOT_HEADER,
-			headerLen0 + 1
-		);
+		modifyChunk(data.chunks, data.parsed.CIVS[0].SLOT_HEADER, headerLen0 + 1);
 
 		const headerLen1 = data.parsed.CIVS[1].SLOT_HEADER.data;
 		addChunk(
@@ -162,13 +142,9 @@ describe("Modify Cathy Save", function () {
 			data.parsed.CIVS[1].PLAYER_NAME,
 			MARKERS.ACTOR_DATA.PLAYER_PASSWORD,
 			DATA_TYPES.STRING,
-			"password2"
+			"password2",
 		);
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[1].SLOT_HEADER,
-			headerLen1 + 1
-		);
+		modifyChunk(data.chunks, data.parsed.CIVS[1].SLOT_HEADER, headerLen1 + 1);
 
 		data = parse(Buffer.concat(data.chunks));
 
@@ -181,11 +157,7 @@ describe("Modify Cathy Save", function () {
 	it("should be able to delete a password", () => {
 		const headerLen1 = data.parsed.CIVS[1].SLOT_HEADER.data;
 		deleteChunk(data.chunks, data.parsed.CIVS[1].PLAYER_PASSWORD);
-		modifyChunk(
-			data.chunks,
-			data.parsed.CIVS[1].SLOT_HEADER,
-			headerLen1 - 1
-		);
+		modifyChunk(data.chunks, data.parsed.CIVS[1].SLOT_HEADER, headerLen1 - 1);
 
 		data = parse(Buffer.concat(data.chunks));
 

@@ -1,3 +1,12 @@
+import * as z from "zod";
+import {
+	DisplayGameSchema,
+	InsertGameSchema,
+	UpdateGameSchema,
+} from "@civboards/schemas";
+import { NextFunction, Request, Response } from "express";
+import { Tables } from "../../interfaces/supabase.js";
+import { ValidationError } from "../../types/Errors.js";
 import {
 	createGame,
 	fetchAllGameVictoryIds,
@@ -11,18 +20,9 @@ import {
 	softRemoveGameById,
 	updateGame,
 } from "../services/game.service.js";
-import { NextFunction, Request, Response } from "express";
-import { fetchGameGamemodesIdsByGameId } from "../services/gameGamemode.service.js";
 import { fetchGameExpansionsIdsByGameId } from "../services/gameExpansion.service.js";
+import { fetchGameGamemodesIdsByGameId } from "../services/gameGamemode.service.js";
 import { fetchGamePlayersByGameId } from "../services/gamePlayer.service.js";
-import { ValidationError } from "../../types/Errors.js";
-import {
-	InsertGameSchema,
-	UpdateGameSchema,
-	DisplayGameSchema,
-} from "@civboards/schemas";
-import * as z from "zod";
-import { Tables } from "../../interfaces/supabase.js";
 
 // UTILS
 async function exportGameObject(game: Tables<"game">) {

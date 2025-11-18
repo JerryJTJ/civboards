@@ -1,12 +1,12 @@
-import { ProfileSchema } from "@civboards/schemas";
 import { NextFunction, Request, Response } from "express";
+import { ProfileSchema } from "@civboards/schemas";
 import { ValidationError } from "../../types/Errors.js";
 import {
-	fetchProfileInfoByName,
-	fetchNumGamesWonByPlayer,
+	fetchAllUniqueGamePlayers,
 	fetchNumGamesFinishedByPlayer,
 	fetchNumGamesPlayedByPlayer,
-	fetchAllUniqueGamePlayers,
+	fetchNumGamesWonByPlayer,
+	fetchProfileInfoByName,
 } from "../services/gamePlayer.service.js";
 import { handleHasUserUploaded } from "../services/game.service.js";
 
@@ -39,9 +39,7 @@ export async function handleGetProfileInfoByName(
 		const hasUploaded = await handleHasUserUploaded(name);
 
 		if (gamesPlayed === 0 && !hasUploaded) {
-			throw new ValidationError(
-				"Player hasn't played or uploaded a game yet"
-			);
+			throw new ValidationError("Player hasn't played or uploaded a game yet");
 		}
 
 		const [wins, gamesWon, gamesFinished] = await Promise.all([

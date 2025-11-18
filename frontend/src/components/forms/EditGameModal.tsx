@@ -1,17 +1,17 @@
-import { DisplayGameSchema, UpdateGameSchema } from "@civboards/schemas";
-import { useReducer } from "react";
 import * as z from "zod";
+import { DisplayGameSchema, UpdateGameSchema } from "@civboards/schemas";
 import { addToast } from "@heroui/toast";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useReducer } from "react";
 
-import { ValidationError } from "../utils/error";
-import { validateFormFields } from "../utils/validateFormFields";
+import { ValidateFormError } from "@components/utils/error";
+import { validateFormFields } from "@components/utils/validateFormFields";
 
-import gameFormReducer, { FormAction } from "./gameFormReducer";
 import GameModal from "./GameModal";
+import gameFormReducer, { FormAction } from "./gameFormReducer";
 
-import { GameForm } from "@/interfaces/game.interface";
-import { useGamesAPI } from "@/api/games";
+import { GameForm } from "@interfaces/game.interface";
+import { useGamesAPI } from "@api/games";
 
 interface UpdateGameModalProps {
 	disclosure: {
@@ -56,20 +56,16 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 	const mutation = useMutation({
 		mutationFn: async () => {
-			const validate = validateFormFields(
-				form,
-				UpdateGameSchema,
-				game.id
-			);
+			const validate = validateFormFields(form, UpdateGameSchema, game.id);
 
-			if (!validate.success) throw new ValidationError(validate.message);
+			if (!validate.success) throw new ValidateFormError(validate.message);
 
 			await updateGame(
 				validate.result.data as z.infer<typeof UpdateGameSchema>
 			);
 		},
 		onError: (error) => {
-			if (error instanceof ValidationError) {
+			if (error instanceof ValidateFormError) {
 				addToast({
 					title: "Error",
 					color: "warning",

@@ -23,8 +23,7 @@ export async function getCivilizationById(id: number) {
 		.limit(1)
 		.single();
 
-	if (error)
-		throw new DatabaseError("Failed to get civilization by id", error);
+	if (error) throw new DatabaseError("Failed to get civilization by id", error);
 
 	return data;
 }
@@ -35,8 +34,7 @@ export async function getAllCivilizations() {
 		.select()
 		.order("name", { ascending: true });
 
-	if (error)
-		throw new DatabaseError("Failed to get all civilizations", error);
+	if (error) throw new DatabaseError("Failed to get all civilizations", error);
 	if (data.length === 0) throw new NotFoundError();
 
 	return data;

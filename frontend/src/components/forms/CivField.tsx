@@ -2,11 +2,11 @@ import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 
-import getViewportSize from "../utils/getViewportSize";
+import getViewportSize from "@components/utils/getViewportSize";
 
-import { Civ } from "@/interfaces/game.interface";
-import { LEADERS, Leader } from "@/constants/civilizations";
-import useWindowDimensions from "@/hooks/useWindowDimensions";
+import { Civ } from "@interfaces/game.interface";
+import { LEADERS, Leader } from "@constants/civilizations";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 // interface CivFieldProps {
 // 	enabled: boolean;
@@ -69,11 +69,7 @@ export default function CivField(props: CivFieldProps) {
 						<Input
 							isDisabled={!enabled}
 							label="Leader"
-							value={
-								LEADERS.find(
-									(leader) => leader.id === civ.leaderId
-								)?.name
-							}
+							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
 							variant="bordered"
 						/>
 					)}

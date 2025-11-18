@@ -1,8 +1,8 @@
+import * as z from "zod";
+import { GameForm } from "@interfaces/game.interface";
 import { ParseSaveSchema } from "@civboards/schemas";
 import { instance } from "./axiosInstance";
 import useAccessToken from "./useAccessToken";
-import z from "zod";
-import { GameForm } from "@/interfaces/game.interface";
 
 type ParseResponse =
 	| { success: true; data: Partial<GameForm> }
@@ -28,6 +28,7 @@ export function useParseAPI() {
 
 		if (response.status === 200) {
 			const parsed = response.data as z.infer<typeof ParseSaveSchema>;
+
 			return {
 				success: true,
 				data: {

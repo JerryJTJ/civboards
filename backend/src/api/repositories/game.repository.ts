@@ -1,9 +1,9 @@
+import { DatabaseError, ValidationError } from "../../types/Errors.js";
 import {
 	Tables,
 	TablesInsert,
 	TablesUpdate,
 } from "../../interfaces/supabase.js";
-import { DatabaseError, ValidationError } from "../../types/Errors.js";
 import { supabase } from "../server.js";
 
 export async function insertGame(
@@ -140,10 +140,7 @@ export async function getAllGameWinnerCivilizationIds() {
 		.eq("finished", true);
 
 	if (error)
-		throw new DatabaseError(
-			"Failed to get game winner civiliations",
-			error
-		);
+		throw new DatabaseError("Failed to get game winner civiliations", error);
 
 	return data;
 }
@@ -193,10 +190,7 @@ export async function getGameWinsByPlayer(winner: string) {
 		.not("winner_civilization_id", "is", null);
 
 	if (error)
-		throw new DatabaseError(
-			"Failed to get game wins by winner player",
-			error
-		);
+		throw new DatabaseError("Failed to get game wins by winner player", error);
 
 	return data
 		.map((win) => {

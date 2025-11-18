@@ -1,5 +1,5 @@
-import { TablesInsert } from "../../interfaces/supabase.js";
 import { DatabaseError } from "../../types/Errors.js";
+import { TablesInsert } from "../../interfaces/supabase.js";
 import { supabase } from "../server.js";
 
 export async function insertGamemodes(
@@ -22,10 +22,7 @@ export async function getGameGamemodesByGameId(gameId: string) {
 		.eq("game_id", gameId);
 
 	if (error)
-		throw new DatabaseError(
-			"Failed to get game gamemodes by game id",
-			error
-		);
+		throw new DatabaseError("Failed to get game gamemodes by game id", error);
 
 	return data;
 }

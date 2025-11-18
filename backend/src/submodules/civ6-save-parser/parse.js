@@ -128,9 +128,7 @@ export function parse(buffer, options) {
 		}
 
 		const info = parseEntry(buffer, state);
-		log(
-			`${chunkStart}/${chunkStart.toString(16)}: ${JSON.stringify(info)}`
-		);
+		log(`${chunkStart}/${chunkStart.toString(16)}: ${JSON.stringify(info)}`);
 
 		const tryAddActor = (key, marker) => {
 			if (info.marker.equals(marker)) {
@@ -240,7 +238,7 @@ export function modifyChunk(chunks, toModify, newValue) {
 	chunks[chunkIndex] = toModify.chunk = writeValue(
 		toModify.marker,
 		toModify.type,
-		newValue
+		newValue,
 	);
 }
 
@@ -360,9 +358,7 @@ function api(parsed) {
 		players.push({
 			leader: civ.LEADER_NAME.data,
 			isHuman: civ.ACTOR_AI_HUMAN.data === 3,
-			...(civ.ACTOR_AI_HUMAN.data === 3
-				? { name: civ.PLAYER_NAME?.data }
-				: {}),
+			...(civ.ACTOR_AI_HUMAN.data === 3 ? { name: civ.PLAYER_NAME?.data } : {}),
 		});
 	}
 
@@ -658,9 +654,7 @@ function readUtfString(buffer, state) {
 			.equals(Buffer.from([0, 0x21, 2, 0, 0, 0]))
 	) {
 		state.pos += 6;
-		result = buffer
-			.slice(state.pos, state.pos + strLen - 2)
-			.toString("ucs2"); // Ignore null terminator
+		result = buffer.slice(state.pos, state.pos + strLen - 2).toString("ucs2"); // Ignore null terminator
 		state.pos += strLen;
 	}
 
@@ -721,8 +715,7 @@ function writeBoolean(marker, value) {
 function readCompressedData(buffer, state) {
 	const data = buffer.slice(
 		state.pos + 4,
-		buffer.indexOf(COMPRESSED_DATA_END, state.pos) +
-			COMPRESSED_DATA_END.length
+		buffer.indexOf(COMPRESSED_DATA_END, state.pos) + COMPRESSED_DATA_END.length,
 	);
 
 	// drop 4 bytes away after every chunk

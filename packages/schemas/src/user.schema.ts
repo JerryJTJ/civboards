@@ -6,9 +6,7 @@ export const ProfileSchema = z.object({
 	played: z.int(),
 	won: z.int(),
 	finished: z.int(),
-	civs: z.array(
-		z.object({ name: z.string(), played: z.int(), wins: z.int() })
-	),
+	civs: z.array(z.object({ name: z.string(), played: z.int(), wins: z.int() })),
 	leaders: z.array(
 		z.object({ name: z.string(), played: z.int(), wins: z.int() })
 	),

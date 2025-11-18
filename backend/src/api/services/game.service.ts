@@ -1,11 +1,25 @@
-import { UpdateGameSchema, InsertGameSchema } from "@civboards/schemas";
-import { TablesInsert, TablesUpdate } from "../../interfaces/supabase.js";
 import {
 	AppError,
 	NotFoundError,
 	ValidationError,
 } from "../../types/Errors.js";
+import { InsertGameSchema, UpdateGameSchema } from "@civboards/schemas";
+import { TablesInsert, TablesUpdate } from "../../interfaces/supabase.js";
 
+import * as z from "zod";
+import {
+	createGameExpansions,
+	removeGameExpansionByGameId,
+} from "./gameExpansion.service.js";
+import {
+	createGameGamemodes,
+	removeGameGamemodesByGameId,
+} from "./gameGamemode.service.js";
+import {
+	createGamePlayers,
+	removeGamePlayerByGameId,
+} from "./gamePlayer.service.js";
+import { createUsers } from "./user.service.js";
 import {
 	deleteGameById,
 	doesGameIdExist,
@@ -23,23 +37,9 @@ import {
 	updateGameById,
 } from "../repositories/game.repository.js";
 import { fetchCivilizationById } from "./civilization.service.js";
-import {
-	createGameExpansions,
-	removeGameExpansionByGameId,
-} from "./gameExpansion.service.js";
-import {
-	createGameGamemodes,
-	removeGameGamemodesByGameId,
-} from "./gameGamemode.service.js";
-import {
-	createGamePlayers,
-	removeGamePlayerByGameId,
-} from "./gamePlayer.service.js";
 import { fetchLeaderById } from "./leader.service.js";
 import { fetchVictoryById } from "./victory.service.js";
-import * as z from "zod";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository.js";
-import { createUsers } from "./user.service.js";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
@@ -57,7 +57,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		if (!winner) throw new ValidationError("Finished games need a winner");
 
 		if (winner.leaderId !== game.winnerLeaderId)
-			throw new ValidationError("Finished games need a winner");
+			throw new ValidationError("Winning leaders don't match");
 	}
 
 	let winnerCivilizationId;
@@ -89,9 +89,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		await Promise.all([
 			createUsers(game.players),
 			createGamePlayers(gameId, game.players),
-			game.expansions
-				? createGameExpansions(gameId, game.expansions)
-				: null,
+			game.expansions ? createGameExpansions(gameId, game.expansions) : null,
 			game.gamemodes ? createGameGamemodes(gameId, game.gamemodes) : null,
 		]);
 		return insertedGame;
@@ -103,8 +101,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 
 export async function fetchGameById(id: string) {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	const game = await getGameById(id);
 	return game;
@@ -116,16 +113,14 @@ export async function fetchGamesByCreatedBy(createdBy: string) {
 
 export async function removeGameById(id: string): Promise<void> {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	await deleteGameById(id);
 }
 
 export async function softRemoveGameById(id: string): Promise<void> {
 	if (!id) throw new ValidationError("Invalid Game Id");
-	if (!(await doesGameIdExist(id)))
-		throw new NotFoundError("Invalid Game Id");
+	if (!(await doesGameIdExist(id))) throw new NotFoundError("Invalid Game Id");
 
 	await softDeleteGameById(id);
 }
@@ -313,12 +308,10 @@ export async function updateGame(
 	await Promise.all([
 		createGamePlayers(gameId, game.players),
 		async () => {
-			if (game.expansions)
-				await createGameExpansions(gameId, game.expansions);
+			if (game.expansions) await createGameExpansions(gameId, game.expansions);
 		},
 		async () => {
-			if (game.gamemodes)
-				await createGameGamemodes(gameId, game.gamemodes);
+			if (game.gamemodes) await createGameGamemodes(gameId, game.gamemodes);
 		},
 	]);
 

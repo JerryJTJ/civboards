@@ -6,8 +6,11 @@ import reactHooks from "eslint-plugin-react-hooks";
 import { fixupPluginRules } from "@eslint/compat";
 import react from "eslint-plugin-react";
 import unusedImports from "eslint-plugin-unused-imports";
-import _import from "eslint-plugin-import";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
+// import _import from "eslint-plugin-import";
+import { importX } from "eslint-plugin-import-x";
+import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
+// import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import sortImportsAutofix from "eslint-plugin-sort-imports-es6-autofix";
 import jsxA11Y from "eslint-plugin-jsx-a11y";
 // import prettier from "eslint-plugin-prettier";
 import tsParser from "@typescript-eslint/parser";
@@ -41,24 +44,58 @@ export default defineConfig(
 	eslint.configs.recommended,
 	tseslint.configs.strictTypeChecked,
 	tseslint.configs.stylisticTypeChecked,
+	// importX.flatConfigs.recommended,
+	// importX.flatConfigs.typescript,
 	{
 		languageOptions: {
 			parserOptions: {
+				parser: tsParser,
+				ecmaVersion: "latest",
+				sourceType: "module",
 				projectService: true,
 				allowDefaultProject: true,
 			},
+		},
+		plugins: {
+			"import-x": importX,
+			"sort-imports-es6-autofix": sortImportsAutofix,
+		},
+		extends: ["import-x/flat/recommended"],
+		rules: {
+			"import-x/no-dynamic-require": "warn",
+			"sort-imports-es6-autofix/sort-imports-es6": [
+				2,
+				{
+					ignoreCase: false,
+					ignoreMemberSort: false,
+					memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+				},
+			],
+		},
+		settings: {
+			"import-x/resolver-next": [
+				createTypeScriptImportResolver({
+					project: [
+						"./tsconfig.json",
+						"./frontend/tsconfig.json",
+						"./backend/tsconfig.json",
+						"./packages/schemas/tsconfig.json",
+					],
+					alwaysTryTypes: true,
+					noWarnOnMultipleProjects: true,
+				}),
+			],
 		},
 	},
 
 	// Frontend
 	{
-		files: ["packages/frontend/**/*.{ts,tsx,js,jsx}"],
+		files: ["frontend/**/*.{ts,tsx,js,jsx}"],
 		plugins: {
 			react: fixupPluginRules(react),
 			"react-hooks": reactHooks,
 			"unused-imports": unusedImports,
-			import: fixupPluginRules(_import),
-			"@typescript-eslint": typescriptEslint,
+			// import: fixupPluginRules(_import),
 			"jsx-a11y": fixupPluginRules(jsxA11Y),
 			// prettier: fixupPluginRules(prettier),
 		},
@@ -98,7 +135,6 @@ export default defineConfig(
 			"no-unused-vars": "off",
 			"unused-imports/no-unused-vars": "off",
 			"unused-imports/no-unused-imports": "warn",
-			"react-hooks/react-compiler": "error",
 
 			"@typescript-eslint/no-unused-vars": [
 				"warn",
@@ -109,31 +145,31 @@ export default defineConfig(
 				},
 			],
 
-			"import/order": [
-				"warn",
-				{
-					groups: [
-						"type",
-						"builtin",
-						"object",
-						"external",
-						"internal",
-						"parent",
-						"sibling",
-						"index",
-					],
+			// "import/order": [
+			// 	"warn",
+			// 	{
+			// 		groups: [
+			// 			"type",
+			// 			"builtin",
+			// 			"object",
+			// 			"external",
+			// 			"internal",
+			// 			"parent",
+			// 			"sibling",
+			// 			"index",
+			// 		],
 
-					pathGroups: [
-						{
-							pattern: "~/**",
-							group: "external",
-							position: "after",
-						},
-					],
+			// 		pathGroups: [
+			// 			{
+			// 				pattern: "~/**",
+			// 				group: "external",
+			// 				position: "after",
+			// 			},
+			// 		],
 
-					"newlines-between": "always",
-				},
-			],
+			// 		"newlines-between": "always",
+			// 	},
+			// ],
 
 			"react/self-closing-comp": "warn",
 

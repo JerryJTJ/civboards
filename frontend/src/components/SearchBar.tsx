@@ -1,12 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Skeleton } from "@heroui/skeleton";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 import { SearchIcon } from "./icons";
 
-import { capitalize } from "@/utils/capitalize";
-import { getAllUsers } from "@/api/users";
+import { getAllUsers } from "@api/users";
 
 export default function SearchBar() {
 	const navigate = useNavigate();
@@ -16,15 +15,19 @@ export default function SearchBar() {
 	});
 
 	return (
-		<Skeleton isLoaded={!isPending} className="rounded-xl">
+		<Skeleton className="rounded-xl" isLoaded={!isPending}>
 			{!isPending && (
 				<Autocomplete
-					isVirtualized
+					// isVirtualized
 					aria-label="Search"
 					className="max-w-[250px]"
+					classNames={{
+						base: "border border-white/20 rounded-xl",
+						popoverContent: "border border-white/20 rounded-xl",
+					}}
 					defaultItems={data}
-					maxListboxHeight={200}
 					placeholder="Search for user..."
+					radius="md"
 					size="md"
 					startContent={
 						<SearchIcon className="text-base pointer-events-none shrink-0 text-default-400" />
@@ -37,7 +40,7 @@ export default function SearchBar() {
 								navigate(`/profile/${user.name}`);
 							}}
 						>
-							{capitalize(user.name)}
+							{user.name}
 						</AutocompleteItem>
 					)}
 				</Autocomplete>

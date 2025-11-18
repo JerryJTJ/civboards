@@ -1,11 +1,11 @@
+import { AppError, DatabaseError } from "../../types/Errors.js";
 import {
 	InsufficientScopeError,
 	InvalidRequestError,
 	InvalidTokenError,
 	UnauthorizedError,
 } from "express-oauth2-jwt-bearer";
-import { AppError, DatabaseError } from "../../types/Errors.js";
-import { Response, Request, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 
 export const errorHandler = (
 	err: unknown,

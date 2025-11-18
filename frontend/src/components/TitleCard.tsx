@@ -18,7 +18,7 @@ export default function TitleCard(props: TitleCardProps) {
 			isFooterBlurred
 			isHoverable
 			isPressable
-			className="flex items-center justify-center w-full h-full col-span-12 sm:col-span-7 border-white/20 border"
+			className="flex items-center justify-center w-full h-full col-span-12 border sm:col-span-7 border-white/20"
 			shadow="sm"
 			onPress={() => {
 				navigate(path);
@@ -32,7 +32,7 @@ export default function TitleCard(props: TitleCardProps) {
 			<Image
 				isZoomed
 				removeWrapper
-				className="z-0 object-cover w-full h-full scale-105"
+				className="z-0 object-cover w-full h-full"
 				src={imgSrc}
 			/>
 		</Card>

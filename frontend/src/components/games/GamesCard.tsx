@@ -1,18 +1,19 @@
-import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
-import { Card, CardFooter } from "@heroui/card";
-import { Image } from "@heroui/image";
-import { useDisclosure } from "@heroui/modal";
 import * as z from "zod";
+import { Card, CardFooter } from "@heroui/card";
+import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
 import { Dropdown, DropdownTrigger } from "@heroui/dropdown";
+import { Image } from "@heroui/image";
 import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-
-import ViewGameModal from "../forms/ViewGameModal";
-import EditGameModal from "../forms/EditGameModal";
+import { useDisclosure } from "@heroui/modal";
 
 import DeleteModal from "./DeleteModal";
+import EditGameModal from "@components/forms/EditGameModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
+import ViewGameModal from "@components/forms/ViewGameModal";
 
-import { capitalize } from "@/utils/capitalize";
+import { capitalize } from "@utils/capitalize";
+
+import menu from "/menu_background.webp"; // eslint-disable-line import-x/no-unresolved
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
@@ -52,7 +53,7 @@ export default function GamesCard(props: GameCardProps) {
 							removeWrapper
 							alt={game.name}
 							className="z-0 object-cover w-full h-full"
-							src="https://i.imgur.com/ReQSfcb.png"
+							src={menu}
 						/>
 						<CardFooter className="flex-col backdrop-blur-md text-foreground/90 justify-between before:bg-white/10 border-white/20 border overflow-hidden absolute before:rounded-xl rounded-large w-[calc(100%-8px)] shadow-small ml-1 z-10">
 							<b>{game.name}</b>
@@ -69,12 +70,8 @@ export default function GamesCard(props: GameCardProps) {
 					onOpenView={viewModal.onOpen}
 				/>
 			</Dropdown>
-			{viewModal.isOpen && (
-				<ViewGameModal disclosure={viewModal} game={game} />
-			)}
-			{editModal.isOpen && (
-				<EditGameModal disclosure={editModal} game={game} />
-			)}
+			{viewModal.isOpen && <ViewGameModal disclosure={viewModal} game={game} />}
+			{editModal.isOpen && <EditGameModal disclosure={editModal} game={game} />}
 			{deleteModal.isOpen && (
 				<DeleteModal
 					body={

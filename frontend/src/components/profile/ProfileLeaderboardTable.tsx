@@ -1,12 +1,12 @@
 import { Key, useMemo, useState } from "react";
 import {
-	Table,
-	TableHeader,
-	TableColumn,
-	TableBody,
-	TableRow,
-	TableCell,
 	SortDescriptor,
+	Table,
+	TableBody,
+	TableCell,
+	TableColumn,
+	TableHeader,
+	TableRow,
 } from "@heroui/table";
 
 interface Item {

@@ -1,4 +1,10 @@
 packages:
-    - "frontend"
-    - "backend"
-    - "packages/*"
+  - frontend
+  - backend
+  - packages/*
+
+onlyBuiltDependencies:
+  - "@heroui/shared-utils"
+  - "@tailwindcss/oxide"
+  - esbuild
+  - unrs-resolver

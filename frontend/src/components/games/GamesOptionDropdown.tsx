@@ -1,8 +1,8 @@
-import { DropdownMenu, DropdownItem } from "@heroui/dropdown";
-import { DisplayGameSchema } from "@civboards/schemas";
 import * as z from "zod";
-import { useAuth0 } from "@auth0/auth0-react";
+import { DisplayGameSchema } from "@civboards/schemas";
+import { DropdownItem, DropdownMenu } from "@heroui/dropdown";
 import { addToast } from "@heroui/toast";
+import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesOptionDropdownProps {
 	onOpenView: () => void;
@@ -39,8 +39,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 								addToast({
 									title: "Error",
 									color: "warning",
-									description:
-										"You may only modify games you created",
+									description: "You may only modify games you created",
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});
@@ -61,8 +60,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 								addToast({
 									title: "Error",
 									color: "warning",
-									description:
-										"You may only modify games you created",
+									description: "You may only modify games you created",
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});

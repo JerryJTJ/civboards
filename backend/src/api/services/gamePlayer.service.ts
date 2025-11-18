@@ -2,10 +2,7 @@ import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
 import { TablesInsert } from "../../interfaces/supabase.js";
 
-import {
-	doesGameIdExist,
-	getGameWinsByPlayer,
-} from "../repositories/game.repository.js";
+import { ValidationError } from "../../types/Errors.js";
 import {
 	deleteGamePlayersByGameId,
 	getAllGamePlayers,
@@ -14,8 +11,11 @@ import {
 	getProfileInfoByName,
 	insertGamePlayers,
 } from "../repositories/gamePlayer.repository.js";
+import {
+	doesGameIdExist,
+	getGameWinsByPlayer,
+} from "../repositories/game.repository.js";
 import { fetchCivilizationIdByLeaderId } from "./leader.service.js";
-import { ValidationError } from "../../types/Errors.js";
 
 export async function fetchAllUniqueGamePlayers() {
 	const data = await getAllGamePlayers();

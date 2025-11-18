@@ -1,5 +1,7 @@
-import { DisplayGameSchemaArray } from "@civboards/schemas";
+import * as z from "zod";
 import { Button } from "@heroui/button";
+import { DisplayGameSchemaArray } from "@civboards/schemas";
+import { JSX, useState } from "react";
 import {
 	Modal,
 	ModalBody,
@@ -7,16 +9,14 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import { addToast } from "@heroui/toast";
 import {
 	QueryObserverResult,
 	RefetchOptions,
 	useMutation,
 } from "@tanstack/react-query";
-import { JSX, useState } from "react";
-import * as z from "zod";
+import { addToast } from "@heroui/toast";
 
-import { useGamesAPI } from "@/api/games";
+import { useGamesAPI } from "@api/games";
 
 interface DeleteModalProps {
 	gameId: string;
@@ -48,6 +48,7 @@ export default function DeleteModal(props: DeleteModalProps) {
 			});
 		},
 		onSuccess: () => {
+			onOpenChange();
 			addToast({
 				title: "Success",
 				color: "success",
@@ -57,8 +58,8 @@ export default function DeleteModal(props: DeleteModalProps) {
 			});
 		},
 		onSettled: async () => {
-			setLoading(false);
 			await refetch();
+			setLoading(false);
 		},
 	});
 
@@ -74,18 +75,9 @@ export default function DeleteModal(props: DeleteModalProps) {
 						isLoading={loading}
 						onPress={() => {
 							setLoading(true);
-							mutation
-								.mutateAsync(gameId)
-								.then(onOpenChange)
-								.catch(() => {
-									addToast({
-										title: "Error",
-										color: "warning",
-										description: "Failed to delete game",
-										timeout: 3000,
-										shouldShowTimeoutProgress: true,
-									});
-								});
+							void (async () => {
+								await mutation.mutateAsync(gameId);
+							})();
 						}}
 					>
 						Delete
