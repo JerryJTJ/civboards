@@ -2,6 +2,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 export default function useAccessToken() {
 	const { getAccessTokenSilently } = useAuth0();
+	// const { loginWithPopup } = useAuth0();
 
 	const getAccessToken = async () => {
 		return await getAccessTokenSilently({
@@ -17,7 +18,7 @@ export default function useAccessToken() {
 			return await getAccessToken();
 		} catch {
 			// Only verifiable first-party applications may skip consent
-			// When in dev, comment the error and run the code below to get consent
+			// When in dev, comment the error and use loginWithPopup from useAuth0 hook below
 
 			throw new Error("Failed to get access token");
 			// await loginWithPopup({

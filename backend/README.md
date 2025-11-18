@@ -1,12 +1,13 @@
 # Backend
 
-The backend consists of an Express framework running on Node.js. It has two main functions:
+The backend consists of an Express framework running on Node.js. 
 
+It's primary functions are:
+- Authenticating JWT from the client and authorizing functionality accordingly
 - Passing and validating data (Zod) bewteen the client and database
-- Parsing `.Civ6Save` files
+- Parsing `.Civ6Save` files from the client
 
 ## Usage
-
 To run this project:
 
 - Dev: `pnpm run dev`
@@ -29,18 +30,21 @@ The PostgreSQL database consists of two main categories:
 The `game` schema is as follows:
 
 ```
-    id: uuid
-    created_at: timestamptz,
-    map: text,
-    speed: text,
-    turns: smallint,
-    finished: boolean,
-    winner_player: text,
-    victory_id: bigint,
-    map_size: text,
-    winner_leader_id: bigint,
-    winner_civilization_id: bigint,
-    name: text,
-    active: boolean,
-    date: timestamp with time zone,
+  id: uuid
+  name: text
+  active: boolean
+  date: timestamptz
+  created_at: timestamptz
+  created_by: text
+  map: text
+  map_size: text
+  speed: text
+  turns: smallint
+  finished: boolean
+  winner_player: text
+  victory_id: foreignkey bigint
+  winner_leader_id: bigint
+  winner_civilization_id: bigint
 ```
+
+For the structure of the objects used in apps, see the [shared/schemas](https://github.com/JerryJTJ/civboards/tree/master/packages/schemas) folder.
