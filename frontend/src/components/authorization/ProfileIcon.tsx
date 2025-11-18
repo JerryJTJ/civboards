@@ -3,7 +3,7 @@ import { Link } from "@heroui/link";
 import { Skeleton } from "@heroui/skeleton";
 import { useAuth0 } from "@auth0/auth0-react";
 
-import getViewportSize from "../utils/getViewportSize";
+import getViewportSize from "@components/utils/getViewportSize";
 
 import useWindowDimensions from "@hooks/useWindowDimensions";
 

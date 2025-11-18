@@ -2,7 +2,7 @@ import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
 
-import getViewportSize from "../utils/getViewportSize";
+import getViewportSize from "@components/utils/getViewportSize";
 
 import { Civ } from "@interfaces/game.interface";
 import { LEADERS, Leader } from "@constants/civilizations";

@@ -6,9 +6,9 @@ import { useDisclosure } from "@heroui/modal";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useReducer } from "react";
 
-import { PlusIcon } from "../icons";
-import { ValidationError } from "../utils/error";
-import { validateFormFields } from "../utils/validateFormFields";
+import { PlusIcon } from "@components/icons";
+import { ValidateFormError } from "@components/utils/error";
+import { validateFormFields } from "@components/utils/validateFormFields";
 
 import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
@@ -35,14 +35,14 @@ export default function AddGameModal() {
 		mutationFn: async () => {
 			const validate = validateFormFields(form, InsertGameSchema);
 
-			if (!validate.success) throw new ValidationError(validate.message);
+			if (!validate.success) throw new ValidateFormError(validate.message);
 
 			await insertGame(
 				validate.result.data as z.infer<typeof InsertGameSchema>
 			);
 		},
 		onError: (error) => {
-			if (error instanceof ValidationError) {
+			if (error instanceof ValidateFormError) {
 				addToast({
 					title: "Error",
 					color: "warning",

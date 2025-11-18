@@ -4,7 +4,7 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
-  - '@heroui/shared-utils'
-  - '@tailwindcss/oxide'
+  - "@heroui/shared-utils"
+  - "@tailwindcss/oxide"
   - esbuild
   - unrs-resolver

@@ -11,8 +11,8 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo, useRef, useState } from "react";
 
-import { isModalFieldEnabled } from "../utils/isModalFieldEnabled";
-import getViewportSize from "../utils/getViewportSize";
+import { isModalFieldEnabled } from "@components/utils/isModalFieldEnabled";
+import getViewportSize from "@components/utils/getViewportSize";
 
 import { FormAction } from "./gameFormReducer";
 import { getFormDispatches } from "./gameFormDispatches";

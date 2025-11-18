@@ -4,8 +4,8 @@ import { addToast } from "@heroui/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useReducer } from "react";
 
-import { ValidationError } from "../utils/error";
-import { validateFormFields } from "../utils/validateFormFields";
+import { ValidateFormError } from "@components/utils/error";
+import { validateFormFields } from "@components/utils/validateFormFields";
 
 import GameModal from "./GameModal";
 import gameFormReducer, { FormAction } from "./gameFormReducer";
@@ -58,14 +58,14 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 		mutationFn: async () => {
 			const validate = validateFormFields(form, UpdateGameSchema, game.id);
 
-			if (!validate.success) throw new ValidationError(validate.message);
+			if (!validate.success) throw new ValidateFormError(validate.message);
 
 			await updateGame(
 				validate.result.data as z.infer<typeof UpdateGameSchema>
 			);
 		},
 		onError: (error) => {
-			if (error instanceof ValidationError) {
+			if (error instanceof ValidateFormError) {
 				addToast({
 					title: "Error",
 					color: "warning",

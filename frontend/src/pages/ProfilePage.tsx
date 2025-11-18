@@ -9,8 +9,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import DefaultLayout from "@layouts/default";
 import GamesTable from "@components/games/GamesTable";
-import ProfileLeaderboardTable from "../components/profile/ProfileLeaderboardTable";
-import ProfileStatsTable from "../components/profile/ProfileStatsTable";
+import ProfileLeaderboardTable from "@components/profile/ProfileLeaderboardTable";
+import ProfileStatsTable from "@components/profile/ProfileStatsTable";
 
 export default function ProfilePage() {
 	const params = useParams();

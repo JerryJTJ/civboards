@@ -7,13 +7,13 @@ import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { useDisclosure } from "@heroui/modal";
 
 import DeleteModal from "./DeleteModal";
-import EditGameModal from "../forms/EditGameModal";
+import EditGameModal from "@components/forms/EditGameModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
-import ViewGameModal from "../forms/ViewGameModal";
+import ViewGameModal from "@components/forms/ViewGameModal";
 
 import { capitalize } from "@utils/capitalize";
 
-import menu from "../../../public/menu_background.webp";
+import menu from "/menu_background.webp"; // eslint-disable-line import-x/no-unresolved
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;

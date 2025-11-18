@@ -23,9 +23,13 @@ import {
 } from "@heroui/table";
 import { useDisclosure } from "@heroui/modal";
 
-import { ChevronDownIcon, SearchIcon, VerticalDotsIcon } from "../icons";
-import EditGameModal from "../forms/EditGameModal";
-import ViewGameModal from "../forms/ViewGameModal";
+import {
+	ChevronDownIcon,
+	SearchIcon,
+	VerticalDotsIcon,
+} from "@components/icons";
+import EditGameModal from "@components/forms/EditGameModal";
+import ViewGameModal from "@components/forms/ViewGameModal";
 
 import DeleteModal from "./DeleteModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
