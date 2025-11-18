@@ -1,7 +1,4 @@
 import { Button, ButtonGroup } from "@heroui/button";
-import { useMemo, useState } from "react";
-import { useQueries } from "@tanstack/react-query";
-
 import {
 	CivilizationsData,
 	LeadersData,
@@ -14,6 +11,8 @@ import {
 	getAllGameWinnerLeaderIds,
 	getAllGameWinners,
 } from "@api/leaderboards";
+import { useMemo, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
 import DefaultLayout from "@layouts/default";
 import LeaderboardTable from "@components/LeaderboardTable";
 import LoadingSpinner from "@components/LoadingSpinner";
@@ -176,7 +175,7 @@ export default function LeaderboardPage() {
 					size={getViewportSize(width) === "xs" ? "sm" : "md"}
 				>
 					<Button
-						className="border border-white/20"
+						className="border border-foreground/20"
 						color={tab === "player" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -186,7 +185,7 @@ export default function LeaderboardPage() {
 						Players
 					</Button>
 					<Button
-						className="border border-white/20"
+						className="border border-foreground/20"
 						color={tab === "leader" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -196,7 +195,7 @@ export default function LeaderboardPage() {
 						Leaders
 					</Button>
 					<Button
-						className="border border-white/20"
+						className="border border-foreground/20"
 						color={tab === "civilization" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -206,7 +205,7 @@ export default function LeaderboardPage() {
 						Civilizations
 					</Button>
 					<Button
-						className="border border-white/20"
+						className="border border-foreground/20"
 						color={tab === "victory" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {

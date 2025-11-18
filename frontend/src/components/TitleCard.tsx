@@ -18,13 +18,13 @@ export default function TitleCard(props: TitleCardProps) {
 			isFooterBlurred
 			isHoverable
 			isPressable
-			className="flex items-center justify-center w-full h-full col-span-12 border sm:col-span-7 border-white/20"
+			className="flex items-center justify-center w-full h-full col-span-12 border sm:col-span-7 border-foreground/20"
 			shadow="sm"
 			onPress={() => {
 				navigate(path);
 			}}
 		>
-			<CardFooter className="backdrop-blur-lg absolute z-10 flex-col items-center justify-center before:bg-white/20 border-white/20 border overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%-12px)] xl:py-3">
+			<CardFooter className="backdrop-blur-lg absolute z-10 flex-col items-center justify-center before:bg-foreground/20 border-foreground/20 border overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%-12px)] xl:py-3">
 				<h4 className="font-serif text-base tracking-widest text-center sm:text-2xl md:text-3xl text-foreground/90 2xl:text-5xl">
 					{title.toUpperCase()}
 				</h4>

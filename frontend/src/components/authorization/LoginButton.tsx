@@ -9,7 +9,7 @@ const LoginButton = () => {
 
 	return (
 		<Button
-			className="border border-white/20"
+			className="border border-foreground/20"
 			color="primary"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
 			variant="shadow"

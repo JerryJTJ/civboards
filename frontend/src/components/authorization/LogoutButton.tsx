@@ -11,7 +11,7 @@ const LogoutButton = () => {
 
 	return (
 		<Button
-			className="border border-white/20"
+			className="border border-foreground/20"
 			color="default"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
 			variant="shadow"
