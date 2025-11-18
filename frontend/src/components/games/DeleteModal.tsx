@@ -58,8 +58,8 @@ export default function DeleteModal(props: DeleteModalProps) {
 			});
 		},
 		onSettled: async () => {
-			setLoading(false);
 			await refetch();
+			setLoading(false);
 		},
 	});
 
