@@ -68,9 +68,12 @@ app.get("/ping", async (_req: express.Request, res: express.Response) => {
 });
 
 // Call ping endpoint every 5 minutes
-setInterval(() => {
-	void axios.get(`http://localhost:${PORT.toString()}/ping`);
-}, 300000);
+const SERVER_URL = process.env.SERVER_URL;
+if (SERVER_URL) {
+	setInterval(() => {
+		void axios.get(`${SERVER_URL}/ping`);
+	}, 300000);
+}
 
 //Error handlers (must be last)
 app.use(errorHandler);
