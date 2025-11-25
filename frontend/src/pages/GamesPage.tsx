@@ -1,10 +1,9 @@
 import { Button, ButtonGroup } from "@heroui/button";
-import { ScrollShadow } from "@heroui/scroll-shadow";
-import { useQuery } from "@tanstack/react-query";
-
 import { Card, CardBody, CardHeader } from "@heroui/card";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
 import { useGamesAPI } from "@api/games";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddGameModal from "@components/forms/AddGameModal";
 import DefaultLayout from "@layouts/default";
@@ -35,7 +34,7 @@ export default function GamesPage() {
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
 						>
 							<Button
-								className="border border-white/20"
+								className="border border-foreground/20"
 								color={currTab === "cards" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {
@@ -45,7 +44,7 @@ export default function GamesPage() {
 								Cards
 							</Button>
 							<Button
-								className="border border-white/20"
+								className="border border-foreground/20"
 								color={currTab === "table" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {

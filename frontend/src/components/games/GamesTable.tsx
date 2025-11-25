@@ -315,6 +315,9 @@ export default function GamesTable(props: GamesTableProps) {
 					<Input
 						isClearable
 						className="w-full sm:max-w-[44%]"
+						classNames={{
+							base: "border border-foreground/20 rounded-xl",
+						}}
 						placeholder="Search"
 						startContent={<SearchIcon />}
 						value={filterValue}
@@ -348,6 +351,7 @@ export default function GamesTable(props: GamesTableProps) {
 						<Dropdown>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
+									className="border justify-self-end border-foreground/20"
 									endContent={<ChevronDownIcon className="text-small" />}
 									variant="flat"
 								>
@@ -403,6 +407,10 @@ export default function GamesTable(props: GamesTableProps) {
 					isCompact
 					showControls
 					showShadow
+					classNames={{
+						wrapper: "border border-foreground/20",
+						cursor: "border border-foreground/20",
+					}}
 					color="primary"
 					page={page}
 					total={pages}
@@ -410,6 +418,7 @@ export default function GamesTable(props: GamesTableProps) {
 				/>
 				<div className="hidden sm:flex w-[30%] justify-end gap-2">
 					<Button
+						className="border justify-self-end border-foreground/20"
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
@@ -418,6 +427,7 @@ export default function GamesTable(props: GamesTableProps) {
 						Previous
 					</Button>
 					<Button
+						className="border justify-self-end border-foreground/20"
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
@@ -437,9 +447,6 @@ export default function GamesTable(props: GamesTableProps) {
 				aria-label="Table of games"
 				bottomContent={bottomContent}
 				bottomContentPlacement="outside"
-				classNames={{
-					wrapper: "max-h-[50vh]",
-				}}
 				sortDescriptor={sortDescriptor}
 				topContent={topContent}
 				topContentPlacement="outside"

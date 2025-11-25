@@ -13,6 +13,7 @@ import ParseRouter from "./parse/parse.api.js";
 import PlayerRouter from "./routes/player.routes.js";
 import UserRouter from "./routes/user.routes.js";
 import VictoryRouter from "./routes/victory.routes.js";
+import axios from "axios";
 import checkJwt from "./middlewares/auth/checkJwt.js";
 import compression from "compression";
 import cors from "cors";
@@ -60,11 +61,19 @@ app.use("/user", UserRouter);
 app.use("/parse", checkJwt(), ParseRouter);
 app.use("/auth0", Auth0Router);
 
-// This is just to keep the database and backend running via a cron job
+// This is just to keep the database and backend running
 app.get("/ping", async (_req: express.Request, res: express.Response) => {
 	await getExpansionById(1);
 	res.status(200).end();
 });
+
+// Call ping endpoint every 5 minutes
+const SERVER_URL = process.env.SERVER_URL;
+if (SERVER_URL) {
+	setInterval(() => {
+		void axios.get(`${SERVER_URL}/ping`);
+	}, 300000);
+}
 
 //Error handlers (must be last)
 app.use(errorHandler);
