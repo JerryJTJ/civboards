@@ -5,7 +5,7 @@ import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
-import { Civ } from "@interfaces/game.interface";
+import { Civ, GameForm } from "@interfaces/game.interface";
 import { useMemo } from "react";
 import * as z from "zod";
 
@@ -13,42 +13,44 @@ interface ViewGameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
 	isPending: boolean;
 	username: string;
-    onOpenEdit: ()=>void;
+	onOpenEdit: () => void;
 }
 
 export default function ViewGameCard(props: ViewGameCardProps) {
 	const { game, isPending, username, onOpenEdit } = props;
 
-	const civFields = useMemo(() => {
-		const display = game.players.map((civ: Civ) => (
-			<CivField key={civ.id} civ={civ} enabled={false} />
-		));
+	const civFields = (
+		<ScrollShadow
+			className="overflow-x-hidden overflow-y-auto max-h-[60vh] pt-2"
+			size={10}
+		>
+			<div className="flex flex-col justify-start gap-2 mr-2">
+				{game.players.map((civ: Civ) => (
+					<CivField key={civ.id} civ={civ} enabled={false} />
+				))}
+			</div>
+		</ScrollShadow>
+	);
 
-		return (
-			<ScrollShadow
-				className="overflow-x-hidden overflow-y-auto max-h-[60vh] pt-2"
-				size={10}
-			>
-				<div className="flex flex-col justify-start gap-2 mr-2">{display}</div>
-			</ScrollShadow>
-		);
-	}, [game]);
+	const winner = game.winnerPlayer && game.players.find(
+		(player) => player.name === game.winnerPlayer
+	)?.id;
+
+	const form: GameForm = {
+		...game,
+		winnerPlayer: winner ?? "",
+		date: Date.parse(game.date),
+		victoryId: game.victoryId ?? undefined,
+		expansions: new Set(game.expansions),
+		gamemodes: new Set(game.gamemodes),
+		players: game.players,
+	};
 
 	const gameOptionFields = useMemo(() => {
 		return (
 			<ScrollShadow className="lg:max-h-[60vh] overflow-auto pt-2" size={20}>
 				<div className="mr-3.5">
-					<GameOptionsForm
-						enabled={false}
-						form={{
-							...game,
-							winnerPlayer: game.winnerPlayer ?? "",
-							date: Date.parse(game.date),
-							victoryId: game.victoryId ?? undefined,
-							expansions: new Set(game.expansions),
-							gamemodes: new Set(game.gamemodes),
-						}}
-					/>
+					<GameOptionsForm enabled={false} form={form} />
 				</div>
 			</ScrollShadow>
 		);
@@ -87,7 +89,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 						className="mb-3 border me-10 border-foreground/20 rounded-xl justify-self-end"
 						color="primary"
 						variant="shadow"
-                        onPress={onOpenEdit}
+						onPress={onOpenEdit}
 					>
 						Edit
 					</Button>
