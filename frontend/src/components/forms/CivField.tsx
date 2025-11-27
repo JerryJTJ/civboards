@@ -87,23 +87,22 @@ export default function CivField(props: CivFieldProps) {
 								required={true}
 								value={civ.name}
 								onChange={(e) => {
-									if (enabled)
-										props.changeDispatch({
-											name: e.target.value,
-											id: civ.id,
-										});
+									props.changeDispatch({
+										name: e.target.value,
+										id: civ.id,
+									});
 								}}
 							/>
 						) : (
 							<RouterLink to={`/profile/${civ.name}`}>
 								<Input
+									isReadOnly
 									className="border border-foreground/20 rounded-xl hover:cursor-pointer"
 									classNames={{
 										inputWrapper: "!cursor-pointer",
 										input: "!cursor-pointer",
 										label: "!cursor-pointer",
 									}}
-									isReadOnly
 									isRequired={enabled}
 									label="Player"
 									required={true}

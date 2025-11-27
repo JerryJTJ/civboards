@@ -143,8 +143,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(size) => <SelectItem>{size.size}</SelectItem>}
 			</Select>
 			<NumberInput
-				className="border border-foreground/20 rounded-xl"
 				isWheelDisabled
+				className="border border-foreground/20 rounded-xl"
 				datatype="number"
 				isReadOnly={!enabled}
 				isRequired={enabled}

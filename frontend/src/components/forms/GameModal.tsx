@@ -21,8 +21,8 @@ import GameOptionsForm from "./GameOptionsForm";
 import UploadFileInput from "./UploadFileInput";
 
 import { Civ, GameForm } from "@interfaces/game.interface";
-import useWindowDimensions from "@hooks/useWindowDimensions";
 import { ScrollShadow } from "@heroui/scroll-shadow";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface AddModalProps {
 	mode: "add";
