@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import CivField from "@components/forms/CivField";
 import DefaultLayout from "@layouts/default";
 import GameOptionsForm from "@components/forms/GameOptionsForm";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
 export default function ViewGamePage() {
 	const { gameId } = useParams();
@@ -30,9 +31,12 @@ export default function ViewGamePage() {
 			: undefined;
 
 		return (
-			<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh] ">
+			<ScrollShadow
+				className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]"
+				size={10}
+			>
 				{display}
-			</div>
+			</ScrollShadow>
 		);
 	}, [data]);
 

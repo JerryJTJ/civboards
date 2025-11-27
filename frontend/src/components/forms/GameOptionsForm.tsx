@@ -14,6 +14,7 @@ import {
 	VICTORY_TYPES,
 } from "@constants/gameSettings";
 import { GameForm } from "@interfaces/game.interface";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
 type GameOptionsFormProps =
 	| {
@@ -42,7 +43,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 	const { enabled, form } = props;
 
 	return (
-		<div className="flex flex-col gap-2">
+		<ScrollShadow className="flex flex-col gap-2">
 			<Checkbox
 				isDisabled={!enabled}
 				isSelected={form.finished}
@@ -232,7 +233,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					</SelectItem>
 				)}
 			</Select>
-		</div>
+		</ScrollShadow>
 	);
 }
 

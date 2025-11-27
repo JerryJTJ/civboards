@@ -22,6 +22,7 @@ import UploadFileInput from "./UploadFileInput";
 
 import { Civ, GameForm } from "@interfaces/game.interface";
 import useWindowDimensions from "@hooks/useWindowDimensions";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 
 interface AddModalProps {
 	mode: "add";
@@ -120,9 +121,12 @@ export default function GameModal(props: GameModalProps) {
 				));
 
 		return (
-			<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh] ">
+			<ScrollShadow
+				className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]"
+				size={25}
+			>
 				{display}
-			</div>
+			</ScrollShadow>
 		);
 	}, [dispatches, enabled, form.players]);
 
