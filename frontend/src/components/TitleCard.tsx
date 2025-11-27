@@ -38,5 +38,3 @@ export default function TitleCard(props: TitleCardProps) {
 		</Card>
 	);
 }
-
-//bg-background/10", "backdrop-blur", "backdrop-saturate-150

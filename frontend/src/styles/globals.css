@@ -5,7 +5,7 @@
 /* @source '../../node_modules/@heroui/theme/dist*.{js,ts,jsx,tsx}'; */
 /* @custom-variant dark (&:is(.dark *)); */
 
-/* @theme {
+@theme {
 	--default-light-50: #f6f5f4;
 	--default-light-100: #e9e7e5;
 	--default-light-200: #dbd9d6;
@@ -114,4 +114,4 @@
 	--focus-light: #db924b;
 	--overlay-light: #000000;
 	--divider-light: #111111;
-} */
+} 
