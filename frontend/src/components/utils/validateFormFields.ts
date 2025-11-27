@@ -32,7 +32,7 @@ export function validateFormFields(
 			message: "Can't have duplicate player names",
 		};
 
-	const winner = form.players.find((player) => player.id === form.winner);
+	const winner = form.players.find((player) => player.id === form.winnerPlayer);
 
 	if (!winner && form.finished)
 		return { success: false, message: "Can't find winner" };

@@ -9,11 +9,6 @@ interface ViewGameModalProps {
 		onOpen: () => void;
 		onClose: () => void;
 		onOpenChange: () => void;
-		isControlled: boolean;
-		getButtonProps: (props?: any) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
-		getDisclosureProps: (props?: any) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
-		// The disclosure is from useDisclosure hook from HeroUI
-		// It's internally typed as any so
 	};
 	game: z.infer<typeof DisplayGameSchema>;
 }
@@ -30,7 +25,7 @@ export default function ViewGameModal(props: ViewGameModalProps) {
 			dispatch={undefined}
 			form={{
 				...game,
-				winner: winner ?? "",
+				winnerPlayer: winner ?? "",
 				date: Date.parse(game.date),
 				victoryId: game.victoryId ?? undefined,
 				expansions: new Set(game.expansions),

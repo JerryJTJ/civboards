@@ -143,7 +143,7 @@ export default function GameModal(props: GameModalProps) {
 	return (
 		<Modal
 			backdrop="blur"
-			className="max-h-screen game-modal "
+			className="max-h-screen game-modal"
 			classNames={{
 				closeButton: "m-4 scale-150 hover:bg-danger/75 active:red/100",
 			}}

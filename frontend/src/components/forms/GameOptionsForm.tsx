@@ -69,7 +69,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				<>
 					<Select
 						defaultSelectedKeys={
-							form.winner === "" ? undefined : new Set([form.winner])
+							form.winnerPlayer === ""
+								? undefined
+								: new Set([form.winnerPlayer])
 						}
 						isDisabled={!enabled}
 						isRequired={enabled}

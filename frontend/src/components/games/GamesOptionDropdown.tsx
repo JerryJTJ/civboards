@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { DisplayGameSchema } from "@civboards/schemas";
 import { DropdownItem, DropdownMenu } from "@heroui/dropdown";
+import { Link } from "react-router-dom";
 import { addToast } from "@heroui/toast";
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -15,20 +16,16 @@ interface GamesOptionDropdownProps {
 }
 
 export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
-	const { onOpenView, onOpenEdit, onOpenDelete, game, setCurrGame } = props;
+	const { onOpenEdit, onOpenDelete, game, setCurrGame } = props;
 
 	const { user, isAuthenticated } = useAuth0();
 
 	return (
 		<DropdownMenu selectionMode="single" variant="shadow">
-			<DropdownItem
-				key="view"
-				onPress={() => {
-					if (setCurrGame) setCurrGame(game);
-					onOpenView();
-				}}
-			>
-				View
+			<DropdownItem key="view">
+				<Link className="block w-full h-full" to={`/game/${game.id}`}>
+					View
+				</Link>
 			</DropdownItem>
 			{isAuthenticated ? (
 				<>
