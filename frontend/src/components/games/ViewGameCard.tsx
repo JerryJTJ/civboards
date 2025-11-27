@@ -32,9 +32,9 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		</ScrollShadow>
 	);
 
-	const winner = game.winnerPlayer && game.players.find(
-		(player) => player.name === game.winnerPlayer
-	)?.id;
+	const winner =
+		game.winnerPlayer &&
+		game.players.find((player) => player.name === game.winnerPlayer)?.id;
 
 	const form: GameForm = {
 		...game,
@@ -62,20 +62,22 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 			className="flex items-center justify-center mt-10 border-none bg-background/60 dark:bg-default-100/50 "
 			shadow="md"
 		>
-			<CardHeader />
+			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
+				<h4 className="font-bold text-large">{game.name}</h4>
+			</CardHeader>
 			<CardBody>
 				<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
 					<div className="col-span-4">
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
 							{" "}
-							<p className="self-center pb-4 font-bold">Players</p>
+							<p className="pb-4 font-bold text-center">Players</p>
 							{civFields}
 						</Skeleton>
 					</div>
 
 					<div className="col-span-2">
 						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<p className="self-center pb-4 overflow-scroll font-bold">
+							<p className="pb-4 overflow-scroll font-bold text-center">
 								Game Options
 							</p>
 							{gameOptionFields}

@@ -54,17 +54,27 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					Game Finished
 				</p>
 			</Checkbox>
-			<Input
-				className="border border-foreground/20 rounded-xl"
-				isReadOnly={!enabled}
-				isRequired={enabled}
-				label="Game Name"
-				maxLength={30}
-				value={form.name}
-				onValueChange={(val: string) => {
-					if (enabled) props.dispatch("name", val);
-				}}
-			/>
+			{!enabled && form.date && (
+				<Input
+					className="border border-foreground/20 rounded-xl"
+					isReadOnly
+					label="Date"
+					value={new Date(form.date).toLocaleDateString()}
+				/>
+			)}
+			{enabled && (
+				<Input
+					className="border border-foreground/20 rounded-xl"
+					isReadOnly={!enabled}
+					isRequired={enabled}
+					label="Game Name"
+					maxLength={30}
+					value={form.name}
+					onValueChange={(val: string) => {
+						props.dispatch("name", val);
+					}}
+				/>
+			)}
 			{form.finished && (
 				<>
 					<Select
