@@ -32,27 +32,31 @@ export default function ViewGamePage() {
 
 		return (
 			<ScrollShadow
-				className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]"
+				className="overflow-x-hidden overflow-y-auto max-h-[60vh]"
 				size={10}
 			>
-				{display}
+				<div className="flex flex-col justify-start gap-2 mr-2">{display}</div>
 			</ScrollShadow>
 		);
 	}, [data]);
 
 	const gameOptionFields = useMemo(() => {
 		return data ? (
-			<GameOptionsForm
-				enabled={false}
-				form={{
-					...data,
-					winnerPlayer: data.winnerPlayer ?? "",
-					date: Date.parse(data.date),
-					victoryId: data.victoryId ?? undefined,
-					expansions: new Set(data.expansions),
-					gamemodes: new Set(data.gamemodes),
-				}}
-			/>
+			<ScrollShadow className="lg:max-h-[60vh] overflow-auto" size={20}>
+				<div className="mr-3.5">
+					<GameOptionsForm
+						enabled={false}
+						form={{
+							...data,
+							winnerPlayer: data.winnerPlayer ?? "",
+							date: Date.parse(data.date),
+							victoryId: data.victoryId ?? undefined,
+							expansions: new Set(data.expansions),
+							gamemodes: new Set(data.gamemodes),
+						}}
+					/>
+				</div>
+			</ScrollShadow>
 		) : undefined;
 	}, [data]);
 
@@ -61,12 +65,12 @@ export default function ViewGamePage() {
 			{!error ? (
 				<Card
 					isBlurred
-					className="flex items-center justify-center m-3 border-none bg-background/60 dark:bg-default-100/50"
-					shadow="sm"
+					className="flex items-center justify-center m-5 border-none bg-background/60 dark:bg-default-100/50 "
+					shadow="md"
 				>
 					<CardHeader />
 					<CardBody>
-						<div className="grid grid-cols-6 gap-4 px-10 py-2">
+						<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
 							<div className="col-span-4">
 								<Skeleton className="rounded-xl" isLoaded={!isPending}>
 									{" "}
@@ -77,7 +81,9 @@ export default function ViewGamePage() {
 
 							<div className="col-span-2">
 								<Skeleton className="rounded-xl" isLoaded={!isPending}>
-									<p className="self-center pb-4 font-bold">Game Options</p>
+									<p className="self-center pb-4 overflow-scroll font-bold">
+										Game Options
+									</p>
 									{gameOptionFields}
 								</Skeleton>
 							</div>
