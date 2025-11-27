@@ -1,6 +1,7 @@
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
+import { Link as RouterLink } from "react-router-dom";
 
 import getViewportSize from "@components/utils/getViewportSize";
 
@@ -77,23 +78,39 @@ export default function CivField(props: CivFieldProps) {
 						/>
 					)}
 
-					{civ.isHuman && (
-						<Input
-							className="border border-foreground/20 rounded-xl"
-							isReadOnly={!enabled}
-							isRequired={enabled}
-							label="Player"
-							required={true}
-							value={civ.name}
-							onChange={(e) => {
-								if (enabled)
-									props.changeDispatch({
-										name: e.target.value,
-										id: civ.id,
-									});
-							}}
-						/>
-					)}
+					{civ.isHuman &&
+						(enabled ? (
+							<Input
+								className="border border-foreground/20 rounded-xl"
+								isRequired={enabled}
+								label="Player"
+								required={true}
+								value={civ.name}
+								onChange={(e) => {
+									if (enabled)
+										props.changeDispatch({
+											name: e.target.value,
+											id: civ.id,
+										});
+								}}
+							/>
+						) : (
+							<RouterLink to={`/profile/${civ.name}`}>
+								<Input
+									className="border border-foreground/20 rounded-xl hover:cursor-pointer"
+									classNames={{
+										inputWrapper: "!cursor-pointer",
+										input: "!cursor-pointer",
+										label: "!cursor-pointer",
+									}}
+									isReadOnly
+									isRequired={enabled}
+									label="Player"
+									required={true}
+									value={civ.name}
+								/>
+							</RouterLink>
+						))}
 				</div>
 			</div>
 			<div className="self-center col-span-1">

@@ -32,7 +32,7 @@ export default function ViewGamePage() {
 
 		return (
 			<ScrollShadow
-				className="overflow-x-hidden overflow-y-auto max-h-[60vh]"
+				className="overflow-x-hidden overflow-y-auto max-h-[60vh] pt-2"
 				size={10}
 			>
 				<div className="flex flex-col justify-start gap-2 mr-2">{display}</div>
@@ -42,7 +42,7 @@ export default function ViewGamePage() {
 
 	const gameOptionFields = useMemo(() => {
 		return data ? (
-			<ScrollShadow className="lg:max-h-[60vh] overflow-auto" size={20}>
+			<ScrollShadow className="lg:max-h-[60vh] overflow-auto pt-2" size={20}>
 				<div className="mr-3.5">
 					<GameOptionsForm
 						enabled={false}
