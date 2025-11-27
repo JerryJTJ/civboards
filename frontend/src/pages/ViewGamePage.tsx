@@ -9,6 +9,7 @@ import ViewGameCard from "@components/games/ViewGameCard";
 import { useMemo } from "react";
 import EditGameModal from "@components/forms/EditGameModal";
 import { Skeleton } from "@heroui/skeleton";
+import LoadingSpinner from "@components/LoadingSpinner";
 
 export default function ViewGamePage() {
 	const { gameId } = useParams();
@@ -33,8 +34,10 @@ export default function ViewGamePage() {
 	return (
 		<DefaultLayout>
 			{!error ? (
-				<Skeleton className="rounded-xl" isLoaded={!isPending}>
-					{data && (
+				isPending ? (
+					<LoadingSpinner height={25} />
+				) : (
+					data && (
 						<>
 							{" "}
 							<ViewGameCard
@@ -47,12 +50,12 @@ export default function ViewGamePage() {
 								<EditGameModal disclosure={disclosure} game={data} />
 							)}
 						</>
-					)}
-				</Skeleton>
+					)
+				)
 			) : (
 				<Card
 					isBlurred
-					className="flex items-center justify-center border-none bg-background/60 dark:bg-default-100/50"
+					className="flex items-center p-5 border-none justify-self-center bg-background/60 dark:bg-default-100/50"
 					shadow="sm"
 				>
 					<CardBody>

@@ -56,8 +56,8 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			</Checkbox>
 			{!enabled && form.date && (
 				<Input
-					className="border border-foreground/20 rounded-xl"
 					isReadOnly
+					className="border border-foreground/20 rounded-xl"
 					label="Date"
 					value={new Date(form.date).toLocaleDateString()}
 				/>
@@ -79,14 +79,14 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				<>
 					<Select
 						className="border border-foreground/20 rounded-xl"
+						isRequired={enabled}
+						items={form.players}
+						label="Winner"
 						selectedKeys={
 							form.winnerPlayer === ""
 								? undefined
 								: new Set([form.winnerPlayer])
 						}
-						isRequired={enabled}
-						items={form.players}
-						label="Winner"
 						selectionMode="single"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 							e.preventDefault();
@@ -101,12 +101,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					</Select>
 					<Select
 						className="border border-foreground/20 rounded-xl"
-						selectedKeys={
-							form.victoryId ? new Set([String(form.victoryId)]) : undefined
-						}
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
+						selectedKeys={
+							form.victoryId ? new Set([String(form.victoryId)]) : undefined
+						}
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 							e.preventDefault();
 							if (enabled) props.dispatch("victoryId", e.target.value);

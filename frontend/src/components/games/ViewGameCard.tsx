@@ -6,7 +6,6 @@ import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
 import { Civ, GameForm } from "@interfaces/game.interface";
-import { useMemo } from "react";
 import * as z from "zod";
 
 interface ViewGameCardProps {
@@ -46,15 +45,13 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		players: game.players,
 	};
 
-	const gameOptionFields = useMemo(() => {
-		return (
-			<ScrollShadow className="lg:max-h-[60vh] overflow-auto pt-2" size={20}>
-				<div className="mr-3.5">
-					<GameOptionsForm enabled={false} form={form} />
-				</div>
-			</ScrollShadow>
-		);
-	}, [game]);
+	const gameOptionFields = (
+		<ScrollShadow className="lg:max-h-[60vh] overflow-auto pt-2" size={20}>
+			<div className="mr-3.5">
+				<GameOptionsForm enabled={false} form={form} />
+			</div>
+		</ScrollShadow>
+	);
 
 	return (
 		<Card
