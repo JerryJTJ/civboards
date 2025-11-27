@@ -45,13 +45,16 @@ export default function CivField(props: CivFieldProps) {
 					{/* We use input instead of autocomplete for view because autocomplete cuts off the leader text for mobile view (mobile only allows view so its always disabled) */}
 					{enabled ? (
 						<Autocomplete
+							classNames={{
+								base: "border border-foreground/20 rounded-xl",
+								popoverContent: "border border-foreground/20 rounded-xl",
+							}}
 							defaultItems={LEADERS}
 							isDisabled={!enabled}
 							isRequired={enabled}
 							label="Leader"
 							selectedKey={civ.leaderId?.toString() ?? undefined}
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
-							variant="bordered"
 							onSelectionChange={(e) => {
 								props.changeDispatch({
 									leaderId: Number(e),
@@ -67,21 +70,21 @@ export default function CivField(props: CivFieldProps) {
 						</Autocomplete>
 					) : (
 						<Input
+							className="border border-foreground/20 rounded-xl"
 							isDisabled={!enabled}
 							label="Leader"
 							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
-							variant="bordered"
 						/>
 					)}
 
 					{civ.isHuman && (
 						<Input
+							className="border border-foreground/20 rounded-xl"
 							isDisabled={!enabled}
 							isRequired={enabled}
 							label="Player"
 							required={true}
 							value={civ.name}
-							variant="bordered"
 							onChange={(e) => {
 								if (enabled)
 									props.changeDispatch({

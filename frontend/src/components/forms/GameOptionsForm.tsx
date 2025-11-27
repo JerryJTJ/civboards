@@ -55,12 +55,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				</p>
 			</Checkbox>
 			<Input
+				className="border border-foreground/20 rounded-xl"
 				isDisabled={!enabled}
 				isRequired={enabled}
 				label="Game Name"
 				maxLength={30}
 				value={form.name}
-				variant="bordered"
 				onValueChange={(val: string) => {
 					if (enabled) props.dispatch("name", val);
 				}}
@@ -68,6 +68,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			{form.finished && (
 				<>
 					<Select
+						className="border border-foreground/20 rounded-xl"
 						defaultSelectedKeys={
 							form.winnerPlayer === ""
 								? undefined
@@ -78,7 +79,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						items={form.players}
 						label="Winner"
 						selectionMode="single"
-						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 							if (enabled) props.dispatch("winner", e.target.value);
 						}}
@@ -90,6 +90,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						}
 					</Select>
 					<Select
+						className="border border-foreground/20 rounded-xl"
 						defaultSelectedKeys={
 							form.victoryId ? new Set([String(form.victoryId)]) : undefined
 						}
@@ -97,7 +98,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
-						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 							if (enabled) props.dispatch("victoryId", e.target.value);
 						}}
@@ -110,12 +110,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			)}
 
 			<Select
+				className="border border-foreground/20 rounded-xl"
 				isDisabled={!enabled}
 				isRequired={enabled}
 				items={GAME_SPEED}
 				label="Game Speed"
 				selectedKeys={new Set([form.speed])}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled) props.dispatch("speed", e.target.value);
 				}}
@@ -123,23 +123,23 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
 			</Select>
 			<Input
+				className="border border-foreground/20 rounded-xl"
 				isDisabled={!enabled}
 				isRequired={enabled}
 				label="Map"
 				maxLength={20}
 				value={form.map}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (enabled) props.dispatch("map", e.target.value);
 				}}
 			/>
 			<Select
+				className="border border-foreground/20 rounded-xl"
 				isDisabled={!enabled}
 				isRequired={enabled}
 				items={MAP_SIZE}
 				label="Map Size"
 				selectedKeys={new Set([form.mapSize])}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled) props.dispatch("mapSize", e.target.value);
 				}}
@@ -147,6 +147,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(size) => <SelectItem>{size.size}</SelectItem>}
 			</Select>
 			<NumberInput
+				className="border border-foreground/20 rounded-xl"
 				isWheelDisabled
 				datatype="number"
 				isDisabled={!enabled}
@@ -155,12 +156,12 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				maxValue={500}
 				minValue={0}
 				value={form.turns}
-				variant="bordered"
 				onValueChange={(val: number) => {
 					if (enabled) props.dispatch("turns", val);
 				}}
 			/>
 			<Select
+				className="border border-foreground/20 rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
@@ -181,7 +182,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectedKeys={[...form.expansions].map(String)}
 				selectionMode="multiple"
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled)
 						props.dispatch(
@@ -197,6 +197,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				)}
 			</Select>
 			<Select
+				className="border border-foreground/20 rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
@@ -217,7 +218,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectedKeys={[...form.gamemodes].map(String)}
 				selectionMode="multiple"
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled)
 						props.dispatch(

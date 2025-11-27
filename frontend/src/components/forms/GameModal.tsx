@@ -206,11 +206,13 @@ export default function GameModal(props: GameModalProps) {
 											{enabled && (
 												<div className="flex flex-row gap-2 pt-4">
 													<Button
+														className="border border-foreground/20 rounded-xl"
 														onPress={() => dispatches?.addCivDispatch(true)}
 													>
 														Add Human
 													</Button>
 													<Button
+														className="border border-foreground/20 rounded-xl"
 														onPress={() => dispatches?.addCivDispatch(false)}
 													>
 														Add AI
@@ -228,11 +230,17 @@ export default function GameModal(props: GameModalProps) {
 								<div className="flex flex-row gap-2" />
 							</ModalBody>
 							<ModalFooter>
-								<Button color="danger" variant="shadow" onPress={onModalClose}>
+								<Button
+									className="border border-foreground/20 rounded-xl"
+									color="danger"
+									variant="shadow"
+									onPress={onModalClose}
+								>
 									Close
 								</Button>
 								{enabled && (
 									<Button
+										className="border border-foreground/20 rounded-xl"
 										color="primary"
 										isLoading={loading}
 										type="submit"

@@ -57,7 +57,7 @@ export default function ViewGamePage() {
 			{!error ? (
 				<Card
 					isBlurred
-					className="flex items-center justify-center border-none bg-background/60 dark:bg-default-100/50"
+					className="flex items-center justify-center m-3 border-none bg-background/60 dark:bg-default-100/50"
 					shadow="sm"
 				>
 					<CardHeader />
