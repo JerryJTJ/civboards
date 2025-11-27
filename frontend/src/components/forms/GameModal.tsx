@@ -66,11 +66,11 @@ export default function GameModal(props: GameModalProps) {
 	const headerText = () => {
 		switch (mode) {
 			case "add":
-				return "Add";
+				return "Add Game";
 			case "view":
-				return "View";
+				return "View Game";
 			case "edit":
-				return "Edit";
+				return "Edit Game";
 		}
 	};
 
@@ -168,8 +168,10 @@ export default function GameModal(props: GameModalProps) {
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>
-							<ModalHeader className="flex flex-row">
-								<p className="pt-2 pl-2 text-large">{headerText()} Game</p>
+							<ModalHeader className="flex-col items-center text-center ">
+								<p className="pt-2 pl-2 text-center text-large">
+									{headerText()}{" "}
+								</p>
 							</ModalHeader>
 							<ModalBody>
 								{mode === "add" && dispatches && (
@@ -205,7 +207,7 @@ export default function GameModal(props: GameModalProps) {
 									<div className="grid grid-cols-6 gap-4 px-10 py-2">
 										<div className="col-span-4">
 											{" "}
-											<p className="self-center pb-4 font-bold">Players</p>
+											<p className="pb-4 font-bold text-center">Players</p>
 											{civFields}
 											{enabled && (
 												<div className="flex flex-row gap-2 pt-4">
@@ -225,7 +227,7 @@ export default function GameModal(props: GameModalProps) {
 											)}
 										</div>
 										<div className="col-span-2">
-											<p className="self-center pb-4 font-bold">Game Options</p>
+											<p className="pb-4 font-bold text-center">Game Options</p>
 											{gameOptionFields}
 										</div>
 									</div>

@@ -59,7 +59,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 	return (
 		<Card
 			isBlurred
-			className="flex items-center justify-center mt-10 border-none bg-background/60 dark:bg-default-100/50 "
+			className="flex items-center justify-center border-none bg-background/60 dark:bg-default-100/50 "
 			shadow="md"
 		>
 			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
