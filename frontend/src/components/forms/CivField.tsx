@@ -50,7 +50,7 @@ export default function CivField(props: CivFieldProps) {
 								popoverContent: "border border-foreground/20 rounded-xl",
 							}}
 							defaultItems={LEADERS}
-							isDisabled={!enabled}
+							isReadOnly={!enabled}
 							isRequired={enabled}
 							label="Leader"
 							selectedKey={civ.leaderId?.toString() ?? undefined}
@@ -71,7 +71,7 @@ export default function CivField(props: CivFieldProps) {
 					) : (
 						<Input
 							className="border border-foreground/20 rounded-xl"
-							isDisabled={!enabled}
+							isReadOnly={!enabled}
 							label="Leader"
 							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
 						/>
@@ -80,7 +80,7 @@ export default function CivField(props: CivFieldProps) {
 					{civ.isHuman && (
 						<Input
 							className="border border-foreground/20 rounded-xl"
-							isDisabled={!enabled}
+							isReadOnly={!enabled}
 							isRequired={enabled}
 							label="Player"
 							required={true}
@@ -103,7 +103,6 @@ export default function CivField(props: CivFieldProps) {
 						isBlock
 						className="justify-center"
 						color="foreground"
-						isDisabled={!enabled}
 						size="sm"
 						onPress={() => {
 							if (enabled)

@@ -45,7 +45,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 	return (
 		<ScrollShadow className="flex flex-col gap-2">
 			<Checkbox
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isSelected={form.finished}
 				onValueChange={() => {
 					if (enabled) props.dispatch("finished", !form.finished);
@@ -57,7 +57,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			</Checkbox>
 			<Input
 				className="border border-foreground/20 rounded-xl"
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Game Name"
 				maxLength={30}
@@ -75,7 +75,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 								? undefined
 								: new Set([form.winnerPlayer])
 						}
-						isDisabled={!enabled}
 						isRequired={enabled}
 						items={form.players}
 						label="Winner"
@@ -95,7 +94,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						defaultSelectedKeys={
 							form.victoryId ? new Set([String(form.victoryId)]) : undefined
 						}
-						isDisabled={!enabled}
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
@@ -112,7 +110,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 
 			<Select
 				className="border border-foreground/20 rounded-xl"
-				isDisabled={!enabled}
 				isRequired={enabled}
 				items={GAME_SPEED}
 				label="Game Speed"
@@ -125,7 +122,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			</Select>
 			<Input
 				className="border border-foreground/20 rounded-xl"
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Map"
 				maxLength={20}
@@ -136,7 +133,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			/>
 			<Select
 				className="border border-foreground/20 rounded-xl"
-				isDisabled={!enabled}
 				isRequired={enabled}
 				items={MAP_SIZE}
 				label="Map Size"
@@ -151,7 +147,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				className="border border-foreground/20 rounded-xl"
 				isWheelDisabled
 				datatype="number"
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Game Turns"
 				maxValue={500}
@@ -167,7 +163,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
-				isDisabled={!enabled}
 				isMultiline={true}
 				items={EXPANSIONS}
 				label="Expansions"
@@ -203,7 +198,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
-				isDisabled={!enabled}
 				isMultiline={true}
 				items={GAMEMODES}
 				label="Gamemodes"
