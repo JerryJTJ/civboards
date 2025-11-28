@@ -6,10 +6,7 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import {
-	useMutation,
-	useQueryClient,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
 
 import { useGamesAPI } from "@api/games";

@@ -141,9 +141,7 @@ export default function ProfilePage() {
 							className="rounded-xl"
 							isLoaded={!games.isPending && !profile.isPending}
 						>
-							{games.data && (
-								<GamesTable games={games.data} refetch={games.refetch} />
-							)}
+							{games.data && <GamesTable games={games.data} />}
 						</Skeleton>
 					</Tab>
 					<Tab key="uploaded" title="Uploaded">
@@ -152,9 +150,7 @@ export default function ProfilePage() {
 							isLoaded={!uploaded.isPending && !profile.isPending}
 						>
 							{" "}
-							{uploaded.data && (
-								<GamesTable games={uploaded.data} refetch={uploaded.refetch} />
-							)}
+							{uploaded.data && <GamesTable games={uploaded.data} />}
 						</Skeleton>
 					</Tab>
 				</Tabs>
