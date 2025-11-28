@@ -24,7 +24,7 @@ export default function GameCardList(props: GameCardListProps) {
 	return (
 		<>
 			<ScrollShadow
-				className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
+				className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] xl:w-[70vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
 				orientation="horizontal"
 				size={20}
 			>

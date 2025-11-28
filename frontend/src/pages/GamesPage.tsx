@@ -26,11 +26,11 @@ export default function GamesPage() {
 
 	return (
 		<DefaultLayout>
-			<div className="flex flex-col w-full">
-				<div className="grid grid-cols-2 pb-4">
+			<div className="flex flex-col w-[80vw] xl:w-[70vw]">
+				<div className="grid w-full grid-cols-2 pb-4">
 					{!error && (
 						<ButtonGroup
-							className="justify-self-start "
+							className="justify-self-start"
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
 						>
 							<Button
@@ -62,7 +62,10 @@ export default function GamesPage() {
 				{/* Janky formatting to keep buttons positioned while loading
 				{isPending && <LoadingSpinner height={20} />} */}
 
-				<Skeleton className="rounded-4xl" isLoaded={!isPending}>
+				<Skeleton
+					className="flex justify-center rounded-4xl"
+					isLoaded={!isPending}
+				>
 					{currTab === "cards" ? (
 						error ? (
 							<Card isBlurred>
@@ -78,7 +81,7 @@ export default function GamesPage() {
 						)
 					) : null}
 					{currTab === "table" ? (
-						<div className="flex flex-col items-center pt-4 w-[80vw]  scale-85 sm:scale-100">
+						<div className="pt-10 max-h-[65vh] w-[80vw] xl:w-[60vw] ">
 							<GamesTable games={data ?? []} />
 						</div>
 					) : null}

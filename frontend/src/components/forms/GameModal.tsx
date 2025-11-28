@@ -66,6 +66,7 @@ export default function GameModal(props: GameModalProps) {
 		resetFormDispatch(defaultForm.current);
 		onClose();
 	};
+
 	// Submitting
 	const onSubmit = async () => {
 		setLoading(true);

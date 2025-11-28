@@ -68,7 +68,8 @@ export async function getGamesByCreatedBy(createdBy: string) {
 	const { data, error } = await supabase
 		.from("game")
 		.select()
-		.eq("created_by", createdBy);
+		.eq("created_by", createdBy)
+		.eq("active", true);
 
 	if (error) throw new DatabaseError("Failed to get games", error);
 
