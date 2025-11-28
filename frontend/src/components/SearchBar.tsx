@@ -25,7 +25,7 @@ export default function SearchBar() {
 						base: "border border-foreground/20 rounded-xl",
 						popoverContent: "border border-foreground/20 rounded-xl",
 					}}
-					defaultItems={data}
+					defaultItems={data ?? []}
 					placeholder="Search for user..."
 					radius="md"
 					size="md"

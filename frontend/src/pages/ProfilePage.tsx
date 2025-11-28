@@ -62,7 +62,7 @@ export default function ProfilePage() {
 					<p className="text-xl font-semibold">{username}</p>
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
-					<Tab key="overview" title="Overview">
+					<Tab key="overview" aria-label="overview" title="Overview">
 						<div className="flex flex-col justify-center gap-10 pt-10 sm:flex-row">
 							{!profile.error ? (
 								<>
@@ -136,7 +136,7 @@ export default function ProfilePage() {
 							)}
 						</div>
 					</Tab>
-					<Tab key="games" title="Joined">
+					<Tab key="games" aria-label="joined" title="Joined">
 						<Skeleton
 							className="rounded-xl"
 							isLoaded={!games.isPending && !profile.isPending}
@@ -144,7 +144,7 @@ export default function ProfilePage() {
 							{games.data && <GamesTable games={games.data} />}
 						</Skeleton>
 					</Tab>
-					<Tab key="uploaded" title="Uploaded">
+					<Tab key="uploaded" aria-label="uploaded" title="Uploaded">
 						<Skeleton
 							className="rounded-xl"
 							isLoaded={!uploaded.isPending && !profile.isPending}

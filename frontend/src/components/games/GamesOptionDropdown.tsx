@@ -21,7 +21,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 
 	return (
 		<DropdownMenu selectionMode="single" variant="shadow">
-			<DropdownItem key="view">
+			<DropdownItem key="view" textValue="View">
 				<Link className="block w-full h-full" to={`/game/${game.id}`}>
 					View
 				</Link>
