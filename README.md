@@ -2,7 +2,7 @@
 
 CivBoards is a web app used to parse, record, and view Sid Meier’s Civilization® VI save games.
 
-The live website can be seen here: https://civboards.onrender.com/
+The live website can be seen here: https://civboard.onrender.com/
 
 ## Usage
 
