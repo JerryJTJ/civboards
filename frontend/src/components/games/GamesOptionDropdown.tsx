@@ -6,11 +6,10 @@ import { addToast } from "@heroui/toast";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesOptionDropdownProps {
-	onOpenView: () => void;
 	onOpenEdit: () => void;
 	onOpenDelete: () => void;
 	game: z.infer<typeof DisplayGameSchema>;
-	setCurrGame?: React.Dispatch<
+	setCurrGame: React.Dispatch<
 		React.SetStateAction<z.infer<typeof DisplayGameSchema>>
 	>;
 }
@@ -40,10 +39,10 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 									timeout: 3000,
 									shouldShowTimeoutProgress: true,
 								});
-
+								
 								return;
 							}
-							if (setCurrGame) setCurrGame(game);
+							setCurrGame(game);
 							onOpenEdit();
 						}}
 					>
@@ -64,7 +63,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 
 								return;
 							}
-							if (setCurrGame) setCurrGame(game);
+							setCurrGame(game);
 							onOpenDelete();
 						}}
 					>

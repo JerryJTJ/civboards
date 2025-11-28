@@ -28,7 +28,6 @@ import {
 	VerticalDotsIcon,
 } from "@components/icons";
 import EditGameModal from "@components/forms/EditGameModal";
-import ViewGameModal from "@components/forms/ViewGameModal";
 
 import DeleteModal from "./DeleteModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
@@ -62,7 +61,6 @@ export default function GamesTable(props: GamesTableProps) {
 	const { width } = useWindowDimensions();
 
 	// Modal
-	const viewModal = useDisclosure();
 	const editModal = useDisclosure();
 	const deleteModal = useDisclosure();
 
@@ -249,7 +247,6 @@ export default function GamesTable(props: GamesTableProps) {
 									setCurrGame={setCurrGame}
 									onOpenDelete={deleteModal.onOpen}
 									onOpenEdit={editModal.onOpen}
-									onOpenView={viewModal.onOpen}
 								/>
 							</Dropdown>
 						</div>
@@ -258,7 +255,7 @@ export default function GamesTable(props: GamesTableProps) {
 				// return <p>{cellValue?.toString()}</p>;
 			}
 		},
-		[viewModal, deleteModal, editModal]
+		[deleteModal, editModal]
 	);
 
 	const onNextPage = useCallback(() => {
@@ -471,20 +468,15 @@ export default function GamesTable(props: GamesTableProps) {
 					)}
 				</TableBody>
 			</Table>
-			{viewModal.isOpen && (
-				<ViewGameModal disclosure={viewModal} game={currGame} />
-			)}
-			{editModal.isOpen && (
-				<EditGameModal disclosure={editModal} game={currGame} />
-			)}
-			{deleteModal.isOpen && (
-				<DeleteModal
-					gameId={currGame.id}
-					isOpen={deleteModal.isOpen}
-					name={currGame.name}
-					onOpenChange={deleteModal.onOpenChange}
-				/>
-			)}
+			{/* Modals */}
+			<EditGameModal key={currGame.id} disclosure={editModal} game={currGame} />
+			<DeleteModal
+				key={currGame.id}
+				gameId={currGame.id}
+				isOpen={deleteModal.isOpen}
+				name={currGame.name}
+				onOpenChange={deleteModal.onOpenChange}
+			/>
 		</>
 	);
 }

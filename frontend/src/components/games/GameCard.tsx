@@ -1,15 +1,10 @@
 import * as z from "zod";
 import { Card, CardFooter } from "@heroui/card";
-import { DisplayGameSchema, DisplayGameSchemaArray } from "@civboards/schemas";
+import { DisplayGameSchema } from "@civboards/schemas";
 import { Dropdown, DropdownTrigger } from "@heroui/dropdown";
 import { Image } from "@heroui/image";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
-import { useDisclosure } from "@heroui/modal";
 
-import DeleteModal from "./DeleteModal";
-import EditGameModal from "@components/forms/EditGameModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
-import ViewGameModal from "@components/forms/ViewGameModal";
 
 import { capitalize } from "@utils/capitalize";
 
@@ -17,19 +12,15 @@ import menu from "/menu_background.webp"; // eslint-disable-line import-x/no-unr
 
 interface GameCardProps {
 	game: z.infer<typeof DisplayGameSchema>;
-	refetch: (
-		options?: RefetchOptions
-	) => Promise<
-		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
+	setCurrGame: React.Dispatch<
+		React.SetStateAction<z.infer<typeof DisplayGameSchema>>
 	>;
+	onOpenDelete: () => void;
+	onOpenEdit: () => void;
 }
 
 export default function GamesCard(props: GameCardProps) {
-	const { game } = props;
-
-	const viewModal = useDisclosure();
-	const deleteModal = useDisclosure();
-	const editModal = useDisclosure();
+	const { game, setCurrGame, onOpenDelete, onOpenEdit } = props;
 
 	// UI
 	const humans = new Array<string>();
@@ -65,21 +56,11 @@ export default function GamesCard(props: GameCardProps) {
 				</DropdownTrigger>
 				<GamesOptionDropdown
 					game={game}
-					onOpenDelete={deleteModal.onOpen}
-					onOpenEdit={editModal.onOpen}
-					onOpenView={viewModal.onOpen}
+					setCurrGame={setCurrGame}
+					onOpenDelete={onOpenDelete}
+					onOpenEdit={onOpenEdit}
 				/>
 			</Dropdown>
-			{viewModal.isOpen && <ViewGameModal disclosure={viewModal} game={game} />}
-			{editModal.isOpen && <EditGameModal disclosure={editModal} game={game} />}
-			{deleteModal.isOpen && (
-				<DeleteModal
-					gameId={game.id}
-					isOpen={deleteModal.isOpen}
-					name={game.name}
-					onOpenChange={deleteModal.onOpenChange}
-				/>
-			)}
 		</>
 	);
 }

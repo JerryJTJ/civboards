@@ -1,25 +1,25 @@
 import { Button, ButtonGroup } from "@heroui/button";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
 import { useGamesAPI } from "@api/games";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import AddGameModal from "@components/forms/AddGameModal";
 import DefaultLayout from "@layouts/default";
-import GamesCard from "@components/games/GamesCard";
 import GamesTable from "@components/games/GamesTable";
 import getViewportSize from "@components/utils/getViewportSize";
 import useWindowDimensions from "@hooks/useWindowDimensions";
+import GameCardList from "@components/games/GameCardList";
 
 type TabView = "cards" | "table";
 
 export default function GamesPage() {
 	const [currTab, setCurrTab] = useState<TabView>("cards");
+
 	const { width } = useWindowDimensions();
 
 	const { getAllGames } = useGamesAPI();
-	const { data, isPending, refetch, error } = useQuery({
+	const { data, isPending, error } = useQuery({
 		queryKey: ["games"],
 		queryFn: getAllGames,
 	});
@@ -74,19 +74,7 @@ export default function GamesPage() {
 								</CardBody>
 							</Card>
 						) : (
-							<ScrollShadow
-								className="flex flex-row items-center gap-4 overflow-y-hidden md:gap-10 lg:h-[75vh] w-[80vw] scroll-smooth snap-mandatory h-[65vh] py-8 md:py-10 "
-								orientation="horizontal"
-								size={20}
-							>
-								{data?.map((game) => (
-									<GamesCard
-										key={`${game.id}-card`}
-										game={game}
-										refetch={refetch}
-									/>
-								))}
-							</ScrollShadow>
+							data && <GameCardList games={data} />
 						)
 					) : null}
 					{currTab === "table" ? (
