@@ -469,7 +469,11 @@ export default function GamesTable(props: GamesTableProps) {
 				</TableBody>
 			</Table>
 			{/* Modals */}
-			<EditGameModal key={`${currGame.id}-edit`} disclosure={editModal} game={currGame} />
+			<EditGameModal
+				key={`${currGame.id}-edit`}
+				disclosure={editModal}
+				game={currGame}
+			/>
 			<DeleteModal
 				key={`${currGame.id}-delete`}
 				gameId={currGame.id}

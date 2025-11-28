@@ -63,7 +63,7 @@ export default function ProfilePage() {
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
 					<Tab key="overview" aria-label="overview" title="Overview">
-						<div className="flex flex-col justify-center gap-10 pt-10 sm:flex-row">
+						<div className="flex flex-col justify-center gap-10 pt-10 lg:flex-row">
 							{!profile.error ? (
 								<>
 									{" "}

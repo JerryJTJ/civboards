@@ -1,10 +1,13 @@
 import { DisplayGameSchema } from "@civboards/schemas";
 import CivField from "@components/forms/CivField";
 import GameOptionsForm from "@components/forms/GameOptionsForm";
+import getViewportSize from "@components/utils/getViewportSize";
 import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
+import { Tab, Tabs } from "@heroui/tabs";
+import useWindowDimensions from "@hooks/useWindowDimensions";
 import { Civ, GameForm } from "@interfaces/game.interface";
 import * as z from "zod";
 
@@ -18,6 +21,7 @@ interface ViewGameCardProps {
 
 export default function ViewGameCard(props: ViewGameCardProps) {
 	const { game, isPending, username, onOpenEdit, onOpenDelete } = props;
+	const { width } = useWindowDimensions();
 
 	const civFields = (
 		<ScrollShadow
@@ -64,27 +68,43 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 				<h4 className="font-bold text-large">{game.name}</h4>
 			</CardHeader>
 			<CardBody>
-				<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
-					<div className="col-span-4">
-						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							{" "}
-							<p className="pb-4 font-bold text-center">Players</p>
-							{civFields}
-						</Skeleton>
+				{getViewportSize(width) === "sm" ? (
+					<div className="flex flex-col py-2 sm:px-10">
+						<Tabs
+							aria-label="Options"
+							// color="primary"
+						>
+							<Tab key="players" className="flex flex-col" title="Players">
+								{civFields}
+							</Tab>
+							<Tab key="options" className="flex flex-col" title="Game Options">
+								{gameOptionFields}
+							</Tab>
+						</Tabs>
 					</div>
+				) : (
+					<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
+						<div className="col-span-4">
+							<Skeleton className="rounded-xl" isLoaded={!isPending}>
+								{" "}
+								<p className="pb-4 font-bold text-center">Players</p>
+								{civFields}
+							</Skeleton>
+						</div>
 
-					<div className="col-span-2">
-						<Skeleton className="rounded-xl" isLoaded={!isPending}>
-							<p className="pb-4 overflow-scroll font-bold text-center">
-								Game Options
-							</p>
-							{gameOptionFields}
-						</Skeleton>
+						<div className="col-span-2">
+							<Skeleton className="rounded-xl" isLoaded={!isPending}>
+								<p className="pb-4 overflow-scroll font-bold text-center">
+									Game Options
+								</p>
+								{gameOptionFields}
+							</Skeleton>
+						</div>
 					</div>
-				</div>
+				)}
 			</CardBody>
 			<CardFooter className="flex justify-end-safe">
-				{username === game.createdBy && (
+				{username === game.createdBy && getViewportSize(width) != "sm" && (
 					<div className="flex flex-row gap-4 me-14">
 						<Button
 							className="mb-3 border border-foreground/20 rounded-xl justify-self-end"
