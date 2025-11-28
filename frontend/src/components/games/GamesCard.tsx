@@ -25,7 +25,7 @@ interface GameCardProps {
 }
 
 export default function GamesCard(props: GameCardProps) {
-	const { game, refetch } = props;
+	const { game } = props;
 
 	const viewModal = useDisclosure();
 	const deleteModal = useDisclosure();
@@ -74,14 +74,9 @@ export default function GamesCard(props: GameCardProps) {
 			{editModal.isOpen && <EditGameModal disclosure={editModal} game={game} />}
 			{deleteModal.isOpen && (
 				<DeleteModal
-					body={
-						<p>
-							Are you sure you want to delete <b>{game.name}</b>?
-						</p>
-					}
 					gameId={game.id}
 					isOpen={deleteModal.isOpen}
-					refetch={refetch}
+					name={game.name}
 					onOpenChange={deleteModal.onOpenChange}
 				/>
 			)}

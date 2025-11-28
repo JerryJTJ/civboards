@@ -10,7 +10,6 @@ import {
 } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 import { Pagination } from "@heroui/pagination";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { SharedSelection } from "@heroui/system";
 import { SortDescriptor } from "@react-types/shared";
 import {
@@ -40,11 +39,6 @@ import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
-	refetch: (
-		options?: RefetchOptions
-	) => Promise<
-		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
-	>;
 }
 
 const columns = [
@@ -64,7 +58,7 @@ const DEFAULT_COLUMNS = ["name", "date", "map", "players", "winner", "actions"];
 const MOBILE_COLUMNS = ["name", "date", "players"];
 
 export default function GamesTable(props: GamesTableProps) {
-	const { games, refetch } = props;
+	const { games } = props;
 	const { width } = useWindowDimensions();
 
 	// Modal
@@ -485,14 +479,9 @@ export default function GamesTable(props: GamesTableProps) {
 			)}
 			{deleteModal.isOpen && (
 				<DeleteModal
-					body={
-						<p>
-							Are you sure you want to delete <b>{currGame.name}</b>?
-						</p>
-					}
 					gameId={currGame.id}
 					isOpen={deleteModal.isOpen}
-					refetch={refetch}
+					name={currGame.name}
 					onOpenChange={deleteModal.onOpenChange}
 				/>
 			)}

@@ -13,10 +13,11 @@ interface ViewGameCardProps {
 	isPending: boolean;
 	username: string;
 	onOpenEdit: () => void;
+	onOpenDelete: () => void;
 }
 
 export default function ViewGameCard(props: ViewGameCardProps) {
-	const { game, isPending, username, onOpenEdit } = props;
+	const { game, isPending, username, onOpenEdit, onOpenDelete } = props;
 
 	const civFields = (
 		<ScrollShadow
@@ -84,14 +85,24 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 			</CardBody>
 			<CardFooter className="flex justify-end-safe">
 				{username === game.createdBy && (
-					<Button
-						className="mb-3 border me-10 border-foreground/20 rounded-xl justify-self-end"
-						color="primary"
-						variant="shadow"
-						onPress={onOpenEdit}
-					>
-						Edit
-					</Button>
+					<div className="flex flex-row gap-4 me-14">
+						<Button
+							className="mb-3 border border-foreground/20 rounded-xl justify-self-end"
+							color="primary"
+							variant="shadow"
+							onPress={onOpenEdit}
+						>
+							Edit
+						</Button>
+						<Button
+							className="mb-3 border border-foreground/20 rounded-xl justify-self-end"
+							color="danger"
+							variant="shadow"
+							onPress={onOpenDelete}
+						>
+							Delete
+						</Button>
+					</div>
 				)}
 			</CardFooter>
 		</Card>

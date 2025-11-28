@@ -8,8 +8,8 @@ import { useDisclosure } from "@heroui/modal";
 import ViewGameCard from "@components/games/ViewGameCard";
 import { useMemo } from "react";
 import EditGameModal from "@components/forms/EditGameModal";
-import { Skeleton } from "@heroui/skeleton";
 import LoadingSpinner from "@components/LoadingSpinner";
+import DeleteModal from "@components/games/DeleteModal";
 
 export default function ViewGamePage() {
 	const { gameId } = useParams();
@@ -29,7 +29,8 @@ export default function ViewGamePage() {
 		},
 	});
 
-	const disclosure = useDisclosure();
+	const editModal = useDisclosure();
+	const deleteModal = useDisclosure();
 
 	return (
 		<DefaultLayout>
@@ -44,10 +45,19 @@ export default function ViewGamePage() {
 								game={data}
 								isPending={isPending}
 								username={username}
-								onOpenEdit={disclosure.onOpen}
+								onOpenDelete={deleteModal.onOpen}
+								onOpenEdit={editModal.onOpen}
 							/>
-							{username === data.createdBy && (
-								<EditGameModal disclosure={disclosure} game={data} />
+							{username === data.createdBy && editModal.isOpen && (
+								<EditGameModal disclosure={editModal} game={data} />
+							)}
+							{username === data.createdBy && deleteModal.isOpen && (
+								<DeleteModal
+									gameId={data.id}
+									isOpen={deleteModal.isOpen}
+									name={data.name}
+									onOpenChange={deleteModal.onOpenChange}
+								/>
 							)}
 						</>
 					)
