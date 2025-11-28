@@ -34,7 +34,7 @@ export default function GamesPage() {
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
 						>
 							<Button
-								className="border border-foreground/20"
+								className="border-fg"
 								color={currTab === "cards" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {
@@ -44,7 +44,7 @@ export default function GamesPage() {
 								Cards
 							</Button>
 							<Button
-								className="border border-foreground/20"
+								className="border-fg"
 								color={currTab === "table" ? "primary" : "default"}
 								variant="shadow"
 								onPress={() => {

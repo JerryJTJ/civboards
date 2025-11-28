@@ -57,14 +57,14 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			{!enabled && form.date && (
 				<Input
 					isReadOnly
-					className="border border-foreground/20 rounded-xl"
+					className="border-fg rounded-xl"
 					label="Date"
 					value={new Date(form.date).toLocaleDateString()}
 				/>
 			)}
 			{enabled && (
 				<Input
-					className="border border-foreground/20 rounded-xl"
+					className="border-fg rounded-xl"
 					isReadOnly={!enabled}
 					isRequired={enabled}
 					label="Game Name"
@@ -78,7 +78,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			{form.finished && (
 				<>
 					<Select
-						className="border border-foreground/20 rounded-xl"
+						className="border-fg rounded-xl"
 						isRequired={enabled}
 						items={form.players}
 						label="Winner"
@@ -100,7 +100,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						}
 					</Select>
 					<Select
-						className="border border-foreground/20 rounded-xl"
+						className="border-fg rounded-xl"
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
@@ -120,7 +120,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			)}
 
 			<Select
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				isRequired={enabled}
 				items={GAME_SPEED}
 				label="Game Speed"
@@ -133,7 +133,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
 			</Select>
 			<Input
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Map"
@@ -144,7 +144,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 			/>
 			<Select
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				isRequired={enabled}
 				items={MAP_SIZE}
 				label="Map Size"
@@ -157,7 +157,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			</Select>
 			<NumberInput
 				isWheelDisabled
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				datatype="number"
 				isReadOnly={!enabled}
 				isRequired={enabled}
@@ -170,7 +170,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 			/>
 			<Select
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
@@ -205,7 +205,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				)}
 			</Select>
 			<Select
-				className="border border-foreground/20 rounded-xl"
+				className="border-fg rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",

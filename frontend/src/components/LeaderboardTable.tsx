@@ -230,7 +230,7 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 						isClearable
 						className="w-full sm:max-w-[44%]"
 						classNames={{
-							base: "border border-foreground/20 rounded-xl",
+							base: "border-fg rounded-xl",
 						}}
 						placeholder="Search"
 						startContent={<SearchIcon />}
@@ -298,8 +298,8 @@ export default function LeaderboardTable(props: LeaderboardProps) {
 					showControls
 					showShadow
 					classNames={{
-						wrapper: "border border-foreground/20",
-						cursor: "border border-foreground/20",
+						wrapper: "border-fg",
+						cursor: "border-fg",
 					}}
 					color="primary"
 					page={page}

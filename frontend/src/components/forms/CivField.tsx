@@ -1,7 +1,6 @@
 import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Input } from "@heroui/input";
 import { Link } from "@heroui/link";
-import { Link as RouterLink } from "react-router-dom";
 
 import getViewportSize from "@components/utils/getViewportSize";
 
@@ -47,8 +46,8 @@ export default function CivField(props: CivFieldProps) {
 					{enabled ? (
 						<Autocomplete
 							classNames={{
-								base: "border border-foreground/20 rounded-xl",
-								popoverContent: "border border-foreground/20 rounded-xl",
+								base: "border-fg rounded-xl",
+								popoverContent: "border-fg rounded-xl",
 							}}
 							defaultItems={LEADERS}
 							isReadOnly={!enabled}
@@ -71,7 +70,7 @@ export default function CivField(props: CivFieldProps) {
 						</Autocomplete>
 					) : (
 						<Input
-							className="border border-foreground/20 rounded-xl"
+							className="border-fg rounded-xl"
 							isReadOnly={!enabled}
 							label="Leader"
 							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
@@ -81,7 +80,7 @@ export default function CivField(props: CivFieldProps) {
 					{civ.isHuman &&
 						(enabled ? (
 							<Input
-								className="border border-foreground/20 rounded-xl"
+								className="border-fg rounded-xl"
 								isRequired={enabled}
 								label="Player"
 								required={true}
@@ -94,10 +93,10 @@ export default function CivField(props: CivFieldProps) {
 								}}
 							/>
 						) : (
-							<RouterLink to={`/profile/${civ.name}`}>
+							<Link href={`/profile/${civ.name}`}>
 								<Input
 									isReadOnly
-									className="border border-foreground/20 rounded-xl hover:cursor-pointer"
+									className="border-fg rounded-xl hover:cursor-pointer"
 									classNames={{
 										inputWrapper: "!cursor-pointer",
 										input: "!cursor-pointer",
@@ -108,7 +107,7 @@ export default function CivField(props: CivFieldProps) {
 									required={true}
 									value={civ.name}
 								/>
-							</RouterLink>
+							</Link>
 						))}
 				</div>
 			</div>

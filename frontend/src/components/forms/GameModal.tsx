@@ -190,7 +190,7 @@ export default function GameModal(props: GameModalProps) {
 											{
 												<div className="flex flex-row gap-2 pt-4">
 													<Button
-														className="border border-foreground/20 rounded-xl"
+														className="border-fg rounded-xl"
 														onPress={() => {
 															addCivDispatch(true);
 														}}
@@ -198,7 +198,7 @@ export default function GameModal(props: GameModalProps) {
 														Add Human
 													</Button>
 													<Button
-														className="border border-foreground/20 rounded-xl"
+														className="border-fg rounded-xl"
 														onPress={() => {
 															addCivDispatch(false);
 														}}
@@ -219,7 +219,7 @@ export default function GameModal(props: GameModalProps) {
 							</ModalBody>
 							<ModalFooter>
 								<Button
-									className="border border-foreground/20 rounded-xl"
+									className="border-fg rounded-xl"
 									color="danger"
 									variant="shadow"
 									onPress={onModalClose}
@@ -228,7 +228,7 @@ export default function GameModal(props: GameModalProps) {
 								</Button>
 								{
 									<Button
-										className="border border-foreground/20 rounded-xl"
+										className="border-fg rounded-xl"
 										color="primary"
 										isLoading={loading}
 										type="submit"

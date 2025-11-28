@@ -5,6 +5,10 @@
 /* @source '../../node_modules/@heroui/theme/dist*.{js,ts,jsx,tsx}'; */
 /* @custom-variant dark (&:is(.dark *)); */
 
+@utility border-fg {
+	@apply border border-foreground/20;
+}
+
 @theme {
 	--default-light-50: #f6f5f4;
 	--default-light-100: #e9e7e5;

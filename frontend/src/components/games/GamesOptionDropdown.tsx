@@ -20,7 +20,7 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 	const { user, isAuthenticated } = useAuth0();
 
 	return (
-		<DropdownMenu selectionMode="single" variant="shadow">
+		<DropdownMenu selectionMode="single" variant="flat">
 			<DropdownItem key="view" textValue="View">
 				<Link className="block w-full h-full" to={`/game/${game.id}`}>
 					View

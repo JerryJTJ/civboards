@@ -37,7 +37,7 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 			<Input
 				isClearable
 				accept=".Civ6Save"
-				className="self-center max-w-[400px] border border-foreground/20 rounded-xl"
+				className="self-center max-w-[400px] border-fg rounded-xl"
 				isDisabled={mutation.isPending}
 				label="Upload Save File"
 				labelPlacement="inside"

@@ -107,7 +107,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 				{username === game.createdBy && getViewportSize(width) != "sm" && (
 					<div className="flex flex-row gap-4 me-14">
 						<Button
-							className="mb-3 border border-foreground/20 rounded-xl justify-self-end"
+							className="mb-3 border-fg rounded-xl justify-self-end"
 							color="primary"
 							variant="shadow"
 							onPress={onOpenEdit}
@@ -115,7 +115,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 							Edit
 						</Button>
 						<Button
-							className="mb-3 border border-foreground/20 rounded-xl justify-self-end"
+							className="mb-3 border-fg rounded-xl justify-self-end"
 							color="danger"
 							variant="shadow"
 							onPress={onOpenDelete}

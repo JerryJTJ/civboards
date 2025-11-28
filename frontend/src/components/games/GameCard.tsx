@@ -31,7 +31,11 @@ export default function GamesCard(props: GameCardProps) {
 
 	return (
 		<>
-			<Dropdown>
+			<Dropdown
+				classNames={{
+					base: "border-fg rounded-2xl",
+				}}
+			>
 				<DropdownTrigger>
 					<Card
 						isFooterBlurred
