@@ -50,7 +50,7 @@ export default function GamesCard(props: GameCardProps) {
 							className="z-0 object-cover w-full h-full"
 							src={menu}
 						/>
-						<CardFooter className="flex-col backdrop-blur-md text-foreground/90 justify-between before:bg-foreground/10 border-foreground/20 border overflow-hidden absolute before:rounded-xl rounded-large w-[calc(100%-8px)] shadow-small ml-1 z-10">
+						<CardFooter className="flex-col backdrop-blur-md text-foreground/90 justify-between border-fg overflow-hidden absolute before:rounded-xl rounded-large w-[calc(100%-8px)] shadow-small ml-1 z-10">
 							<b>{game.name}</b>
 							<em>{new Date(game.date).toLocaleDateString()}</em>
 							<em>{game.map}</em>

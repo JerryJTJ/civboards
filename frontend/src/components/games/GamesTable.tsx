@@ -350,7 +350,7 @@ export default function GamesTable(props: GamesTableProps) {
 						>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
-									className="border justify-self-end border-foreground/20"
+									className="border-fg justify-self-end"
 									endContent={<ChevronDownIcon className="text-small" />}
 									variant="flat"
 								>
@@ -417,7 +417,7 @@ export default function GamesTable(props: GamesTableProps) {
 				/>
 				<div className="hidden sm:flex w-[30%] justify-end gap-2">
 					<Button
-						className="border justify-self-end border-foreground/20"
+						className="border-fg justify-self-end "
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
@@ -426,7 +426,7 @@ export default function GamesTable(props: GamesTableProps) {
 						Previous
 					</Button>
 					<Button
-						className="border justify-self-end border-foreground/20"
+						className="border-fg justify-self-end "
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
