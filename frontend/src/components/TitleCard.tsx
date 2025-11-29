@@ -25,7 +25,7 @@ export default function TitleCard(props: TitleCardProps) {
 			}}
 		>
 			<CardFooter className="backdrop-blur-lg absolute z-10 flex-col items-center justify-center before:bg-foreground/20 border-foreground/20 border overflow-hidden py-1 before:rounded-xl rounded-large w-[calc(100%-12px)] xl:py-3">
-				<h4 className="font-serif text-base tracking-widest text-center sm:text-2xl md:text-3xl text-foreground/90 2xl:text-5xl">
+				<h4 className="font-[EB_Garamond] text-lg font-semibold tracking-widest text-center sm:text-2xl md:text-3xl text-foreground/90 2xl:text-5xl">
 					{title.toUpperCase()}
 				</h4>
 			</CardFooter>

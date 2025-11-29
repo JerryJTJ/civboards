@@ -79,7 +79,7 @@ export default function Navbar() {
 							<NavLink
 								className={clsx(
 									linkStyles({ color: "foreground" }),
-									"data-[active=true]:text-primary data-[active=true]:font-medium font-serif font-semibold text-shadow-lg"
+									"data-[active=true]:text-primary data-[active=true]:font-medium font-[EB_Garamond] text-xl font-semibold text-shadow-lg"
 								)}
 								color="foreground"
 								to={item.href}
