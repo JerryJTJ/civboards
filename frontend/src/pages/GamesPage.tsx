@@ -26,8 +26,11 @@ export default function GamesPage() {
 
 	return (
 		<DefaultLayout>
-			<div className="flex flex-col w-[80vw] xl:w-[70vw]">
-				<div className="grid w-full grid-cols-2 pb-4">
+			<Skeleton
+				className="flex flex-col w-[80vw] xl:w-[70vw] h-[75vh] xl:h-[85vh] rounded-4xl pt-5"
+				isLoaded={!isPending}
+			>
+				<div className="grid w-full grid-cols-2 pb-5">
 					{!error && (
 						<ButtonGroup
 							className="justify-self-start"
@@ -62,31 +65,31 @@ export default function GamesPage() {
 				{/* Janky formatting to keep buttons positioned while loading
 				{isPending && <LoadingSpinner height={20} />} */}
 
-				<Skeleton
-					className="flex justify-center rounded-4xl"
+				{/* <Skeleton
+					className="flex justify-center w-full h-full rounded-4xl" 
 					isLoaded={!isPending}
-				>
-					{currTab === "cards" ? (
-						error ? (
-							<Card isBlurred>
-								<CardHeader className="justify-center px-20 pt-5">
-									<b className="pt-2 text-base">Error</b>
-								</CardHeader>
-								<CardBody className="justify-center px-10 py-5 text-center">
-									No games found!
-								</CardBody>
-							</Card>
-						) : (
-							data && <GameCardList games={data} />
-						)
-					) : null}
-					{currTab === "table" ? (
-						<div className="pt-10 max-h-[65vh] w-[80vw] xl:w-[60vw] ">
-							<GamesTable games={data ?? []} />
-						</div>
-					) : null}
-				</Skeleton>
-			</div>
+				> */}
+				{currTab === "cards" ? (
+					error ? (
+						<Card isBlurred>
+							<CardHeader className="justify-center px-20 ">
+								<b className="pt-2 text-base">Error</b>
+							</CardHeader>
+							<CardBody className="justify-center px-10 py-5 text-center">
+								No games found!
+							</CardBody>
+						</Card>
+					) : (
+						data && <GameCardList games={data} />
+					)
+				) : null}
+				{currTab === "table" ? (
+					<div className=" max-h-[65vh] w-[80vw] xl:w-[60vw] ">
+						<GamesTable games={data ?? []} />
+					</div>
+				) : null}
+				{/* </Skeleton> */}
+			</Skeleton>
 		</DefaultLayout>
 	);
 }
