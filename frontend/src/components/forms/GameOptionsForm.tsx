@@ -44,7 +44,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 	return (
 		<div className="flex flex-col gap-2">
 			<Checkbox
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isSelected={form.finished}
 				onValueChange={() => {
 					if (enabled) props.dispatch("finished", !form.finished);
@@ -54,30 +54,42 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					Game Finished
 				</p>
 			</Checkbox>
-			<Input
-				isDisabled={!enabled}
-				isRequired={enabled}
-				label="Game Name"
-				maxLength={30}
-				value={form.name}
-				variant="bordered"
-				onValueChange={(val: string) => {
-					if (enabled) props.dispatch("name", val);
-				}}
-			/>
+			{!enabled && form.date && (
+				<Input
+					isReadOnly
+					className="border-fg rounded-xl"
+					label="Date"
+					value={new Date(form.date).toLocaleDateString()}
+				/>
+			)}
+			{enabled && (
+				<Input
+					className="border-fg rounded-xl"
+					isReadOnly={!enabled}
+					isRequired={enabled}
+					label="Game Name"
+					maxLength={30}
+					value={form.name}
+					onValueChange={(val: string) => {
+						props.dispatch("name", val);
+					}}
+				/>
+			)}
 			{form.finished && (
 				<>
 					<Select
-						defaultSelectedKeys={
-							form.winner === "" ? undefined : new Set([form.winner])
-						}
-						isDisabled={!enabled}
+						className="border-fg rounded-xl"
 						isRequired={enabled}
 						items={form.players}
 						label="Winner"
+						selectedKeys={
+							form.winnerPlayer === ""
+								? undefined
+								: new Set([form.winnerPlayer])
+						}
 						selectionMode="single"
-						variant="bordered"
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							e.preventDefault();
 							if (enabled) props.dispatch("winner", e.target.value);
 						}}
 					>
@@ -88,15 +100,15 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						}
 					</Select>
 					<Select
-						defaultSelectedKeys={
-							form.victoryId ? new Set([String(form.victoryId)]) : undefined
-						}
-						isDisabled={!enabled}
+						className="border-fg rounded-xl"
 						isRequired={enabled}
 						items={VICTORY_TYPES}
 						label="Victory Type"
-						variant="bordered"
+						selectedKeys={
+							form.victoryId ? new Set([String(form.victoryId)]) : undefined
+						}
 						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+							e.preventDefault();
 							if (enabled) props.dispatch("victoryId", e.target.value);
 						}}
 					>
@@ -108,36 +120,35 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			)}
 
 			<Select
-				isDisabled={!enabled}
+				className="border-fg rounded-xl"
 				isRequired={enabled}
 				items={GAME_SPEED}
 				label="Game Speed"
 				selectedKeys={new Set([form.speed])}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+					e.preventDefault();
 					if (enabled) props.dispatch("speed", e.target.value);
 				}}
 			>
 				{(speed) => <SelectItem>{speed.label}</SelectItem>}
 			</Select>
 			<Input
-				isDisabled={!enabled}
+				className="border-fg rounded-xl"
+				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Map"
 				maxLength={20}
 				value={form.map}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 					if (enabled) props.dispatch("map", e.target.value);
 				}}
 			/>
 			<Select
-				isDisabled={!enabled}
+				className="border-fg rounded-xl"
 				isRequired={enabled}
 				items={MAP_SIZE}
 				label="Map Size"
 				selectedKeys={new Set([form.mapSize])}
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled) props.dispatch("mapSize", e.target.value);
 				}}
@@ -146,24 +157,24 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 			</Select>
 			<NumberInput
 				isWheelDisabled
+				className="border-fg rounded-xl"
 				datatype="number"
-				isDisabled={!enabled}
+				isReadOnly={!enabled}
 				isRequired={enabled}
 				label="Game Turns"
 				maxValue={500}
 				minValue={0}
 				value={form.turns}
-				variant="bordered"
 				onValueChange={(val: number) => {
 					if (enabled) props.dispatch("turns", val);
 				}}
 			/>
 			<Select
+				className="border-fg rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
-				isDisabled={!enabled}
 				isMultiline={true}
 				items={EXPANSIONS}
 				label="Expansions"
@@ -179,7 +190,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectedKeys={[...form.expansions].map(String)}
 				selectionMode="multiple"
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled)
 						props.dispatch(
@@ -195,11 +205,11 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				)}
 			</Select>
 			<Select
+				className="border-fg rounded-xl"
 				classNames={{
 					base: "max-w-xs",
 					trigger: "min-h-12 py-2",
 				}}
-				isDisabled={!enabled}
 				isMultiline={true}
 				items={GAMEMODES}
 				label="Gamemodes"
@@ -215,7 +225,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				}}
 				selectedKeys={[...form.gamemodes].map(String)}
 				selectionMode="multiple"
-				variant="bordered"
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
 					if (enabled)
 						props.dispatch(

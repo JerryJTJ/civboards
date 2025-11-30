@@ -80,10 +80,10 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						...form,
 						name: action.payload,
 					};
-				case "winner":
+				case "winnerPlayer":
 					return {
 						...form,
-						winner: action.payload,
+						winnerPlayer: action.payload,
 					};
 				case "victoryId":
 					return {

@@ -101,7 +101,7 @@ export async function handleGetGameById(
 
 	try {
 		const game = await fetchGameById(id);
-		const gameObj = exportGameObject(game);
+		const gameObj = await exportGameObject(game);
 		return res.status(200).json(gameObj);
 	} catch (error) {
 		next(error);

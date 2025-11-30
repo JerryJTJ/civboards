@@ -62,8 +62,8 @@ export default function ProfilePage() {
 					<p className="text-xl font-semibold">{username}</p>
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
-					<Tab key="overview" title="Overview">
-						<div className="flex flex-col justify-center gap-10 pt-10 sm:flex-row">
+					<Tab key="overview" aria-label="overview" title="Overview">
+						<div className="flex flex-col justify-center gap-10 p-10 lg:flex-row">
 							{!profile.error ? (
 								<>
 									{" "}
@@ -136,25 +136,21 @@ export default function ProfilePage() {
 							)}
 						</div>
 					</Tab>
-					<Tab key="games" title="Joined">
+					<Tab key="games" aria-label="joined" title="Joined">
 						<Skeleton
-							className="rounded-xl"
+							className="rounded-xl max-h-[65vh] w-[80vw] xl:w-[60vw]"
 							isLoaded={!games.isPending && !profile.isPending}
 						>
-							{games.data && (
-								<GamesTable games={games.data} refetch={games.refetch} />
-							)}
+							{games.data && <GamesTable games={games.data} />}
 						</Skeleton>
 					</Tab>
-					<Tab key="uploaded" title="Uploaded">
+					<Tab key="uploaded" aria-label="uploaded" title="Uploaded">
 						<Skeleton
-							className="rounded-xl"
+							className="rounded-xl max-h-[65vh] w-[80vw] xl:w-[60vw]"
 							isLoaded={!uploaded.isPending && !profile.isPending}
 						>
 							{" "}
-							{uploaded.data && (
-								<GamesTable games={uploaded.data} refetch={uploaded.refetch} />
-							)}
+							{uploaded.data && <GamesTable games={uploaded.data} />}
 						</Skeleton>
 					</Tab>
 				</Tabs>

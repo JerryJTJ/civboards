@@ -23,6 +23,7 @@ import SearchBar from "./SearchBar";
 import { GithubIcon, SvgIcon } from "@components/icons";
 import { ThemeSwitch } from "@components/theme-switch";
 import { siteConfig } from "@config/site";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
 	const { isAuthenticated, isLoading } = useAuth0();
@@ -64,27 +65,27 @@ export default function Navbar() {
 		>
 			<NavbarContent className="basis-1/5 sm:basis-full" justify="start">
 				<NavbarBrand className="gap-3 max-w-fit">
-					<Link
+					<NavLink
 						className="flex items-center justify-start gap-1"
 						color="foreground"
-						href="/"
+						to="/"
 					>
 						<SvgIcon />
-					</Link>
+					</NavLink>
 				</NavbarBrand>
 				<div className="justify-start hidden gap-4 ml-2 md:flex">
 					{siteConfig.navItems.map((item) => (
 						<NavbarItem key={item.href}>
-							<Link
+							<NavLink
 								className={clsx(
 									linkStyles({ color: "foreground" }),
-									"data-[active=true]:text-primary data-[active=true]:font-medium font-serif font-semibold text-shadow-lg"
+									"data-[active=true]:text-primary data-[active=true]:font-medium font-[EB_Garamond] text-xl font-semibold text-shadow-lg"
 								)}
 								color="foreground"
-								href={item.href}
+								to={item.href}
 							>
 								{item.label.toLocaleUpperCase()}
-							</Link>
+							</NavLink>
 						</NavbarItem>
 					))}
 				</div>

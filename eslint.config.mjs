@@ -10,7 +10,7 @@ import unusedImports from "eslint-plugin-unused-imports";
 import { importX } from "eslint-plugin-import-x";
 import { createTypeScriptImportResolver } from "eslint-import-resolver-typescript";
 // import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import sortImportsAutofix from "eslint-plugin-sort-imports-es6-autofix";
+// import sortImportsAutofix from "eslint-plugin-sort-imports-es6-autofix";
 import jsxA11Y from "eslint-plugin-jsx-a11y";
 // import prettier from "eslint-plugin-prettier";
 import tsParser from "@typescript-eslint/parser";
@@ -58,19 +58,19 @@ export default defineConfig(
 		},
 		plugins: {
 			"import-x": importX,
-			"sort-imports-es6-autofix": sortImportsAutofix,
+			// "sort-imports-es6-autofix": sortImportsAutofix,
 		},
 		extends: ["import-x/flat/recommended"],
 		rules: {
 			"import-x/no-dynamic-require": "warn",
-			"sort-imports-es6-autofix/sort-imports-es6": [
-				2,
-				{
-					ignoreCase: false,
-					ignoreMemberSort: false,
-					memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
-				},
-			],
+			// "sort-imports-es6-autofix/sort-imports-es6": [
+			// 	2,
+			// 	{
+			// 		ignoreCase: false,
+			// 		ignoreMemberSort: false,
+			// 		memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+			// 	},
+			// ],
 		},
 		settings: {
 			"import-x/resolver-next": [

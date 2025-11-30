@@ -12,7 +12,7 @@ export const DEFAULT_ADD_FORM: GameForm = {
 	map: "",
 	mapSize: "standard",
 	turns: 0,
-	winner: "",
+	winnerPlayer: "",
 	victoryId: undefined,
 	expansions: new Set<number>(),
 	gamemodes: new Set<number>(),

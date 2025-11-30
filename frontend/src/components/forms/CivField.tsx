@@ -45,13 +45,16 @@ export default function CivField(props: CivFieldProps) {
 					{/* We use input instead of autocomplete for view because autocomplete cuts off the leader text for mobile view (mobile only allows view so its always disabled) */}
 					{enabled ? (
 						<Autocomplete
+							classNames={{
+								base: "border-fg rounded-xl",
+								popoverContent: "border-fg rounded-xl",
+							}}
 							defaultItems={LEADERS}
-							isDisabled={!enabled}
+							isReadOnly={!enabled}
 							isRequired={enabled}
 							label="Leader"
 							selectedKey={civ.leaderId?.toString() ?? undefined}
 							size={getViewportSize(width) === "xs" ? "sm" : "md"}
-							variant="bordered"
 							onSelectionChange={(e) => {
 								props.changeDispatch({
 									leaderId: Number(e),
@@ -67,30 +70,45 @@ export default function CivField(props: CivFieldProps) {
 						</Autocomplete>
 					) : (
 						<Input
-							isDisabled={!enabled}
+							className="border-fg rounded-xl"
+							isReadOnly={!enabled}
 							label="Leader"
 							value={LEADERS.find((leader) => leader.id === civ.leaderId)?.name}
-							variant="bordered"
 						/>
 					)}
 
-					{civ.isHuman && (
-						<Input
-							isDisabled={!enabled}
-							isRequired={enabled}
-							label="Player"
-							required={true}
-							value={civ.name}
-							variant="bordered"
-							onChange={(e) => {
-								if (enabled)
+					{civ.isHuman &&
+						(enabled ? (
+							<Input
+								className="border-fg rounded-xl"
+								isRequired={enabled}
+								label="Player"
+								required={true}
+								value={civ.name}
+								onChange={(e) => {
 									props.changeDispatch({
 										name: e.target.value,
 										id: civ.id,
 									});
-							}}
-						/>
-					)}
+								}}
+							/>
+						) : (
+							<Link href={`/profile/${civ.name}`}>
+								<Input
+									isReadOnly
+									className="border-fg rounded-xl hover:cursor-pointer"
+									classNames={{
+										inputWrapper: "!cursor-pointer",
+										input: "!cursor-pointer",
+										label: "!cursor-pointer",
+									}}
+									isRequired={enabled}
+									label="Player"
+									required={true}
+									value={civ.name}
+								/>
+							</Link>
+						))}
 				</div>
 			</div>
 			<div className="self-center col-span-1">
@@ -100,7 +118,6 @@ export default function CivField(props: CivFieldProps) {
 						isBlock
 						className="justify-center"
 						color="foreground"
-						isDisabled={!enabled}
 						size="sm"
 						onPress={() => {
 							if (enabled)

@@ -14,7 +14,7 @@ export interface GameForm {
 	map: string;
 	mapSize: string;
 	turns: number;
-	winner: string;
+	winnerPlayer: string;
 	victoryId: number | undefined;
 	expansions: Set<number>;
 	gamemodes: Set<number>;

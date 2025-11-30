@@ -175,7 +175,7 @@ export default function LeaderboardPage() {
 					size={getViewportSize(width) === "xs" ? "sm" : "md"}
 				>
 					<Button
-						className="border border-foreground/20"
+						className="border-fg"
 						color={tab === "player" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -185,7 +185,7 @@ export default function LeaderboardPage() {
 						Players
 					</Button>
 					<Button
-						className="border border-foreground/20"
+						className="border-fg"
 						color={tab === "leader" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -195,7 +195,7 @@ export default function LeaderboardPage() {
 						Leaders
 					</Button>
 					<Button
-						className="border border-foreground/20"
+						className="border-fg"
 						color={tab === "civilization" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {
@@ -205,7 +205,7 @@ export default function LeaderboardPage() {
 						Civilizations
 					</Button>
 					<Button
-						className="border border-foreground/20"
+						className="border-fg"
 						color={tab === "victory" ? "primary" : "default"}
 						variant="shadow"
 						onPress={() => {

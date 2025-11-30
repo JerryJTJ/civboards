@@ -10,7 +10,6 @@ import {
 } from "@heroui/dropdown";
 import { Input } from "@heroui/input";
 import { Pagination } from "@heroui/pagination";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { SharedSelection } from "@heroui/system";
 import { SortDescriptor } from "@react-types/shared";
 import {
@@ -29,7 +28,6 @@ import {
 	VerticalDotsIcon,
 } from "@components/icons";
 import EditGameModal from "@components/forms/EditGameModal";
-import ViewGameModal from "@components/forms/ViewGameModal";
 
 import DeleteModal from "./DeleteModal";
 import GamesOptionDropdown from "./GamesOptionDropdown";
@@ -40,11 +38,6 @@ import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface GamesTableProps {
 	games: z.infer<typeof DisplayGameSchemaArray>;
-	refetch: (
-		options?: RefetchOptions
-	) => Promise<
-		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
-	>;
 }
 
 const columns = [
@@ -64,11 +57,10 @@ const DEFAULT_COLUMNS = ["name", "date", "map", "players", "winner", "actions"];
 const MOBILE_COLUMNS = ["name", "date", "players"];
 
 export default function GamesTable(props: GamesTableProps) {
-	const { games, refetch } = props;
+	const { games } = props;
 	const { width } = useWindowDimensions();
 
 	// Modal
-	const viewModal = useDisclosure();
 	const editModal = useDisclosure();
 	const deleteModal = useDisclosure();
 
@@ -244,7 +236,11 @@ export default function GamesTable(props: GamesTableProps) {
 				case "actions":
 					return (
 						<div className="relative flex items-center justify-end gap-2">
-							<Dropdown>
+							<Dropdown
+								classNames={{
+									base: "border-fg rounded-2xl",
+								}}
+							>
 								<DropdownTrigger>
 									<Button isIconOnly size="sm" variant="light">
 										<VerticalDotsIcon className="text-default-300" />
@@ -255,7 +251,6 @@ export default function GamesTable(props: GamesTableProps) {
 									setCurrGame={setCurrGame}
 									onOpenDelete={deleteModal.onOpen}
 									onOpenEdit={editModal.onOpen}
-									onOpenView={viewModal.onOpen}
 								/>
 							</Dropdown>
 						</div>
@@ -264,7 +259,7 @@ export default function GamesTable(props: GamesTableProps) {
 				// return <p>{cellValue?.toString()}</p>;
 			}
 		},
-		[viewModal, deleteModal, editModal]
+		[deleteModal, editModal]
 	);
 
 	const onNextPage = useCallback(() => {
@@ -316,7 +311,7 @@ export default function GamesTable(props: GamesTableProps) {
 						isClearable
 						className="w-full sm:max-w-[44%]"
 						classNames={{
-							base: "border border-foreground/20 rounded-xl",
+							base: "border-fg rounded-xl",
 						}}
 						placeholder="Search"
 						startContent={<SearchIcon />}
@@ -348,10 +343,14 @@ export default function GamesTable(props: GamesTableProps) {
                 ))}
               </DropdownMenu>
             </Dropdown> */}
-						<Dropdown>
+						<Dropdown
+							classNames={{
+								base: "border-fg rounded-2xl",
+							}}
+						>
 							<DropdownTrigger className="hidden sm:flex">
 								<Button
-									className="border justify-self-end border-foreground/20"
+									className="border-fg justify-self-end"
 									endContent={<ChevronDownIcon className="text-small" />}
 									variant="flat"
 								>
@@ -408,8 +407,8 @@ export default function GamesTable(props: GamesTableProps) {
 					showControls
 					showShadow
 					classNames={{
-						wrapper: "border border-foreground/20",
-						cursor: "border border-foreground/20",
+						wrapper: "border-fg",
+						cursor: "border-fg",
 					}}
 					color="primary"
 					page={page}
@@ -418,7 +417,7 @@ export default function GamesTable(props: GamesTableProps) {
 				/>
 				<div className="hidden sm:flex w-[30%] justify-end gap-2">
 					<Button
-						className="border justify-self-end border-foreground/20"
+						className="border-fg justify-self-end "
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
@@ -427,7 +426,7 @@ export default function GamesTable(props: GamesTableProps) {
 						Previous
 					</Button>
 					<Button
-						className="border justify-self-end border-foreground/20"
+						className="border-fg justify-self-end "
 						isDisabled={pages === 1}
 						size="sm"
 						variant="flat"
@@ -477,25 +476,19 @@ export default function GamesTable(props: GamesTableProps) {
 					)}
 				</TableBody>
 			</Table>
-			{viewModal.isOpen && (
-				<ViewGameModal disclosure={viewModal} game={currGame} />
-			)}
-			{editModal.isOpen && (
-				<EditGameModal disclosure={editModal} game={currGame} />
-			)}
-			{deleteModal.isOpen && (
-				<DeleteModal
-					body={
-						<p>
-							Are you sure you want to delete <b>{currGame.name}</b>?
-						</p>
-					}
-					gameId={currGame.id}
-					isOpen={deleteModal.isOpen}
-					refetch={refetch}
-					onOpenChange={deleteModal.onOpenChange}
-				/>
-			)}
+			{/* Modals */}
+			<EditGameModal
+				key={`${currGame.id}-edit`}
+				disclosure={editModal}
+				game={currGame}
+			/>
+			<DeleteModal
+				key={`${currGame.id}-delete`}
+				gameId={currGame.id}
+				isOpen={deleteModal.isOpen}
+				name={currGame.name}
+				onOpenChange={deleteModal.onOpenChange}
+			/>
 		</>
 	);
 }

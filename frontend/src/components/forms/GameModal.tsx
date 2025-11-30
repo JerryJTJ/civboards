@@ -11,7 +11,6 @@ import { UseMutationResult } from "@tanstack/react-query";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useMemo, useRef, useState } from "react";
 
-import { isModalFieldEnabled } from "@components/utils/isModalFieldEnabled";
 import getViewportSize from "@components/utils/getViewportSize";
 
 import { FormAction } from "./gameFormReducer";
@@ -21,6 +20,7 @@ import GameOptionsForm from "./GameOptionsForm";
 import UploadFileInput from "./UploadFileInput";
 
 import { Civ, GameForm } from "@interfaces/game.interface";
+import { ScrollShadow } from "@heroui/scroll-shadow";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 
 interface AddModalProps {
@@ -41,58 +41,37 @@ interface UpdateModalProps {
 	mutation: UseMutationResult<void, Error, void>;
 }
 
-interface ViewGameProps {
-	form: GameForm;
-	mode: "view";
-	isOpen: boolean;
-	onClose: () => void;
-	dispatch: undefined;
-}
-
-type GameModalProps = AddModalProps | ViewGameProps | UpdateModalProps;
+type GameModalProps = AddModalProps | UpdateModalProps;
 
 export default function GameModal(props: GameModalProps) {
 	const { user } = useAuth0();
 	const { width } = useWindowDimensions();
 
 	const { mode, isOpen, onClose, form, dispatch } = props;
-
+	const [loading, setLoading] = useState<boolean>(false);
 	const defaultForm = useRef(form);
 
-	const [loading, setLoading] = useState<boolean>(false);
-
-	// UI
-	const headerText = () => {
-		switch (mode) {
-			case "add":
-				return "Add";
-			case "view":
-				return "View";
-			case "edit":
-				return "Edit";
-		}
-	};
-
-	const enabled = isModalFieldEnabled(mode);
-
 	// Dispatches
-	const dispatches = dispatch ? getFormDispatches(dispatch, form) : undefined;
+	const {
+		addCivDispatch,
+		changeCivDispatch,
+		deleteCivDispatch,
+		gameOptionsDispatch,
+		parseSaveDispatch,
+		resetFormDispatch,
+	} = getFormDispatches(dispatch, form);
 
 	// Modal close
 	const onModalClose = () => {
-		dispatches?.resetFormDispatch(defaultForm.current);
+		resetFormDispatch(defaultForm.current);
 		onClose();
 	};
+
 	// Submitting
 	const onSubmit = async () => {
-		if (mode === "view") return;
-
 		setLoading(true);
 
-		dispatches?.gameOptionsDispatch(
-			"createdBy",
-			user ? (user.username as string) : ""
-		);
+		gameOptionsDispatch("createdBy", user ? (user.username as string) : "");
 		try {
 			await props.mutation.mutateAsync();
 		} catch {
@@ -101,49 +80,52 @@ export default function GameModal(props: GameModalProps) {
 		setLoading(false);
 	};
 
+	// UI
+	const headerText = () => {
+		switch (mode) {
+			case "add":
+				return "Add Game";
+			case "edit":
+				return "Edit Game";
+		}
+	};
+
 	// Content
 	const civFields = useMemo(() => {
-		const display = enabled
-			? dispatches
-				? form.players.map((civ: Civ) => (
-						<CivField
-							key={civ.id}
-							changeDispatch={dispatches.changeCivDispatch}
-							civ={civ}
-							deleteDispatch={dispatches.deleteCivDispatch}
-							enabled={enabled}
-						/>
-					))
-				: null
-			: form.players.map((civ: Civ) => (
-					<CivField key={civ.id} civ={civ} enabled={enabled} />
-				));
+		const display = form.players.map((civ: Civ) => (
+			<CivField
+				key={civ.id}
+				changeDispatch={changeCivDispatch}
+				civ={civ}
+				deleteDispatch={deleteCivDispatch}
+				enabled={true}
+			/>
+		));
 
 		return (
-			<div className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh] ">
+			<ScrollShadow
+				className="flex flex-col justify-start gap-2 overflow-x-hidden overflow-y-auto max-h-[60vh]"
+				size={25}
+			>
 				{display}
-			</div>
+			</ScrollShadow>
 		);
-	}, [dispatches, enabled, form.players]);
+	}, [form.players, changeCivDispatch, deleteCivDispatch]);
 
 	const gameOptionFields = useMemo(() => {
-		if (enabled && dispatches) {
-			return (
-				<GameOptionsForm
-					dispatch={dispatches.gameOptionsDispatch}
-					enabled={enabled}
-					form={form}
-				/>
-			);
-		} else if (!enabled) {
-			return <GameOptionsForm enabled={enabled} form={form} />;
-		}
-	}, [dispatches, enabled, form]);
+		return (
+			<GameOptionsForm
+				dispatch={gameOptionsDispatch}
+				enabled={true}
+				form={form}
+			/>
+		);
+	}, [form, gameOptionsDispatch]);
 
 	return (
 		<Modal
 			backdrop="blur"
-			className="max-h-screen game-modal "
+			className="max-h-screen game-modal"
 			classNames={{
 				closeButton: "m-4 scale-150 hover:bg-danger/75 active:red/100",
 			}}
@@ -164,13 +146,15 @@ export default function GameModal(props: GameModalProps) {
 				<ModalContent className="overflow-y-auto">
 					{() => (
 						<>
-							<ModalHeader className="flex flex-row">
-								<p className="pt-2 pl-2 text-large">{headerText()} Game</p>
+							<ModalHeader className="flex-col items-center text-center ">
+								<p className="pt-2 pl-2 text-center text-large">
+									{headerText()}{" "}
+								</p>
 							</ModalHeader>
 							<ModalBody>
-								{mode === "add" && dispatches && (
+								{mode === "add" && (
 									<UploadFileInput
-										dispatch={dispatches.parseSaveDispatch}
+										dispatch={parseSaveDispatch}
 										// reset={dispatches.resetFormDispatch}
 									/>
 								)}
@@ -201,25 +185,31 @@ export default function GameModal(props: GameModalProps) {
 									<div className="grid grid-cols-6 gap-4 px-10 py-2">
 										<div className="col-span-4">
 											{" "}
-											<p className="self-center pb-4 font-bold">Players</p>
+											<p className="pb-4 font-bold text-center">Players</p>
 											{civFields}
-											{enabled && (
+											{
 												<div className="flex flex-row gap-2 pt-4">
 													<Button
-														onPress={() => dispatches?.addCivDispatch(true)}
+														className="border-fg rounded-xl"
+														onPress={() => {
+															addCivDispatch(true);
+														}}
 													>
 														Add Human
 													</Button>
 													<Button
-														onPress={() => dispatches?.addCivDispatch(false)}
+														className="border-fg rounded-xl"
+														onPress={() => {
+															addCivDispatch(false);
+														}}
 													>
 														Add AI
 													</Button>
 												</div>
-											)}
+											}
 										</div>
 										<div className="col-span-2">
-											<p className="self-center pb-4 font-bold">Game Options</p>
+											<p className="pb-4 font-bold text-center">Game Options</p>
 											{gameOptionFields}
 										</div>
 									</div>
@@ -228,11 +218,17 @@ export default function GameModal(props: GameModalProps) {
 								<div className="flex flex-row gap-2" />
 							</ModalBody>
 							<ModalFooter>
-								<Button color="danger" variant="shadow" onPress={onModalClose}>
+								<Button
+									className="border-fg rounded-xl"
+									color="danger"
+									variant="shadow"
+									onPress={onModalClose}
+								>
 									Close
 								</Button>
-								{enabled && (
+								{
 									<Button
+										className="border-fg rounded-xl"
 										color="primary"
 										isLoading={loading}
 										type="submit"
@@ -240,7 +236,7 @@ export default function GameModal(props: GameModalProps) {
 									>
 										{headerText()}
 									</Button>
-								)}
+								}
 							</ModalFooter>
 						</>
 					)}

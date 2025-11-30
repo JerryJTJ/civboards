@@ -22,10 +22,10 @@ export default function SearchBar() {
 					aria-label="Search"
 					className="max-w-[250px]"
 					classNames={{
-						base: "border border-foreground/20 rounded-xl",
-						popoverContent: "border border-foreground/20 rounded-xl",
+						base: "border-fg rounded-xl",
+						popoverContent: "border-fg rounded-xl",
 					}}
-					defaultItems={data}
+					defaultItems={data ?? []}
 					placeholder="Search for user..."
 					radius="md"
 					size="md"

@@ -7,7 +7,7 @@ import defeat from "/defeat.webp"; // eslint-disable-line import-x/no-unresolved
 export default function NotFoundPage() {
 	return (
 		<DefaultLayout>
-			<Card isFooterBlurred className="border border-foreground/20" shadow="sm">
+			<Card isFooterBlurred className="border-fg" shadow="sm">
 				<CardHeader className="flex justify-center">
 					<p className="font-semibold text-center text-large text-md">
 						Page Not Found

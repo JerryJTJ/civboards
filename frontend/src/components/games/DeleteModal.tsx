@@ -1,7 +1,4 @@
-import * as z from "zod";
 import { Button } from "@heroui/button";
-import { DisplayGameSchemaArray } from "@civboards/schemas";
-import { JSX, useState } from "react";
 import {
 	Modal,
 	ModalBody,
@@ -9,31 +6,25 @@ import {
 	ModalFooter,
 	ModalHeader,
 } from "@heroui/modal";
-import {
-	QueryObserverResult,
-	RefetchOptions,
-	useMutation,
-} from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addToast } from "@heroui/toast";
 
 import { useGamesAPI } from "@api/games";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface DeleteModalProps {
 	gameId: string;
-	body: JSX.Element;
+	name: string;
 	isOpen: boolean;
 	onOpenChange: () => void;
-	refetch: (
-		options?: RefetchOptions
-	) => Promise<
-		QueryObserverResult<z.infer<typeof DisplayGameSchemaArray> | undefined>
-	>;
 }
 
 export default function DeleteModal(props: DeleteModalProps) {
-	const { gameId, onOpenChange, body, isOpen, refetch } = props;
-	const [loading, setLoading] = useState<boolean>(false);
+	const { gameId, onOpenChange, name, isOpen } = props;
 	const { deleteGameById } = useGamesAPI();
+	const queryClient = useQueryClient();
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	// API
 	const mutation = useMutation({
@@ -56,10 +47,10 @@ export default function DeleteModal(props: DeleteModalProps) {
 				timeout: 3000,
 				shouldShowTimeoutProgress: true,
 			});
+			if (location.pathname !== "/games") navigate("/games");
 		},
 		onSettled: async () => {
-			await refetch();
-			setLoading(false);
+			await queryClient.invalidateQueries();
 		},
 	});
 
@@ -67,14 +58,18 @@ export default function DeleteModal(props: DeleteModalProps) {
 		<Modal isDismissable isOpen={isOpen} onClose={onOpenChange}>
 			<ModalContent>
 				<ModalHeader>Confirm Deletion</ModalHeader>
-				<ModalBody>{body}</ModalBody>
+				<ModalBody>
+					{" "}
+					<p>
+						Are you sure you want to delete <b>{name}</b>?
+					</p>
+				</ModalBody>
 				<ModalFooter>
 					<Button onPress={onOpenChange}>Cancel</Button>
 					<Button
 						color="danger"
-						isLoading={loading}
+						isLoading={mutation.isPending}
 						onPress={() => {
-							setLoading(true);
 							void (async () => {
 								await mutation.mutateAsync(gameId);
 							})();
