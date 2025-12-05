@@ -38,7 +38,15 @@ export const supabase = createClient<Database>(
 const app = express();
 
 //Middleware
-app.use(cors());
+// CORS
+const WEB_URL = process.env.WEB_URL;
+if (!WEB_URL) throw new Error("Missing web url env");
+app.use(
+	cors({
+		origin: WEB_URL,
+		optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+	})
+);
 app.use(compression());
 app.use(
 	contentSecurityPolicy({
