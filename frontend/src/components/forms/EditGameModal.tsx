@@ -37,7 +37,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 
 	const gameForm: GameForm = {
 		...game,
-		winnerPlayer: winner ?? "",
+		winner: winner ?? "",
 		date: Date.parse(game.date),
 		victoryId: game.victoryId ?? undefined,
 		expansions: new Set(game.expansions),

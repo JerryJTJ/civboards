@@ -88,9 +88,9 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 								: new Set([form.winnerPlayer])
 						}
 						selectionMode="single"
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							e.preventDefault();
-							if (enabled) props.dispatch("winner", e.target.value);
+						onChange={(e) => {
+							if (enabled) props.dispatch("winnerPlayer", e.target.value);
+							console.log(form.winnerPlayer);
 						}}
 					>
 						{(player) =>
@@ -107,8 +107,7 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						selectedKeys={
 							form.victoryId ? new Set([String(form.victoryId)]) : undefined
 						}
-						onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-							e.preventDefault();
+						onChange={(e) => {
 							if (enabled) props.dispatch("victoryId", e.target.value);
 						}}
 					>
@@ -126,7 +125,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 				label="Game Speed"
 				selectedKeys={new Set([form.speed])}
 				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-					e.preventDefault();
 					if (enabled) props.dispatch("speed", e.target.value);
 				}}
 			>

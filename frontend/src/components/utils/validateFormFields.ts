@@ -58,7 +58,7 @@ export function validateFormFields(
 	if (!result.success) {
 		return {
 			success: false,
-			message: "Failed to pass schema",
+			message: z.prettifyError(result.error),
 		};
 	}
 
