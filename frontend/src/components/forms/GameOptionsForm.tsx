@@ -90,7 +90,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 						selectionMode="single"
 						onChange={(e) => {
 							if (enabled) props.dispatch("winnerPlayer", e.target.value);
-							console.log(form.winnerPlayer);
 						}}
 					>
 						{(player) =>
