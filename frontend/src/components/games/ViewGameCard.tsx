@@ -69,14 +69,14 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		>
 			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
 				<Button
+					isIconOnly
 					className="self-start border-fg"
-					variant="shadow"
 					color="default"
 					radius="lg"
+					variant="shadow"
 					onPress={() => {
 						navigate("/games");
 					}}
-					isIconOnly
 				>
 					<CrossIcon />
 				</Button>
