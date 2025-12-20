@@ -1,7 +1,6 @@
 import { DisplayGameSchema } from "@civboards/schemas";
 import CivField from "@components/forms/CivField";
 import GameOptionsForm from "@components/forms/GameOptionsForm";
-import { CrossIcon } from "@components/icons";
 import getViewportSize from "@components/utils/getViewportSize";
 import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
@@ -10,7 +9,6 @@ import { Skeleton } from "@heroui/skeleton";
 import { Tab, Tabs } from "@heroui/tabs";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 import { Civ, GameForm } from "@interfaces/game.interface";
-import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 interface ViewGameCardProps {
@@ -24,7 +22,6 @@ interface ViewGameCardProps {
 export default function ViewGameCard(props: ViewGameCardProps) {
 	const { game, isPending, username, onOpenEdit, onOpenDelete } = props;
 	const { width } = useWindowDimensions();
-	const navigate = useNavigate();
 
 	const civFields = (
 		<ScrollShadow
@@ -68,18 +65,6 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 			shadow="md"
 		>
 			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
-				<Button
-					className="self-start border-fg"
-					variant="shadow"
-					color="default"
-					radius="lg"
-					onPress={() => {
-						navigate("/games");
-					}}
-					isIconOnly
-				>
-					<CrossIcon />
-				</Button>
 				<h4 className="font-bold text-large">{game.name}</h4>
 			</CardHeader>
 			<CardBody>
