@@ -223,19 +223,19 @@ export interface Database {
 					created_at: string;
 					game_id: string;
 					id: string;
-					mod_id: number | null;
+					name: string;
 				};
 				Insert: {
 					created_at?: string;
 					game_id: string;
 					id?: string;
-					mod_id?: number | null;
+					name: string;
 				};
 				Update: {
 					created_at?: string;
 					game_id?: string;
 					id?: string;
-					mod_id?: number | null;
+					name?: string;
 				};
 				Relationships: [
 					{
@@ -243,13 +243,6 @@ export interface Database {
 						columns: ["game_id"];
 						isOneToOne: false;
 						referencedRelation: "game";
-						referencedColumns: ["id"];
-					},
-					{
-						foreignKeyName: "game_mod_mod_id_fkey";
-						columns: ["mod_id"];
-						isOneToOne: false;
-						referencedRelation: "mod";
 						referencedColumns: ["id"];
 					},
 				];

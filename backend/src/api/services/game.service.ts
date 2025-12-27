@@ -40,6 +40,7 @@ import { fetchCivilizationById } from "./civilization.service.js";
 import { fetchLeaderById } from "./leader.service.js";
 import { fetchVictoryById } from "./victory.service.js";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository.js";
+import { createGameMods } from "./gameMod.service.js";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
@@ -92,6 +93,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 			createGamePlayers(gameId, game.players),
 			game.expansions ? createGameExpansions(gameId, game.expansions) : null,
 			game.gamemodes ? createGameGamemodes(gameId, game.gamemodes) : null,
+			game.mods ? createGameMods(gameId, game.mods) : null,
 		]);
 		return insertedGame;
 	} catch {
