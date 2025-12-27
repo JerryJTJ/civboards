@@ -23,15 +23,17 @@ import {
 import { fetchGameExpansionsIdsByGameId } from "../services/gameExpansion.service.js";
 import { fetchGameGamemodesIdsByGameId } from "../services/gameGamemode.service.js";
 import { fetchGamePlayersByGameId } from "../services/gamePlayer.service.js";
+import { fetchGameModsByGameId } from "../services/gameMod.service.js";
 
 // UTILS
 async function exportGameObject(game: Tables<"game">) {
 	const gameId = game.id;
 
-	const [players, gamemodes, expansions] = await Promise.all([
+	const [players, gamemodes, expansions, mods] = await Promise.all([
 		fetchGamePlayersByGameId(gameId),
 		fetchGameGamemodesIdsByGameId(gameId),
 		fetchGameExpansionsIdsByGameId(gameId),
+		fetchGameModsByGameId(gameId),
 	]);
 
 	const gameObject = {
@@ -51,6 +53,7 @@ async function exportGameObject(game: Tables<"game">) {
 		players: players,
 		gamemodes: gamemodes,
 		expansions: expansions,
+		mods: mods,
 		notes: game.notes,
 	};
 
