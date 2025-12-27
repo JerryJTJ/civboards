@@ -43,6 +43,7 @@ export default function EditGameModal(props: UpdateGameModalProps) {
 		expansions: new Set(game.expansions),
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
+		notes: "",
 	};
 
 	const [form, dispatch] = useReducer<GameForm, [action: FormAction]>(

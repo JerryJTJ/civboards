@@ -30,6 +30,7 @@ export const InsertGameSchema = z
 		players: z.array(PlayerSchema).min(2).max(20),
 		expansions: z.array(z.int().gte(1).lte(2)).max(2).optional(),
 		gamemodes: z.array(z.int().gte(1).lte(8)).max(8).optional(),
+		notes: z.string().max(500).optional(),
 	})
 	.refine((input) => {
 		if (

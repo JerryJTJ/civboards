@@ -5,6 +5,7 @@ import { CrossIcon } from "@components/icons";
 import getViewportSize from "@components/utils/getViewportSize";
 import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Textarea } from "@heroui/input";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
 import { Tab, Tabs } from "@heroui/tabs";
@@ -51,6 +52,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		expansions: new Set(game.expansions),
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
+		notes: "",
 	};
 
 	const gameOptionFields = (
@@ -98,24 +100,41 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 						</Tabs>
 					</div>
 				) : (
-					<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
-						<div className="col-span-4">
-							<Skeleton className="rounded-xl" isLoaded={!isPending}>
-								{" "}
-								<p className="pb-4 font-bold text-center">Players</p>
-								{civFields}
-							</Skeleton>
-						</div>
+					<Tabs
+						aria-label="Options"
+						className="self-center border-fg rounded-xl"
+					>
+						<Tab key="game" className="flex flex-col" title="Game">
+							<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
+								<div className="col-span-4">
+									<Skeleton className="rounded-xl" isLoaded={!isPending}>
+										{" "}
+										<p className="pb-4 font-bold text-center">Players</p>
+										{civFields}
+									</Skeleton>
+								</div>
 
-						<div className="col-span-2">
-							<Skeleton className="rounded-xl" isLoaded={!isPending}>
-								<p className="pb-4 overflow-scroll font-bold text-center">
-									Game Options
-								</p>
-								{gameOptionFields}
-							</Skeleton>
-						</div>
-					</div>
+								<div className="col-span-2">
+									<Skeleton className="rounded-xl" isLoaded={!isPending}>
+										<p className="pb-4 overflow-scroll font-bold text-center">
+											Game Options
+										</p>
+										{gameOptionFields}
+									</Skeleton>
+								</div>
+							</div>
+						</Tab>
+						<Tab key="notes" className="flex flex-col" title="Notes">
+							<div className="px-10 py-2">
+								{" "}
+								<Textarea
+									isReadOnly
+									className="border-fg rounded-xl min-w-[50vw]"
+									value={form.notes}
+								/>
+							</div>
+						</Tab>
+					</Tabs>
 				)}
 			</CardBody>
 			<CardFooter className="flex justify-end-safe">

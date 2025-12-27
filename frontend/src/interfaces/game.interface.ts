@@ -19,4 +19,5 @@ export interface GameForm {
 	expansions: Set<number>;
 	gamemodes: Set<number>;
 	players: Civ[];
+	notes: string;
 }
