@@ -78,6 +78,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		winner_leader_id: game.winnerLeaderId,
 		winner_civilization_id: winnerCivilizationId ?? undefined,
 		victory_id: game.victoryId ?? undefined,
+		notes: game.notes ?? "",
 	} as TablesInsert<"game">;
 
 	let gameId;
