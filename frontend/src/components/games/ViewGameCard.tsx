@@ -52,7 +52,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		expansions: new Set(game.expansions),
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
-		notes: "",
+		notes: game.notes ?? "",
 	};
 
 	const gameOptionFields = (
