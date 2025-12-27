@@ -51,6 +51,7 @@ async function exportGameObject(game: Tables<"game">) {
 		players: players,
 		gamemodes: gamemodes,
 		expansions: expansions,
+		notes: game.notes,
 	};
 
 	const validate = DisplayGameSchema.safeParse(gameObject);
