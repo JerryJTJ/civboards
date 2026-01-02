@@ -17,6 +17,11 @@ export type GameOptionsAction = {
 	};
 }[keyof GameForm];
 
+export interface GameNotesAction {
+	field: "notes";
+	payload: string;
+}
+
 export type GamePlayerAction =
 	| { field: "player"; type: "add"; payload: boolean }
 	| { field: "player"; type: "delete"; payload: Civ }
@@ -29,7 +34,8 @@ export type ChangeFormAction =
 export type FormAction =
 	| GameOptionsAction
 	| GamePlayerAction
-	| ChangeFormAction;
+	| ChangeFormAction
+	| GameNotesAction;
 
 function gameFormReducer(form: GameForm, action: FormAction) {
 	switch (action.field) {
@@ -143,9 +149,19 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						...form,
 						createdBy: action.payload,
 					};
+				case "mods":
+					return {
+						...form,
+						mods: action.payload,
+					};
 				default:
 			}
 			break;
+		case "notes":
+			return {
+				...form,
+				notes: action.payload,
+			};
 		case "parse": {
 			const players = action.payload.players?.map((player) => ({
 				...player,

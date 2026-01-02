@@ -84,7 +84,7 @@ export default function GamesPage() {
 					)
 				) : null}
 				{currTab === "table" ? (
-					<div className=" max-h-[65vh] w-[80vw] xl:w-[60vw] ">
+					<div className="max-h-[65vh] w-[80vw] xl:w-[70vw] mx-auto">
 						<GamesTable games={data ?? []} />
 					</div>
 				) : null}

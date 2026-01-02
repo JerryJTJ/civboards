@@ -15,6 +15,7 @@ export interface FormDispatches {
 	deleteCivDispatch: (civ: Civ) => void;
 	changeCivDispatch: (civ: Partial<Civ>) => void;
 	parseSaveDispatch: (parsed: Partial<GameForm>) => void;
+	notesDispatch: (notes: string) => void;
 }
 
 // Dispatches
@@ -94,6 +95,10 @@ export function getFormDispatches(
 		dispatch({ field: "parse", payload: parsed });
 	};
 
+	const notesDispatch = (notes: string) => {
+		dispatch({ field: "notes", payload: notes });
+	};
+
 	return {
 		resetFormDispatch,
 		gameOptionsDispatch,
@@ -101,5 +106,6 @@ export function getFormDispatches(
 		deleteCivDispatch,
 		changeCivDispatch,
 		parseSaveDispatch,
+		notesDispatch,
 	};
 }
