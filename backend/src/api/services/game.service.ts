@@ -301,28 +301,16 @@ export async function updateGame(
 	// Delete & re-create player, expansion, gamemode, and mods
 	await Promise.all([
 		removeGamePlayerByGameId(gameId),
-		async () => {
-			if (game.expansions) await removeGameExpansionByGameId(gameId);
-		},
-		async () => {
-			if (game.gamemodes) await removeGameGamemodesByGameId(gameId);
-		},
-		async () => {
-			if (game.mods) await removeGameModsByGameId(gameId);
-		},
+		removeGameExpansionByGameId(gameId),
+		removeGameGamemodesByGameId(gameId),
+		removeGameModsByGameId(gameId),
 	]);
 
 	await Promise.all([
 		createGamePlayers(gameId, game.players),
-		async () => {
-			if (game.expansions) await createGameExpansions(gameId, game.expansions);
-		},
-		async () => {
-			if (game.gamemodes) await createGameGamemodes(gameId, game.gamemodes);
-		},
-		async () => {
-			if (game.mods) await createGameMods(gameId, game.mods);
-		},
+		createGameExpansions(gameId, game.expansions ?? []),
+		createGameGamemodes(gameId, game.gamemodes ?? []),
+		createGameMods(gameId, game.mods ?? []),
 	]);
 
 	return updatedGame;
