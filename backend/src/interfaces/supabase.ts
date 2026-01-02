@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export type Json =
 	| string
 	| number
@@ -223,19 +225,19 @@ export interface Database {
 					created_at: string;
 					game_id: string;
 					id: string;
-					name: string;
+					mod_id: number;
 				};
 				Insert: {
 					created_at?: string;
 					game_id: string;
 					id?: string;
-					name: string;
+					mod_id: number;
 				};
 				Update: {
 					created_at?: string;
 					game_id?: string;
 					id?: string;
-					name?: string;
+					mod_id?: number;
 				};
 				Relationships: [
 					{
@@ -243,6 +245,13 @@ export interface Database {
 						columns: ["game_id"];
 						isOneToOne: false;
 						referencedRelation: "game";
+						referencedColumns: ["id"];
+					},
+					{
+						foreignKeyName: "game_mod_mod_id_fkey";
+						columns: ["mod_id"];
+						isOneToOne: false;
+						referencedRelation: "mod";
 						referencedColumns: ["id"];
 					},
 				];

@@ -53,6 +53,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
 		notes: game.notes ?? "",
+		mods: new Set(game.mods),
 	};
 
 	const gameOptionFields = (

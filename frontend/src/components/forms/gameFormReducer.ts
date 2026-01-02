@@ -149,6 +149,11 @@ function gameFormReducer(form: GameForm, action: FormAction) {
 						...form,
 						createdBy: action.payload,
 					};
+				case "mods":
+					return {
+						...form,
+						mods: action.payload,
+					};
 				default:
 			}
 			break;

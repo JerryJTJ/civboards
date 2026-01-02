@@ -7,13 +7,13 @@ import {
 	insertMods,
 } from "../repositories/gameMod.repository.js";
 
-export async function createGameMods(gameId: string, mods: string[]) {
+export async function createGameMods(gameId: string, mods: number[]) {
 	if (!gameId) throw new ValidationError("No Game Id Provided");
 	if (!(await doesGameIdExist(gameId)))
 		throw new ValidationError("Invalid Game Id");
 
 	const gameMods = mods.map((mod) => {
-		return { game_id: gameId, name: mod };
+		return { game_id: gameId, mod_id: mod };
 	}) as TablesInsert<"game_mod">[];
 
 	await insertMods(gameMods);
@@ -26,7 +26,7 @@ export async function fetchGameModsByGameId(gameId: string) {
 
 	const gameMods = await getGameModsByGameId(gameId);
 	const gameModNames = gameMods.map((mod) => {
-		return mod.name;
+		return mod.mod_id;
 	});
 
 	return gameModNames.sort();

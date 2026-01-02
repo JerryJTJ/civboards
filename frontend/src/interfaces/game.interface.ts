@@ -20,4 +20,5 @@ export interface GameForm {
 	gamemodes: Set<number>;
 	players: Civ[];
 	notes: string;
+	mods: Set<number>;
 }

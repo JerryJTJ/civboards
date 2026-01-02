@@ -67,6 +67,7 @@ export const DEFAULT_ADD_FORM: GameForm = {
 		},
 	],
 	notes: "",
+	mods: new Set<number>(),
 };
 
 export const DEFAULT_DISPLAY_GAME: z.infer<typeof DisplayGameSchema> = {

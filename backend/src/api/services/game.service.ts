@@ -40,7 +40,7 @@ import { fetchCivilizationById } from "./civilization.service.js";
 import { fetchLeaderById } from "./leader.service.js";
 import { fetchVictoryById } from "./victory.service.js";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository.js";
-import { createGameMods } from "./gameMod.service.js";
+import { createGameMods, removeGameModsByGameId } from "./gameMod.service.js";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation
@@ -98,7 +98,7 @@ export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 		return insertedGame;
 	} catch {
 		if (gameId) await removeGameById(gameId);
-		throw new Error("Failed to create game");
+		throw new Error(`Failed to create game`);
 	}
 }
 
@@ -293,11 +293,12 @@ export async function updateGame(
 		winner_leader_id: game.winnerLeaderId,
 		winner_civilization_id: winnerCivilizationId ?? undefined,
 		victory_id: game.victoryId ?? undefined,
+		notes: game.notes ?? undefined,
 	} as TablesUpdate<"game">;
 
 	const updatedGame = await updateGameById(update);
 
-	// Delete & re-create player, expansion, and gamemode
+	// Delete & re-create player, expansion, gamemode, and mods
 	await Promise.all([
 		removeGamePlayerByGameId(gameId),
 		async () => {
@@ -305,6 +306,9 @@ export async function updateGame(
 		},
 		async () => {
 			if (game.gamemodes) await removeGameGamemodesByGameId(gameId);
+		},
+		async () => {
+			if (game.mods) await removeGameModsByGameId(gameId);
 		},
 	]);
 
@@ -315,6 +319,9 @@ export async function updateGame(
 		},
 		async () => {
 			if (game.gamemodes) await createGameGamemodes(gameId, game.gamemodes);
+		},
+		async () => {
+			if (game.mods) await createGameMods(gameId, game.mods);
 		},
 	]);
 
