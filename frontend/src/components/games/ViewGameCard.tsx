@@ -64,13 +64,21 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		</ScrollShadow>
 	);
 
+	const notes = (
+		<Textarea
+			isReadOnly
+			className="border-fg rounded-xl min-w-[50vw]"
+			value={form.notes}
+		/>
+	);
+
 	return (
 		<Card
 			isBlurred
-			className="flex items-center justify-center border-none bg-background/60 dark:bg-default-100/50 "
+			className="flex items-center justify-center px-2 border-none bg-background/60 dark:bg-default-100/50 sm:px-5"
 			shadow="md"
 		>
-			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
+			<CardHeader className="flex-col items-center pt-8 pb-0 ">
 				<Button
 					isIconOnly
 					className="self-start border-fg"
@@ -86,17 +94,20 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 				<h4 className="font-bold text-large">{game.name}</h4>
 			</CardHeader>
 			<CardBody>
-				{getViewportSize(width) === "sm" ? (
-					<div className="flex flex-col py-2 sm:px-10">
+				{getViewportSize(width) === "xs" ? (
+					<div className="flex flex-col py-2 sm:px-10 w-[85vw]">
 						<Tabs
 							aria-label="Options"
-							// color="primary"
+							className="self-center border-fg rounded-xl"
 						>
 							<Tab key="players" className="flex flex-col" title="Players">
 								{civFields}
 							</Tab>
 							<Tab key="options" className="flex flex-col" title="Game Options">
 								{gameOptionFields}
+							</Tab>
+							<Tab key="notes" className="flex flex-col" title="Notes">
+								{notes}
 							</Tab>
 						</Tabs>
 					</div>
@@ -126,14 +137,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 							</div>
 						</Tab>
 						<Tab key="notes" className="flex flex-col" title="Notes">
-							<div className="px-10 py-2">
-								{" "}
-								<Textarea
-									isReadOnly
-									className="border-fg rounded-xl min-w-[50vw]"
-									value={form.notes}
-								/>
-							</div>
+							<div className="px-10 py-2">{notes}</div>
 						</Tab>
 					</Tabs>
 				)}
