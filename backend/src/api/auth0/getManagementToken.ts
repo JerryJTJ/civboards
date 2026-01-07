@@ -36,8 +36,6 @@ export default async function getManagementToken(): Promise<string> {
 		const response: AxiosResponse<AccessToken> = await axios.request(options);
 		return response.data.access_token;
 	} catch {
-		throw new Error(
-			"Failed to get Auth0 access token, make sure cookies are allowed"
-		);
+		throw new Error("Failed to get Auth0 access token");
 	}
 }
