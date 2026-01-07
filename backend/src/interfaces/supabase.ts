@@ -80,7 +80,6 @@ export interface Database {
 					map: string;
 					map_size: string;
 					name: string;
-					notes: string;
 					speed: string;
 					turns: number;
 					victory_id: number | null;
@@ -98,7 +97,6 @@ export interface Database {
 					map: string;
 					map_size: string;
 					name: string;
-					notes?: string;
 					speed: string;
 					turns: number;
 					victory_id?: number | null;
@@ -116,7 +114,6 @@ export interface Database {
 					map?: string;
 					map_size?: string;
 					name?: string;
-					notes?: string;
 					speed?: string;
 					turns?: number;
 					victory_id?: number | null;
@@ -225,19 +222,19 @@ export interface Database {
 					created_at: string;
 					game_id: string;
 					id: string;
-					mod_id: number;
+					mod_id: number | null;
 				};
 				Insert: {
 					created_at?: string;
 					game_id: string;
 					id?: string;
-					mod_id: number;
+					mod_id?: number | null;
 				};
 				Update: {
 					created_at?: string;
 					game_id?: string;
 					id?: string;
-					mod_id?: number;
+					mod_id?: number | null;
 				};
 				Relationships: [
 					{

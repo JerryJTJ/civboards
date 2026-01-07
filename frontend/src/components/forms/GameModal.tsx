@@ -22,7 +22,6 @@ import UploadFileInput from "./UploadFileInput";
 import { Civ, GameForm } from "@interfaces/game.interface";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import useWindowDimensions from "@hooks/useWindowDimensions";
-import { Textarea } from "@heroui/input";
 
 interface AddModalProps {
 	mode: "add";
@@ -60,7 +59,6 @@ export default function GameModal(props: GameModalProps) {
 		gameOptionsDispatch,
 		parseSaveDispatch,
 		resetFormDispatch,
-		notesDispatch,
 	} = getFormDispatches(dispatch, form);
 
 	// Modal close
@@ -124,26 +122,6 @@ export default function GameModal(props: GameModalProps) {
 		);
 	}, [form, gameOptionsDispatch]);
 
-	const gameNotes = useMemo(() => {
-		return (
-			<div className="flex-row gap-2">
-				<Textarea
-					isClearable
-					className="border-fg rounded-xl"
-					label="Notes"
-					placeholder="Max. 500 characters"
-					value={form.notes}
-					onClear={() => {
-						notesDispatch("");
-					}}
-					onValueChange={(notes: string) => {
-						notesDispatch(notes);
-					}}
-				/>
-			</div>
-		);
-	}, [notesDispatch, form]);
-
 	return (
 		<Modal
 			backdrop="blur"
@@ -174,6 +152,12 @@ export default function GameModal(props: GameModalProps) {
 								</p>
 							</ModalHeader>
 							<ModalBody>
+								{mode === "add" && (
+									<UploadFileInput
+										dispatch={parseSaveDispatch}
+										// reset={dispatches.resetFormDispatch}
+									/>
+								)}
 								{/* Content for mobile v. web */}
 								{getViewportSize(width) === "xs" ? (
 									<div className="flex flex-col py-2 sm:px-10">
@@ -191,61 +175,44 @@ export default function GameModal(props: GameModalProps) {
 											<Tab
 												key="options"
 												className="flex flex-col"
-												title="Options"
+												title="Game Options"
 											>
 												{gameOptionFields}
 											</Tab>
 										</Tabs>
 									</div>
 								) : (
-									<Tabs
-										aria-label="Options"
-										className="self-center border-fg rounded-xl"
-										// color="primary"
-									>
-										<Tab key="game" className="flex flex-col" title="Game">
-											{mode === "add" && (
-												<UploadFileInput
-													dispatch={parseSaveDispatch}
-													// reset={dispatches.resetFormDispatch}
-												/>
-											)}
-											<div className="grid grid-cols-6 gap-4 px-10 py-2">
-												<div className="col-span-4">
-													{" "}
-													<p className="pb-4 font-bold text-center">Players</p>
-													{civFields}
-													{
-														<div className="flex flex-row gap-2 pt-4">
-															<Button
-																className="border-fg rounded-xl"
-																onPress={() => {
-																	addCivDispatch(true);
-																}}
-															>
-																Add Human
-															</Button>
-															<Button
-																className="border-fg rounded-xl"
-																onPress={() => {
-																	addCivDispatch(false);
-																}}
-															>
-																Add AI
-															</Button>
-														</div>
-													}
+									<div className="grid grid-cols-6 gap-4 px-10 py-2">
+										<div className="col-span-4">
+											{" "}
+											<p className="pb-4 font-bold text-center">Players</p>
+											{civFields}
+											{
+												<div className="flex flex-row gap-2 pt-4">
+													<Button
+														className="border-fg rounded-xl"
+														onPress={() => {
+															addCivDispatch(true);
+														}}
+													>
+														Add Human
+													</Button>
+													<Button
+														className="border-fg rounded-xl"
+														onPress={() => {
+															addCivDispatch(false);
+														}}
+													>
+														Add AI
+													</Button>
 												</div>
-												<div className="col-span-2">
-													<p className="pb-4 font-bold text-center">Options</p>
-													{gameOptionFields}
-												</div>
-											</div>
-										</Tab>
-										<Tab key="notes" className="flex flex-col" title="Notes">
-											<div className="px-10 py-2"> {gameNotes}</div>
-										</Tab>
-									</Tabs>
+											}
+										</div>
+										<div className="col-span-2">
+											<p className="pb-4 font-bold text-center">Game Options</p>
+											{gameOptionFields}
+										</div>
+									</div>
 								)}
 
 								<div className="flex flex-row gap-2" />

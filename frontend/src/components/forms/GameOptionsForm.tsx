@@ -11,8 +11,6 @@ import {
 	GAME_SPEED,
 	Gamemode,
 	MAP_SIZE,
-	MODS,
-	Mod,
 	VICTORY_TYPES,
 } from "@constants/gameSettings";
 import { GameForm } from "@interfaces/game.interface";
@@ -30,6 +28,15 @@ type GameOptionsFormProps =
 			enabled: false;
 			form: GameForm;
 	  };
+
+// interface GameOptionsFormProps {
+// 	enabled: boolean;
+// 	form: GameForm;
+// 	dispatch: (
+// 		option: string,
+// 		value: string | number | Set<number> | boolean
+// 	) => void;
+// }
 
 function GameOptionsForm(props: GameOptionsFormProps) {
 	const { enabled, form } = props;
@@ -229,53 +236,6 @@ function GameOptionsForm(props: GameOptionsFormProps) {
 					</SelectItem>
 				)}
 			</Select>
-			<Select
-				className="border-fg rounded-xl"
-				classNames={{
-					base: "max-w-xs",
-					trigger: "min-h-12 py-2",
-				}}
-				isMultiline={true}
-				items={MODS}
-				label="Mods"
-				labelPlacement="inside"
-				renderValue={(items: SelectedItems<Mod>) => {
-					return (
-						<div className="flex flex-wrap gap-2">
-							{items.map((item) => (
-								<Chip key={item.key}>{item.data?.name}</Chip>
-							))}
-						</div>
-					);
-				}}
-				selectedKeys={[...form.mods].map(String)}
-				selectionMode="multiple"
-				onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-					if (enabled)
-						props.dispatch(
-							"mods",
-							new Set(e.target.value.split(",").map(Number))
-						);
-				}}
-			>
-				{(mod) => (
-					<SelectItem key={mod.id} textValue={mod.name}>
-						<span className="text-small">{mod.name}</span>
-					</SelectItem>
-				)}
-			</Select>
-			{/* <Input
-				className="border-fg rounded-xl"
-				isReadOnly={!enabled}
-				isRequired={enabled}
-				label="Mods"
-				placeholder="Enter mod(s) seperated by commas"
-				maxLength={100}
-				value={form.mods}
-				onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-					if (enabled) props.dispatch("mods", e.target.value);
-				}}
-			/> */}
 		</div>
 	);
 }
