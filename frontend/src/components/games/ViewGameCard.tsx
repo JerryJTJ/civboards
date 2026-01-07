@@ -1,14 +1,17 @@
 import { DisplayGameSchema } from "@civboards/schemas";
 import CivField from "@components/forms/CivField";
 import GameOptionsForm from "@components/forms/GameOptionsForm";
+import { CrossIcon } from "@components/icons";
 import getViewportSize from "@components/utils/getViewportSize";
 import { Button } from "@heroui/button";
 import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Textarea } from "@heroui/input";
 import { ScrollShadow } from "@heroui/scroll-shadow";
 import { Skeleton } from "@heroui/skeleton";
 import { Tab, Tabs } from "@heroui/tabs";
 import useWindowDimensions from "@hooks/useWindowDimensions";
 import { Civ, GameForm } from "@interfaces/game.interface";
+import { useNavigate } from "react-router-dom";
 import * as z from "zod";
 
 interface ViewGameCardProps {
@@ -22,6 +25,7 @@ interface ViewGameCardProps {
 export default function ViewGameCard(props: ViewGameCardProps) {
 	const { game, isPending, username, onOpenEdit, onOpenDelete } = props;
 	const { width } = useWindowDimensions();
+	const navigate = useNavigate();
 
 	const civFields = (
 		<ScrollShadow
@@ -48,6 +52,8 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 		expansions: new Set(game.expansions),
 		gamemodes: new Set(game.gamemodes),
 		players: game.players,
+		notes: game.notes ?? "",
+		mods: new Set(game.mods),
 	};
 
 	const gameOptionFields = (
@@ -72,7 +78,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 			className="flex items-center justify-center px-2 border-none bg-background/60 dark:bg-default-100/50 sm:px-5"
 			shadow="md"
 		>
-			<CardHeader className="flex-col items-center pt-8 pb-0 ">
+			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
 				<Button
 					isIconOnly
 					className="self-start border-fg"
@@ -106,14 +112,19 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 						</Tabs>
 					</div>
 				) : (
-					<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
-						<div className="col-span-4">
-							<Skeleton className="rounded-xl" isLoaded={!isPending}>
-								{" "}
-								<p className="pb-4 font-bold text-center">Players</p>
-								{civFields}
-							</Skeleton>
-						</div>
+					<Tabs
+						aria-label="Options"
+						className="self-center border-fg rounded-xl"
+					>
+						<Tab key="game" className="flex flex-col" title="Game">
+							<div className="grid grid-cols-6 gap-4 px-10 py-2 lg:max-h-[70vh]">
+								<div className="col-span-4">
+									<Skeleton className="rounded-xl" isLoaded={!isPending}>
+										{" "}
+										<p className="pb-4 font-bold text-center">Players</p>
+										{civFields}
+									</Skeleton>
+								</div>
 
 								<div className="col-span-2">
 									<Skeleton className="rounded-xl" isLoaded={!isPending}>

@@ -53,6 +53,8 @@ export function validateFormFields(
 		players: form.players,
 		expansions: Array.from(form.expansions),
 		gamemodes: Array.from(form.gamemodes),
+		mods: Array.from(form.mods),
+		notes: form.notes,
 	});
 
 	if (!result.success) {
