@@ -12,18 +12,7 @@ export async function insertGame(
 	const { data, error } = await supabase
 		.from("game")
 		.insert({
-			finished: game.finished,
-			created_by: game.created_by,
-			date: game.date,
-			name: game.name,
-			map: game.map,
-			map_size: game.map_size,
-			speed: game.speed,
-			turns: game.turns,
-			winner_player: game.winner_player,
-			winner_leader_id: game.winner_leader_id,
-			winner_civilization_id: game.winner_civilization_id,
-			victory_id: game.victory_id,
+			...game,
 			active: true,
 		})
 		.select();

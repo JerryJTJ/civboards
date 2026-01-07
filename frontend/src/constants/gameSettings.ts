@@ -110,3 +110,13 @@ export const EXPANSIONS = [
 	{ id: 1, label: "Rise and Fall" },
 	{ id: 2, label: "Gathering Storm" },
 ];
+
+export interface Mod {
+	id: number;
+	name: string;
+}
+
+export const MODS = [
+	{ id: 1, name: "Better Balance Gamemod" },
+	{ id: 2, name: "Better Balanced Maps" },
+];

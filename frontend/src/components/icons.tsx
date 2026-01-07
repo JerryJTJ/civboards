@@ -361,3 +361,19 @@ export const LockIcon = () => {
 		</svg>
 	);
 };
+
+export const CrossIcon = () => (
+	<svg
+		className="fill-current"
+		fill="none"
+		height="1em"
+		stroke="currentColor"
+		strokeLinecap="round"
+		strokeLinejoin="round"
+		strokeWidth="2"
+		viewBox="0 0 24 24"
+		width="1em"
+	>
+		<path d="M18 6 6 18M6 6l12 12" />
+	</svg>
+);

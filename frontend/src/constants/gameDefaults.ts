@@ -66,6 +66,8 @@ export const DEFAULT_ADD_FORM: GameForm = {
 			isHuman: true,
 		},
 	],
+	notes: "",
+	mods: new Set<number>(),
 };
 
 export const DEFAULT_DISPLAY_GAME: z.infer<typeof DisplayGameSchema> = {
@@ -79,4 +81,5 @@ export const DEFAULT_DISPLAY_GAME: z.infer<typeof DisplayGameSchema> = {
 	mapSize: "",
 	speed: "",
 	turns: 0,
+	notes: "",
 };
