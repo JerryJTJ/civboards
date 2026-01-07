@@ -44,7 +44,7 @@ if (!WEB_URL) throw new Error("Missing web url env");
 app.use(
 	cors({
 		origin: WEB_URL,
-		optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+		optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 	})
 );
 app.use(compression());
