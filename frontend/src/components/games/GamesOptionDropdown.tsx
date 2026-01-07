@@ -2,7 +2,6 @@ import * as z from "zod";
 import { DisplayGameSchema } from "@civboards/schemas";
 import { DropdownItem, DropdownMenu } from "@heroui/dropdown";
 import { Link } from "react-router-dom";
-import { addToast } from "@heroui/toast";
 import { useAuth0 } from "@auth0/auth0-react";
 
 interface GamesOptionDropdownProps {
@@ -19,6 +18,8 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 
 	const { user, isAuthenticated } = useAuth0();
 
+	const isCreatedByUser = game.createdBy === user?.username;
+
 	return (
 		<DropdownMenu selectionMode="single" variant="flat">
 			<DropdownItem key="view" textValue="View">
@@ -26,22 +27,11 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 					View
 				</Link>
 			</DropdownItem>
-			{isAuthenticated ? (
+			{isAuthenticated && isCreatedByUser ? (
 				<>
 					<DropdownItem
 						key="edit"
 						onPress={() => {
-							if (game.createdBy !== user?.username) {
-								addToast({
-									title: "Error",
-									color: "warning",
-									description: "You may only modify games you created",
-									timeout: 3000,
-									shouldShowTimeoutProgress: true,
-								});
-
-								return;
-							}
 							setCurrGame(game);
 							onOpenEdit();
 						}}
@@ -52,17 +42,6 @@ export default function GamesOptionDropdown(props: GamesOptionDropdownProps) {
 						key="delete"
 						color="danger"
 						onPress={() => {
-							if (game.createdBy !== user?.username) {
-								addToast({
-									title: "Error",
-									color: "warning",
-									description: "You may only modify games you created",
-									timeout: 3000,
-									shouldShowTimeoutProgress: true,
-								});
-
-								return;
-							}
 							setCurrGame(game);
 							onOpenDelete();
 						}}
