@@ -75,10 +75,10 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 	return (
 		<Card
 			isBlurred
-			className="flex items-center justify-center border-none bg-background/60 dark:bg-default-100/50 "
+			className="flex items-center justify-center px-2 border-none bg-background/60 dark:bg-default-100/50 sm:px-5"
 			shadow="md"
 		>
-			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
+			<CardHeader className="flex-col items-center pt-8 pb-0 ">
 				<Button
 					isIconOnly
 					className="self-start border-fg"
