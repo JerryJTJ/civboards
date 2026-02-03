@@ -121,12 +121,16 @@ export async function fetchProfileInfoByName(name: string) {
 		}
 	});
 
-	const leadersArr = Array.from(leaders).map(([name, data]) => {
-		return { name: name, played: data.played, wins: data.wins };
-	});
-	const civsArr = Array.from(civs).map(([name, data]) => {
-		return { name: name, played: data.played, wins: data.wins };
-	});
+	const leadersArr = Array.from(leaders)
+		.map(([name, data]) => {
+			return { name: name, played: data.played, wins: data.wins };
+		})
+		.sort((a, b) => b.played - a.played);
+	const civsArr = Array.from(civs)
+		.map(([name, data]) => {
+			return { name: name, played: data.played, wins: data.wins };
+		})
+		.sort((a, b) => b.played - a.played);
 
 	return { civilizations: civsArr, leaders: leadersArr };
 }
