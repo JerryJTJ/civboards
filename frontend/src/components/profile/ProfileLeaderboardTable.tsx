@@ -37,7 +37,7 @@ export default function ProfileLeaderboardTable(
 					cmp = a.name.localeCompare(b.name);
 					break;
 				case "played":
-					cmp = a.name > b.name ? 1 : a.name === b.name ? 0 : -1;
+					cmp = a.played > b.played ? 1 : a.played === b.played ? 0 : -1;
 					break;
 				case "wins":
 					cmp = a.wins > b.wins ? 1 : a.wins === b.wins ? 0 : -1;

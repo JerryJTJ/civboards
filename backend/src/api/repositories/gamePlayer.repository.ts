@@ -63,11 +63,12 @@ export async function getProfileInfoByName(name: string) {
 			`
 			leader (name),
 			civilization (name),
-			game!inner (finished)
+			game!inner (finished, active)
 			`
 		)
 		.eq("name", name)
 		.eq("game.finished", true)
+		.eq("game.active", true)
 		.eq("is_human", true);
 
 	if (error) throw new DatabaseError("Failed to get profiles", error);
