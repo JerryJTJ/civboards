@@ -78,7 +78,7 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 			className="flex items-center justify-center px-2 border-none bg-background/60 dark:bg-default-100/50 sm:px-5"
 			shadow="md"
 		>
-			<CardHeader className="flex-col items-center pt-8 pb-0 ">
+			<CardHeader className="flex-col items-center pt-8 pb-0 px-13">
 				<Button
 					isIconOnly
 					className="self-start border-fg"
@@ -137,7 +137,14 @@ export default function ViewGameCard(props: ViewGameCardProps) {
 							</div>
 						</Tab>
 						<Tab key="notes" className="flex flex-col" title="Notes">
-							<div className="px-10 py-2">{notes}</div>
+							<div className="px-10 py-2">
+								{" "}
+								<Textarea
+									isReadOnly
+									className="border-fg rounded-xl min-w-[50vw]"
+									value={form.notes}
+								/>
+							</div>
 						</Tab>
 					</Tabs>
 				)}
