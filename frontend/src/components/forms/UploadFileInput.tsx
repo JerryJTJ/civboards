@@ -1,4 +1,3 @@
-import { AxiosError } from "axios";
 import { Input } from "@heroui/input";
 import { addToast } from "@heroui/toast";
 import { Tooltip } from "@heroui/tooltip";
