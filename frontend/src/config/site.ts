@@ -16,6 +16,10 @@ export const siteConfig = {
 			label: "Leaderboard",
 			href: "/leaderboard",
 		},
+		{
+			label: "FAQ",
+			href: "/faq",
+		},
 	],
 	navMenuItems: [
 		// {
@@ -29,6 +33,10 @@ export const siteConfig = {
 		{
 			label: "Leaderboard",
 			href: "/leaderboard",
+		},
+		{
+			label: "FAQ",
+			href: "/faq",
 		},
 	],
 
