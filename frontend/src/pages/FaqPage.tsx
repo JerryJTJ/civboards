@@ -19,11 +19,12 @@ export default function FaqPage() {
 							aria-label="Accordion 1"
 							title="I can't add games even though I'm logged in!"
 						>
-							<p>
-								Try clearing your cookies. Sometimes the authorization can be
-								glitchy. This should also fix any problems with editing and
-								deleting games.
-							</p>
+							<span>
+								Ensure cookies are enabled for <i>civboards.ca.auth0.com</i>.
+								The user authorization relies on them. If this still doesn't
+								work, try clearing your cookies. This should also fix any
+								problems with editing and deleting games.
+							</span>
 						</AccordionItem>
 						<AccordionItem
 							key="2"
