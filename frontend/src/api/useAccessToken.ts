@@ -19,9 +19,9 @@ export default function useAccessToken() {
 		} catch (error) {
 			// Only verifiable first-party applications may skip consent
 			// When in dev, comment the error and use loginWithPopup from useAuth0 hook below
-			console.error(error);
+			console.log("auth0 error", error);
 
-			throw new Error("Failed to get access token");
+			throw error;
 			// await loginWithPopup({
 			// 	authorizationParams: {
 			// 		audience: import.meta.env.VITE_AUTHO_GAMES_AUDIENCE as string,

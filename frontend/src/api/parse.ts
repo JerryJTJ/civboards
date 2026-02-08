@@ -15,7 +15,12 @@ export function useParseAPI() {
 		const bodyData = new FormData();
 
 		bodyData.append("savefile", save);
-		const token = await getToken();
+		let token: string;
+		try {
+			token = await getToken();
+		} catch (error) {
+			throw error;
+		}
 
 		const response = await instance({
 			url: "/parse/upload",
