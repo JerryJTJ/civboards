@@ -16,9 +16,10 @@ export default function useAccessToken() {
 	const getToken = async (): Promise<string> => {
 		try {
 			return await getAccessToken();
-		} catch {
+		} catch (error) {
 			// Only verifiable first-party applications may skip consent
 			// When in dev, comment the error and use loginWithPopup from useAuth0 hook below
+			console.error(error);
 
 			throw new Error("Failed to get access token");
 			// await loginWithPopup({
