@@ -16,7 +16,9 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 	const { parseSaveFile } = useParseAPI();
 
 	const mutation = useMutation({
-		mutationFn: parseSaveFile,
+		mutationFn: async (file: File) => {
+			return await parseSaveFile(file);
+		},
 		onSuccess: (data) => {
 			if (!data.success) {
 				addToast({
@@ -30,6 +32,9 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 			}
 
 			dispatch(data.data);
+		},
+		onError: (error) => {
+			console.log(error);
 		},
 	});
 
