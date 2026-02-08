@@ -18,17 +18,19 @@ export default function UploadFileInput(props: UploadFileInputProps) {
 
 	const mutation = useMutation({
 		mutationFn: parseSaveFile,
-		onError: (err: AxiosError) => {
-			addToast({
-				title: "Failed to parse file",
-				color: "warning",
-				description: err.message,
-				timeout: 3000,
-				shouldShowTimeoutProgress: true,
-			});
-		},
 		onSuccess: (data) => {
-			if (data.success) dispatch(data.data);
+			if (!data.success) {
+				addToast({
+					title: "Failed to parse file",
+					color: "warning",
+					description: "There was an error parsing the save file.",
+					timeout: 3000,
+					shouldShowTimeoutProgress: true,
+				});
+				return;
+			}
+
+			dispatch(data.data);
 		},
 	});
 
