@@ -32,7 +32,6 @@ export function useParseAPI() {
 				data: bodyData,
 			});
 
-
 			console.log("parsed");
 			if (response.status === 200) {
 				const parsed = response.data as z.infer<typeof ParseSaveSchema>;
