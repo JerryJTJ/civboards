@@ -13,9 +13,15 @@ const LoginButton = () => {
 			color="primary"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
 			variant="shadow"
-			onPress={async () => {
-				await loginWithRedirect();
-			}}
+			onPress={async () =>
+				await loginWithRedirect({
+					authorizationParams: {
+						redirect_uri: window.location.origin,
+						audience: `https://${import.meta.env.VITE_AUTH0_DOMAIN as string}/api/v2/`,
+						scope: import.meta.env.VITE_AUTH0_AUTHSCOPE as string,
+					},
+				})
+			}
 		>
 			Log In
 		</Button>
