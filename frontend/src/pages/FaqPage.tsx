@@ -22,8 +22,8 @@ export default function FaqPage() {
 							<span>
 								Ensure cookies are enabled for <i>civboards.ca.auth0.com</i>.
 								The user authorization relies on them. If this still doesn't
-								work, try clearing your cookies. This should also fix any
-								problems with editing and deleting games.
+								work, try clearing your cookies and log out then back in. This
+								should also fix any problems with editing and deleting games.
 							</span>
 						</AccordionItem>
 						<AccordionItem
