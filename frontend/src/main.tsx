@@ -27,7 +27,7 @@ createRoot(document.getElementById("root") as Element).render(
 					}}
 					clientId={AUTH0_CLIENT_ID}
 					domain={AUTH0_DOMAIN}
-					useRefreshTokens={true}
+					// useRefreshTokens={true}
 				>
 					<QueryClientProvider client={queryClient}>
 						<App />
