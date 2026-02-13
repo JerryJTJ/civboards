@@ -17,9 +17,12 @@ export function useParseAPI() {
 			bodyData.append("savefile", save);
 
 			// Get token
+			console.log("getting token");
 			const token = await getToken();
+			console.log("got token", token);
 
 			// Call API
+			console.log("parsing");
 			const response = await instance({
 				url: "/parse/upload",
 				method: "post",
@@ -29,6 +32,8 @@ export function useParseAPI() {
 				data: bodyData,
 			});
 
+
+			console.log("parsed");
 			if (response.status === 200) {
 				const parsed = response.data as z.infer<typeof ParseSaveSchema>;
 
