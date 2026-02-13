@@ -12,6 +12,7 @@
 	"dependencies": {
 		"@auth0/auth0-react": "^2.4.0",
 		"@civboards/schemas": "workspace:*",
+		"@heroui/accordion": "^2.2.27",
 		"@heroui/autocomplete": "^2.3.27",
 		"@heroui/avatar": "^2.2.21",
 		"@heroui/button": "2.2.24",
