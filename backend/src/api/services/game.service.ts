@@ -329,6 +329,13 @@ export async function fetchAllGamesByPlayer(player: string) {
 	return await getGamesById(gameIds);
 }
 
+export async function fetchAllFinishedGamesByPlayer(player: string) {
+	const games = await fetchAllGamesByPlayer(player);
+
+	const finishedGames = games.filter((game) => game.finished);
+	return finishedGames;
+}
+
 export async function handleHasUserUploaded(user: string) {
 	return hasUserUploaded(user);
 }

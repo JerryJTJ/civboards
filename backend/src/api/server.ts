@@ -2,7 +2,6 @@ import { Database } from "../interfaces/supabase.js";
 import { contentSecurityPolicy } from "helmet";
 import { createClient } from "@supabase/supabase-js";
 import { errorHandler } from "./middlewares/errorHandler.js";
-import { getExpansionById } from "./repositories/expansion.repository.js";
 import Auth0Router from "./auth0/auth0.routes.js";
 import CivilizationRouter from "./routes/civilization.routes.js";
 import ExpansionRouter from "./routes/expansion.routes.js";
@@ -13,11 +12,13 @@ import ParseRouter from "./parse/parse.api.js";
 import PlayerRouter from "./routes/player.routes.js";
 import UserRouter from "./routes/user.routes.js";
 import VictoryRouter from "./routes/victory.routes.js";
-import axios from "axios";
 import checkJwt from "./middlewares/auth/checkJwt.js";
 import compression from "compression";
 import cors from "cors";
 import express, { json } from "express";
+import GenAIRouter from "./genai/genai.routes.js";
+import axios from "axios";
+import { getExpansionById } from "./repositories/expansion.repository.js";
 
 //Supabase connection
 const PORT = process.env.PORT ?? 5050;
@@ -68,14 +69,15 @@ app.use("/player", PlayerRouter);
 app.use("/user", UserRouter);
 app.use("/parse", checkJwt(), ParseRouter);
 app.use("/auth0", Auth0Router);
+app.use("/genai", GenAIRouter);
 
-// This is just to keep the database and backend running
+// // This is just to keep the database and backend running
 app.get("/ping", async (_req: express.Request, res: express.Response) => {
 	await getExpansionById(1);
 	res.status(200).end();
 });
 
-// Call ping endpoint every 5 minutes
+// // Call ping endpoint every 5 minutes
 const SERVER_URL = process.env.SERVER_URL;
 if (SERVER_URL) {
 	setInterval(() => {

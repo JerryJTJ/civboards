@@ -6,21 +6,21 @@
 		"lib": ["ES2020", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		"skipLibCheck": true,
-		"baseUrl": "./src",
+		// "baseUrl": "./src",
 		"outDir": "dist",
 		"paths": {
 			// "@/*": ["./src/*"],
-			"@components/*": ["./components/*"],
-			"@api/*": ["./api/*"],
-			"@constants/*": ["./constants/*"],
-			"@hooks/*": ["./hooks/*"],
-			"@interfaces/*": ["./interfaces/*"],
-			"@layouts/*": ["./layouts/*"],
-			"@pages/*": ["./pages/*"],
-			"@styles/*": ["./styles/*"],
-			"@customTypes/*": ["./types/*"],
-			"@utils/*": ["./utils/*"],
-			"@config/*": ["./config/*"]
+			"@components/*": ["./src/components/*"],
+			"@api/*": ["./src/api/*"],
+			"@constants/*": ["./src/constants/*"],
+			"@hooks/*": ["./src/hooks/*"],
+			"@interfaces/*": ["./src/interfaces/*"],
+			"@layouts/*": ["./src/layouts/*"],
+			"@pages/*": ["./src/pages/*"],
+			"@styles/*": ["./src/styles/*"],
+			"@customTypes/*": ["./src/types/*"],
+			"@utils/*": ["./src/utils/*"],
+			"@config/*": ["./src/config/*"]
 		},
 
 		/* Bundler mode */
