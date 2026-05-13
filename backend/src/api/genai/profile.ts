@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchAllFinishedGamesByPlayer } from "../services/game.service.js";
+import { fetchAllFinishedGamesByPlayer } from "../db/services/game.service.js";
 import geminiClient from "./client.js";
 
 export async function generateProfileSummary(req: Request, res: Response) {

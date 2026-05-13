@@ -1,6 +1,6 @@
-import { DatabaseError, NotFoundError } from "../../types/Errors.js";
-import { TablesInsert } from "../db/interfaces/supabase.js";
-import { supabase } from "../server.js";
+import { DatabaseError, NotFoundError } from "../../../types/Errors.js";
+import { TablesInsert } from "../interfaces/supabase.js";
+import { supabase } from "../../server.js";
 
 export async function getAllGamePlayers() {
 	const { data, error } = await supabase

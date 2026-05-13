@@ -1,4 +1,10 @@
+import {
+	AppError,
+	NotFoundError,
+	ValidationError,
+} from "../../../types/Errors.js";
 import { InsertGameSchema, UpdateGameSchema } from "@civboards/schemas";
+import { TablesInsert, TablesUpdate } from "../interfaces/supabase.js";
 
 import * as z from "zod";
 import {
@@ -35,12 +41,6 @@ import { fetchLeaderById } from "./leader.service.js";
 import { fetchVictoryById } from "./victory.service.js";
 import { getAllGamesPlayedByPlayer } from "../repositories/gamePlayer.repository.js";
 import { createGameMods, removeGameModsByGameId } from "./gameMod.service.js";
-import {
-	ValidationError,
-	NotFoundError,
-	AppError,
-} from "../../types/Errors.js";
-import { TablesInsert, TablesUpdate } from "../db/interfaces/supabase.js";
 
 export async function createGame(game: z.infer<typeof InsertGameSchema>) {
 	// Validation

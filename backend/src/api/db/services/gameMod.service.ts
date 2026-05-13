@@ -1,5 +1,5 @@
-import { ValidationError } from "../../types/Errors.js";
-import { TablesInsert } from "../db/interfaces/supabase.js";
+import { TablesInsert } from "../interfaces/supabase.js";
+import { ValidationError } from "../../../types/Errors.js";
 import { doesGameIdExist } from "../repositories/game.repository.js";
 import {
 	deleteGameModsByGameId,

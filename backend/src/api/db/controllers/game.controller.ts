@@ -5,25 +5,25 @@ import {
 	UpdateGameSchema,
 } from "@civboards/schemas";
 import { NextFunction, Request, Response } from "express";
-import { Tables } from "../../interfaces/supabase.js";
-import { ValidationError } from "../../types/Errors.js";
+import { ValidationError } from "../../../types/Errors.js";
+import { Tables } from "../interfaces/supabase.js";
 import {
 	createGame,
-	fetchAllGameVictoryIds,
-	fetchAllGameWinnerCivilizationIds,
-	fetchAllGameWinnerLeaderIds,
-	fetchAllGameWinners,
-	fetchAllGames,
-	fetchAllGamesByPlayer,
 	fetchGameById,
+	fetchAllGames,
 	fetchGamesByCreatedBy,
+	fetchAllGamesByPlayer,
+	fetchAllGameWinners,
+	fetchAllGameWinnerLeaderIds,
+	fetchAllGameWinnerCivilizationIds,
+	fetchAllGameVictoryIds,
 	softRemoveGameById,
 	updateGame,
 } from "../services/game.service.js";
 import { fetchGameExpansionsIdsByGameId } from "../services/gameExpansion.service.js";
 import { fetchGameGamemodesIdsByGameId } from "../services/gameGamemode.service.js";
-import { fetchGamePlayersByGameId } from "../services/gamePlayer.service.js";
 import { fetchGameModsByGameId } from "../services/gameMod.service.js";
+import { fetchGamePlayersByGameId } from "../services/gamePlayer.service.js";
 
 // UTILS
 async function exportGameObject(game: Tables<"game">) {

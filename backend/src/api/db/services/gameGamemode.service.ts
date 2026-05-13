@@ -1,11 +1,11 @@
+import { TablesInsert } from "../interfaces/supabase.js";
+import { ValidationError } from "../../../types/Errors.js";
 import {
 	deleteGameGamemodesById,
 	getGameGamemodesByGameId,
 	insertGamemodes,
 } from "../repositories/gameGamemode.repository.js";
 import { doesGameIdExist } from "../repositories/game.repository.js";
-import { ValidationError } from "../../types/Errors.js";
-import { TablesInsert } from "../db/interfaces/supabase.js";
 
 export async function createGameGamemodes(gameId: string, gamemodes: number[]) {
 	if (!gameId) throw new ValidationError("No Game Id Provided");

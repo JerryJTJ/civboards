@@ -1,6 +1,8 @@
 import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
+import { TablesInsert } from "../interfaces/supabase.js";
 
+import { ValidationError } from "../../../types/Errors.js";
 import {
 	deleteGamePlayersByGameId,
 	getAllGamePlayers,
@@ -14,8 +16,6 @@ import {
 	getGameWinsByPlayer,
 } from "../repositories/game.repository.js";
 import { fetchCivilizationIdByLeaderId } from "./leader.service.js";
-import { ValidationError } from "../../types/Errors.js";
-import { TablesInsert } from "../db/interfaces/supabase.js";
 
 export async function fetchAllUniqueGamePlayers() {
 	const data = await getAllGamePlayers();
