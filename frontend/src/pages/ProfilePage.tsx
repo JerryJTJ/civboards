@@ -79,12 +79,12 @@ export default function ProfilePage() {
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
 					<Tab key="overview" aria-label="overview" title="Overview">
-						<div className="flex flex-col justify-center max-w-[80vw] lg:max-w-[75vw]">
+						<div className="flex flex-col justify-center max-w-[80vw]">
 							{!profile.error ? (
 								<>
 									<Card isBlurred className="px-10 py-5">
 										<CardHeader className="self-center justify-center px-20">
-											<b className="text-base">✨ AI Overview</b>
+											<b className="text-base">Playstyle Summary</b>
 										</CardHeader>
 										<CardBody>
 											{summary.data ? (

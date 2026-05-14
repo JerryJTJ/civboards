@@ -49,6 +49,42 @@ export async function getGamesById(ids: string[]) {
 	return data;
 }
 
+export async function getHydratedGamesById(ids: string[]) {
+	const { data, error } = await supabase
+		.from("game")
+		.select(
+			`
+			name,
+			map,
+			map_size,
+			turns,
+			finished,
+			winner_player,
+			active,
+			notes,
+			date,
+
+			victory (type),
+
+			game_player (
+			name,
+			leader (name),
+			civilization (name)
+			),
+
+			winner_leader:leader!game_winner_leader_id_fkey (name),
+			winner_civilization:civilization!game_winner_civilization_id_fkey (name)
+			`
+		)
+		.in("id", ids)
+		.eq("finished", true)
+		.eq("active", true);
+
+	if (error) throw new DatabaseError("Failed to get games", error);
+
+	return data;
+}
+
 export async function getGamesByCreatedBy(createdBy: string) {
 	const { data, error } = await supabase
 		.from("game")
