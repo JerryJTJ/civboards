@@ -1,8 +1,8 @@
 import * as z from "zod";
 import { PlayerSchema } from "@civboards/schemas";
-import { TablesInsert } from "../../interfaces/supabase.js";
+import { TablesInsert } from "../interfaces/supabase.js";
 
-import { ValidationError } from "../../types/Errors.js";
+import { ValidationError } from "../../../types/Errors.js";
 import {
 	deleteGamePlayersByGameId,
 	getAllGamePlayers,
