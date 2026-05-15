@@ -1,10 +1,6 @@
-import { DatabaseError, ValidationError } from "../../types/Errors.js";
-import {
-	Tables,
-	TablesInsert,
-	TablesUpdate,
-} from "../../interfaces/supabase.js";
-import { supabase } from "../server.js";
+import { DatabaseError, ValidationError } from "../../../types/Errors.js";
+import { Tables, TablesInsert, TablesUpdate } from "../interfaces/supabase.js";
+import { supabase } from "../../server.js";
 
 export async function insertGame(
 	game: TablesInsert<"game">
@@ -49,6 +45,42 @@ export async function getGamesById(ids: string[]) {
 		.eq("active", true);
 
 	if (error) throw new DatabaseError("Failed to get game", error);
+
+	return data;
+}
+
+export async function getHydratedGamesById(ids: string[]) {
+	const { data, error } = await supabase
+		.from("game")
+		.select(
+			`
+			name,
+			map,
+			map_size,
+			turns,
+			finished,
+			winner_player,
+			active,
+			notes,
+			date,
+
+			victory (type),
+
+			game_player (
+			name,
+			leader (name),
+			civilization (name)
+			),
+
+			winner_leader:leader!game_winner_leader_id_fkey (name),
+			winner_civilization:civilization!game_winner_civilization_id_fkey (name)
+			`
+		)
+		.in("id", ids)
+		.eq("finished", true)
+		.eq("active", true);
+
+	if (error) throw new DatabaseError("Failed to get games", error);
 
 	return data;
 }

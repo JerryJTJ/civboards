@@ -1,6 +1,6 @@
-import { DatabaseError, NotFoundError } from "../../types/Errors.js";
-import { TablesInsert } from "../../interfaces/supabase.js";
-import { supabase } from "../server.js";
+import { DatabaseError, NotFoundError } from "../../../types/Errors.js";
+import { TablesInsert } from "../interfaces/supabase.js";
+import { supabase } from "../../server.js";
 
 export async function insertUser(user: TablesInsert<"user">) {
 	const { data, error } = await supabase.from("user").insert(user).select();

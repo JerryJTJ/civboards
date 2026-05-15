@@ -2,9 +2,9 @@ import {
 	AppError,
 	NotFoundError,
 	ValidationError,
-} from "../../types/Errors.js";
+} from "../../../types/Errors.js";
 import { InsertGameSchema, UpdateGameSchema } from "@civboards/schemas";
-import { TablesInsert, TablesUpdate } from "../../interfaces/supabase.js";
+import { TablesInsert, TablesUpdate } from "../interfaces/supabase.js";
 
 import * as z from "zod";
 import {
@@ -31,6 +31,7 @@ import {
 	getGameById,
 	getGamesByCreatedBy,
 	getGamesById,
+	getHydratedGamesById,
 	hasUserUploaded,
 	insertGame,
 	softDeleteGameById,
@@ -327,6 +328,26 @@ export async function fetchAllGamesByPlayer(player: string) {
 	});
 
 	return await getGamesById(gameIds);
+}
+
+export async function fetchAllHydratedGamesByPlayer(player: string) {
+	const games = await getAllGamesPlayedByPlayer(player);
+
+	if (games.length === 0)
+		throw new AppError("No games for player found", 404, "");
+
+	const gameIds: string[] = games.map((game) => {
+		return game.game.id;
+	});
+
+	return await getHydratedGamesById(gameIds);
+}
+
+export async function fetchAllFinishedGamesByPlayer(player: string) {
+	const games = await fetchAllGamesByPlayer(player);
+
+	const finishedGames = games.filter((game) => game.finished);
+	return finishedGames;
 }
 
 export async function handleHasUserUploaded(user: string) {
