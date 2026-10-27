@@ -1,6 +1,6 @@
 import * as GameController from "../controllers/game.controller.js";
 import { Router } from "express";
-import checkJwt from "../middlewares/auth/checkJwt.js";
+import checkJwt from "../../middlewares/auth/checkJwt.js";
 
 const GameRouter = Router();
 GameRouter.post("/add", checkJwt(), GameController.handleCreateGame);

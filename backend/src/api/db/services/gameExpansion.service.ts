@@ -1,5 +1,5 @@
-import { TablesInsert } from "../../interfaces/supabase.js";
-import { ValidationError } from "../../types/Errors.js";
+import { TablesInsert } from "../interfaces/supabase.js";
+import { ValidationError } from "../../../types/Errors.js";
 import {
 	deleteGameExpansionsByGameId,
 	getGameExpansionsByGameId,

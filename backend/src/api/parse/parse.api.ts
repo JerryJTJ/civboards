@@ -2,8 +2,8 @@ import * as z from "zod";
 import { ParseError, ValidationError } from "../../types/Errors.js";
 import { ParseSaveSchema } from "@civboards/schemas";
 import { Request, Response, Router } from "express";
-import { fetchExpansionByCode } from "../services/expansion.service.js";
-import { fetchLeaderFromCode } from "../services/leader.service.js";
+import { fetchExpansionByCode } from "../db/services/expansion.service.js";
+import { fetchLeaderFromCode } from "../db/services/leader.service.js";
 import { parse } from "../../submodules/civ6-save-parser/parse.js";
 import multer, { memoryStorage } from "multer";
 

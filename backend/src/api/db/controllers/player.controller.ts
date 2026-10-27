@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { ProfileSchema } from "@civboards/schemas";
-import { ValidationError } from "../../types/Errors.js";
 import {
 	fetchAllUniqueGamePlayers,
 	fetchNumGamesFinishedByPlayer,
@@ -9,6 +8,7 @@ import {
 	fetchProfileInfoByName,
 } from "../services/gamePlayer.service.js";
 import { handleHasUserUploaded } from "../services/game.service.js";
+import { ValidationError } from "../../../types/Errors.js";
 
 export async function handleGetAllUniquePlayers(
 	req: Request,

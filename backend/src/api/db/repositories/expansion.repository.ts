@@ -1,5 +1,5 @@
-import { DatabaseError, NotFoundError } from "../../types/Errors.js";
-import { supabase } from "../server.js";
+import { DatabaseError, NotFoundError } from "../../../types/Errors.js";
+import { supabase } from "../../server.js";
 
 export async function getExpansionByCode(code: string) {
 	const { data, error } = await supabase

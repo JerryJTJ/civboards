@@ -2,7 +2,12 @@ import { Avatar } from "@heroui/avatar";
 import { Card, CardBody, CardFooter, CardHeader } from "@heroui/card";
 import { Skeleton } from "@heroui/skeleton";
 import { Tab, Tabs } from "@heroui/tabs";
-import { getGamesByPlayer, getGamesByUploader, getProfile } from "@api/users";
+import {
+	getGamesByPlayer,
+	getGamesByUploader,
+	getProfile,
+	getProfileSummary,
+} from "@api/users";
 import { getProfilePic } from "@api/auth0";
 import { useMemo } from "react";
 import { useParams } from "react-router-dom";
@@ -48,6 +53,17 @@ export default function ProfilePage() {
 		},
 		enabled: !!username,
 	});
+	const summary = useQuery({
+		queryKey: ["summary", username],
+		queryFn: async () => {
+			if (username) return getProfileSummary(username);
+		},
+		enabled: !!username,
+		staleTime: Infinity,
+		refetchOnWindowFocus: false,
+		refetchOnReconnect: false,
+		refetchOnMount: false,
+	});
 
 	return (
 		<DefaultLayout>
@@ -63,66 +79,98 @@ export default function ProfilePage() {
 				</Skeleton>
 				<Tabs aria-label="Options" color="primary">
 					<Tab key="overview" aria-label="overview" title="Overview">
-						<div className="flex flex-col justify-center gap-10 p-10 lg:flex-row">
+						<div className="flex flex-col justify-center max-w-[80vw]">
 							{!profile.error ? (
 								<>
-									{" "}
-									<Skeleton
-										className="rounded-xl"
-										isLoaded={!profile.isPending}
-									>
-										<Card isBlurred aria-label="Player Overview">
-											<CardHeader className="self-center justify-center px-20 ">
-												<b className="pt-2 text-base">Overview</b>
-											</CardHeader>
-											<CardBody>
-												{profile.data && (
-													<ProfileStatsTable
-														finished={profile.data.finished}
-														played={profile.data.played}
-														wins={profile.data.won}
-													/>
-												)}
-											</CardBody>
-											<CardFooter>
-												<p className="px-4 text-xs italic">
-													Win percentages use finished games only
-												</p>
-											</CardFooter>
-										</Card>
-									</Skeleton>
-									<Skeleton
-										className="rounded-xl"
-										isLoaded={!profile.isPending}
-									>
-										<Card isBlurred>
-											<CardHeader className="justify-center px-20">
-												<b className="pt-2 text-base">Civilizations Played</b>
-											</CardHeader>
-											<CardBody>
-												{profile.data && (
-													<ProfileLeaderboardTable items={profile.data.civs} />
-												)}
-											</CardBody>
-										</Card>
-									</Skeleton>
-									<Skeleton
-										className="rounded-xl"
-										isLoaded={!profile.isPending}
-									>
-										<Card isBlurred>
-											<CardHeader className="justify-center px-20">
-												<b className="pt-2 text-base">Top Leaders</b>
-											</CardHeader>
-											<CardBody>
-												{profile.data && (
-													<ProfileLeaderboardTable
-														items={profile.data.leaders}
-													/>
-												)}
-											</CardBody>
-										</Card>
-									</Skeleton>
+									<Card isBlurred className="px-10 py-5">
+										<CardHeader className="self-center justify-center px-20">
+											<b className="text-base">Playstyle Summary</b>
+										</CardHeader>
+										<CardBody>
+											{summary.data ? (
+												<p className="text-sm sm:text-base">{summary.data}</p>
+											) : (
+												<div className="space-y-3">
+													<Skeleton className="w-4/5 rounded-lg">
+														<div className="w-4/5 h-3 rounded-lg bg-default-200" />
+													</Skeleton>
+													<Skeleton className="rounded-lg w-5/5">
+														<div className="h-3 rounded-lg w-5/5 bg-default-200" />
+													</Skeleton>
+													<Skeleton className="w-2/5 rounded-lg">
+														<div className="w-2/5 h-3 rounded-lg bg-default-300" />
+													</Skeleton>
+													<Skeleton className="w-3/5 rounded-lg">
+														<div className="w-3/5 h-3 rounded-lg bg-default-300" />
+													</Skeleton>
+												</div>
+											)}
+										</CardBody>
+									</Card>
+									<div className="flex flex-col justify-center gap-10 p-10 lg:flex-row">
+										<>
+											<Skeleton
+												className="rounded-xl"
+												isLoaded={!profile.isPending}
+											>
+												<Card isBlurred aria-label="Player Overview">
+													<CardHeader className="self-center justify-center px-20 ">
+														<b className="pt-2 text-base">Overview</b>
+													</CardHeader>
+													<CardBody>
+														{profile.data && (
+															<ProfileStatsTable
+																finished={profile.data.finished}
+																played={profile.data.played}
+																wins={profile.data.won}
+															/>
+														)}
+													</CardBody>
+													<CardFooter>
+														<p className="px-4 text-xs italic">
+															Win percentages use finished games only
+														</p>
+													</CardFooter>
+												</Card>
+											</Skeleton>
+											<Skeleton
+												className="rounded-xl"
+												isLoaded={!profile.isPending}
+											>
+												<Card isBlurred>
+													<CardHeader className="justify-center px-20">
+														<b className="pt-2 text-base">
+															Civilizations Played
+														</b>
+													</CardHeader>
+													<CardBody>
+														{profile.data && (
+															<ProfileLeaderboardTable
+																items={profile.data.civs}
+															/>
+														)}
+													</CardBody>
+												</Card>
+											</Skeleton>
+											<Skeleton
+												className="rounded-xl"
+												isLoaded={!profile.isPending}
+											>
+												<Card isBlurred>
+													<CardHeader className="justify-center px-20">
+														<b className="pt-2 text-base">Top Leaders</b>
+													</CardHeader>
+													<CardBody>
+														{profile.data && (
+															<ProfileLeaderboardTable
+																items={profile.data.leaders}
+															/>
+														)}
+													</CardBody>
+												</Card>
+											</Skeleton>
+										</>
+									</div>
 								</>
 							) : (
 								<Card isBlurred>

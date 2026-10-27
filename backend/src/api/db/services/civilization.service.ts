@@ -1,4 +1,4 @@
-import { ValidationError } from "../../types/Errors.js";
+import { ValidationError } from "../../../types/Errors.js";
 import {
 	getAllCivilizations,
 	getCivilizationByCode,

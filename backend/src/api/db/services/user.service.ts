@@ -1,4 +1,4 @@
-import { TablesInsert } from "../../interfaces/supabase.js";
+import { TablesInsert } from "../interfaces/supabase.js";
 import {
 	getAllUsers,
 	getUserByName,

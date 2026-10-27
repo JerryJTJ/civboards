@@ -33,6 +33,23 @@ export async function getProfile(
 	throw new Error(`Failed to get profile ${username}`);
 }
 
+export async function getProfileSummary(username: string): Promise<string> {
+	try {
+		const response = await instance<{ message: string }>({
+			url: `/genai/profile/${username}`,
+			method: "get",
+		});
+
+		if (response.status === 200) {
+			return response.data.message;
+		}
+
+		throw Error();
+	} catch {
+		return "Failed to generate summary.";
+	}
+}
+
 export async function getGamesByPlayer(
 	username: string
 ): Promise<z.infer<typeof DisplayGameSchemaArray>> {
