@@ -1,0 +1,159 @@
+/* src/themes/ocean.css */
+@layer base {
+	/* Ocean Light */
+	[data-theme="terracotta"] {
+		color-scheme: light;
+
+		/* Primitive Colors (Do not change between light and dark) */
+		--white: oklch(100% 0 0);
+		--black: oklch(0% 0 0);
+		--snow: oklch(0.9911 0 0);
+		--eclipse: oklch(0.2103 0.0059 285.89);
+
+		/* Spacing & Layout */
+		--spacing: 0.25rem;
+		--border-width: 1px;
+		--field-border-width: 0px;
+		--disabled-opacity: 0.5;
+		--ring-offset-width: 2px;
+		--cursor-interactive: pointer;
+		--cursor-disabled: not-allowed;
+
+		/* Radius */
+		--radius: 0.75rem;
+		--field-radius: calc(var(--radius) * 1.5);
+
+		/* Base Colors */
+		--background: oklch(0.985 0.015 225);
+		--foreground: var(--eclipse);
+
+		/* Surface: Used for non-overlay components */
+		--surface: var(--white);
+		--surface-foreground: var(--foreground);
+
+		/* Overlay: Used for floating/overlay components */
+		--overlay: var(--white);
+		--overlay-foreground: var(--foreground);
+
+		--muted: oklch(0.5517 0.0138 285.94);
+
+		--scrollbar-thumb: color-mix(in oklch, var(--foreground) 15%, transparent);
+		--scrollbar-track: transparent;
+		--scrollbar-gutter: auto;
+		--scrollbar-width: thin;
+		--scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+		--scrollbar: var(--scrollbar-thumb);
+
+		--default: oklch(94% 0.001 286.375);
+		--default-foreground: var(--eclipse);
+
+		/* Ocean accent */
+		--accent: oklch(0.45 0.15 230);
+		--accent-foreground: var(--snow);
+
+		/* Form Field Defaults */
+		--field-background: var(--white);
+		--field-foreground: oklch(0.2103 0.0059 285.89);
+		--field-placeholder: var(--muted);
+		--field-border: transparent;
+
+		/* Status (kept compatible) */
+		--success: oklch(0.7329 0.1935 150.81);
+		--success-foreground: var(--eclipse);
+
+		--warning: oklch(0.7819 0.1585 72.33);
+		--warning-foreground: var(--eclipse);
+
+		--danger: oklch(0.6532 0.2328 25.74);
+		--danger-foreground: var(--snow);
+
+		/* Component Colors */
+		--segment: var(--white);
+		--segment-foreground: var(--foreground);
+
+		/* Misc */
+		--border: oklch(0.5 0.06 230 / 22%);
+		--separator: oklch(92% 0.004 286.32);
+		--focus: var(--accent);
+		--link: var(--accent);
+
+		/* Shadows */
+		--surface-shadow:
+			0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06),
+			0 0 1px 0 rgba(0, 0, 0, 0.06);
+		--overlay-shadow:
+			0 4px 16px 0 rgba(24, 24, 27, 0.08), 0 8px 24px 0 rgba(24, 24, 27, 0.09);
+		--field-shadow:
+			0 2px 4px 0 rgba(0, 0, 0, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.06),
+			0 0 1px 0 rgba(0, 0, 0, 0.06);
+
+		/* Skeleton Default Global Animation */
+		--skeleton-animation: shimmer; /* Possible values: shimmer, pulse, none */
+
+		/* Tooltip Default Delays */
+		--tooltip-delay: 1500ms;
+		--tooltip-close-delay: 500ms;
+	}
+
+	/* Ocean Dark */
+	[data-theme="ocean-dark"] {
+		color-scheme: dark;
+
+		/* Base Colors */
+		--background: oklch(0.14 0.02 230);
+		--foreground: var(--snow);
+
+		/* Surface: Used for non-overlay components */
+		--surface: oklch(0.2103 0.0059 285.89);
+		--surface-foreground: var(--foreground);
+
+		/* Overlay: Used for floating/overlay components */
+		--overlay: oklch(0.22 0.0059 285.89);
+		--overlay-foreground: var(--foreground);
+
+		--muted: oklch(70.5% 0.015 286.067);
+
+		--scrollbar-thumb: color-mix(in oklch, var(--foreground) 15%, transparent);
+		--scrollbar-track: transparent;
+		--scrollbar-gutter: auto;
+		--scrollbar-width: thin;
+		--scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+		--scrollbar: var(--scrollbar-thumb);
+
+		--default: oklch(27.4% 0.006 286.033);
+		--default-foreground: var(--snow);
+
+		/* Form Field Defaults */
+		--field-background: var(--default);
+		--field-foreground: var(--foreground);
+
+		/* Ocean accent */
+		--accent: oklch(0.86 0.08 230);
+		--accent-foreground: var(--eclipse);
+
+		/* Status */
+		--success: oklch(0.7329 0.1935 150.81);
+		--success-foreground: var(--eclipse);
+
+		--warning: oklch(0.8203 0.1388 76.34);
+		--warning-foreground: var(--eclipse);
+
+		--danger: oklch(0.594 0.1967 24.63);
+		--danger-foreground: var(--snow);
+
+		/* Component Colors */
+		--segment: oklch(0.3964 0.01 285.93);
+		--segment-foreground: var(--foreground);
+
+		/* Misc */
+		--border: oklch(22% 0.006 286.033);
+		--separator: oklch(22% 0.006 286.033);
+		--focus: var(--accent);
+		--link: var(--accent);
+
+		/* Shadows */
+		--surface-shadow: 0 0 0 0 transparent inset;
+		--overlay-shadow: 0 0 0 0 transparent inset;
+		--field-shadow: 0 0 0 0 transparent inset;
+	}
+}

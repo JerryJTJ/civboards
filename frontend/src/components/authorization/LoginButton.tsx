@@ -1,4 +1,4 @@
-import { Button } from "@heroui/button";
+import { Button } from "@heroui/react";
 import { useAuth0 } from "@auth0/auth0-react";
 import getViewportSize from "@components/utils/getViewportSize";
 import useWindowDimensions from "@hooks/useWindowDimensions";
@@ -10,9 +10,8 @@ const LoginButton = () => {
 	return (
 		<Button
 			className="border-fg"
-			color="primary"
+			variant="primary"
 			size={getViewportSize(width) === "xs" ? "sm" : "md"}
-			variant="shadow"
 			onPress={() => {
 				void loginWithRedirect({
 					authorizationParams: {
